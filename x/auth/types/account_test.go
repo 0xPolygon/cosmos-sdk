@@ -14,6 +14,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
 )
 
+// TODO CHECK HEIMDALL-V2 check this file (it was deleted in heimdall). Is this test needed? In case, adapt it
+
 func TestBaseAddressPubKey(t *testing.T) {
 	_, pub1, addr1 := testdata.KeyTestPubAddr()
 	_, pub2, addr2 := testdata.KeyTestPubAddr()

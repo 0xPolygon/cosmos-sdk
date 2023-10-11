@@ -17,6 +17,8 @@ import (
 
 var _ types.QueryServer = queryServer{}
 
+// TODO CHECK HEIMDALL-V2 this should reflect auth/querier.go
+
 func NewQueryServer(k AccountKeeper) types.QueryServer {
 	return queryServer{k: k}
 }

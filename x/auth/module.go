@@ -92,6 +92,10 @@ type AppModule struct {
 
 	// legacySubspace is used solely for migration of x/params managed parameters
 	legacySubspace exported.Subspace
+
+	// TODO CHECK HEIMDALL-V2 check contractCaller and processors in this whole file
+	contractCaller helper.IContractCaller
+	processors     []types.AccountProcessor
 }
 
 // IsOnePerModuleType implements the depinject.OnePerModuleType interface.
@@ -101,12 +105,14 @@ func (am AppModule) IsOnePerModuleType() {}
 func (am AppModule) IsAppModule() {}
 
 // NewAppModule creates a new AppModule object
-func NewAppModule(cdc codec.Codec, accountKeeper keeper.AccountKeeper, randGenAccountsFn types.RandomGenesisAccountsFn, ss exported.Subspace) AppModule {
+func NewAppModule(cdc codec.Codec, accountKeeper keeper.AccountKeeper, randGenAccountsFn types.RandomGenesisAccountsFn, ss exported.Subspace, contractCaller helper.IContractCaller, processors []types.AccountProcessor) AppModule {
 	return AppModule{
 		AppModuleBasic:    AppModuleBasic{ac: accountKeeper.AddressCodec()},
 		accountKeeper:     accountKeeper,
 		randGenAccountsFn: randGenAccountsFn,
 		legacySubspace:    ss,
+		contractCaller: contractCaller,
+		processors:     processors,
 	}
 }
 
@@ -139,7 +145,7 @@ func (am AppModule) RegisterServices(cfg module.Configurator) {
 func (am AppModule) InitGenesis(ctx sdk.Context, cdc codec.JSONCodec, data json.RawMessage) {
 	var genesisState types.GenesisState
 	cdc.MustUnmarshalJSON(data, &genesisState)
-	am.accountKeeper.InitGenesis(ctx, genesisState)
+	am.accountKeeper.InitGenesis(ctx, genesisState, am.processors)
 }
 
 // ExportGenesis returns the exported genesis state as raw bytes for the auth
@@ -197,6 +203,10 @@ type ModuleInputs struct {
 
 	// LegacySubspace is used solely for migration of x/params managed parameters
 	LegacySubspace exported.Subspace `optional:"true"`
+
+	// TODO CHECK HEIMDALL-V2 is this depinject needed?
+	contractCaller          helper.IContractCaller
+	processors              []types.AccountProcessor
 }
 
 type ModuleOutputs struct {
@@ -204,6 +214,8 @@ type ModuleOutputs struct {
 
 	AccountKeeper keeper.AccountKeeper
 	Module        appmodule.AppModule
+
+	// TODO CHECK HEIMDALL-V2 check contractCaller and processors in this whole file
 }
 
 func ProvideModule(in ModuleInputs) ModuleOutputs {
@@ -215,6 +227,7 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 	// default to governance authority if not provided
 	authority := types.NewModuleAddress(GovModuleName)
 	if in.Config.Authority != "" {
+		// TODO CHECK HEIMDALL-V2 Bech32 related stuff was removed > replace here
 		authority = types.NewModuleAddressOrBech32Address(in.Config.Authority)
 	}
 
@@ -226,8 +239,16 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 		in.AccountI = types.ProtoBaseAccount
 	}
 
+	if in.contractCaller == nil {
+		in.contractCaller = helper.IContractCaller
+	}
+
+	if in.processors == nil {
+		in.processors = []types.AccountProcessor{}
+	}
+
 	k := keeper.NewAccountKeeper(in.Cdc, in.StoreService, in.AccountI, maccPerms, in.AddressCodec, in.Config.Bech32Prefix, authority.String())
-	m := NewAppModule(in.Cdc, k, in.RandomGenesisAccountsFn, in.LegacySubspace)
+	m := NewAppModule(in.Cdc, k, in.RandomGenesisAccountsFn, in.LegacySubspace, in.contractCaller, in.processors)
 
 	return ModuleOutputs{AccountKeeper: k, Module: m}
 }

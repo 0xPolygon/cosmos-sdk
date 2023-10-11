@@ -22,16 +22,16 @@ import (
 // AccountKeeperI is the interface contract that x/auth's keeper implements.
 type AccountKeeperI interface {
 	// Return a new account with the next account number and the specified address. Does not save the new account to the store.
-	NewAccountWithAddress(context.Context, sdk.AccAddress) sdk.AccountI
+	NewAccountWithAddress(context.Context, types.HeimdallAddress) sdk.AccountI
 
 	// Return a new account with the next account number. Does not save the new account to the store.
 	NewAccount(context.Context, sdk.AccountI) sdk.AccountI
 
 	// Check if an account exists in the store.
-	HasAccount(context.Context, sdk.AccAddress) bool
+	HasAccount(context.Context, types.HeimdallAddress) bool
 
 	// Retrieve an account from the store.
-	GetAccount(context.Context, sdk.AccAddress) sdk.AccountI
+	GetAccount(context.Context, types.HeimdallAddress) sdk.AccountI
 
 	// Set an account in the store.
 	SetAccount(context.Context, sdk.AccountI)
@@ -43,10 +43,10 @@ type AccountKeeperI interface {
 	IterateAccounts(context.Context, func(sdk.AccountI) bool)
 
 	// Fetch the public key of an account at a specified address
-	GetPubKey(context.Context, sdk.AccAddress) (cryptotypes.PubKey, error)
+	GetPubKey(context.Context, types.HeimdallAddress) (cryptotypes.PubKey, error)
 
 	// Fetch the sequence of an account at a specified address.
-	GetSequence(context.Context, sdk.AccAddress) (uint64, error)
+	GetSequence(context.Context, types.HeimdallAddress) (uint64, error)
 
 	// Fetch the next account number, and increment the internal counter.
 	NextAccountNumber(context.Context) uint64
@@ -62,7 +62,7 @@ func NewAccountIndexes(sb *collections.SchemaBuilder) AccountsIndexes {
 	return AccountsIndexes{
 		Number: indexes.NewUnique(
 			sb, types.AccountNumberStoreKeyPrefix, "account_by_number", collections.Uint64Key, sdk.AccAddressKey,
-			func(_ sdk.AccAddress, v sdk.AccountI) (uint64, error) {
+			func(_ types.HeimdallAddress, v sdk.AccountI) (uint64, error) {
 				return v.GetAccountNumber(), nil
 			},
 		),
@@ -71,11 +71,11 @@ func NewAccountIndexes(sb *collections.SchemaBuilder) AccountsIndexes {
 
 type AccountsIndexes struct {
 	// Number is a unique index that indexes accounts by their account number.
-	Number *indexes.Unique[uint64, sdk.AccAddress, sdk.AccountI]
+	Number *indexes.Unique[uint64, types.HeimdallAddress, sdk.AccountI]
 }
 
-func (a AccountsIndexes) IndexesList() []collections.Index[sdk.AccAddress, sdk.AccountI] {
-	return []collections.Index[sdk.AccAddress, sdk.AccountI]{
+func (a AccountsIndexes) IndexesList() []collections.Index[types.HeimdallAddress, sdk.AccountI] {
+	return []collections.Index[types.HeimdallAddress, sdk.AccountI]{
 		a.Number,
 	}
 }
@@ -88,6 +88,7 @@ type AccountKeeper struct {
 	storeService store.KVStoreService
 	cdc          codec.BinaryCodec
 	permAddrs    map[string]types.PermissionsForAddress
+	// TODO CHECK HEIMDALL-V2 bech32Prefix?
 	bech32Prefix string
 
 	// The prototypical AccountI constructor.
@@ -101,7 +102,7 @@ type AccountKeeper struct {
 	Schema        collections.Schema
 	Params        collections.Item[types.Params]
 	AccountNumber collections.Sequence
-	Accounts      *collections.IndexedMap[sdk.AccAddress, sdk.AccountI, AccountsIndexes]
+	Accounts      *collections.IndexedMap[types.HeimdallAddress, sdk.AccountI, AccountsIndexes]
 }
 
 var _ AccountKeeperI = &AccountKeeper{}
@@ -160,7 +161,7 @@ func (ak AccountKeeper) Logger(ctx context.Context) log.Logger {
 }
 
 // GetPubKey Returns the PubKey of the account at address
-func (ak AccountKeeper) GetPubKey(ctx context.Context, addr sdk.AccAddress) (cryptotypes.PubKey, error) {
+func (ak AccountKeeper) GetPubKey(ctx context.Context, addr types.HeimdallAddress) (cryptotypes.PubKey, error) {
 	acc := ak.GetAccount(ctx, addr)
 	if acc == nil {
 		return nil, errorsmod.Wrapf(sdkerrors.ErrUnknownAddress, "account %s does not exist", addr)
@@ -170,7 +171,7 @@ func (ak AccountKeeper) GetPubKey(ctx context.Context, addr sdk.AccAddress) (cry
 }
 
 // GetSequence Returns the Sequence of the account at address
-func (ak AccountKeeper) GetSequence(ctx context.Context, addr sdk.AccAddress) (uint64, error) {
+func (ak AccountKeeper) GetSequence(ctx context.Context, addr types.HeimdallAddress) (uint64, error) {
 	acc := ak.GetAccount(ctx, addr)
 	if acc == nil {
 		return 0, errorsmod.Wrapf(sdkerrors.ErrUnknownAddress, "account %s does not exist", addr)
@@ -208,7 +209,7 @@ func (ak AccountKeeper) ValidatePermissions(macc sdk.ModuleAccountI) error {
 }
 
 // GetModuleAddress returns an address based on the module name
-func (ak AccountKeeper) GetModuleAddress(moduleName string) sdk.AccAddress {
+func (ak AccountKeeper) GetModuleAddress(moduleName string) types.HeimdallAddress {
 	permAddr, ok := ak.permAddrs[moduleName]
 	if !ok {
 		return nil
@@ -218,7 +219,7 @@ func (ak AccountKeeper) GetModuleAddress(moduleName string) sdk.AccAddress {
 }
 
 // GetModuleAddressAndPermissions returns an address and permissions based on the module name
-func (ak AccountKeeper) GetModuleAddressAndPermissions(moduleName string) (addr sdk.AccAddress, permissions []string) {
+func (ak AccountKeeper) GetModuleAddressAndPermissions(moduleName string) (addr types.HeimdallAddress, permissions []string) {
 	permAddr, ok := ak.permAddrs[moduleName]
 	if !ok {
 		return addr, permissions
@@ -276,4 +277,41 @@ func (ak AccountKeeper) GetParams(ctx context.Context) (params types.Params) {
 		panic(err)
 	}
 	return params
+}
+
+// GetBlockProposer returns block proposer
+func (ak AccountKeeper) GetBlockProposer(ctx sdk.Context) (types.HeimdallAddress, bool) {
+	// TODO CHECK HEIMDALL-V2 are these implementations equivalent for GetBlockProposer
+	kvStore := ak.storeService.OpenKVStore(ctx)
+	isProposerPresent, _ := kvStore.Has(types.ProposerKey()) // TODO CHECK HEIMDALL-V2 handle error?
+	if !isProposerPresent {
+		return types.HeimdallAddress{}, false
+	}
+	blockProposerBytes, _ := kvStore.Get(types.ProposerKey()) // TODO CHECK HEIMDALL-V2 handle error?
+	return types.BytesToHeimdallAddress(blockProposerBytes), true
+
+	//store := ctx.KVStore(ak.key)
+	//if !store.Has(types.ProposerKey()) {
+	//	return hmTypes.HeimdallAddress{}, false
+	//}
+	//bz := store.Get(types.ProposerKey())
+	//return hmTypes.BytesToHeimdallAddress(bz), true
+}
+
+// SetBlockProposer sets block proposer
+func (ak AccountKeeper) SetBlockProposer(ctx sdk.Context, addr types.HeimdallAddress) {
+	// TODO CHECK HEIMDALL-V2 are these implementations equivalent for SetBlockProposer
+	kvStore := ak.storeService.OpenKVStore(ctx)
+	kvStore.Set(types.ProposerKey(), addr.Bytes()) // TODO CHECK HEIMDALL-V2 handle error?
+	//store := ctx.KVStore(ak.key)
+	//store.Set(types.ProposerKey(), addr.Bytes())
+}
+
+// RemoveBlockProposer removes block proposer from store
+func (ak AccountKeeper) RemoveBlockProposer(ctx sdk.Context) {
+	// TODO CHECK HEIMDALL-V2 are these implementations equivalent for RemoveBlockProposer
+	kvStore := ak.storeService.OpenKVStore(ctx)
+	kvStore.Delete(types.ProposerKey()) // TODO CHECK HEIMDALL-V2 handle error?
+	//store := ctx.KVStore(ak.key)
+	//store.Delete(types.ProposerKey())
 }

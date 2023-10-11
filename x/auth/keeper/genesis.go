@@ -9,7 +9,7 @@ import (
 //
 // CONTRACT: old coins from the FeeCollectionKeeper need to be transferred through
 // a genesis port script to the new fee collector account
-func (ak AccountKeeper) InitGenesis(ctx sdk.Context, data types.GenesisState) {
+func (ak AccountKeeper) InitGenesis(ctx sdk.Context, data types.GenesisState, processors []authTypes.AccountProcessor) {
 	if err := ak.Params.Set(ctx, data.Params); err != nil {
 		panic(err)
 	}
@@ -27,6 +27,11 @@ func (ak AccountKeeper) InitGenesis(ctx sdk.Context, data types.GenesisState) {
 		for lastAccNum == nil || *lastAccNum < accNum {
 			n := ak.NextAccountNumber(ctx)
 			lastAccNum = &n
+		}
+		// execute account processors
+		for _, p := range processors {
+			// TODO CHECK HEIMDALL-V2 fill processors here (check heimdall's auth/genesis.go)
+			// acc = p(&gacc, d) //nolint
 		}
 		ak.SetAccount(ctx, acc)
 	}

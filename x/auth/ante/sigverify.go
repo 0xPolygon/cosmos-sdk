@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
+	"math/big"
 
 	"google.golang.org/protobuf/types/known/anypb"
 
@@ -24,6 +25,12 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
 	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
+	// TODO CHECK HEIMDALL-V2 probably import these (imported from heimdall's auth/ante.go)
+	//authTypes "github.com/maticnetwork/heimdall/auth/types"
+	//"github.com/maticnetwork/heimdall/chainmanager"
+	//checkpointTypes "github.com/maticnetwork/heimdall/checkpoint/types"
+	//"github.com/maticnetwork/heimdall/helper"
+	//"github.com/maticnetwork/heimdall/types"
 )
 
 var (
@@ -31,6 +38,14 @@ var (
 	key                = make([]byte, secp256k1.PubKeySize)
 	simSecp256k1Pubkey = &secp256k1.PubKey{Key: key}
 	simSecp256k1Sig    [64]byte
+
+	// TODO CHECK HEIMDALL-V2 imported from heimdall's auth/ante.go
+
+	// DefaultFeeInMatic represents default fee in matic
+	DefaultFeeInMatic = big.NewInt(10).Exp(big.NewInt(10), big.NewInt(15), nil)
+
+	// DefaultFeeWantedPerTx fee wanted per tx
+	DefaultFeeWantedPerTx = sdk.Coins{sdk.Coin{Denom: authTypes.FeeToken, Amount: sdk.NewIntFromBigInt(DefaultFeeInMatic)}}
 )
 
 func init() {
@@ -43,7 +58,26 @@ func init() {
 // SignatureVerificationGasConsumer is the type of function that is used to both
 // consume gas when verifying signatures and also to accept or reject different types of pubkeys
 // This is where apps can define their own PubKey
-type SignatureVerificationGasConsumer = func(meter storetypes.GasMeter, sig signing.SignatureV2, params types.Params) error
+// TODO CHECK HEIMDALL-V2 check this implementation where we preserved heimdall types (imported from heimdall's auth/ante.go)
+type SignatureVerificationGasConsumer = func(meter storetypes.GasMeter, sig authTypes.StdSignature, params authTypes.Params) error
+
+// FeeCollector interface for fees collector
+// TODO CHECK HEIMDALL-V2 imported from heimdall's auth/ante.go
+type FeeCollector interface {
+	GetModuleAddress(string) types.HeimdallAddress
+	SendCoinsFromAccountToModule(
+		sdk.Context,
+		types.HeimdallAddress,
+		string,
+		sdk.Coins,
+	) sdk.Error
+}
+
+// MainTxMsg tx hash
+type MainTxMsg interface {
+	GetTxHash() types.HeimdallHash
+	GetLogIndex() uint64
+}
 
 // SetPubKeyDecorator sets PubKeys in context for any signer which does not already have pubkey set
 // PubKeys must be set in context for all signers before any other sigverify decorators run
@@ -180,6 +214,18 @@ func (sgcd SigGasConsumeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simula
 		return ctx, err
 	}
 
+	// TODO CHECK HEIMDALL-V2 imported from heimdall's auth/ante.go (I believe this relate to multiSig)
+	/*
+			if len(signerAddrs) == 0 {
+			return newCtx, sdk.ErrNoSignatures("no signers").Result(), true
+		}
+
+		if len(signerAddrs) > 1 {
+			return newCtx, sdk.ErrUnauthorized("wrong number of signers").Result(), true
+		}
+	*/
+
+	// TODO CHECK HEIMDALL-V2 this lop was remove in heimdall (I believe this relate to multiSig)
 	for i, sig := range sigs {
 		signerAcc, err := GetSignerAcc(ctx, sgcd.ak, signers[i])
 		if err != nil {
@@ -485,7 +531,8 @@ func ConsumeMultisignatureVerificationGas(
 
 // GetSignerAcc returns an account for a given address that is expected to sign
 // a transaction.
-func GetSignerAcc(ctx sdk.Context, ak AccountKeeper, addr sdk.AccAddress) (sdk.AccountI, error) {
+// TODO CHECK HEIMDALL-V2 import type for the argument, and change the return value due to sdk.AccountI interface
+func GetSignerAcc(ctx sdk.Context, ak AccountKeeper, addr types.HeimdallAddress) (authTypes.Account, error) {
 	if acc := ak.GetAccount(ctx, addr); acc != nil {
 		return acc, nil
 	}

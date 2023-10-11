@@ -14,6 +14,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
 )
 
+
+// // TODO CHECK HEIMDALL-V2 inject heimdall app
 func TestItCreatesModuleAccountOnInitBlock(t *testing.T) {
 	var accountKeeper keeper.AccountKeeper
 	app, err := simtestutil.SetupAtGenesis(

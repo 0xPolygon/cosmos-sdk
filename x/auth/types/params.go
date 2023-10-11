@@ -2,6 +2,8 @@ package types
 
 import (
 	"fmt"
+	"math/big"
+	"strings"
 )
 
 // Default parameter values
@@ -11,16 +13,20 @@ const (
 	DefaultTxSizeCostPerByte      uint64 = 10
 	DefaultSigVerifyCostED25519   uint64 = 590
 	DefaultSigVerifyCostSecp256k1 uint64 = 1000
+	DefaultMaxTxGas uint64 = 1000000
+	DefaultTxFees   string = "1000000000000000"
 )
 
 // NewParams creates a new Params object
-func NewParams(maxMemoCharacters, txSigLimit, txSizeCostPerByte, sigVerifyCostED25519, sigVerifyCostSecp256k1 uint64) Params {
+func NewParams(maxMemoCharacters, txSigLimit, txSizeCostPerByte, sigVerifyCostED25519, sigVerifyCostSecp256k1,maxTxGas uint64, txFees string) Params {
 	return Params{
 		MaxMemoCharacters:      maxMemoCharacters,
 		TxSigLimit:             txSigLimit,
 		TxSizeCostPerByte:      txSizeCostPerByte,
 		SigVerifyCostED25519:   sigVerifyCostED25519,
 		SigVerifyCostSecp256k1: sigVerifyCostSecp256k1,
+		MaxTxGas:               maxTxGas,
+		TxFees:                 txFees,
 	}
 }
 
@@ -32,6 +38,8 @@ func DefaultParams() Params {
 		TxSizeCostPerByte:      DefaultTxSizeCostPerByte,
 		SigVerifyCostED25519:   DefaultSigVerifyCostED25519,
 		SigVerifyCostSecp256k1: DefaultSigVerifyCostSecp256k1,
+		MaxTxGas:               DefaultMaxTxGas,
+		TxFees:                 DefaultTxFees,
 	}
 }
 
@@ -112,6 +120,32 @@ func validateTxSizeCostPerByte(i interface{}) error {
 	return nil
 }
 
+func validateMaxTxGas(i interface{}) error {
+	v, ok := i.(uint64)
+	if !ok {
+
+		return fmt.Errorf("invalid parameter type: %T", i)
+	}
+
+	if v == 0 {
+		return fmt.Errorf("invalid max tx gas: %d", v)
+	}
+
+	return nil
+}
+
+func validateTxFees(v string) error {
+	if strings.TrimSpace(v) == "" {
+		return fmt.Errorf("invalid tx fees: %s", v)
+	}
+
+	if _, ok := big.NewInt(0).SetString(v, 10); !ok {
+		return fmt.Errorf("invalid tx fees: %s, should be valid big integer", v)
+	}
+
+	return nil
+}
+
 // Validate checks that the parameters have valid values.
 func (p Params) Validate() error {
 	if err := validateTxSigLimit(p.TxSigLimit); err != nil {
@@ -127,6 +161,12 @@ func (p Params) Validate() error {
 		return err
 	}
 	if err := validateTxSizeCostPerByte(p.TxSizeCostPerByte); err != nil {
+		return err
+	}
+	if err := validateMaxTxGas(p.MaxTxGas); err != nil {
+		return err
+	}
+	if err := validateTxFees(p.TxFees); err != nil {
 		return err
 	}
 

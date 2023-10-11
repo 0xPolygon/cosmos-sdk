@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	jsoniter "github.com/json-iterator/go"
 	"strings"
 	"sync"
 	"sync/atomic"
@@ -20,6 +21,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/address"
 	"github.com/cosmos/cosmos-sdk/types/bech32"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+
+	"github.com/ethereum/go-ethereum/common"
+	// TODO CHECK HEIMDALL-V2 yaml collision
+	"gopkg.in/yaml.v3"
 )
 
 const (
@@ -139,6 +144,144 @@ var (
 	_ Address = ValAddress{}
 	_ Address = ConsAddress{}
 )
+
+// TODO CHECK HEIMDALL-V2 shall this live here or in heimdall?
+const (
+	// AddrLen defines a valid address length
+	AddrLen = 20
+)
+
+// Ensure that different address types implement the interface
+var _ Address = HeimdallAddress{}
+
+// TODO CHECK HEIMDALL-V2 is yaml still needed? It's implemented differently and whit another package
+var _ yaml.Marshaler = HeimdallAddress{}
+
+// HeimdallAddress represents heimdall address
+type HeimdallAddress common.Address
+
+// ZeroHeimdallAddress represents zero address
+var ZeroHeimdallAddress = HeimdallAddress{}
+
+// TODO CHECK HEIMDALL-V2 we need to import go-ethereum for common.Address
+
+// EthAddress get eth address
+func (aa HeimdallAddress) EthAddress() common.Address {
+	return common.Address(aa)
+}
+
+// Equals returns boolean for whether two AccAddresses are Equal
+func (aa HeimdallAddress) Equals(aa2 sdk.Address) bool {
+	if aa.Empty() && aa2.Empty() {
+		return true
+	}
+
+	return bytes.Equal(aa.Bytes(), aa2.Bytes())
+}
+
+// Empty returns boolean for whether an AccAddress is empty
+func (aa HeimdallAddress) Empty() bool {
+	return bytes.Equal(aa.Bytes(), ZeroHeimdallAddress.Bytes())
+}
+
+// Marshal returns the raw address bytes. It is needed for protobuf
+// compatibility.
+func (aa HeimdallAddress) Marshal() ([]byte, error) {
+	return aa.Bytes(), nil
+}
+
+// Unmarshal sets the address to the given data. It is needed for protobuf
+// compatibility.
+func (aa *HeimdallAddress) Unmarshal(data []byte) error {
+	*aa = HeimdallAddress(common.BytesToAddress(data))
+	return nil
+}
+
+// MarshalJSON marshals to JSON using Bech32.
+func (aa HeimdallAddress) MarshalJSON() ([]byte, error) {
+	return jsoniter.ConfigFastest.Marshal(aa.String())
+}
+
+// MarshalYAML marshals to YAML using Bech32.
+func (aa HeimdallAddress) MarshalYAML() (interface{}, error) {
+	return aa.String(), nil
+}
+
+// UnmarshalJSON unmarshals from JSON assuming Bech32 encoding.
+func (aa *HeimdallAddress) UnmarshalJSON(data []byte) error {
+	var s string
+	if err := jsoniter.ConfigFastest.Unmarshal(data, &s); err != nil {
+		return err
+	}
+
+	*aa = HexToHeimdallAddress(s)
+
+	return nil
+}
+
+// UnmarshalYAML unmarshals from JSON assuming Bech32 encoding.
+func (aa *HeimdallAddress) UnmarshalYAML(data []byte) error {
+	var s string
+	if err := yaml.Unmarshal(data, &s); err != nil {
+		return err
+	}
+
+	*aa = HexToHeimdallAddress(s)
+
+	return nil
+}
+
+// Bytes returns the raw address bytes.
+func (aa HeimdallAddress) Bytes() []byte {
+	return aa[:]
+}
+
+// String implements the Stringer interface.
+func (aa HeimdallAddress) String() string {
+	return "0x" + hex.EncodeToString(aa.Bytes())
+}
+
+// Format implements the fmt.Formatter interface.
+// nolint: errcheck
+func (aa HeimdallAddress) Format(s fmt.State, verb rune) {
+	switch verb {
+	case 's':
+		s.Write([]byte(aa.String()))
+	case 'p':
+		s.Write([]byte(fmt.Sprintf("%p", aa)))
+	default:
+		s.Write([]byte(fmt.Sprintf("%X", aa.Bytes())))
+	}
+}
+
+//
+// Address utils
+//
+
+// BytesToHeimdallAddress returns Address with value b.
+func BytesToHeimdallAddress(b []byte) HeimdallAddress {
+	return HeimdallAddress(common.BytesToAddress(b))
+}
+
+// HexToHeimdallAddress returns Address with value b.
+func HexToHeimdallAddress(b string) HeimdallAddress {
+	return HeimdallAddress(common.HexToAddress(b))
+}
+
+// AccAddressToHeimdallAddress returns Address with value b.
+func AccAddressToHeimdallAddress(b sdk.AccAddress) HeimdallAddress {
+	return BytesToHeimdallAddress(b[:])
+}
+
+// HeimdallAddressToAccAddress returns Address with value b.
+func HeimdallAddressToAccAddress(b HeimdallAddress) sdk.AccAddress {
+	return sdk.AccAddress(b.Bytes())
+}
+
+// SampleHeimdallAddress returns sample address
+func SampleHeimdallAddress(s string) HeimdallAddress {
+	return BytesToHeimdallAddress([]byte(s))
+}
 
 // ----------------------------------------------------------------------------
 // account
@@ -312,6 +455,7 @@ func (aa AccAddress) String() string {
 			return addr.(string)
 		}
 	}
+	// TODO CHECK HEIMDALL-V2 replace bech32 with heimdallAddress (everywhere in this file)?
 	return cacheBech32Addr(GetConfig().GetBech32AccountAddrPrefix(), aa, accAddrCache, key)
 }
 

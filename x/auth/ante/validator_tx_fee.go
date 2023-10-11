@@ -25,6 +25,27 @@ func checkTxFeeWithValidatorMinGasPrices(ctx sdk.Context, tx sdk.Tx) (sdk.Coins,
 	// if this is a CheckTx. This is only for local mempool purposes, and thus
 	// is only ran on check tx.
 	if ctx.IsCheckTx() {
+
+		// TODO CHECK HEIMDALL-V2 heimdall's auth/ante.go check should be here? Comments match. Now it's in auth/ante/ante.go
+		/*
+			// get account params
+			params := ak.GetParams(ctx)
+
+			// gas for tx
+			gasForTx := params.MaxTxGas // stdTx.Fee.Gas
+
+			amount, ok := sdk.NewIntFromString(params.TxFees)
+			if !ok {
+				return newCtx, sdk.ErrInternal("Invalid param tx fees").Result(), true
+			}
+
+			feeForTx := sdk.Coins{sdk.Coin{Denom: authTypes.FeeToken, Amount: amount}} // stdTx.Fee.Amount
+
+			// new gas meter
+			newCtx = SetGasMeter(simulate, ctx, gasForTx)
+
+		*/
+
 		minGasPrices := ctx.MinGasPrices()
 		if !minGasPrices.IsZero() {
 			requiredFees := make(sdk.Coins, len(minGasPrices))
