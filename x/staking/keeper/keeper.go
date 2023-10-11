@@ -172,3 +172,15 @@ func (k Keeper) GetValidatorUpdates(ctx context.Context) ([]abci.ValidatorUpdate
 
 	return valUpdates.Updates, nil
 }
+
+// TODO HV2: next two methods to be implemented in heimdall's staking module, then their occurrences replaced
+
+// GetValIdFromAddress returns a validator's id given its address string
+func (k Keeper) GetValIdFromAddress(context context.Context, address string) (uint64, error) {
+	return 1, nil
+}
+
+// IterateCurrentValidatorsAndApplyFn iterate through current validators
+func (k Keeper) IterateCurrentValidatorsAndApplyFn(ctx context.Context, f func(validator types.ValidatorI) bool) error {
+	return nil
+}

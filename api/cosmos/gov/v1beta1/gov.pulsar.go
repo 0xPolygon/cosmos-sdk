@@ -5661,8 +5661,7 @@ func (x *WeightedVoteOption) GetWeight() string {
 	return ""
 }
 
-// TextProposal defines a standard text proposal whose changes need to be
-// manually updated in case of approval.
+// TextProposal defines a standard text proposal whose changes need to be manually updated in case of approval.
 type TextProposal struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

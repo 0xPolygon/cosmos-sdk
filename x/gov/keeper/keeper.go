@@ -90,6 +90,11 @@ func NewKeeper(
 		config.MaxMetadataLen = types.DefaultConfig().MaxMetadataLen
 	}
 
+	// If MaxOptionsLen not set by app developer, set to default value.
+	if config.MaxOptionsLen == 0 {
+		config.MaxOptionsLen = types.DefaultConfig().MaxOptionsLen
+	}
+
 	sb := collections.NewSchemaBuilder(storeService)
 	k := &Keeper{
 		storeService:           storeService,
@@ -180,6 +185,15 @@ func (k Keeper) ModuleAccountAddress() sdk.AccAddress {
 func (k Keeper) assertMetadataLength(metadata string) error {
 	if metadata != "" && uint64(len(metadata)) > k.config.MaxMetadataLen {
 		return types.ErrMetadataTooLong.Wrapf("got metadata with length %d", len(metadata))
+	}
+	return nil
+}
+
+// assertOptionsLength returns an error if given options length
+// is greater than a pre-defined MaxOptionsLen.
+func (k Keeper) assertOptionsLength(options v1.WeightedVoteOptions) error {
+	if uint64(len(options)) > k.config.MaxOptionsLen {
+		return types.ErrTooManyVoteOptions.Wrapf("got %d options, maximum allowed is %d", len(options), k.config.MaxOptionsLen)
 	}
 	return nil
 }

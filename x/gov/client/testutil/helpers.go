@@ -45,7 +45,8 @@ func MsgVote(clientCtx client.Context, from, id, vote string, extraArgs ...strin
 
 	args = append(args, extraArgs...)
 
-	return clitestutil.ExecTestCLICmd(clientCtx, govcli.NewCmdWeightedVote(), args)
+	// TODO HV2: changed from NewCmdWeightedVote to NewCmdVote. Fix tests accordingly.
+	return clitestutil.ExecTestCLICmd(clientCtx, govcli.NewCmdVote(), args)
 }
 
 // MsgDeposit deposits on a proposal

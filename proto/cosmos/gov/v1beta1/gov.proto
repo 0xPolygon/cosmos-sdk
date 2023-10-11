@@ -45,8 +45,10 @@ message WeightedVoteOption {
   ];
 }
 
-// TextProposal defines a standard text proposal whose changes need to be
-// manually updated in case of approval.
+// TODO HV2: this was deleted from heimdall's gov/types/proposal.go.
+//  Did not remove as it is used only in tests and simulations. Is this ok?
+
+// TextProposal defines a standard text proposal whose changes need to be manually updated in case of approval.
 message TextProposal {
   option (cosmos_proto.implements_interface) = "cosmos.gov.v1beta1.Content";
   option (amino.name)                        = "cosmos-sdk/TextProposal";

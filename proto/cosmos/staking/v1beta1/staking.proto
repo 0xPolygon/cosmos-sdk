@@ -79,6 +79,8 @@ message Description {
   string details = 5;
 }
 
+// HV2: heimdall uses a different version of `Validator` in staking module, which will implement the ValidatorI
+
 // Validator defines a validator, together with the total amount of the
 // Validator's bond shares and their exchange rate to coins. Slashing results in
 // a decrease in the exchange rate, allowing correct calculation of future
@@ -91,7 +93,7 @@ message Validator {
   option (gogoproto.equal)           = false;
   option (gogoproto.goproto_getters) = false;
 
-  // operator_address defines the address of the validator's operator; bech encoded in JSON.
+  // operator_address defines the address of the validator's operator; hex encoded in JSON.
   string operator_address = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
   // consensus_pubkey is the consensus public key of the validator, as a Protobuf Any.
   google.protobuf.Any consensus_pubkey = 2 [(cosmos_proto.accepts_interface) = "cosmos.crypto.PubKey"];

@@ -18,6 +18,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 )
 
+// HV2: heimdall uses validator-id to identify the validator (voter, depositors, proposer...)
+// This is redundant (hence removed) as cosmos-sdk uses the address as a unique validator's identifier
+
 // Proposal flags
 const (
 	FlagTitle     = "title"
@@ -68,7 +71,7 @@ func NewTxCmd(legacyPropCmds []*cobra.Command) *cobra.Command {
 	govTxCmd.AddCommand(
 		NewCmdDeposit(),
 		NewCmdVote(),
-		NewCmdWeightedVote(),
+		// NewCmdWeightedVote(),
 		NewCmdSubmitProposal(),
 		NewCmdDraftProposal(),
 		NewCmdCancelProposal(),
@@ -353,6 +356,8 @@ $ %s tx gov vote 1 yes --from mykey
 	return cmd
 }
 
+// HV2: disabled in heimdall as we do not support WeighedVoteOptions. Shall we re-enable it and enforce the constraints?
+/*
 // NewCmdWeightedVote implements creating a new weighted vote command.
 func NewCmdWeightedVote() *cobra.Command {
 	cmd := &cobra.Command{
@@ -406,3 +411,4 @@ $ %s tx gov weighted-vote 1 yes=0.6,no=0.3,abstain=0.05,no_with_veto=0.05 --from
 
 	return cmd
 }
+*/

@@ -149,6 +149,8 @@ func (status ProposalStatus) Format(s fmt.State, verb rune) {
 
 // Proposal types
 const (
+	// TODO HV2: ProposalTypeText was removed from heimdall's gov/types/proposal.go. What to do with it?
+
 	ProposalTypeText string = "Text"
 
 	// Constants pertaining to a Content object
@@ -251,6 +253,7 @@ func IsValidProposalType(ty string) bool {
 // performs a no-op.
 func ProposalHandler(_ sdk.Context, c Content) error {
 	switch c.ProposalType() {
+	// TODO HV2: this case was removed in heimdall's gov/types/proposal.go. Remove it?
 	case ProposalTypeText:
 		// both proposal types do not change state so this performs a no-op
 		return nil

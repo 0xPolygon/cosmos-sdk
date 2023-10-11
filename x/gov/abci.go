@@ -122,7 +122,7 @@ func EndBlocker(ctx sdk.Context, keeper *keeper.Keeper) error {
 
 		var tagValue, logMsg string
 
-		passes, burnDeposits, tallyResults, err := keeper.Tally(ctx, proposal)
+		passes, _, tallyResults, err := keeper.Tally(ctx, proposal)
 		if err != nil {
 			return false, err
 		}
@@ -131,16 +131,20 @@ func EndBlocker(ctx sdk.Context, keeper *keeper.Keeper) error {
 		// the deposit at this point since the proposal is converted to regular.
 		// As a result, the deposits are either deleted or refunded in all cases
 		// EXCEPT when an expedited proposal fails.
-		if !(proposal.Expedited && !passes) {
-			if burnDeposits {
-				err = keeper.DeleteAndBurnDeposits(ctx, proposal.Id)
-			} else {
-				err = keeper.RefundAndDeleteDeposits(ctx, proposal.Id)
+
+		// HV2: this was removed in heimdall's gov/endblocker.go
+		/*
+			if !(proposal.Expedited && !passes) {
+				if burnDeposits {
+					err = keeper.DeleteAndBurnDeposits(ctx, proposal.Id)
+				} else {
+					err = keeper.RefundAndDeleteDeposits(ctx, proposal.Id)
+				}
+				if err != nil {
+					return false, err
+				}
 			}
-			if err != nil {
-				return false, err
-			}
-		}
+		*/
 
 		if err = keeper.ActiveProposalsQueue.Remove(ctx, collections.Join(*proposal.VotingEndTime, proposal.Id)); err != nil {
 			return false, err

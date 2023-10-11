@@ -84,7 +84,8 @@ func NewNonSplitVoteOption(option VoteOption) WeightedVoteOptions {
 // ValidWeightedVoteOption returns true if the sub vote is valid and false otherwise.
 func ValidWeightedVoteOption(option WeightedVoteOption) bool {
 	weight, err := math.LegacyNewDecFromStr(option.Weight)
-	if err != nil || !weight.IsPositive() || weight.GT(math.LegacyNewDec(1)) {
+	// HV2: added check to make sure weight is 1
+	if err != nil || !weight.IsPositive() || !weight.Equal(math.LegacyNewDec(1)) {
 		return false
 	}
 	return ValidVoteOption(option.Option)
@@ -107,6 +108,8 @@ func VoteOptionFromString(str string) (VoteOption, error) {
 	}
 	return VoteOption(option), nil
 }
+
+// TODO HV2: if NewCmdWeightedVote is re-enabled, enforce constraints here
 
 // WeightedVoteOptionsFromString returns weighted vote options from string. It returns an error
 // if the string is invalid.

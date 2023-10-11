@@ -45,7 +45,7 @@ type MsgCreateValidator struct {
 	MinSelfDelegation cosmossdk_io_math.Int `protobuf:"bytes,3,opt,name=min_self_delegation,json=minSelfDelegation,proto3,customtype=cosmossdk.io/math.Int" json:"min_self_delegation"`
 	// Deprecated: Use of Delegator Address in MsgCreateValidator is deprecated.
 	// The validator address bytes and delegator address bytes refer to the same account while creating validator (defer
-	// only in bech32 notation).
+	// only in hex notation).
 	DelegatorAddress string      `protobuf:"bytes,4,opt,name=delegator_address,json=delegatorAddress,proto3" json:"delegator_address,omitempty"` // Deprecated: Do not use.
 	ValidatorAddress string      `protobuf:"bytes,5,opt,name=validator_address,json=validatorAddress,proto3" json:"validator_address,omitempty"`
 	Pubkey           *types.Any  `protobuf:"bytes,6,opt,name=pubkey,proto3" json:"pubkey,omitempty"`

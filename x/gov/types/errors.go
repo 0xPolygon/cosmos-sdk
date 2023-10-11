@@ -25,4 +25,5 @@ var (
 	ErrInvalidProposal         = errors.Register(ModuleName, 21, "invalid proposal")
 	ErrSummaryTooLong          = errors.Register(ModuleName, 22, "summary too long")
 	ErrInvalidDepositDenom     = errors.Register(ModuleName, 23, "invalid deposit denom")
+	ErrTooManyVoteOptions      = errors.Register(ModuleName, 24, "too many vote options")
 )

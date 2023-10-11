@@ -43,6 +43,9 @@ message Plan {
   google.protobuf.Any upgraded_client_state = 5 [deprecated = true];
 }
 
+// TODO HV2: this was deleted from heimdall's gov/types/proposal.go.
+// Did not remove it as it's only used in tests. Also it's marked as deprecated.
+
 // SoftwareUpgradeProposal is a gov Content type for initiating a software
 // upgrade.
 // Deprecated: This legacy proposal is deprecated in favor of Msg-based gov

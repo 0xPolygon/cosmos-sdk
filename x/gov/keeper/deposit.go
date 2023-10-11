@@ -27,6 +27,8 @@ func (keeper Keeper) SetDeposit(ctx context.Context, deposit v1.Deposit) error {
 
 // GetDeposits returns all the deposits of a proposal
 func (keeper Keeper) GetDeposits(ctx context.Context, proposalID uint64) (deposits v1.Deposits, err error) {
+	// TODO HV2: in heimdall this function was getting the validator from its ID by using `keeper.sk.GetValidatorFromValID(ctx, deposit.Depositor)`
+	//  I don't think this is needed as we now use the validator string in the deposit struct. To double check.
 	err = keeper.IterateDeposits(ctx, proposalID, func(_ collections.Pair[uint64, sdk.AccAddress], deposit v1.Deposit) (bool, error) {
 		deposits = append(deposits, &deposit)
 		return false, nil
@@ -45,7 +47,9 @@ func (keeper Keeper) DeleteAndBurnDeposits(ctx context.Context, proposalID uint6
 		return err
 	}
 
-	return keeper.bankKeeper.BurnCoins(ctx, types.ModuleName, coinsToBurn)
+	// HV2: in heimdall we have no BurnCoins func, returning nil
+	// return keeper.bankKeeper.BurnCoins(ctx, types.ModuleName, coinsToBurn)
+	return nil
 }
 
 // IterateDeposits iterates over all the proposals deposits and performs a callback function
@@ -237,12 +241,14 @@ func (keeper Keeper) ChargeDeposit(ctx context.Context, proposalID uint64, destA
 		// get the distribution module account address
 		distributionAddress := keeper.authKeeper.GetModuleAddress(disttypes.ModuleName)
 		switch {
+		/* HV2: in heimdall we have no BurnCoins func
 		case destAddress == "":
 			// burn the cancellation charges from deposits
 			err := keeper.bankKeeper.BurnCoins(ctx, types.ModuleName, cancellationCharges)
 			if err != nil {
 				return err
 			}
+		*/
 		case distributionAddress.String() == destAddress:
 			err := keeper.distrKeeper.FundCommunityPool(ctx, cancellationCharges, keeper.ModuleAccountAddress())
 			if err != nil {

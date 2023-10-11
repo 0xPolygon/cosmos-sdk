@@ -47,6 +47,9 @@ var (
 
 	_ appmodule.AppModule     = AppModule{}
 	_ appmodule.HasEndBlocker = AppModule{}
+
+	// TODO HV2: the folliwing is present in heimdall. I don't think it needs any replacement. To double check.
+	//	_ hmModule.HeimdallModuleBasic = AppModule{}
 )
 
 // AppModuleBasic defines the basic application module used by the gov module.
@@ -88,6 +91,14 @@ func (AppModuleBasic) ValidateGenesis(cdc codec.JSONCodec, config client.TxEncod
 	}
 
 	return v1.ValidateGenesis(&data)
+}
+
+// TODO HV2: heimdall introduced this function as part of the `HeimdallModuleBasic` interface.
+//  I don't think it's needed. To double check.
+
+// VerifyGenesis performs verification on gov module state.
+func (AppModuleBasic) VerifyGenesis(bz map[string]json.RawMessage) error {
+	return nil
 }
 
 // RegisterGRPCGatewayRoutes registers the gRPC Gateway routes for the gov module.

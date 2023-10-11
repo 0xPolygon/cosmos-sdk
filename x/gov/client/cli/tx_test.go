@@ -496,7 +496,8 @@ func (s *CLITestSuite) TestNewCmdWeightedVote() {
 	for _, tc := range testCases {
 		tc := tc
 		s.Run(tc.name, func() {
-			cmd := cli.NewCmdWeightedVote()
+			// TODO HV2: changed from NewCmdWeightedVote to NewCmdVote. Fix tests accordingly.
+			cmd := cli.NewCmdVote()
 			out, err := clitestutil.ExecTestCLICmd(s.clientCtx, cmd, tc.args)
 			if tc.expectErrMsg != "" {
 				s.Require().Error(err)

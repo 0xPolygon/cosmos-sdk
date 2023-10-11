@@ -29,6 +29,13 @@ func (keeper Keeper) AddVote(ctx context.Context, proposalID uint64, voterAddr s
 		return err
 	}
 
+	// HV2: check on the length of the options
+	err = keeper.assertOptionsLength(options)
+	if err != nil {
+		return err
+	}
+
+	// HV2: there's one option only
 	for _, option := range options {
 		if !v1.ValidWeightedVoteOption(*option) {
 			return errors.Wrap(types.ErrInvalidVote, option.String())

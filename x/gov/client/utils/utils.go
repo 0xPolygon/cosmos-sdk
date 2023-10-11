@@ -26,6 +26,8 @@ func NormalizeVoteOption(option string) string {
 	}
 }
 
+// TODO HV2: if NewCmdWeightedVote is re-enabled, enforce constraints here
+
 // NormalizeWeightedVoteOptions - normalize vote options param string
 func NormalizeWeightedVoteOptions(options string) string {
 	newOptions := []string{}
@@ -46,8 +48,9 @@ func NormalizeProposalType(proposalType string) string {
 	case "Text", "text":
 		return v1beta1.ProposalTypeText
 
+	// HV2: in heimdall we always return the proposalType
 	default:
-		return ""
+		return proposalType
 	}
 }
 

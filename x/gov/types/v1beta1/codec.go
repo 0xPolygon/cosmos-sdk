@@ -8,6 +8,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/msgservice"
 )
 
+// TODO HV2: reconcile this with heimdall's gov/types/codec.go
+
 // RegisterLegacyAminoCodec registers all the necessary types and interfaces for the
 // governance module.
 func RegisterLegacyAminoCodec(cdc *codec.LegacyAmino) {

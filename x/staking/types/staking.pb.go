@@ -347,7 +347,7 @@ func (m *Description) GetDetails() string {
 // exchange rate. Voting power can be calculated as total bonded shares
 // multiplied by exchange rate.
 type Validator struct {
-	// operator_address defines the address of the validator's operator; bech encoded in JSON.
+	// operator_address defines the address of the validator's operator; hex encoded in JSON.
 	OperatorAddress string `protobuf:"bytes,1,opt,name=operator_address,json=operatorAddress,proto3" json:"operator_address,omitempty"`
 	// consensus_pubkey is the consensus public key of the validator, as a Protobuf Any.
 	ConsensusPubkey *types1.Any `protobuf:"bytes,2,opt,name=consensus_pubkey,json=consensusPubkey,proto3" json:"consensus_pubkey,omitempty"`

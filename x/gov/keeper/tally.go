@@ -2,13 +2,13 @@ package keeper
 
 import (
 	"context"
+	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 
 	"cosmossdk.io/collections"
 	"cosmossdk.io/math"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
-	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 )
 
 // TODO: Break into several smaller functions for clarity
@@ -22,19 +22,20 @@ func (keeper Keeper) Tally(ctx context.Context, proposal v1.Proposal) (passes, b
 	results[v1.OptionNo] = math.LegacyZeroDec()
 	results[v1.OptionNoWithVeto] = math.LegacyZeroDec()
 
+	totalBondedTokens := math.LegacyZeroDec()
 	totalVotingPower := math.LegacyZeroDec()
 	currValidators := make(map[string]v1.ValidatorGovInfo)
 
-	// fetch all the bonded validators, insert them into currValidators
-	err = keeper.sk.IterateBondedValidatorsByPower(ctx, func(index int64, validator stakingtypes.ValidatorI) (stop bool) {
+	err = keeper.sk.IterateCurrentValidatorsAndApplyFn(ctx, func(validator stakingtypes.ValidatorI) bool {
 		valBz, err := keeper.sk.ValidatorAddressCodec().StringToBytes(validator.GetOperator())
 		if err != nil {
 			return false
 		}
 		currValidators[validator.GetOperator()] = v1.NewValidatorGovInfo(
 			valBz,
+			// HV2: using bonded tokens as staking module will return the validator's voting power for it
 			validator.GetBondedTokens(),
-			validator.GetDelegatorShares(),
+			math.LegacyZeroDec(),
 			math.LegacyZeroDec(),
 			v1.WeightedVoteOptions{},
 		)
@@ -62,6 +63,7 @@ func (keeper Keeper) Tally(ctx context.Context, proposal v1.Proposal) (passes, b
 			currValidators[valAddrStr] = val
 		}
 
+		/* HV2: delegations not supported in heimdall
 		// iterate over all delegations from voter, deduct from any delegated-to validators
 		err = keeper.sk.IterateDelegations(ctx, voter, func(index int64, delegation stakingtypes.DelegationI) (stop bool) {
 			valAddrStr := delegation.GetValidatorAddr()
@@ -88,7 +90,7 @@ func (keeper Keeper) Tally(ctx context.Context, proposal v1.Proposal) (passes, b
 		if err != nil {
 			return false, err
 		}
-
+		*/
 		return false, keeper.Votes.Remove(ctx, collections.Join(vote.ProposalId, sdk.AccAddress(voter)))
 	})
 
@@ -98,17 +100,35 @@ func (keeper Keeper) Tally(ctx context.Context, proposal v1.Proposal) (passes, b
 
 	// iterate over the validators again to tally their voting power
 	for _, val := range currValidators {
+		// HV2: val.BondedTokens is heimdall's val.VotingPower
+		votingPower := math.LegacyNewDec(val.BondedTokens.Int64())
+		totalBondedTokens = totalBondedTokens.Add(votingPower)
+
 		if len(val.Vote) == 0 {
 			continue
 		}
 
+		/* HV2: removed the following lines as they are also deleted in heimdall
 		sharesAfterDeductions := val.DelegatorShares.Sub(val.DelegatorDeductions)
 		votingPower := sharesAfterDeductions.MulInt(val.BondedTokens).Quo(val.DelegatorShares)
+		*/
+
+		// HV2: There should be only 1 option with weight 1
+		err := keeper.assertOptionsLength(val.Vote)
+		if err != nil {
+			return false, false, tallyResults, err
+		}
 
 		for _, option := range val.Vote {
+			// HV2: validate vote option
+			if !v1.ValidWeightedVoteOption(*option) {
+				return false, false, tallyResults, err
+			}
+			/* HV2: removed because we don't support weighted votes
 			weight, _ := math.LegacyNewDecFromStr(option.Weight)
 			subPower := votingPower.Mul(weight)
-			results[option.Option] = results[option.Option].Add(subPower)
+			*/
+			results[option.Option] = results[option.Option].Add(votingPower)
 		}
 		totalVotingPower = totalVotingPower.Add(votingPower)
 	}
@@ -119,19 +139,21 @@ func (keeper Keeper) Tally(ctx context.Context, proposal v1.Proposal) (passes, b
 	}
 	tallyResults = v1.NewTallyResultFromMap(results)
 
-	// TODO: Upgrade the spec to cover all of these cases & remove pseudocode.
+	/* 	HV2: this has been removed from heimdall's gov/tally.go and replaced with zero check on totalVotingPower
 	// If there is no staked coins, the proposal fails
 	totalBonded, err := keeper.sk.TotalBondedTokens(ctx)
 	if err != nil {
 		return false, false, tallyResults, err
 	}
+	*/
 
-	if totalBonded.IsZero() {
+	// HV2: using zero check on totalVotingPower instead of totalBonded {
+	if totalVotingPower.IsZero() {
 		return false, false, tallyResults, nil
 	}
 
 	// If there is not enough quorum of votes, the proposal fails
-	percentVoting := totalVotingPower.Quo(math.LegacyNewDecFromInt(totalBonded))
+	percentVoting := totalVotingPower.Quo(totalBondedTokens)
 	quorum, _ := math.LegacyNewDecFromStr(params.Quorum)
 	if percentVoting.LT(quorum) {
 		return false, params.BurnVoteQuorum, tallyResults, nil
