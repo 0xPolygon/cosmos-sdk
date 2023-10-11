@@ -101,6 +101,7 @@ message MsgUpdateParamsResponse {}
 // message are left unchanged.
 //
 // Since: cosmos-sdk 0.47
+// Note(Heimdall-v2): Not used in Heimdall since multiple denoms are not supported
 message MsgSetSendEnabled {
   option (cosmos.msg.v1.signer) = "authority";
   option (amino.name)           = "cosmos-sdk/MsgSetSendEnabled";

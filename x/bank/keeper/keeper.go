@@ -116,6 +116,7 @@ func (k BaseKeeper) WithMintCoinsRestriction(check types.MintingRestrictionFn) B
 	return k
 }
 
+// NOTE(Heimdall-v2): vesting accounts are not used in heimdall
 // DelegateCoins performs delegation by deducting amt coins from an account with
 // address addr. For vesting accounts, delegations amounts are tracked for both
 // vesting and vested coins. The coins are then transferred from the delegator
@@ -165,6 +166,7 @@ func (k BaseKeeper) DelegateCoins(ctx context.Context, delegatorAddr, moduleAccA
 	return nil
 }
 
+// NOTE(Heimdall-v2): vesting accounts are not used in heimdall
 // UndelegateCoins performs undelegation by crediting amt coins to an account with
 // address addr. For vesting accounts, undelegation amounts are tracked for both
 // vesting and vested coins. The coins are then transferred from a ModuleAccount
@@ -302,6 +304,7 @@ func (k BaseKeeper) SendCoinsFromAccountToModule(
 	return k.SendCoins(ctx, senderAddr, recipientAcc.GetAddress(), amt)
 }
 
+// NOTE(Heimdall-v2): vesting accounts are not used in heimdall
 // DelegateCoinsFromAccountToModule delegates coins and transfers them from a
 // delegator account to a module account. It will panic if the module account
 // does not exist or is unauthorized.
@@ -320,6 +323,7 @@ func (k BaseKeeper) DelegateCoinsFromAccountToModule(
 	return k.DelegateCoins(ctx, senderAddr, recipientAcc.GetAddress(), amt)
 }
 
+// NOTE(Heimdall-v2): vesting accounts are not used in heimdall
 // UndelegateCoinsFromModuleToAccount undelegates the unbonding coins and transfers
 // them from a module account to the delegator account. It will panic if the
 // module account does not exist or is unauthorized.
@@ -378,6 +382,7 @@ func (k BaseKeeper) MintCoins(ctx context.Context, moduleName string, amounts sd
 	return nil
 }
 
+// NOTE(Heimdall-v2): not used in heimdall
 // BurnCoins burns coins deletes coins from the balance of the module account.
 // It will panic if the module account does not exist or is unauthorized.
 func (k BaseKeeper) BurnCoins(ctx context.Context, moduleName string, amounts sdk.Coins) error {
@@ -407,6 +412,58 @@ func (k BaseKeeper) BurnCoins(ctx context.Context, moduleName string, amounts sd
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	sdkCtx.EventManager().EmitEvent(
 		types.NewCoinBurnEvent(acc.GetAddress(), amounts),
+	)
+
+	return nil
+}
+
+// SubtractCoins subtracts coins from the balance of an account
+// NOTE(Heimdall-v2): required in heimdall for fee withdrawal in topup module
+func (k BaseKeeper) SubtractCoins(ctx context.Context, moduleName string, addr sdk.AccAddress, amounts sdk.Coins) error {
+	if !amounts.IsValid() {
+		return errorsmod.Wrap(sdkerrors.ErrInvalidCoins, amounts.String())
+	}
+
+	err := k.subUnlockedCoins(ctx, addr, amounts)
+	if err != nil {
+		return err
+	}
+
+	for _, amount := range amounts {
+		supply := k.GetSupply(ctx, amount.GetDenom())
+		supply = supply.Sub(amount)
+		k.setSupply(ctx, supply)
+	}
+
+	k.logger.Debug("subtracted tokens from account", "amount", amounts.String(), "from", moduleName)
+
+	// emit burn event
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+	sdkCtx.EventManager().EmitEvent(
+		types.NewCoinBurnEvent(addr, amounts),
+	)
+
+	return nil
+}
+
+// SetCoins sets the balance of an account to a given amount
+// NOTE(Heimdall-v2): could be needed
+func (k BaseKeeper) SetCoins(ctx context.Context, addr sdk.AccAddress, amounts sdk.Coins) error {
+	if !amounts.IsValid() && !amounts.IsZero() {
+		return errorsmod.Wrap(sdkerrors.ErrInvalidCoins, amounts.String())
+	}
+
+	for _, coin := range amounts {
+		err := k.setBalance(ctx, addr, coin)
+		if err != nil {
+			return err
+		}
+	}
+
+	// emit coin received event
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+	sdkCtx.EventManager().EmitEvent(
+		types.NewCoinReceivedEvent(addr, amounts),
 	)
 
 	return nil

@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	// "github.com/cosmos/cosmos-sdk/params/subspace"
 )
 
 // DefaultDefaultSendEnabled is the value that DefaultSendEnabled will have from DefaultParams().
@@ -25,6 +26,17 @@ func DefaultParams() Params {
 		DefaultSendEnabled: DefaultDefaultSendEnabled,
 	}
 }
+
+// TODO HV2: this might not be needed; clarify
+// ParamStoreKeySendEnabled is store's key for SendEnabled
+// var ParamStoreKeySendEnabled = []byte("sendenabled")
+
+// // ParamKeyTable type declaration for parameters
+// func ParamKeyTable() subspace.KeyTable {
+// 	return subspace.NewKeyTable(
+// 		ParamStoreKeySendEnabled, false,
+// 	)
+// }
 
 // Validate all bank module parameters
 func (p Params) Validate() error {

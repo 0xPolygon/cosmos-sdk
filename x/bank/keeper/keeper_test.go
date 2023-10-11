@@ -13,6 +13,7 @@ import (
 	abci "github.com/cometbft/cometbft/abci/types"
 	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	cmttime "github.com/cometbft/cometbft/types/time"
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/suite"
 
@@ -58,7 +59,7 @@ var (
 	mintAcc      = authtypes.NewEmptyModuleAccount(minttypes.ModuleName, authtypes.Minter)
 	multiPermAcc = authtypes.NewEmptyModuleAccount(multiPerm, authtypes.Burner, authtypes.Minter, authtypes.Staking)
 
-	baseAcc = authtypes.NewBaseAccountWithAddress(sdk.AccAddress([]byte("baseAcc")))
+	baseAcc = authtypes.NewBaseAccountWithAddress(sdk.AccAddress(common.Hex2Bytes("deadbeefdeadbeefdeadbeefdeadbeefdeadbeef")))
 
 	accAddrs = []sdk.AccAddress{
 		sdk.AccAddress([]byte("addr1_______________")),

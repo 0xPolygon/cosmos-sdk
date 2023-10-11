@@ -3,6 +3,7 @@ package types
 import (
 	"testing"
 
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
@@ -12,22 +13,22 @@ import (
 )
 
 func TestMsgSendGetSignBytes(t *testing.T) {
-	addr1 := sdk.AccAddress([]byte("input"))
-	addr2 := sdk.AccAddress([]byte("output"))
+	addr1 := sdk.AccAddress(common.Hex2Bytes("deadbeefdeadbeefdeadbeefdeadbeefdeadbeef"))
+	addr2 := sdk.AccAddress(common.Hex2Bytes("d00df00dd00df00dd00df00dd00df00dd00df00d"))
 	coins := sdk.NewCoins(sdk.NewInt64Coin("atom", 10))
 	msg := NewMsgSend(addr1, addr2, coins)
 	res, err := codec.NewProtoCodec(types.NewInterfaceRegistry()).MarshalAminoJSON(msg)
 	require.NoError(t, err)
 
-	expected := `{"type":"cosmos-sdk/MsgSend","value":{"amount":[{"amount":"10","denom":"atom"}],"from_address":"cosmos1d9h8qat57ljhcm","to_address":"cosmos1da6hgur4wsmpnjyg"}}`
+	expected := `{"type":"cosmos-sdk/MsgSend","value":{"amount":[{"amount":"10","denom":"atom"}],"from_address":"0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef","to_address":"0xd00df00dd00df00dd00df00dd00df00dd00df00d"}}`
 	require.Equal(t, expected, string(res))
 }
 
 func TestInputValidation(t *testing.T) {
-	addr1 := sdk.AccAddress([]byte("_______alice________"))
-	addr2 := sdk.AccAddress([]byte("________bob_________"))
+	addr1 := sdk.AccAddress(common.Hex2Bytes("deadbeefdeadbeefdeadbeefdeadbeefdeadbeef"))
+	addr2 := sdk.AccAddress(common.Hex2Bytes("d00df00dd00df00dd00df00dd00df00dd00df00d"))
+	addr3 := sdk.AccAddress(common.Hex2Bytes("d00df00dd00df00dd00df00dd00df00dd00df00e"))
 	addrEmpty := sdk.AccAddress([]byte(""))
-	addrLong := sdk.AccAddress([]byte("Purposefully long address"))
 
 	someCoins := sdk.NewCoins(sdk.NewInt64Coin("atom", 123))
 	multiCoins := sdk.NewCoins(sdk.NewInt64Coin("atom", 123), sdk.NewInt64Coin("eth", 20))
@@ -45,9 +46,9 @@ func TestInputValidation(t *testing.T) {
 		{"", NewInput(addr1, someCoins)},
 		{"", NewInput(addr2, someCoins)},
 		{"", NewInput(addr2, multiCoins)},
-		{"", NewInput(addrLong, someCoins)},
+		{"", NewInput(addr3, someCoins)},
 
-		{"invalid input address: empty address string is not allowed: invalid address", NewInput(addrEmpty, someCoins)},
+		{"invalid input address: decoding address from hex string failed: empty address: invalid address", NewInput(addrEmpty, someCoins)},
 		{": invalid coins", NewInput(addr1, emptyCoins)},                // invalid coins
 		{": invalid coins", NewInput(addr1, emptyCoins2)},               // invalid coins
 		{"10eth,0atom: invalid coins", NewInput(addr1, someEmptyCoins)}, // invalid coins
@@ -65,10 +66,10 @@ func TestInputValidation(t *testing.T) {
 }
 
 func TestOutputValidation(t *testing.T) {
-	addr1 := sdk.AccAddress([]byte("_______alice________"))
-	addr2 := sdk.AccAddress([]byte("________bob_________"))
+	addr1 := sdk.AccAddress(common.Hex2Bytes("deadbeefdeadbeefdeadbeefdeadbeefdeadbeef"))
+	addr2 := sdk.AccAddress(common.Hex2Bytes("d00df00dd00df00dd00df00dd00df00dd00df00d"))
+	addr3 := sdk.AccAddress(common.Hex2Bytes("d00df00dd00df00dd00df00dd00df00dd00df00e"))
 	addrEmpty := sdk.AccAddress([]byte(""))
-	addrLong := sdk.AccAddress([]byte("Purposefully long address"))
 
 	someCoins := sdk.NewCoins(sdk.NewInt64Coin("atom", 123))
 	multiCoins := sdk.NewCoins(sdk.NewInt64Coin("atom", 123), sdk.NewInt64Coin("eth", 20))
@@ -86,9 +87,9 @@ func TestOutputValidation(t *testing.T) {
 		{"", NewOutput(addr1, someCoins)},
 		{"", NewOutput(addr2, someCoins)},
 		{"", NewOutput(addr2, multiCoins)},
-		{"", NewOutput(addrLong, someCoins)},
+		{"", NewOutput(addr3, someCoins)},
 
-		{"invalid output address: empty address string is not allowed: invalid address", NewOutput(addrEmpty, someCoins)},
+		{"invalid output address: decoding address from hex string failed: empty address: invalid address", NewOutput(addrEmpty, someCoins)},
 		{": invalid coins", NewOutput(addr1, emptyCoins)},                // invalid coins
 		{": invalid coins", NewOutput(addr1, emptyCoins2)},               // invalid coins
 		{"10eth,0atom: invalid coins", NewOutput(addr1, someEmptyCoins)}, // invalid coins
@@ -106,8 +107,8 @@ func TestOutputValidation(t *testing.T) {
 }
 
 func TestMsgMultiSendGetSignBytes(t *testing.T) {
-	addr1 := sdk.AccAddress([]byte("input"))
-	addr2 := sdk.AccAddress([]byte("output"))
+	addr1 := sdk.AccAddress(common.Hex2Bytes("deadbeefdeadbeefdeadbeefdeadbeefdeadbeef"))
+	addr2 := sdk.AccAddress(common.Hex2Bytes("d00df00dd00df00dd00df00dd00df00dd00df00d"))
 	coins := sdk.NewCoins(sdk.NewInt64Coin("atom", 10))
 	msg := &MsgMultiSend{
 		Inputs:  []Input{NewInput(addr1, coins)},
@@ -116,7 +117,7 @@ func TestMsgMultiSendGetSignBytes(t *testing.T) {
 	res, err := codec.NewProtoCodec(types.NewInterfaceRegistry()).MarshalAminoJSON(msg)
 	require.NoError(t, err)
 
-	expected := `{"type":"cosmos-sdk/MsgMultiSend","value":{"inputs":[{"address":"cosmos1d9h8qat57ljhcm","coins":[{"amount":"10","denom":"atom"}]}],"outputs":[{"address":"cosmos1da6hgur4wsmpnjyg","coins":[{"amount":"10","denom":"atom"}]}]}}`
+	expected := `{"type":"cosmos-sdk/MsgMultiSend","value":{"inputs":[{"address":"0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef","coins":[{"amount":"10","denom":"atom"}]}],"outputs":[{"address":"0xd00df00dd00df00dd00df00dd00df00dd00df00d","coins":[{"amount":"10","denom":"atom"}]}]}}`
 	require.Equal(t, expected, string(res))
 }
 

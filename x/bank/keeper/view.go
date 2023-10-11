@@ -173,6 +173,7 @@ func (k BaseViewKeeper) IterateAllBalances(ctx context.Context, cb func(sdk.AccA
 	}
 }
 
+// NOTE(Heimdall-v2): vesting accounts are not used in Heimdall
 // LockedCoins returns all the coins that are not spendable (i.e. locked) for an
 // account by address. For standard accounts, the result will always be no coins.
 // For vesting accounts, LockedCoins is delegated to the concrete vesting account

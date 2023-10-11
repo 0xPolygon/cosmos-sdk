@@ -4128,6 +4128,7 @@ func (*MsgUpdateParamsResponse) Descriptor() ([]byte, []int) {
 // message are left unchanged.
 //
 // Since: cosmos-sdk 0.47
+// Note(Heimdall-v2): Not used in Heimdall since multiple denoms are not supported
 type MsgSetSendEnabled struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

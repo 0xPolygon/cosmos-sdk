@@ -2,11 +2,12 @@ package ante
 
 import (
 	"bytes"
-	"cosmossdk.io/math"
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
 	"math/big"
+
+	"cosmossdk.io/math"
 
 	"google.golang.org/protobuf/types/known/anypb"
 

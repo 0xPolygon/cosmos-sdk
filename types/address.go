@@ -123,6 +123,7 @@ func VerifyAddressFormat(bz []byte) error {
 		return errorsmod.Wrap(sdkerrors.ErrUnknownAddress, "addresses cannot be empty")
 	}
 
+	// TODO HV2: should there be an additional check for the length of the address ?
 	if !common.IsHexAddress(common.BytesToAddress(bz).String()) {
 		return errorsmod.Wrapf(sdkerrors.ErrUnknownAddress, "invalid address")
 	}
