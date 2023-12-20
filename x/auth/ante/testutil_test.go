@@ -235,7 +235,7 @@ func (suite *AnteTestSuite) CreateTestTx(
 	sigsV2 = []signing.SignatureV2{}
 	for i, priv := range privs {
 		signerData := xauthsigning.SignerData{
-			Address:       sdk.AccAddress(priv.PubKey().Address()).String(),
+			Address:       sdk.HeimdallAddress(priv.PubKey().Address()).String(),
 			ChainID:       chainID,
 			AccountNumber: accNums[i],
 			Sequence:      accSeqs[i],

@@ -100,11 +100,11 @@ func printAndValidateSigs(
 			pubKey         = sig.PubKey
 			multiSigHeader string
 			multiSigMsg    string
-			sigAddr        = sdk.AccAddress(pubKey.Address())
+			sigAddr        = sdk.HeimdallAddress(pubKey.Address())
 			sigSanity      = "OK"
 		)
 
-		if i >= len(signers) || !bytes.Equal(sigAddr, signers[i]) {
+		if i >= len(signers) || !bytes.Equal(sigAddr.Bytes(), signers[i]) {
 			sigSanity = "ERROR: signature does not match its respective signer"
 			success = false
 		}

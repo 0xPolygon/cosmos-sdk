@@ -47,12 +47,12 @@ func SignTx(txFactory tx.Factory, clientCtx client.Context, name string, txBuild
 	if err != nil {
 		return err
 	}
-	addr := sdk.AccAddress(pubKey.Address())
+	addr := sdk.HeimdallAddress(pubKey.Address())
 	signers, err := txBuilder.GetTx().GetSigners()
 	if err != nil {
 		return err
 	}
-	if !isTxSigner(addr, signers) {
+	if !isTxSigner(addr.Bytes(), signers) {
 		return fmt.Errorf("%s: %s", errors.ErrorInvalidSigner, name)
 	}
 	if !offline {
@@ -70,7 +70,7 @@ func SignTx(txFactory tx.Factory, clientCtx client.Context, name string, txBuild
 // populate account and sequence numbers from a foreign account.
 // This function should only be used when signing with a multisig. For
 // normal keys, please use SignTx directly.
-func SignTxWithSignerAddress(txFactory tx.Factory, clientCtx client.Context, addr sdk.AccAddress,
+func SignTxWithSignerAddress(txFactory tx.Factory, clientCtx client.Context, addr sdk.HeimdallAddress,
 	name string, txBuilder client.TxBuilder, offline, overwrite bool,
 ) (err error) {
 	// Multisigs only support LEGACY_AMINO_JSON signing.
@@ -84,7 +84,7 @@ func SignTxWithSignerAddress(txFactory tx.Factory, clientCtx client.Context, add
 		return err
 	}
 
-	if !isTxSigner(addr, signers) {
+	if !isTxSigner(addr.Bytes(), signers) {
 		return fmt.Errorf("%s: %s", errors.ErrorInvalidSigner, name)
 	}
 
@@ -179,7 +179,7 @@ func (bs *BatchScanner) Scan() bool {
 }
 
 func populateAccountFromState(
-	txBldr tx.Factory, clientCtx client.Context, addr sdk.AccAddress,
+	txBldr tx.Factory, clientCtx client.Context, addr sdk.HeimdallAddress,
 ) (tx.Factory, error) {
 	num, seq, err := clientCtx.AccountRetriever.GetAccountNumberSequence(clientCtx, addr)
 	if err != nil {

@@ -123,7 +123,7 @@ func (suite *KeeperTestSuite) TestInitGenesis() {
 	pubKey2 := ed25519.GenPrivKey().PubKey()
 	accts := []sdk.AccountI{
 		&types.BaseAccount{
-			Address:       sdk.AccAddress(pubKey1.Address()).String(),
+			Address:       sdk.HeimdallAddress(pubKey1.Address()).String(),
 			PubKey:        codectypes.UnsafePackAny(pubKey1),
 			AccountNumber: 0,
 			Sequence:      5,
@@ -139,7 +139,7 @@ func (suite *KeeperTestSuite) TestInitGenesis() {
 			Permissions: nil,
 		},
 		&types.BaseAccount{
-			Address:       sdk.AccAddress(pubKey2.Address()).String(),
+			Address:       sdk.HeimdallAddress(pubKey2.Address()).String(),
 			PubKey:        codectypes.UnsafePackAny(pubKey2),
 			AccountNumber: 5,
 			Sequence:      7,
@@ -192,7 +192,7 @@ func (suite *KeeperTestSuite) TestInitGenesis() {
 		Params: types.DefaultParams(),
 		Accounts: []*codectypes.Any{
 			codectypes.UnsafePackAny(&types.BaseAccount{
-				Address:       sdk.AccAddress(pubKey1.Address()).String(),
+				Address:       sdk.HeimdallAddress(pubKey1.Address()).String(),
 				PubKey:        codectypes.UnsafePackAny(pubKey1),
 				AccountNumber: 0,
 				Sequence:      5,
@@ -207,7 +207,7 @@ func (suite *KeeperTestSuite) TestInitGenesis() {
 	suite.Require().Equal(len(keeperAccts), len(genState.Accounts)+1, "number of accounts in the keeper vs in genesis state")
 
 	// Check both accounts account numbers
-	suite.Require().Equal(0, int(suite.accountKeeper.GetAccount(ctx, sdk.AccAddress(pubKey1.Address())).GetAccountNumber()))
+	suite.Require().Equal(0, int(suite.accountKeeper.GetAccount(ctx, sdk.HeimdallAddress(pubKey1.Address())).GetAccountNumber()))
 	feeCollector = suite.accountKeeper.GetModuleAccount(ctx, "fee_collector")
 	suite.Require().Equal(1, int(feeCollector.GetAccountNumber()))
 

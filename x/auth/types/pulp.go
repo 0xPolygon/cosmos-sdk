@@ -11,7 +11,7 @@ import (
 	"github.com/ethereum/go-ethereum/rlp"
 )
 
-// TODO CHECK HEIMDALL-V2 this is imported from heimdall > fix
+// TODO CHECK HEIMDALL-V2 this is imported from heimdall > to be used
 const (
 	// PulpHashLength pulp hash length
 	PulpHashLength int = 4

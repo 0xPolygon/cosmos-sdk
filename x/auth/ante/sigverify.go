@@ -2,9 +2,11 @@ package ante
 
 import (
 	"bytes"
+	"cosmossdk.io/math"
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/types/address"
 	"math/big"
 
 	"google.golang.org/protobuf/types/known/anypb"
@@ -25,12 +27,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
 	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
-	// TODO CHECK HEIMDALL-V2 probably import these (imported from heimdall's auth/ante.go)
-	//authTypes "github.com/maticnetwork/heimdall/auth/types"
-	//"github.com/maticnetwork/heimdall/chainmanager"
-	//checkpointTypes "github.com/maticnetwork/heimdall/checkpoint/types"
-	//"github.com/maticnetwork/heimdall/helper"
-	//"github.com/maticnetwork/heimdall/types"
 )
 
 var (
@@ -44,8 +40,9 @@ var (
 	// DefaultFeeInMatic represents default fee in matic
 	DefaultFeeInMatic = big.NewInt(10).Exp(big.NewInt(10), big.NewInt(15), nil)
 
+	// TODO CHECK HEIMDALL-V2 no usage of DefaultFeeWantedPerTx?
 	// DefaultFeeWantedPerTx fee wanted per tx
-	DefaultFeeWantedPerTx = sdk.Coins{sdk.Coin{Denom: authTypes.FeeToken, Amount: sdk.NewIntFromBigInt(DefaultFeeInMatic)}}
+	DefaultFeeWantedPerTx = sdk.Coins{sdk.Coin{Denom: types.FeeToken, Amount: math.NewIntFromBigInt(DefaultFeeInMatic)}}
 )
 
 func init() {
@@ -58,24 +55,26 @@ func init() {
 // SignatureVerificationGasConsumer is the type of function that is used to both
 // consume gas when verifying signatures and also to accept or reject different types of pubkeys
 // This is where apps can define their own PubKey
-// TODO CHECK HEIMDALL-V2 check this implementation where we preserved heimdall types (imported from heimdall's auth/ante.go)
-type SignatureVerificationGasConsumer = func(meter storetypes.GasMeter, sig authTypes.StdSignature, params authTypes.Params) error
+// TODO CHECK HEIMDALL-V2 check this implementation where (imported from heimdall's auth/ante.go)
+//
+//	We kept cosmos signing.SignatureV2 compared to heimdall's authTypes.StdSignature (down the line we can fetch bytes out of it)
+type SignatureVerificationGasConsumer = func(meter storetypes.GasMeter, sig signing.SignatureV2, params types.Params) error
 
 // FeeCollector interface for fees collector
 // TODO CHECK HEIMDALL-V2 imported from heimdall's auth/ante.go
 type FeeCollector interface {
-	GetModuleAddress(string) types.HeimdallAddress
+	GetModuleAddress(string) sdk.HeimdallAddress
 	SendCoinsFromAccountToModule(
 		sdk.Context,
-		types.HeimdallAddress,
+		sdk.HeimdallAddress,
 		string,
 		sdk.Coins,
-	) sdk.Error
+	) error
 }
 
 // MainTxMsg tx hash
 type MainTxMsg interface {
-	GetTxHash() types.HeimdallHash
+	GetTxHash() address.HeimdallHash
 	GetLogIndex() uint64
 }
 
@@ -93,6 +92,8 @@ func NewSetPubKeyDecorator(ak AccountKeeper) SetPubKeyDecorator {
 }
 
 func (spkd SetPubKeyDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.AnteHandler) (sdk.Context, error) {
+	// TODO CHECK HEIMDALL-V2 do we need to change this function? It supports multisig but it should work with one sig only too
+
 	sigTx, ok := tx.(authsigning.SigVerifiableTx)
 	if !ok {
 		return ctx, errorsmod.Wrap(sdkerrors.ErrTxDecode, "invalid tx type")
@@ -129,7 +130,7 @@ func (spkd SetPubKeyDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate b
 				"pubKey does not match signer address %s with signer index: %d", signerStrs[i], i)
 		}
 
-		acc, err := GetSignerAcc(ctx, spkd.ak, signers[i])
+		acc, err := GetSignerAcc(ctx, spkd.ak, sdk.BytesToHeimdallAddress(signers[i]))
 		if err != nil {
 			return ctx, err
 		}
@@ -215,45 +216,44 @@ func (sgcd SigGasConsumeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simula
 	}
 
 	// TODO CHECK HEIMDALL-V2 imported from heimdall's auth/ante.go (I believe this relate to multiSig)
-	/*
-			if len(signerAddrs) == 0 {
-			return newCtx, sdk.ErrNoSignatures("no signers").Result(), true
-		}
-
-		if len(signerAddrs) > 1 {
-			return newCtx, sdk.ErrUnauthorized("wrong number of signers").Result(), true
-		}
-	*/
-
-	// TODO CHECK HEIMDALL-V2 this lop was remove in heimdall (I believe this relate to multiSig)
-	for i, sig := range sigs {
-		signerAcc, err := GetSignerAcc(ctx, sgcd.ak, signers[i])
-		if err != nil {
-			return ctx, err
-		}
-
-		pubKey := signerAcc.GetPubKey()
-
-		// In simulate mode the transaction comes with no signatures, thus if the
-		// account's pubkey is nil, both signature verification and gasKVStore.Set()
-		// shall consume the largest amount, i.e. it takes more gas to verify
-		// secp256k1 keys than ed25519 ones.
-		if simulate && pubKey == nil {
-			pubKey = simSecp256k1Pubkey
-		}
-
-		// make a SignatureV2 with PubKey filled in from above
-		sig = signing.SignatureV2{
-			PubKey:   pubKey,
-			Data:     sig.Data,
-			Sequence: sig.Sequence,
-		}
-
-		err = sgcd.sigGasConsumer(ctx.GasMeter(), sig, params)
-		if err != nil {
-			return ctx, err
-		}
+	if len(signers) == 0 {
+		return ctx, sdkerrors.ErrNoSignatures
 	}
+
+	// TODO CHECK HEIMDALL-V2 changed from ErrUnauthorized to ErrTooManySignatures
+	if len(signers) > 1 {
+		return newCtx, sdkerrors.ErrTooManySignatures
+	}
+
+	// TODO CHECK HEIMDALL-V2 this loop was remove in heimdall (I believe this relate to multiSig)
+	// for i, sig := range sigs {
+	signerAcc, err := GetSignerAcc(ctx, sgcd.ak, sdk.BytesToHeimdallAddress(signers[0]))
+	if err != nil {
+		return ctx, err
+	}
+
+	pubKey := signerAcc.GetPubKey()
+
+	// In simulate mode the transaction comes with no signatures, thus if the
+	// account's pubkey is nil, both signature verification and gasKVStore.Set()
+	// shall consume the largest amount, i.e. it takes more gas to verify
+	// secp256k1 keys than ed25519 ones.
+	if simulate && pubKey == nil {
+		pubKey = simSecp256k1Pubkey
+	}
+
+	// make a SignatureV2 with PubKey filled in from above
+	sig := signing.SignatureV2{
+		PubKey:   pubKey,
+		Data:     sigs[0].Data,
+		Sequence: sigs[0].Sequence,
+	}
+
+	err = sgcd.sigGasConsumer(ctx.GasMeter(), sig, params)
+	if err != nil {
+		return ctx, err
+	}
+	//}
 
 	return next(ctx, tx, simulate)
 }
@@ -297,6 +297,8 @@ func OnlyLegacyAminoSigners(sigData signing.SignatureData) bool {
 }
 
 func (svd SigVerificationDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.AnteHandler) (newCtx sdk.Context, err error) {
+	// TODO CHECK HEIMDALL-V2 do we need any change here?
+
 	sigTx, ok := tx.(authsigning.Tx)
 	if !ok {
 		return ctx, errorsmod.Wrap(sdkerrors.ErrTxDecode, "invalid transaction type")
@@ -320,7 +322,7 @@ func (svd SigVerificationDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simul
 	}
 
 	for i, sig := range sigs {
-		acc, err := GetSignerAcc(ctx, svd.ak, signers[i])
+		acc, err := GetSignerAcc(ctx, svd.ak, sdk.BytesToHeimdallAddress(signers[i]))
 		if err != nil {
 			return ctx, err
 		}
@@ -417,7 +419,7 @@ func (isd IncrementSequenceDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, sim
 	}
 
 	for _, signer := range signers {
-		acc := isd.ak.GetAccount(ctx, signer)
+		acc := isd.ak.GetAccount(ctx, sdk.BytesToHeimdallAddress(signer))
 		if err := acc.SetSequence(acc.GetSequence() + 1); err != nil {
 			panic(err)
 		}
@@ -478,6 +480,7 @@ func DefaultSigVerificationGasConsumer(
 		meter.ConsumeGas(params.SigVerifyCostED25519, "ante verify: ed25519")
 		return errorsmod.Wrap(sdkerrors.ErrInvalidPubKey, "ED25519 public keys are unsupported")
 
+		// TODO CHECK HEIMDALL-V2: heimdall should only use this one
 	case *secp256k1.PubKey:
 		meter.ConsumeGas(params.SigVerifyCostSecp256k1, "ante verify: secp256k1")
 		return nil
@@ -486,6 +489,7 @@ func DefaultSigVerificationGasConsumer(
 		meter.ConsumeGas(params.SigVerifyCostSecp256r1(), "ante verify: secp256r1")
 		return nil
 
+		// TODO CHECK HEIMDALL-V2: do we remove multiSig support?
 	case multisig.PubKey:
 		multisignature, ok := sig.Data.(*signing.MultiSignatureData)
 		if !ok {
@@ -532,7 +536,7 @@ func ConsumeMultisignatureVerificationGas(
 // GetSignerAcc returns an account for a given address that is expected to sign
 // a transaction.
 // TODO CHECK HEIMDALL-V2 import type for the argument, and change the return value due to sdk.AccountI interface
-func GetSignerAcc(ctx sdk.Context, ak AccountKeeper, addr types.HeimdallAddress) (authTypes.Account, error) {
+func GetSignerAcc(ctx sdk.Context, ak AccountKeeper, addr sdk.HeimdallAddress) (sdk.AccountI, error) {
 	if acc := ak.GetAccount(ctx, addr); acc != nil {
 		return acc, nil
 	}

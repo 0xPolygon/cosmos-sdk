@@ -33,4 +33,6 @@ type MultiSignatureData struct {
 var _, _ SignatureData = &SingleSignatureData{}, &MultiSignatureData{}
 
 func (m *SingleSignatureData) isSignatureData() {}
-func (m *MultiSignatureData) isSignatureData()  {}
+
+// TODO CHECK HEIMDALL-V2 remove tupport fort MultiSignatureData?
+func (m *MultiSignatureData) isSignatureData() {}

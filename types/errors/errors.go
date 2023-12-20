@@ -140,6 +140,10 @@ var (
 	// supplied.
 	ErrInvalidGasLimit = errorsmod.Register(RootCodespace, 41, "invalid gas limit")
 
+	// ErrInvalidGasLimit defines an error when an invalid GasWanted value is
+	// supplied.
+	ErrInvalidTxFees = errorsmod.Register(RootCodespace, 42, "invalid tx limit")
+
 	// ErrPanic should only be set when we recovering from a panic
 	ErrPanic = errorsmod.ErrPanic
 )

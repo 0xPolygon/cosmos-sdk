@@ -13,7 +13,6 @@ import (
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	// TODO CHECK HEIMDALL-V2 import types.HeimdallAddress
 )
 
 var (
@@ -25,7 +24,7 @@ var (
 )
 
 // NewBaseAccount creates a new BaseAccount object.
-func NewBaseAccount(address types.HeimdallAddress, pubKey cryptotypes.PubKey, accountNumber, sequence uint64) *BaseAccount {
+func NewBaseAccount(address sdk.HeimdallAddress, pubKey cryptotypes.PubKey, accountNumber, sequence uint64) *BaseAccount {
 	acc := &BaseAccount{
 		Address:       address.String(),
 		AccountNumber: accountNumber,
@@ -47,21 +46,21 @@ func ProtoBaseAccount() sdk.AccountI {
 
 // NewBaseAccountWithAddress - returns a new base account with a given address
 // leaving AccountNumber and Sequence to zero.
-func NewBaseAccountWithAddress(addr types.HeimdallAddress) *BaseAccount {
+func NewBaseAccountWithAddress(addr sdk.HeimdallAddress) *BaseAccount {
 	return &BaseAccount{
 		Address: addr.String(),
 	}
 }
 
 // GetAddress - Implements sdk.AccountI.
-func (acc BaseAccount) GetAddress() types.HeimdallAddress {
+func (acc BaseAccount) GetAddress() sdk.HeimdallAddress {
 	// TODO CHECK HEIMDALL-V2 removed Bech32 related logic
 	// addr, _ := sdk.AccAddressFromBech32(acc.Address)
-	return acc.Address
+	return sdk.HeimdallAddress{}
 }
 
 // SetAddress - Implements sdk.AccountI.
-func (acc *BaseAccount) SetAddress(addr types.HeimdallAddress) error {
+func (acc *BaseAccount) SetAddress(addr sdk.HeimdallAddress) error {
 	if len(acc.Address) != 0 {
 		return errors.New("cannot override BaseAccount address")
 	}
@@ -149,7 +148,7 @@ func (acc BaseAccount) Validate() error {
 	}
 
 	// TODO CHECK HEIMDALL-V2 removed Bech32 related logic
-	//accAddr, err := sdk.AccAddressFromBech32(acc.Address)
+	//accAddr, err := sdk.HeimdallAddressFromBech32(acc.Address)
 	//if err != nil {
 	//	return err
 	//}
@@ -174,8 +173,8 @@ func (acc BaseAccount) UnpackInterfaces(unpacker codectypes.AnyUnpacker) error {
 // If the input is a valid address, it returns the address.
 // If the input is a module name, it returns the module address.
 // TODO CHECK HEIMDALL-V2 removed Bech32 related logic
-//func NewModuleAddressOrBech32Address(input string) sdk.AccAddress {
-//	if addr, err := sdk.AccAddressFromBech32(input); err == nil {
+//func NewModuleAddressOrBech32Address(input string) sdk.HeimdallAddress {
+//	if addr, err := sdk.HeimdallAddressFromBech32(input); err == nil {
 //		return addr
 //	}
 //
@@ -183,8 +182,8 @@ func (acc BaseAccount) UnpackInterfaces(unpacker codectypes.AnyUnpacker) error {
 //}
 
 // NewModuleAddress creates an AccAddress from the hash of the module's name
-func NewModuleAddress(name string) types.HeimdallAdrress {
-	return types.BytesToHeimdallAddress(crypto.AddressHash([]byte(name)).Bytes())
+func NewModuleAddress(name string) sdk.HeimdallAddress {
+	return sdk.BytesToHeimdallAddress(crypto.AddressHash([]byte(name)).Bytes())
 }
 
 // NewEmptyModuleAccount creates a empty ModuleAccount from a string
@@ -251,7 +250,7 @@ func (ma ModuleAccount) Validate() error {
 		return errors.New("uninitialized ModuleAccount: BaseAccount is nil")
 	}
 
-	if ma.Address != types.BytesToHeimdallAddress(crypto.AddressHash([]byte(ma.Name))) {
+	if ma.Address != sdk.BytesToHeimdallAddress(crypto.AddressHash([]byte(ma.Name))).String() {
 		return fmt.Errorf("address %s cannot be derived from the module name '%s'", ma.Address, ma.Name)
 	}
 
@@ -259,18 +258,18 @@ func (ma ModuleAccount) Validate() error {
 }
 
 type moduleAccountPretty struct {
-	Address       types.HeimdallAddress `json:"address"`
-	PubKey        string                `json:"public_key"`
-	AccountNumber uint64                `json:"account_number"`
-	Sequence      uint64                `json:"sequence"`
-	Name          string                `json:"name"`
-	Permissions   []string              `json:"permissions"`
+	Address       sdk.HeimdallAddress `json:"address"`
+	PubKey        string              `json:"public_key"`
+	AccountNumber uint64              `json:"account_number"`
+	Sequence      uint64              `json:"sequence"`
+	Name          string              `json:"name"`
+	Permissions   []string            `json:"permissions"`
 }
 
 // MarshalJSON returns the JSON representation of a ModuleAccount.
 func (ma ModuleAccount) MarshalJSON() ([]byte, error) {
 	// TODO CHECK HEIMDALL-V2 removed Bech32 related logic
-	//accAddr, err := sdk.AccAddressFromBech32(ma.Address)
+	//accAddr, err := sdk.HeimdallAddressFromBech32(ma.Address)
 	//if err != nil {
 	//	return nil, err
 	//}
@@ -324,7 +323,7 @@ type GenesisAccounts []GenesisAccount
 
 // Contains returns true if the given address exists in a slice of GenesisAccount
 // objects.
-func (ga GenesisAccounts) Contains(addr types.HeimdallAddress) bool {
+func (ga GenesisAccounts) Contains(addr sdk.HeimdallAddress) bool {
 	for _, acc := range ga {
 		if acc.GetAddress().Equals(addr) {
 			return true
@@ -335,9 +334,13 @@ func (ga GenesisAccounts) Contains(addr types.HeimdallAddress) bool {
 }
 
 // GenesisAccount defines a genesis account that embeds an AccountI with validation capabilities.
-// TODO CHECK HEIMDALL-V2 sdk.AccountI has to support heimdallAccount (types.HeimdallAddress)
+// TODO CHECK HEIMDALL-V2 genesis account is different
 type GenesisAccount interface {
 	sdk.AccountI
 
 	Validate() error
 }
+
+// TODO CHECK HEIMDALL-V2 imported from heimdall. Needed?
+// AccountProcessor is an interface to process account as per module
+type AccountProcessor func(*GenesisAccount, *BaseAccount) sdk.AccountI

@@ -51,8 +51,8 @@ type Context struct {
 	TxConfig          TxConfig
 	AccountRetriever  AccountRetriever
 	NodeURI           string
-	FeePayer          sdk.AccAddress
-	FeeGranter        sdk.AccAddress
+	FeePayer          sdk.HeimdallAddress
+	FeeGranter        sdk.HeimdallAddress
 	Viper             *viper.Viper
 	LedgerHasProtobuf bool
 	PreprocessTxHook  PreprocessTxFn
@@ -211,14 +211,14 @@ func (ctx Context) WithFromAddress(addr sdk.AccAddress) Context {
 
 // WithFeePayerAddress returns a copy of the context with an updated fee payer account
 // address.
-func (ctx Context) WithFeePayerAddress(addr sdk.AccAddress) Context {
+func (ctx Context) WithFeePayerAddress(addr sdk.HeimdallAddress) Context {
 	ctx.FeePayer = addr
 	return ctx
 }
 
 // WithFeeGranterAddress returns a copy of the context with an updated fee granter account
 // address.
-func (ctx Context) WithFeeGranterAddress(addr sdk.AccAddress) Context {
+func (ctx Context) WithFeeGranterAddress(addr sdk.HeimdallAddress) Context {
 	ctx.FeeGranter = addr
 	return ctx
 }
@@ -371,6 +371,7 @@ func (ctx Context) printOutput(out []byte) error {
 // GetFromFields returns a from account address, account name and keyring type, given either an address or key name.
 // If clientCtx.Simulate is true the keystore is not accessed and a valid address must be provided
 // If clientCtx.GenerateOnly is true the keystore is only accessed if a key name is provided
+// TODO CHECK HEIMDALL-V2: does this need to be changed (accAddress vs heimdallAddress)?
 func GetFromFields(clientCtx Context, kr keyring.Keyring, from string) (sdk.AccAddress, string, keyring.KeyType, error) {
 	if from == "" {
 		return nil, "", 0, nil

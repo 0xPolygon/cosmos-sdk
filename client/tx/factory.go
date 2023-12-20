@@ -39,8 +39,8 @@ type Factory struct {
 	generateOnly       bool
 	memo               string
 	fees               sdk.Coins
-	feeGranter         sdk.AccAddress
-	feePayer           sdk.AccAddress
+	feeGranter         sdk.HeimdallAddress
+	feePayer           sdk.HeimdallAddress
 	gasPrices          sdk.DecCoins
 	extOptions         []*codectypes.Any
 	signMode           signing.SignMode
@@ -229,13 +229,13 @@ func (f Factory) WithTimeoutHeight(height uint64) Factory {
 }
 
 // WithFeeGranter returns a copy of the Factory with an updated fee granter.
-func (f Factory) WithFeeGranter(fg sdk.AccAddress) Factory {
+func (f Factory) WithFeeGranter(fg sdk.HeimdallAddress) Factory {
 	f.feeGranter = fg
 	return f
 }
 
 // WithFeePayer returns a copy of the Factory with an updated fee granter.
-func (f Factory) WithFeePayer(fp sdk.AccAddress) Factory {
+func (f Factory) WithFeePayer(fp sdk.HeimdallAddress) Factory {
 	f.feePayer = fp
 	return f
 }
@@ -476,13 +476,13 @@ func (f Factory) Prepare(clientCtx client.Context) (Factory, error) {
 	fc := f
 	from := clientCtx.GetFromAddress()
 
-	if err := fc.accountRetriever.EnsureExists(clientCtx, from); err != nil {
+	if err := fc.accountRetriever.EnsureExists(clientCtx, sdk.AccAddressToHeimdallAddress(from)); err != nil {
 		return fc, err
 	}
 
 	initNum, initSeq := fc.accountNumber, fc.sequence
 	if initNum == 0 || initSeq == 0 {
-		num, seq, err := fc.accountRetriever.GetAccountNumberSequence(clientCtx, from)
+		num, seq, err := fc.accountRetriever.GetAccountNumberSequence(clientCtx, sdk.AccAddressToHeimdallAddress(from))
 		if err != nil {
 			return fc, err
 		}

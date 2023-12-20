@@ -105,7 +105,7 @@ func (suite *DeterministicTestSuite) createAndSetAccounts(t *rapid.T, count int)
 
 	for i := 0; i < count; i++ {
 		pub := pubkeyGenerator(t).Draw(t, "pubkey")
-		addr := sdk.AccAddress(pub.Address())
+		addr := sdk.HeimdallAddress(pub.Address())
 		accNum := accNums[i]
 		seq := rapid.Uint64().Draw(t, "sequence")
 

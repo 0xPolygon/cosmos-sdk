@@ -23,8 +23,6 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
 	"github.com/ethereum/go-ethereum/common"
-	// TODO CHECK HEIMDALL-V2 yaml collision
-	"gopkg.in/yaml.v3"
 )
 
 const (
@@ -79,6 +77,8 @@ const (
 	Bech32PrefixConsAddr = Bech32MainPrefix + PrefixValidator + PrefixConsensus
 	// Bech32PrefixConsPub defines the Bech32 prefix of a consensus node public key
 	Bech32PrefixConsPub = Bech32MainPrefix + PrefixValidator + PrefixConsensus + PrefixPublic
+	// AddrLen defines a valid address length (TODO CHECK HEIMDALL-V2: imported from heimdall, not used)
+	AddrLen = 20
 )
 
 // cache variables
@@ -143,19 +143,10 @@ var (
 	_ Address = AccAddress{}
 	_ Address = ValAddress{}
 	_ Address = ConsAddress{}
+	_ Address = HeimdallAddress{}
 )
 
-// TODO CHECK HEIMDALL-V2 shall this live here or in heimdall?
-const (
-	// AddrLen defines a valid address length
-	AddrLen = 20
-)
-
-// Ensure that different address types implement the interface
-var _ Address = HeimdallAddress{}
-
-// TODO CHECK HEIMDALL-V2 is yaml still needed? It's implemented differently and whit another package
-var _ yaml.Marshaler = HeimdallAddress{}
+// TODO CHECK HEIMDALL-V2 move these types to heimdall?
 
 // HeimdallAddress represents heimdall address
 type HeimdallAddress common.Address
@@ -163,15 +154,13 @@ type HeimdallAddress common.Address
 // ZeroHeimdallAddress represents zero address
 var ZeroHeimdallAddress = HeimdallAddress{}
 
-// TODO CHECK HEIMDALL-V2 we need to import go-ethereum for common.Address
-
 // EthAddress get eth address
 func (aa HeimdallAddress) EthAddress() common.Address {
 	return common.Address(aa)
 }
 
 // Equals returns boolean for whether two AccAddresses are Equal
-func (aa HeimdallAddress) Equals(aa2 sdk.Address) bool {
+func (aa HeimdallAddress) Equals(aa2 Address) bool {
 	if aa.Empty() && aa2.Empty() {
 		return true
 	}
@@ -269,13 +258,13 @@ func HexToHeimdallAddress(b string) HeimdallAddress {
 }
 
 // AccAddressToHeimdallAddress returns Address with value b.
-func AccAddressToHeimdallAddress(b sdk.AccAddress) HeimdallAddress {
+func AccAddressToHeimdallAddress(b AccAddress) HeimdallAddress {
 	return BytesToHeimdallAddress(b[:])
 }
 
 // HeimdallAddressToAccAddress returns Address with value b.
-func HeimdallAddressToAccAddress(b HeimdallAddress) sdk.AccAddress {
-	return sdk.AccAddress(b.Bytes())
+func HeimdallAddressToAccAddress(b HeimdallAddress) AccAddress {
+	return AccAddress(b.Bytes())
 }
 
 // SampleHeimdallAddress returns sample address
@@ -402,6 +391,8 @@ func (aa *AccAddress) UnmarshalJSON(data []byte) error {
 		*aa = AccAddress{}
 		return nil
 	}
+
+	// VEs same val or not / 2/3+ signatures or not
 
 	aa2, err := AccAddressFromBech32(s)
 	if err != nil {

@@ -18,8 +18,8 @@ import (
 type AccountI interface {
 	proto.Message
 
-	GetAddress() types.HeimdallAddress
-	SetAddress(types.HeimdallAddress) error // errors if already set.
+	GetAddress() HeimdallAddress
+	SetAddress(HeimdallAddress) error // errors if already set.
 
 	// TODO CHECK HEIMDALL-V2 is this key what we want to use?
 	GetPubKey() cryptotypes.PubKey // can return nil.

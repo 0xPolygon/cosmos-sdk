@@ -26,6 +26,7 @@ import (
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 )
 
+// TODO CHEK HEIMDALL-V2: reconcile this with heimdall's auth/ante_test.go and the changes in cosmos' auth/ante/ante.gp
 // Test that simulate transaction accurately estimates gas cost
 func TestSimulateGasCost(t *testing.T) {
 	// This test has a test case that uses another's output.

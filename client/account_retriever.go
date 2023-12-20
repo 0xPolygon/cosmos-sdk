@@ -2,7 +2,7 @@ package client
 
 import (
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
-	// TODO CHECK HEIMDALL-V2 import heimdall types
+	"github.com/cosmos/cosmos-sdk/types"
 )
 
 // Account defines a read-only version of the auth module's AccountI.

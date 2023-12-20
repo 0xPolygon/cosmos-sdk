@@ -53,7 +53,7 @@ func (s queryServer) Accounts(ctx context.Context, req *types.QueryAccountsReque
 		ctx,
 		s.k.Accounts,
 		req.Pagination,
-		func(_ sdk.AccAddress, value sdk.AccountI) (*codectypes.Any, error) {
+		func(_ sdk.HeimdallAddress, value sdk.AccountI) (*codectypes.Any, error) {
 			return codectypes.NewAnyWithValue(value)
 		},
 	)
@@ -75,7 +75,7 @@ func (s queryServer) Account(ctx context.Context, req *types.QueryAccountRequest
 	if err != nil {
 		return nil, err
 	}
-	account := s.k.GetAccount(ctx, addr)
+	account := s.k.GetAccount(ctx, sdk.BytesToHeimdallAddress(addr))
 	if account == nil {
 		return nil, status.Errorf(codes.NotFound, "account %s not found", req.Address)
 	}
@@ -223,7 +223,7 @@ func (s queryServer) AccountInfo(ctx context.Context, req *types.QueryAccountInf
 		return nil, err
 	}
 
-	account := s.k.GetAccount(ctx, addr)
+	account := s.k.GetAccount(ctx, sdk.BytesToHeimdallAddress(addr))
 	if account == nil {
 		return nil, status.Errorf(codes.NotFound, "account %s not found", req.Address)
 	}

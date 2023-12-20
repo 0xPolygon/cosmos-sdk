@@ -7,7 +7,7 @@ import (
 	assert "github.com/stretchr/testify/require"
 )
 
-// TODO CHECK HEIMDALL-V2 this is imported from heimdall > fix
+// TODO CHECK HEIMDALL-V2 this is imported from heimdall > to be used
 
 func TestGetPulpHash(t *testing.T) {
 	t.Parallel()

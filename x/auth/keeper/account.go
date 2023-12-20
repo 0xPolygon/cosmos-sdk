@@ -10,7 +10,7 @@ import (
 )
 
 // NewAccountWithAddress implements AccountKeeperI.
-func (ak AccountKeeper) NewAccountWithAddress(ctx context.Context, addr sdk.AccAddress) sdk.AccountI {
+func (ak AccountKeeper) NewAccountWithAddress(ctx context.Context, addr sdk.HeimdallAddress) sdk.AccountI {
 	acc := ak.proto()
 	err := acc.SetAddress(addr)
 	if err != nil {
@@ -30,13 +30,13 @@ func (ak AccountKeeper) NewAccount(ctx context.Context, acc sdk.AccountI) sdk.Ac
 }
 
 // HasAccount implements AccountKeeperI.
-func (ak AccountKeeper) HasAccount(ctx context.Context, addr sdk.AccAddress) bool {
+func (ak AccountKeeper) HasAccount(ctx context.Context, addr sdk.HeimdallAddress) bool {
 	has, _ := ak.Accounts.Has(ctx, addr)
 	return has
 }
 
 // GetAccount implements AccountKeeperI.
-func (ak AccountKeeper) GetAccount(ctx context.Context, addr sdk.AccAddress) sdk.AccountI {
+func (ak AccountKeeper) GetAccount(ctx context.Context, addr sdk.HeimdallAddress) sdk.AccountI {
 	acc, err := ak.Accounts.Get(ctx, addr)
 	if err != nil && !errors.Is(err, collections.ErrNotFound) {
 		panic(err)
@@ -74,7 +74,7 @@ func (ak AccountKeeper) RemoveAccount(ctx context.Context, acc sdk.AccountI) {
 // IterateAccounts iterates over all the stored accounts and performs a callback function.
 // Stops iteration when callback returns true.
 func (ak AccountKeeper) IterateAccounts(ctx context.Context, cb func(account sdk.AccountI) (stop bool)) {
-	err := ak.Accounts.Walk(ctx, nil, func(_ sdk.AccAddress, value sdk.AccountI) (bool, error) {
+	err := ak.Accounts.Walk(ctx, nil, func(_ sdk.HeimdallAddress, value sdk.AccountI) (bool, error) {
 		return cb(value), nil
 	})
 	if err != nil {
