@@ -392,8 +392,6 @@ func (aa *AccAddress) UnmarshalJSON(data []byte) error {
 		return nil
 	}
 
-	// VEs same val or not / 2/3+ signatures or not
-
 	aa2, err := AccAddressFromBech32(s)
 	if err != nil {
 		return err
