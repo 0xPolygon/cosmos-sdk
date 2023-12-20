@@ -14,14 +14,14 @@ import (
 )
 
 const (
-	// TODO CHECK HEIMDALL-V2 removed FlagMultisig
+	flagMultisig        = "multisig"
 	flagOverwrite       = "overwrite"
 	flagSigOnly         = "signature-only"
 	flagNoAutoIncrement = "no-auto-increment"
 	flagAppend          = "append"
 )
 
-var logger = helper.Logger.With("module", "auth/client/cli")
+// TODO CHECK HEIMDALL-V2 removed multisig related business logic
 
 // GetSignBatchCommand returns the transaction sign-batch command.
 func GetSignBatchCommand() *cobra.Command {
@@ -99,7 +99,7 @@ func makeSignBatchCmd() func(cmd *cobra.Command, args []string) error {
 				return err
 			}
 
-			acc, err := txFactory.AccountRetriever().GetAccount(clientCtx, addr)
+			acc, err := txFactory.AccountRetriever().GetAccount(clientCtx, sdk.AccAddressToHeimdallAddress(addr))
 			if err != nil {
 				return err
 			}
