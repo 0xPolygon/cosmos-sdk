@@ -13,15 +13,15 @@ import (
 //
 // Many complex conditions can be used in the concrete struct which implements AccountI.
 
-// TODO CHECK HEIMDALL-V2 converted AccAddress into types.HeimdallAddress (see heimdall's auth/exported/exported.go)
-// TODO CHECK HEIMDALL-V2 Is this enough? Check al other interfaces implementing AccountI
+// TODO HV2 converted AccAddress into types.HeimdallAddress (see heimdall's auth/exported/exported.go)
+// TODO HV2 Is this enough? Check al other interfaces implementing AccountI
 type AccountI interface {
 	proto.Message
 
 	GetAddress() HeimdallAddress
 	SetAddress(HeimdallAddress) error // errors if already set.
 
-	// TODO CHECK HEIMDALL-V2 is this key what we want to use?
+	// TODO HV2 is this key what we want to use?
 	GetPubKey() cryptotypes.PubKey // can return nil.
 	SetPubKey(cryptotypes.PubKey) error
 

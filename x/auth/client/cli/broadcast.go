@@ -11,7 +11,7 @@ import (
 	authclient "github.com/cosmos/cosmos-sdk/x/auth/client"
 )
 
-// TODO CHECK HEIMDALL-V2 check this file (it was deleted in heimdall) and see if it clashes with heimdall's client/tx/broadcast.go (in case, apply changes)
+// TODO HV2 check this file (it was deleted in heimdall) and see if it clashes with heimdall's client/tx/broadcast.go (in case, apply changes)
 
 // GetBroadcastCommand returns the tx broadcast command.
 func GetBroadcastCommand() *cobra.Command {

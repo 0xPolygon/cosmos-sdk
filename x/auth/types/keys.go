@@ -15,7 +15,7 @@ const (
 	// FeeCollectorName the root string for the fee collector account address
 	FeeCollectorName = "fee_collector"
 
-	// TODO CHECK HEIMDALL-V2 check usage of FeeToken in heimdall and implement eventual changes
+	// TODO HV2 check usage of FeeToken in heimdall and implement eventual changes
 	// FeeToken fee token name
 	FeeToken = "matic"
 )
@@ -34,14 +34,14 @@ var (
 	// AccountNumberStoreKeyPrefix prefix for account-by-id store
 	AccountNumberStoreKeyPrefix = collections.NewPrefix("accountNumber")
 
-	// TODO CHECK HEIMDALL-V2 changed byte to collections. Is it ok?
+	// TODO HV2 changed byte to collections. Is it ok?
 	// ProposerKeyPrefix prefix for proposer
 	// ProposerKeyPrefix = []byte("proposer")
 	ProposerKeyPrefix = collections.NewPrefix("proposer")
 )
 
-// TODO CHECK HEIMDALL-V2 check those 2 functions and import HeimdallAddress
-// TODO CHECK HEIMDALL-V2 AddressStoreKey is moved (and edited) to x/auth/keeper/migrations.go
+// TODO HV2 check those 2 functions and import HeimdallAddress
+// TODO HV2 AddressStoreKey is moved (and edited) to x/auth/keeper/migrations.go
 
 // AddressStoreKey turn an address to key used to get it from the account store
 func AddressStoreKey(addr types.HeimdallAddress) []byte {

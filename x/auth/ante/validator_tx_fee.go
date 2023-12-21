@@ -14,7 +14,7 @@ import (
 // checkTxFeeWithValidatorMinGasPrices implements the default fee logic, where the minimum price per
 // unit of gas is fixed and set by each validator, can the tx priority is computed from the gas price.
 func checkTxFeeWithValidatorMinGasPrices(ctx sdk.Context, tx sdk.Tx, params types.Params) (sdk.Coins, int64, error) {
-	// TODO CHECK HEIMDALL-V2: imported (and slightly modified) from heimdall, is this the right place?
+	// TODO HV2: imported (and slightly modified) from heimdall, is this the right place?
 	amount, ok := sdkmath.NewIntFromString(params.GetTxFees())
 	if !ok {
 		return nil, 0, errorsmod.Wrap(sdkerrors.ErrInvalidTxFees, "must provide correct txFees")
@@ -23,7 +23,7 @@ func checkTxFeeWithValidatorMinGasPrices(ctx sdk.Context, tx sdk.Tx, params type
 	gas := params.GetMaxTxGas()
 	feeCoins := sdk.Coins{sdk.Coin{Denom: types.FeeToken, Amount: amount}}
 
-	// TODO CHECK HEIMDALL-V2: removed as not present in heimdall
+	// TODO HV2: removed as not present in heimdall
 	// Ensure that the provided fees meet a minimum threshold for the validator,
 	// if this is a CheckTx. This is only for local mempool purposes, and thus
 	// is only ran on check tx.

@@ -100,7 +100,7 @@ func NewStdTx(msgs []sdk.Msg, fee StdFee, sigs []StdSignature, memo string) StdT
 	}
 }
 
-// TODO CHECK HEIMDALL-V2 verify this is the proper place and import rlp. Also, replace StdSignature (deprecated) in favour of proto?
+// TODO HV2 verify this is the proper place and import rlp. Also, replace StdSignature (deprecated) in favour of proto?
 
 // StdTxRaw is a standard way to wrap a RLP Msg with Fee and Signatures.
 // It is used by heimdall to verify special txs on L1 (e.g. checkpoints).

@@ -77,7 +77,7 @@ const (
 	Bech32PrefixConsAddr = Bech32MainPrefix + PrefixValidator + PrefixConsensus
 	// Bech32PrefixConsPub defines the Bech32 prefix of a consensus node public key
 	Bech32PrefixConsPub = Bech32MainPrefix + PrefixValidator + PrefixConsensus + PrefixPublic
-	// AddrLen defines a valid address length (TODO CHECK HEIMDALL-V2: imported from heimdall, not used)
+	// AddrLen defines a valid address length (TODO HV2: imported from heimdall, not used)
 	AddrLen = 20
 )
 
@@ -146,7 +146,7 @@ var (
 	_ Address = HeimdallAddress{}
 )
 
-// TODO CHECK HEIMDALL-V2 move these types to heimdall?
+// TODO HV2 move these types to heimdall?
 
 // HeimdallAddress represents heimdall address
 type HeimdallAddress common.Address
@@ -444,7 +444,7 @@ func (aa AccAddress) String() string {
 			return addr.(string)
 		}
 	}
-	// TODO CHECK HEIMDALL-V2 replace bech32 with heimdallAddress (everywhere in this file)?
+	// TODO HV2 replace bech32 with heimdallAddress (everywhere in this file)?
 	return cacheBech32Addr(GetConfig().GetBech32AccountAddrPrefix(), aa, accAddrCache, key)
 }
 

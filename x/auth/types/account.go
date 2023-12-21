@@ -54,7 +54,7 @@ func NewBaseAccountWithAddress(addr sdk.HeimdallAddress) *BaseAccount {
 
 // GetAddress - Implements sdk.AccountI.
 func (acc BaseAccount) GetAddress() sdk.HeimdallAddress {
-	// TODO CHECK HEIMDALL-V2 removed Bech32 related logic
+	// TODO HV2 removed Bech32 related logic
 	// addr, _ := sdk.AccAddressFromBech32(acc.Address)
 	return sdk.HeimdallAddress{}
 }
@@ -116,7 +116,7 @@ func (acc *BaseAccount) SetSequence(seq uint64) error {
 	return nil
 }
 
-// TODO CHECK HEIMDALL-V2 verify is this needed for baseAccount? Proto has it (auth.pb.go)
+// TODO HV2 verify is this needed for baseAccount? Proto has it (auth.pb.go)
 // String implements fmt.Stringer
 func (acc BaseAccount) String() string {
 	var pubkey string
@@ -124,10 +124,10 @@ func (acc BaseAccount) String() string {
 	if acc.PubKey != nil {
 		// pubkey = sdk.MustBech32ifyAccPub(acc.PubKey)
 
-		// TODO CHECK HEIMDALL-V2 secp256k1 was from tendermint: imported comet one, correct?
+		// TODO HV2 secp256k1 was from tendermint: imported comet one, correct?
 		var pubObject secp256k1.PubKey
 
-		// TODO CHECK HEIMDALL-V2 find replacement for amino's MustUnmarshalBinaryBare?
+		// TODO HV2 find replacement for amino's MustUnmarshalBinaryBare?
 		cdc.MustUnmarshalBinaryBare(acc.PubKey.Bytes(), &pubObject)
 
 		pubkey = "0x" + hex.EncodeToString(pubObject[:])
@@ -147,7 +147,7 @@ func (acc BaseAccount) Validate() error {
 		return nil
 	}
 
-	// TODO CHECK HEIMDALL-V2 removed Bech32 related logic
+	// TODO HV2 removed Bech32 related logic
 	//accAddr, err := sdk.HeimdallAddressFromBech32(acc.Address)
 	//if err != nil {
 	//	return err
@@ -172,7 +172,7 @@ func (acc BaseAccount) UnpackInterfaces(unpacker codectypes.AnyUnpacker) error {
 // NewModuleAddressOrBech32Address NewModuleAddressOrAddress gets an input string and returns an AccAddress.
 // If the input is a valid address, it returns the address.
 // If the input is a module name, it returns the module address.
-// TODO CHECK HEIMDALL-V2 removed Bech32 related logic
+// TODO HV2 removed Bech32 related logic
 //func NewModuleAddressOrBech32Address(input string) sdk.HeimdallAddress {
 //	if addr, err := sdk.HeimdallAddressFromBech32(input); err == nil {
 //		return addr
@@ -268,7 +268,7 @@ type moduleAccountPretty struct {
 
 // MarshalJSON returns the JSON representation of a ModuleAccount.
 func (ma ModuleAccount) MarshalJSON() ([]byte, error) {
-	// TODO CHECK HEIMDALL-V2 removed Bech32 related logic
+	// TODO HV2 removed Bech32 related logic
 	//accAddr, err := sdk.HeimdallAddressFromBech32(ma.Address)
 	//if err != nil {
 	//	return nil, err
@@ -334,13 +334,13 @@ func (ga GenesisAccounts) Contains(addr sdk.HeimdallAddress) bool {
 }
 
 // GenesisAccount defines a genesis account that embeds an AccountI with validation capabilities.
-// TODO CHECK HEIMDALL-V2 genesis account is different
+// TODO HV2 genesis account is different
 type GenesisAccount interface {
 	sdk.AccountI
 
 	Validate() error
 }
 
-// TODO CHECK HEIMDALL-V2 imported from heimdall. Needed?
+// TODO HV2 imported from heimdall. Needed?
 // AccountProcessor is an interface to process account as per module
 type AccountProcessor func(*GenesisAccount, *BaseAccount) sdk.AccountI

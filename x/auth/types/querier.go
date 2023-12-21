@@ -8,7 +8,7 @@ const (
 	QueryParams  = "params"
 )
 
-// TODO CHECK HEIMDALL-V2 these two methods have been removed > replace implementation when called
+// TODO HV2 these two methods have been removed > replace implementation when called
 // QueryAccountParams defines the params for querying accounts.
 type QueryAccountParams struct {
 	Address types.HeimdallAddress

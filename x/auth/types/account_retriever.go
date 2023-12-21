@@ -11,7 +11,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	grpctypes "github.com/cosmos/cosmos-sdk/types/grpc"
-	// TODO CHECK HEIMDALL-V2 import types.HeimdallAddress
+	// TODO HV2 import types.HeimdallAddress
 )
 
 var (

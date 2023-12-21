@@ -21,7 +21,7 @@ const (
 	flagAppend          = "append"
 )
 
-// TODO CHECK HEIMDALL-V2 removed multisig related business logic
+// TODO HV2 removed multisig related business logic
 
 // GetSignBatchCommand returns the transaction sign-batch command.
 func GetSignBatchCommand() *cobra.Command {
@@ -268,14 +268,14 @@ func makeSignCmd() func(cmd *cobra.Command, args []string) error {
 			return err
 		}
 
-		// TODO CHECK HEIMDALL-V2 stdTx was retrieved with the helper (check the method)
+		// TODO HV2 stdTx was retrieved with the helper (check the method)
 		// stdTx, err := helper.ReadStdTxFromFile(cliCtx.Codec, args[0])
 		clientCtx, txF, newTx, err := readTxAndInitContexts(clientCtx, cmd, args[0])
 		if err != nil {
 			return err
 		}
 
-		// TODO CHECK HEIMDALL-V2 tx was signed with helper (check method)
+		// TODO HV2 tx was signed with helper (check method)
 		// newTx, err = helper.SignStdTx(cliCtx, stdTx, appendSig, offline)
 		return signTx(cmd, clientCtx, txF, newTx)
 	}

@@ -25,7 +25,7 @@ type HandlerOptions struct {
 // NewAnteHandler returns an AnteHandler that checks and increments sequence
 // numbers, checks signatures & account numbers, and deducts fees from the first
 // signer.
-// TODO CHECK HEIMDALL-V2 is this enough to reconcile with heimdall's auth/ante.go? (
+// TODO HV2 is this enough to reconcile with heimdall's auth/ante.go? (
 func NewAnteHandler(options HandlerOptions) (sdk.AnteHandler, error) {
 	if options.AccountKeeper == nil {
 		return nil, errorsmod.Wrap(sdkerrors.ErrLogic, "account keeper is required for ante builder")
@@ -35,7 +35,7 @@ func NewAnteHandler(options HandlerOptions) (sdk.AnteHandler, error) {
 		return nil, errorsmod.Wrap(sdkerrors.ErrLogic, "bank keeper is required for ante builder")
 	}
 
-	if options.SignModeHandler == nil { // TODO CHECK HEIMDALL-V2: what is the signing mode for heimdall? SignDoc?
+	if options.SignModeHandler == nil { // TODO HV2: what is the signing mode for heimdall? SignDoc?
 		return nil, errorsmod.Wrap(sdkerrors.ErrLogic, "sign mode handler is required for ante builder")
 	}
 
@@ -44,18 +44,18 @@ func NewAnteHandler(options HandlerOptions) (sdk.AnteHandler, error) {
 	}
 
 	anteDecorators := []sdk.AnteDecorator{
-		NewSetUpContextDecorator(),                                   // outermost AnteDecorator. SetUpContext must be called first // TODO CHECK HEIMDALL-V2 this should be ok
-		NewExtensionOptionsDecorator(options.ExtensionOptionChecker), // TODO CHECK HEIMDALL-V2 this should be ok
-		NewValidateBasicDecorator(),                                  // TODO CHECK HEIMDALL-V2 this should be ok
-		// NewTxTimeoutHeightDecorator(),                                	// TODO CHECK HEIMDALL-V2 this is not present in heimdall
-		NewValidateMemoDecorator(options.AccountKeeper), // TODO CHECK HEIMDALL-V2 this should be ok
-		// NewConsumeGasForTxSizeDecorator(options.AccountKeeper),       	// TODO CHECK HEIMDALL-V2 this was removed in heimdall's auth/ante.go (original ancestor's method `newCtx.GasMeter().ConsumeGas`)
-		NewDeductFeeDecorator(options.AccountKeeper, options.BankKeeper, options.FeegrantKeeper, options.TxFeeChecker, options.FeeCollector), // TODO CHECK HEIMDALL-V2 heavily changed
-		NewSetPubKeyDecorator(options.AccountKeeper), // SetPubKeyDecorator must be called before all signature verification decorators // TODO CHECK HEIMDALL-V2 it should be ok (or we could remove the multiSig support)
-		// NewValidateSigCountDecorator(options.AccountKeeper),				// TODO CHECK HEIMDALL-V2 this was removed in heimdall's auth/ante.go (original ancestor's method `ValidateSigCount`)
-		NewSigGasConsumeDecorator(options.AccountKeeper, options.SigGasConsumer),    // TODO CHECK HEIMDALL-V2 brand new, should be ok, to double check
-		NewSigVerificationDecorator(options.AccountKeeper, options.SignModeHandler), // TODO CHECK HEIMDALL-V2 brand new, should be ok, to double check
-		NewIncrementSequenceDecorator(options.AccountKeeper),                        // TODO CHECK HEIMDALL-V2 this should be ok
+		NewSetUpContextDecorator(),                                   // outermost AnteDecorator. SetUpContext must be called first // TODO HV2 this should be ok
+		NewExtensionOptionsDecorator(options.ExtensionOptionChecker), // TODO HV2 this should be ok
+		NewValidateBasicDecorator(),                                  // TODO HV2 this should be ok
+		// NewTxTimeoutHeightDecorator(),                                	// TODO HV2 this is not present in heimdall
+		NewValidateMemoDecorator(options.AccountKeeper), // TODO HV2 this should be ok
+		// NewConsumeGasForTxSizeDecorator(options.AccountKeeper),       	// TODO HV2 this was removed in heimdall's auth/ante.go (original ancestor's method `newCtx.GasMeter().ConsumeGas`)
+		NewDeductFeeDecorator(options.AccountKeeper, options.BankKeeper, options.FeegrantKeeper, options.TxFeeChecker, options.FeeCollector), // TODO HV2 heavily changed
+		NewSetPubKeyDecorator(options.AccountKeeper), // SetPubKeyDecorator must be called before all signature verification decorators // TODO HV2 it should be ok (or we could remove the multiSig support)
+		// NewValidateSigCountDecorator(options.AccountKeeper),				// TODO HV2 this was removed in heimdall's auth/ante.go (original ancestor's method `ValidateSigCount`)
+		NewSigGasConsumeDecorator(options.AccountKeeper, options.SigGasConsumer),    // TODO HV2 brand new, should be ok, to double check
+		NewSigVerificationDecorator(options.AccountKeeper, options.SignModeHandler), // TODO HV2 brand new, should be ok, to double check
+		NewIncrementSequenceDecorator(options.AccountKeeper),                        // TODO HV2 this should be ok
 	}
 
 	return sdk.ChainAnteDecorators(anteDecorators...), nil

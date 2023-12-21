@@ -55,7 +55,7 @@ func (dfd DeductFeeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bo
 		err      error
 	)
 
-	// TODO CHECK HEIMDALL-V2: changed to be compliant with heimdall
+	// TODO HV2: changed to be compliant with heimdall
 	params := dfd.accountKeeper.GetParams(ctx)
 	gas := params.GetMaxTxGas()
 
@@ -89,7 +89,7 @@ func (dfd DeductFeeDecorator) checkDeductFee(ctx sdk.Context, sdkTx sdk.Tx, fee 
 	feeGranter := feeTx.FeeGranter()
 	deductFeesFrom := feePayer
 
-	// TODO CHECK HEIMDALL-V2: left freeGranter logic intact as we are not supposed to use it
+	// TODO HV2: left freeGranter logic intact as we are not supposed to use it
 	// if feegranter set deduct fee from feegranter account.
 	// this works with only when feegrant enabled.
 	if feeGranter != nil {

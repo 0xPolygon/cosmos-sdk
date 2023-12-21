@@ -30,7 +30,7 @@ func (ak AccountKeeper) InitGenesis(ctx sdk.Context, data types.GenesisState, pr
 		}
 		// execute account processors
 		for _, p := range processors {
-			// TODO CHECK HEIMDALL-V2 fill processors here (check heimdall's auth/genesis.go)
+			// TODO HV2 fill processors here (check heimdall's auth/genesis.go)
 			// acc = p(&gacc, d) //nolint
 		}
 		ak.SetAccount(ctx, acc)
