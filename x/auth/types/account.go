@@ -116,7 +116,7 @@ func (acc *BaseAccount) SetSequence(seq uint64) error {
 	return nil
 }
 
-// TODO HV2 verify is this needed for baseAccount? Proto has it (auth.pb.go)
+// TODO HV2 It's should not be needed, but verify (proto implements it in `auth.pb.go`)
 // String implements fmt.Stringer
 func (acc BaseAccount) String() string {
 	var pubkey string
@@ -124,10 +124,8 @@ func (acc BaseAccount) String() string {
 	if acc.PubKey != nil {
 		// pubkey = sdk.MustBech32ifyAccPub(acc.PubKey)
 
-		// TODO HV2 secp256k1 was from tendermint: imported comet one, correct?
 		var pubObject secp256k1.PubKey
 
-		// TODO HV2 find replacement for amino's MustUnmarshalBinaryBare?
 		cdc.MustUnmarshalBinaryBare(acc.PubKey.Bytes(), &pubObject)
 
 		pubkey = "0x" + hex.EncodeToString(pubObject[:])

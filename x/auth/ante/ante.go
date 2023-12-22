@@ -39,6 +39,8 @@ func NewAnteHandler(options HandlerOptions) (sdk.AnteHandler, error) {
 		return nil, errorsmod.Wrap(sdkerrors.ErrLogic, "sign mode handler is required for ante builder")
 	}
 
+	// TODO HV2: heimdall is using this for the supply method `SendCoinsFromAccountToModule`.
+	//  Upstream supply is merged with bank, so do we need this or BankKeeper is enough?
 	if options.FeeCollector == nil {
 		return nil, errorsmod.Wrap(sdkerrors.ErrLogic, "fee collector has not been set")
 	}

@@ -2714,6 +2714,8 @@ const (
 // apps have a consistent version of this enum.
 type SignMode int32
 
+
+// TODO HV2: double check SignMode
 const (
 	// SIGN_MODE_UNSPECIFIED specifies an unknown signing mode and will be
 	// rejected.
