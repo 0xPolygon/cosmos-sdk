@@ -71,6 +71,7 @@ func (s queryServer) Account(ctx context.Context, req *types.QueryAccountRequest
 		return nil, status.Error(codes.InvalidArgument, "Address cannot be empty")
 	}
 
+	// PSP - TODO HV2 - we might need wo change this to use heimdall address
 	addr, err := s.k.addressCodec.StringToBytes(req.Address)
 	if err != nil {
 		return nil, err
@@ -88,6 +89,25 @@ func (s queryServer) Account(ctx context.Context, req *types.QueryAccountRequest
 	return &types.QueryAccountResponse{Account: any}, nil
 }
 
+// func queryAccount(ctx sdk.Context, req abci.RequestQuery, keeper AccountKeeper) ([]byte, sdk.Error) {
+// 	var params types.QueryAccountParams
+// 	if err := keeper.cdc.UnmarshalJSON(req.Data, &params); err != nil {
+// 		return nil, sdk.ErrInternal(fmt.Sprintf("failed to parse params: %s", err))
+// 	}
+
+// 	account := keeper.GetAccount(ctx, params.Address)
+// 	if account == nil {
+// 		return nil, sdk.ErrUnknownAddress(fmt.Sprintf("account %s does not exist", params.Address))
+// 	}
+
+// 	bz, err := codec.MarshalJSONIndent(keeper.cdc, account)
+// 	if err != nil {
+// 		return nil, sdk.ErrInternal(sdk.AppendMsgToErr("could not marshal result to JSON", err.Error()))
+// 	}
+
+// 	return bz, nil
+// }
+
 // Params returns parameters of auth module
 func (s queryServer) Params(c context.Context, req *types.QueryParamsRequest) (*types.QueryParamsResponse, error) {
 	if req == nil {
@@ -98,6 +118,15 @@ func (s queryServer) Params(c context.Context, req *types.QueryParamsRequest) (*
 
 	return &types.QueryParamsResponse{Params: params}, nil
 }
+
+// func queryParams(ctx sdk.Context, _ abci.RequestQuery, keeper AccountKeeper) ([]byte, sdk.Error) {
+// 	bz, err := jsoniter.ConfigFastest.Marshal(keeper.GetParams(ctx))
+// 	if err != nil {
+// 		return nil, sdk.ErrInternal(sdk.AppendMsgToErr("could not marshal result to JSON", err.Error()))
+// 	}
+
+// 	return bz, nil
+// }
 
 // ModuleAccounts returns all the existing Module Accounts
 func (s queryServer) ModuleAccounts(c context.Context, req *types.QueryModuleAccountsRequest) (*types.QueryModuleAccountsResponse, error) {
