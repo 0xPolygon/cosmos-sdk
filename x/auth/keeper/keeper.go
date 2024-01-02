@@ -88,7 +88,7 @@ type AccountKeeper struct {
 	storeService store.KVStoreService
 	cdc          codec.BinaryCodec
 	permAddrs    map[string]types.PermissionsForAddress
-	// TODO HV2 bech32Prefix?
+	// TODO HV2 bech32Prefix? Keeping this as it is for now. Check if it is interfering with heimdall address
 	bech32Prefix string
 
 	// The prototypical AccountI constructor.
@@ -281,37 +281,23 @@ func (ak AccountKeeper) GetParams(ctx context.Context) (params types.Params) {
 
 // GetBlockProposer returns block proposer
 func (ak AccountKeeper) GetBlockProposer(ctx sdk.Context) (sdk.HeimdallAddress, bool) {
-	// TODO HV2 are these implementations equivalent for GetBlockProposer
 	kvStore := ak.storeService.OpenKVStore(ctx)
-	isProposerPresent, _ := kvStore.Has(types.ProposerKey()) // TODO HV2 handle error?
+	isProposerPresent, _ := kvStore.Has(types.ProposerKey())
 	if !isProposerPresent {
 		return sdk.HeimdallAddress{}, false
 	}
-	blockProposerBytes, _ := kvStore.Get(types.ProposerKey()) // TODO HV2 handle error?
+	blockProposerBytes, _ := kvStore.Get(types.ProposerKey())
 	return sdk.BytesToHeimdallAddress(blockProposerBytes), true
-
-	//store := ctx.KVStore(ak.key)
-	//if !store.Has(types.ProposerKey()) {
-	//	return hmTypes.HeimdallAddress{}, false
-	//}
-	//bz := store.Get(types.ProposerKey())
-	//return hmTypes.BytesToHeimdallAddress(bz), true
 }
 
 // SetBlockProposer sets block proposer
 func (ak AccountKeeper) SetBlockProposer(ctx sdk.Context, addr sdk.HeimdallAddress) {
-	// TODO HV2 are these implementations equivalent for SetBlockProposer
 	kvStore := ak.storeService.OpenKVStore(ctx)
-	kvStore.Set(types.ProposerKey(), addr.Bytes()) // TODO HV2 handle error?
-	//store := ctx.KVStore(ak.key)
-	//store.Set(types.ProposerKey(), addr.Bytes())
+	kvStore.Set(types.ProposerKey(), addr.Bytes())
 }
 
 // RemoveBlockProposer removes block proposer from store
 func (ak AccountKeeper) RemoveBlockProposer(ctx sdk.Context) {
-	// TODO HV2 are these implementations equivalent for RemoveBlockProposer
 	kvStore := ak.storeService.OpenKVStore(ctx)
-	kvStore.Delete(types.ProposerKey()) // TODO HV2 handle error?
-	//store := ctx.KVStore(ak.key)
-	//store.Delete(types.ProposerKey())
+	kvStore.Delete(types.ProposerKey())
 }
