@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	gwruntime "github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/maticnetwork/heimdall/helper"
 
 	modulev1 "cosmossdk.io/api/cosmos/auth/module/v1"
 	"cosmossdk.io/core/address"
@@ -93,7 +94,6 @@ type AppModule struct {
 	// legacySubspace is used solely for migration of x/params managed parameters
 	legacySubspace exported.Subspace
 
-	// TODO HV2 check contractCaller and processors in this whole file
 	contractCaller helper.IContractCaller
 	processors     []types.AccountProcessor
 }
@@ -214,8 +214,6 @@ type ModuleOutputs struct {
 
 	AccountKeeper keeper.AccountKeeper
 	Module        appmodule.AppModule
-
-	// TODO HV2 check contractCaller and processors in this whole file
 }
 
 func ProvideModule(in ModuleInputs) ModuleOutputs {
@@ -239,10 +237,12 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 		in.AccountI = types.ProtoBaseAccount
 	}
 
+	// PSP - TODO HV2 remove this if we decided to remove contractCallerfrom ModuleInputs
 	if in.contractCaller == nil {
 		in.contractCaller = helper.IContractCaller
 	}
 
+	// PSP - TODO HV2 remove this if we decided to remove processors from ModuleInputs
 	if in.processors == nil {
 		in.processors = []types.AccountProcessor{}
 	}
