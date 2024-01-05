@@ -203,10 +203,6 @@ type ModuleInputs struct {
 
 	// LegacySubspace is used solely for migration of x/params managed parameters
 	LegacySubspace exported.Subspace `optional:"true"`
-
-	// TODO HV2 is this depinject needed?
-	contractCaller helper.IContractCaller
-	processors     []types.AccountProcessor
 }
 
 type ModuleOutputs struct {
@@ -237,18 +233,8 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 		in.AccountI = types.ProtoBaseAccount
 	}
 
-	// PSP - TODO HV2 remove this if we decided to remove contractCallerfrom ModuleInputs
-	if in.contractCaller == nil {
-		in.contractCaller = helper.IContractCaller
-	}
-
-	// PSP - TODO HV2 remove this if we decided to remove processors from ModuleInputs
-	if in.processors == nil {
-		in.processors = []types.AccountProcessor{}
-	}
-
 	k := keeper.NewAccountKeeper(in.Cdc, in.StoreService, in.AccountI, maccPerms, in.AddressCodec, in.Config.Bech32Prefix, authority.String())
-	m := NewAppModule(in.Cdc, k, in.RandomGenesisAccountsFn, in.LegacySubspace, in.contractCaller, in.processors)
+	m := NewAppModule(in.Cdc, k, in.RandomGenesisAccountsFn, in.LegacySubspace, nil, nil)
 
 	return ModuleOutputs{AccountKeeper: k, Module: m}
 }
