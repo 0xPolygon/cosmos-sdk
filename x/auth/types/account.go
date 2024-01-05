@@ -6,9 +6,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"strings"
+
 	"github.com/cometbft/cometbft/crypto"
 	"github.com/cometbft/cometbft/crypto/secp256k1"
-	"strings"
 
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
@@ -332,13 +333,11 @@ func (ga GenesisAccounts) Contains(addr sdk.HeimdallAddress) bool {
 }
 
 // GenesisAccount defines a genesis account that embeds an AccountI with validation capabilities.
-// TODO HV2 genesis account is different
 type GenesisAccount interface {
 	sdk.AccountI
 
 	Validate() error
 }
 
-// TODO HV2 imported from heimdall. Needed?
 // AccountProcessor is an interface to process account as per module
 type AccountProcessor func(*GenesisAccount, *BaseAccount) sdk.AccountI
