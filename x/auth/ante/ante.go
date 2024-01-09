@@ -25,7 +25,12 @@ type HandlerOptions struct {
 // NewAnteHandler returns an AnteHandler that checks and increments sequence
 // numbers, checks signatures & account numbers, and deducts fees from the first
 // signer.
-// TODO HV2 is this enough to reconcile with heimdall's auth/ante.go? (
+
+// TODO HV2 is this enough to reconcile with heimdall's auth/ante.go?
+// ^ we will nedd to add the following in `HandlerOptions` as NewAnteHandler() in heimdall is using them:
+//   - chainKeeper chainmanager.Keeper
+//   - contractCaller helper.IContractCaller
+//   - sigGasConsumer SignatureVerificationGasConsumer
 func NewAnteHandler(options HandlerOptions) (sdk.AnteHandler, error) {
 	if options.AccountKeeper == nil {
 		return nil, errorsmod.Wrap(sdkerrors.ErrLogic, "account keeper is required for ante builder")

@@ -2,13 +2,12 @@ package types
 
 import (
 	"bytes"
-	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/cometbft/cometbft/crypto"
-	"github.com/cometbft/cometbft/crypto/secp256k1"
 	"strings"
+
+	"github.com/cometbft/cometbft/crypto"
 
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
@@ -114,29 +113,6 @@ func (acc BaseAccount) GetSequence() uint64 {
 func (acc *BaseAccount) SetSequence(seq uint64) error {
 	acc.Sequence = seq
 	return nil
-}
-
-// TODO HV2 It's should not be needed, but verify (proto implements it in `auth.pb.go`)
-// String implements fmt.Stringer
-func (acc BaseAccount) String() string {
-	var pubkey string
-
-	if acc.PubKey != nil {
-		// pubkey = sdk.MustBech32ifyAccPub(acc.PubKey)
-
-		var pubObject secp256k1.PubKey
-
-		cdc.MustUnmarshalBinaryBare(acc.PubKey.Bytes(), &pubObject)
-
-		pubkey = "0x" + hex.EncodeToString(pubObject[:])
-	}
-
-	return fmt.Sprintf(`Account:
-  Address:       %s
-  Pubkey:        %s
-  AccountNumber: %d
-  Sequence:      %d`,
-		acc.Address, pubkey, acc.AccountNumber, acc.Sequence)
 }
 
 // Validate checks for errors on the account fields
@@ -332,13 +308,11 @@ func (ga GenesisAccounts) Contains(addr sdk.HeimdallAddress) bool {
 }
 
 // GenesisAccount defines a genesis account that embeds an AccountI with validation capabilities.
-// TODO HV2 genesis account is different
 type GenesisAccount interface {
 	sdk.AccountI
 
 	Validate() error
 }
 
-// TODO HV2 imported from heimdall. Needed?
 // AccountProcessor is an interface to process account as per module
 type AccountProcessor func(*GenesisAccount, *BaseAccount) sdk.AccountI

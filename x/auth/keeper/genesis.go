@@ -28,10 +28,12 @@ func (ak AccountKeeper) InitGenesis(ctx sdk.Context, data types.GenesisState, pr
 			n := ak.NextAccountNumber(ctx)
 			lastAccNum = &n
 		}
+
+		baseAcc := types.NewBaseAccount(acc.GetAddress(), acc.GetPubKey(), accNum, acc.GetSequence())
+
 		// execute account processors
 		for _, p := range processors {
-			// TODO HV2 fill processors here (check heimdall's auth/genesis.go)
-			// acc = p(&gacc, d) //nolint
+			acc = p(&acc, baseAcc) //nolint
 		}
 		ak.SetAccount(ctx, acc)
 	}

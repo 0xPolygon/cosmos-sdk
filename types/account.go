@@ -23,7 +23,6 @@ type AccountI interface {
 	GetAddress() HeimdallAddress
 	SetAddress(HeimdallAddress) error // errors if already set.
 
-	// TODO HV2 is this key what we want to use?
 	GetPubKey() cryptotypes.PubKey // can return nil.
 	SetPubKey(cryptotypes.PubKey) error
 
