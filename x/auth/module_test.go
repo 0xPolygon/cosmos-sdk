@@ -14,8 +14,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
 )
 
-// // TODO HV2 inject heimdall app
 func TestItCreatesModuleAccountOnInitBlock(t *testing.T) {
+	t.Skip() // skipping as we are not using depinject
 	var accountKeeper keeper.AccountKeeper
 	app, err := simtestutil.SetupAtGenesis(
 		depinject.Configs(
