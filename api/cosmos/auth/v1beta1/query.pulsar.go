@@ -8671,6 +8671,7 @@ type QueryAccountRequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	// address defines the address to query for.
+	// TODO HV2 change it to HeimdallAddress
 	Address string `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
 }
 

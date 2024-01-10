@@ -140,6 +140,7 @@ func (m *QueryAccountsResponse) GetPagination() *query.PageResponse {
 // QueryAccountRequest is the request type for the Query/Account RPC method.
 type QueryAccountRequest struct {
 	// address defines the address to query for.
+	// TODO HV2 change it to HeimdallAddress
 	Address string `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
 }
 

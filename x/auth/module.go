@@ -6,7 +6,8 @@ import (
 	"fmt"
 
 	gwruntime "github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"github.com/maticnetwork/heimdall/helper"
+	// TODO HV2 import
+	// "github.com/maticnetwork/heimdall/helper"
 
 	modulev1 "cosmossdk.io/api/cosmos/auth/module/v1"
 	"cosmossdk.io/core/address"
@@ -94,8 +95,9 @@ type AppModule struct {
 	// legacySubspace is used solely for migration of x/params managed parameters
 	legacySubspace exported.Subspace
 
-	contractCaller helper.IContractCaller
-	processors     []types.AccountProcessor
+	// TODO HV2 use contractCaller
+	// contractCaller helper.IContractCaller
+	processors []types.AccountProcessor
 }
 
 // IsOnePerModuleType implements the depinject.OnePerModuleType interface.
@@ -105,14 +107,16 @@ func (am AppModule) IsOnePerModuleType() {}
 func (am AppModule) IsAppModule() {}
 
 // NewAppModule creates a new AppModule object
-func NewAppModule(cdc codec.Codec, accountKeeper keeper.AccountKeeper, randGenAccountsFn types.RandomGenesisAccountsFn, ss exported.Subspace, contractCaller helper.IContractCaller, processors []types.AccountProcessor) AppModule {
+// TODO HV2 use contractCaller instead of nil
+func NewAppModule(cdc codec.Codec, accountKeeper keeper.AccountKeeper, randGenAccountsFn types.RandomGenesisAccountsFn, ss exported.Subspace, nil, processors []types.AccountProcessor) AppModule {
 	return AppModule{
 		AppModuleBasic:    AppModuleBasic{ac: accountKeeper.AddressCodec()},
 		accountKeeper:     accountKeeper,
 		randGenAccountsFn: randGenAccountsFn,
 		legacySubspace:    ss,
-		contractCaller:    contractCaller,
-		processors:        processors,
+		// TODO HV2 use contractCaller
+		// contractCaller:    contractCaller,
+		processors: processors,
 	}
 }
 
@@ -222,7 +226,7 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 	authority := types.NewModuleAddress(GovModuleName)
 	if in.Config.Authority != "" {
 		// TODO HV2 Bech32 related stuff was removed > replace here
-		authority = types.NewModuleAddressOrBech32Address(in.Config.Authority)
+		// authority = types.NewModuleAddressOrBech32Address(in.Config.Authority)
 	}
 
 	if in.RandomGenesisAccountsFn == nil {
