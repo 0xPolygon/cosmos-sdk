@@ -58,6 +58,7 @@ type AccountKeeperI interface {
 	AddressCodec() address.Codec
 }
 
+// TODO HV2 fix this
 func NewAccountIndexes(sb *collections.SchemaBuilder) AccountsIndexes {
 	return AccountsIndexes{
 		Number: indexes.NewUnique(
@@ -88,7 +89,6 @@ type AccountKeeper struct {
 	storeService store.KVStoreService
 	cdc          codec.BinaryCodec
 	permAddrs    map[string]types.PermissionsForAddress
-	// TODO HV2 bech32Prefix? Keeping this as it is for now. Check if it is interfering with heimdall address
 	bech32Prefix string
 
 	// The prototypical AccountI constructor.

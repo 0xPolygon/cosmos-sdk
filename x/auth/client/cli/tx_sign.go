@@ -99,7 +99,7 @@ func makeSignBatchCmd() func(cmd *cobra.Command, args []string) error {
 				return err
 			}
 
-			acc, err := txFactory.AccountRetriever().GetAccount(clientCtx, sdk.AccAddressToHeimdallAddress(addr))
+			acc, err := txFactory.AccountRetriever().GetAccount(clientCtx, addr)
 			if err != nil {
 				return err
 			}
@@ -268,14 +268,14 @@ func makeSignCmd() func(cmd *cobra.Command, args []string) error {
 			return err
 		}
 
-		// TODO HV2 stdTx was retrieved with the helper (check the method)
+		// TODO HV2 stdTx was retrieved with helper method (check implementation for differences)
 		// stdTx, err := helper.ReadStdTxFromFile(cliCtx.Codec, args[0])
 		clientCtx, txF, newTx, err := readTxAndInitContexts(clientCtx, cmd, args[0])
 		if err != nil {
 			return err
 		}
 
-		// TODO HV2 tx was signed with helper (check method)
+		// TODO HV2 tx was signed with helper method (check implementation for differences)
 		// newTx, err = helper.SignStdTx(cliCtx, stdTx, appendSig, offline)
 		return signTx(cmd, clientCtx, txF, newTx)
 	}

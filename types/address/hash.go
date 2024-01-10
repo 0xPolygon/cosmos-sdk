@@ -96,7 +96,6 @@ func Derive(address, key []byte) []byte {
 	return Hash(conv.UnsafeBytesToStr(address), key)
 }
 
-// TODO HV2 move these types to heimdall?
 // HeimdallHash represents heimdall address
 type HeimdallHash common.Hash
 

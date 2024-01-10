@@ -77,7 +77,7 @@ const (
 	Bech32PrefixConsAddr = Bech32MainPrefix + PrefixValidator + PrefixConsensus
 	// Bech32PrefixConsPub defines the Bech32 prefix of a consensus node public key
 	Bech32PrefixConsPub = Bech32MainPrefix + PrefixValidator + PrefixConsensus + PrefixPublic
-	// AddrLen defines a valid address length (TODO HV2: imported from heimdall, not used)
+	// AddrLen defines a valid address length
 	AddrLen = 20
 )
 
@@ -146,12 +146,10 @@ var (
 	_ Address = HeimdallAddress{}
 )
 
-// TODO HV2 move these types to heimdall?
-
 // HeimdallAddress represents heimdall address
 type HeimdallAddress common.Address
 
-// ZeroHeimdallAddress represents zero address
+// ZeroHeimdallAddress represents zero heimdall address
 var ZeroHeimdallAddress = HeimdallAddress{}
 
 // EthAddress get eth address
@@ -159,7 +157,7 @@ func (aa HeimdallAddress) EthAddress() common.Address {
 	return common.Address(aa)
 }
 
-// Equals returns boolean for whether two AccAddresses are Equal
+// Equals returns boolean for whether two HeimdallAddress are Equal
 func (aa HeimdallAddress) Equals(aa2 Address) bool {
 	if aa.Empty() && aa2.Empty() {
 		return true
@@ -168,7 +166,7 @@ func (aa HeimdallAddress) Equals(aa2 Address) bool {
 	return bytes.Equal(aa.Bytes(), aa2.Bytes())
 }
 
-// Empty returns boolean for whether an AccAddress is empty
+// Empty returns boolean for whether an HeimdallAddress is empty
 func (aa HeimdallAddress) Empty() bool {
 	return bytes.Equal(aa.Bytes(), ZeroHeimdallAddress.Bytes())
 }
@@ -186,17 +184,17 @@ func (aa *HeimdallAddress) Unmarshal(data []byte) error {
 	return nil
 }
 
-// MarshalJSON marshals to JSON using Bech32.
+// MarshalJSON marshals to JSON using hex.
 func (aa HeimdallAddress) MarshalJSON() ([]byte, error) {
 	return jsoniter.ConfigFastest.Marshal(aa.String())
 }
 
-// MarshalYAML marshals to YAML using Bech32.
+// MarshalYAML marshals to YAML using hex.
 func (aa HeimdallAddress) MarshalYAML() (interface{}, error) {
 	return aa.String(), nil
 }
 
-// UnmarshalJSON unmarshals from JSON assuming Bech32 encoding.
+// UnmarshalJSON unmarshals from JSON assuming hex encoding.
 func (aa *HeimdallAddress) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := jsoniter.ConfigFastest.Unmarshal(data, &s); err != nil {
@@ -208,7 +206,7 @@ func (aa *HeimdallAddress) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// UnmarshalYAML unmarshals from JSON assuming Bech32 encoding.
+// UnmarshalYAML unmarshals from JSON assuming hex encoding.
 func (aa *HeimdallAddress) UnmarshalYAML(data []byte) error {
 	var s string
 	if err := yaml.Unmarshal(data, &s); err != nil {
@@ -244,7 +242,7 @@ func (aa HeimdallAddress) Format(s fmt.State, verb rune) {
 }
 
 //
-// Address utils
+// HeimdallAddress utils
 //
 
 // BytesToHeimdallAddress returns Address with value b.
@@ -444,7 +442,6 @@ func (aa AccAddress) String() string {
 			return addr.(string)
 		}
 	}
-	// TODO HV2 replace bech32 with heimdallAddress (everywhere in this file)?
 	return cacheBech32Addr(GetConfig().GetBech32AccountAddrPrefix(), aa, accAddrCache, key)
 }
 

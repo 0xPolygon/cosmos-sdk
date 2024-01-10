@@ -10,8 +10,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
 )
 
-// TODO HV2 check this file (it was deleted in heimdall). Is this test needed? In case modify according to AccountRetriever interface definition
-
 func TestAccountRetriever(t *testing.T) {
 	cfg, err := network.DefaultConfigWithAppConfig(testutil.AppConfig)
 	require.NoError(t, err)

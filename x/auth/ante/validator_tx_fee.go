@@ -14,7 +14,6 @@ import (
 // checkTxFeeWithValidatorMinGasPrices implements the default fee logic, where the minimum price per
 // unit of gas is fixed and set by each validator, can the tx priority is computed from the gas price.
 func checkTxFeeWithValidatorMinGasPrices(ctx sdk.Context, tx sdk.Tx, params types.Params) (sdk.Coins, int64, error) {
-	// TODO HV2: imported (and slightly modified) from heimdall, is this the right place?
 	amount, ok := sdkmath.NewIntFromString(params.GetTxFees())
 	if !ok {
 		return nil, 0, errorsmod.Wrap(sdkerrors.ErrInvalidTxFees, "must provide correct txFees")

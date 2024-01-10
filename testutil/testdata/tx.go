@@ -43,6 +43,15 @@ func KeyTestPubAddr() (cryptotypes.PrivKey, cryptotypes.PubKey, sdk.AccAddress) 
 	return key, pub, addr
 }
 
+// KeyTestPubHeimdallAddr generates a new secp256k1 keypair and return a heimdall compatible address.
+func KeyTestPubHeimdallAddr() (cryptotypes.PrivKey, cryptotypes.PubKey, sdk.HeimdallAddress) {
+	key := secp256k1.GenPrivKey()
+	pub := key.PubKey()
+	addr := sdk.AccAddress(pub.Address())
+	heimdallAddr := sdk.AccAddressToHeimdallAddress(addr)
+	return key, pub, heimdallAddr
+}
+
 // KeyTestPubAddr generates a new secp256r1 keypair.
 func KeyTestPubAddrSecp256R1(t *testing.T) (cryptotypes.PrivKey, cryptotypes.PubKey, sdk.AccAddress) {
 	key, err := secp256r1.GenPrivKey()
@@ -50,6 +59,16 @@ func KeyTestPubAddrSecp256R1(t *testing.T) (cryptotypes.PrivKey, cryptotypes.Pub
 	pub := key.PubKey()
 	addr := sdk.AccAddress(pub.Address())
 	return key, pub, addr
+}
+
+// KeyTestPubAddr generates a new secp256r1 keypair.
+func KeyTestPubHeimdallAddrSecp256R1(t *testing.T) (cryptotypes.PrivKey, cryptotypes.PubKey, sdk.HeimdallAddress) {
+	key, err := secp256r1.GenPrivKey()
+	assert.NilError(t, err)
+	pub := key.PubKey()
+	addr := sdk.AccAddress(pub.Address())
+	heimdallAddr := sdk.AccAddressToHeimdallAddress(addr)
+	return key, pub, heimdallAddr
 }
 
 // NewTestFeeAmount is a test fee amount.

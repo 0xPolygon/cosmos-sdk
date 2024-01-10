@@ -24,9 +24,7 @@ import (
 )
 
 var (
-	// TODO HV2 imported comet secp256k1, check if tests pass
 	priv = secp256k1.GenPrivKey()
-	//priv = ed25519.GenPrivKey()
 	addr = sdk.AccAddress(priv.PubKey().Address())
 )
 

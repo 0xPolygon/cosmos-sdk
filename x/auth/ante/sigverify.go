@@ -35,12 +35,10 @@ var (
 	simSecp256k1Pubkey = &secp256k1.PubKey{Key: key}
 	simSecp256k1Sig    [64]byte
 
-	// TODO HV2 imported from heimdall's auth/ante.go
-
 	// DefaultFeeInMatic represents default fee in matic
 	DefaultFeeInMatic = big.NewInt(10).Exp(big.NewInt(10), big.NewInt(15), nil)
 
-	// TODO HV2 no usage of DefaultFeeWantedPerTx?
+	// TODO HV2 no usage of DefaultFeeWantedPerTx so far. In heimdall, this is used in topup module's side_handler.go
 	// DefaultFeeWantedPerTx fee wanted per tx
 	DefaultFeeWantedPerTx = sdk.Coins{sdk.Coin{Denom: types.FeeToken, Amount: math.NewIntFromBigInt(DefaultFeeInMatic)}}
 )
@@ -55,13 +53,9 @@ func init() {
 // SignatureVerificationGasConsumer is the type of function that is used to both
 // consume gas when verifying signatures and also to accept or reject different types of pubkeys
 // This is where apps can define their own PubKey
-// TODO HV2 check this implementation where (imported from heimdall's auth/ante.go)
-//
-//	We kept cosmos signing.SignatureV2 compared to heimdall's authTypes.StdSignature (down the line we can fetch bytes out of it)
 type SignatureVerificationGasConsumer = func(meter storetypes.GasMeter, sig signing.SignatureV2, params types.Params) error
 
 // FeeCollector interface for fees collector
-// TODO HV2 imported from heimdall's auth/ante.go
 type FeeCollector interface {
 	GetModuleAddress(string) sdk.HeimdallAddress
 	SendCoinsFromAccountToModule(
@@ -92,8 +86,6 @@ func NewSetPubKeyDecorator(ak AccountKeeper) SetPubKeyDecorator {
 }
 
 func (spkd SetPubKeyDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.AnteHandler) (sdk.Context, error) {
-	// TODO HV2 do we need to change this function? It supports multisig but it should work with one sig only too
-
 	sigTx, ok := tx.(authsigning.SigVerifiableTx)
 	if !ok {
 		return ctx, errorsmod.Wrap(sdkerrors.ErrTxDecode, "invalid tx type")
@@ -215,18 +207,14 @@ func (sgcd SigGasConsumeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simula
 		return ctx, err
 	}
 
-	// TODO HV2 imported from heimdall's auth/ante.go (I believe this relate to multiSig)
 	if len(signers) == 0 {
 		return ctx, sdkerrors.ErrNoSignatures
 	}
 
-	// TODO HV2 changed from ErrUnauthorized to ErrTooManySignatures
 	if len(signers) > 1 {
 		return newCtx, sdkerrors.ErrTooManySignatures
 	}
 
-	// TODO HV2 this loop was remove in heimdall (I believe this relate to multiSig)
-	// for i, sig := range sigs {
 	signerAcc, err := GetSignerAcc(ctx, sgcd.ak, sdk.BytesToHeimdallAddress(signers[0]))
 	if err != nil {
 		return ctx, err
@@ -253,7 +241,6 @@ func (sgcd SigGasConsumeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simula
 	if err != nil {
 		return ctx, err
 	}
-	//}
 
 	return next(ctx, tx, simulate)
 }
@@ -480,7 +467,6 @@ func DefaultSigVerificationGasConsumer(
 		meter.ConsumeGas(params.SigVerifyCostED25519, "ante verify: ed25519")
 		return errorsmod.Wrap(sdkerrors.ErrInvalidPubKey, "ED25519 public keys are unsupported")
 
-		// TODO HV2: heimdall should only use this one
 	case *secp256k1.PubKey:
 		meter.ConsumeGas(params.SigVerifyCostSecp256k1, "ante verify: secp256k1")
 		return nil
@@ -489,7 +475,6 @@ func DefaultSigVerificationGasConsumer(
 		meter.ConsumeGas(params.SigVerifyCostSecp256r1(), "ante verify: secp256r1")
 		return nil
 
-		// TODO HV2: do we remove multiSig support?
 	case multisig.PubKey:
 		multisignature, ok := sig.Data.(*signing.MultiSignatureData)
 		if !ok {
@@ -535,7 +520,6 @@ func ConsumeMultisignatureVerificationGas(
 
 // GetSignerAcc returns an account for a given address that is expected to sign
 // a transaction.
-// TODO HV2 import type for the argument, and change the return value due to sdk.AccountI interface
 func GetSignerAcc(ctx sdk.Context, ak AccountKeeper, addr sdk.HeimdallAddress) (sdk.AccountI, error) {
 	if acc := ak.GetAccount(ctx, addr); acc != nil {
 		return acc, nil

@@ -53,9 +53,8 @@ func NewBaseAccountWithAddress(addr sdk.HeimdallAddress) *BaseAccount {
 
 // GetAddress - Implements sdk.AccountI.
 func (acc BaseAccount) GetAddress() sdk.HeimdallAddress {
-	// TODO HV2 removed Bech32 related logic
-	// addr, _ := sdk.AccAddressFromBech32(acc.Address)
-	return sdk.HeimdallAddress{}
+	addr, _ := sdk.AccAddressFromBech32(acc.Address)
+	return sdk.AccAddressToHeimdallAddress(addr)
 }
 
 // SetAddress - Implements sdk.AccountI.
@@ -121,13 +120,12 @@ func (acc BaseAccount) Validate() error {
 		return nil
 	}
 
-	// TODO HV2 removed Bech32 related logic
-	//accAddr, err := sdk.HeimdallAddressFromBech32(acc.Address)
-	//if err != nil {
-	//	return err
-	//}
+	accAddr, err := sdk.AccAddressFromBech32(acc.Address)
+	if err != nil {
+		return err
+	}
 
-	if !bytes.Equal(acc.GetPubKey().Address().Bytes(), acc.Address.Bytes()) {
+	if !bytes.Equal(acc.GetPubKey().Address().Bytes(), sdk.AccAddressToHeimdallAddress(accAddr).Bytes()) {
 		return errors.New("account address and pubkey address do not match")
 	}
 
@@ -143,17 +141,16 @@ func (acc BaseAccount) UnpackInterfaces(unpacker codectypes.AnyUnpacker) error {
 	return unpacker.UnpackAny(acc.PubKey, &pubKey)
 }
 
-// NewModuleAddressOrBech32Address NewModuleAddressOrAddress gets an input string and returns an AccAddress.
+// NewModuleAddressOrBech32Address gets an input string and returns a HeimdallAddress.
 // If the input is a valid address, it returns the address.
 // If the input is a module name, it returns the module address.
-// TODO HV2 removed Bech32 related logic
-//func NewModuleAddressOrBech32Address(input string) sdk.HeimdallAddress {
-//	if addr, err := sdk.HeimdallAddressFromBech32(input); err == nil {
-//		return addr
-//	}
-//
-//	return NewModuleAddress(input)
-//}
+func NewModuleAddressOrBech32Address(input string) sdk.HeimdallAddress {
+	if addr, err := sdk.AccAddressFromBech32(input); err == nil {
+		return sdk.AccAddressToHeimdallAddress(addr)
+	}
+
+	return NewModuleAddress(input)
+}
 
 // NewModuleAddress creates an AccAddress from the hash of the module's name
 func NewModuleAddress(name string) sdk.HeimdallAddress {
@@ -242,14 +239,13 @@ type moduleAccountPretty struct {
 
 // MarshalJSON returns the JSON representation of a ModuleAccount.
 func (ma ModuleAccount) MarshalJSON() ([]byte, error) {
-	// TODO HV2 removed Bech32 related logic
-	//accAddr, err := sdk.HeimdallAddressFromBech32(ma.Address)
-	//if err != nil {
-	//	return nil, err
-	//}
+	accAddr, err := sdk.AccAddressFromBech32(ma.Address)
+	if err != nil {
+		return nil, err
+	}
 
 	return json.Marshal(moduleAccountPretty{
-		Address:       ma.Address,
+		Address:       sdk.AccAddressToHeimdallAddress(accAddr),
 		PubKey:        "",
 		AccountNumber: ma.AccountNumber,
 		Sequence:      ma.Sequence,

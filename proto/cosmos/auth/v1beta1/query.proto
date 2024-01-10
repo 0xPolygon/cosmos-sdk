@@ -113,7 +113,6 @@ message QueryAccountRequest {
   option (gogoproto.goproto_getters) = false;
 
   // address defines the address to query for.
-  // TODO HV2 change it to HeimdallAddress
   string address = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
 }
 

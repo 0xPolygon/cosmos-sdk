@@ -8,8 +8,6 @@ import "google/protobuf/any.proto";
 
 option go_package = "github.com/cosmos/cosmos-sdk/x/auth/types";
 
-// TODO HV2: change all to be compliant with HeimdallAddress?
-
 // BaseAccount defines a base account type. It contains all the necessary fields
 // for basic account functionality. Any custom account type should extend this
 // type for additional functionality (e.g. vesting).
@@ -51,8 +49,6 @@ message ModuleCredential {
   // adding more keys creates sub-account addresses (passed into address.Derive)
   repeated bytes derivation_keys = 2;
 }
-
-// TODO HV2 check and generates new params
 
 // Params defines the parameters for the auth module.
 message Params {

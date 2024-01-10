@@ -225,8 +225,7 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 	// default to governance authority if not provided
 	authority := types.NewModuleAddress(GovModuleName)
 	if in.Config.Authority != "" {
-		// TODO HV2 Bech32 related stuff was removed > replace here
-		// authority = types.NewModuleAddressOrBech32Address(in.Config.Authority)
+		authority = types.NewModuleAddressOrBech32Address(in.Config.Authority)
 	}
 
 	if in.RandomGenesisAccountsFn == nil {

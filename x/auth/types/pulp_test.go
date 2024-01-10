@@ -7,7 +7,7 @@ import (
 	assert "github.com/stretchr/testify/require"
 )
 
-// TODO HV2 this is imported from heimdall > to be used
+// TODO HV2 this is imported from heimdall
 
 func TestGetPulpHash(t *testing.T) {
 	t.Parallel()

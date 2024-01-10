@@ -34,5 +34,4 @@ var _, _ SignatureData = &SingleSignatureData{}, &MultiSignatureData{}
 
 func (m *SingleSignatureData) isSignatureData() {}
 
-// TODO HV2 remove tupport fort MultiSignatureData?
 func (m *MultiSignatureData) isSignatureData() {}

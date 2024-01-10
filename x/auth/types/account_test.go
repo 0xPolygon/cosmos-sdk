@@ -17,8 +17,8 @@ import (
 // TODO HV2 check this file (it was deleted in heimdall). Is this test needed? In case, adapt it
 
 func TestBaseAddressPubKey(t *testing.T) {
-	_, pub1, addr1 := testdata.KeyTestPubAddr()
-	_, pub2, addr2 := testdata.KeyTestPubAddr()
+	_, pub1, addr1 := testdata.KeyTestPubHeimdallAddr()
+	_, pub2, addr2 := testdata.KeyTestPubHeimdallAddr()
 	acc := types.NewBaseAccountWithAddress(addr1)
 
 	// check the address (set) and pubkey (not set)
@@ -54,7 +54,7 @@ func TestBaseAddressPubKey(t *testing.T) {
 }
 
 func TestBaseSequence(t *testing.T) {
-	_, _, addr := testdata.KeyTestPubAddr()
+	_, _, addr := testdata.KeyTestPubHeimdallAddr()
 	acc := types.NewBaseAccountWithAddress(addr)
 	seq := uint64(7)
 
@@ -66,7 +66,7 @@ func TestBaseSequence(t *testing.T) {
 func TestGenesisAccountValidate(t *testing.T) {
 	pubkey := secp256k1.GenPrivKey().PubKey()
 	addr := sdk.AccAddress(pubkey.Address())
-	baseAcc := types.NewBaseAccount(addr, pubkey, 0, 0)
+	baseAcc := types.NewBaseAccount(sdk.AccAddressToHeimdallAddress(addr), pubkey, 0, 0)
 
 	tests := []struct {
 		name   string
@@ -80,7 +80,7 @@ func TestGenesisAccountValidate(t *testing.T) {
 		},
 		{
 			"invalid base valid account",
-			types.NewBaseAccount(addr, secp256k1.GenPrivKey().PubKey(), 0, 0),
+			types.NewBaseAccount(sdk.AccAddressToHeimdallAddress(addr), secp256k1.GenPrivKey().PubKey(), 0, 0),
 			true,
 		},
 	}
@@ -129,7 +129,7 @@ func TestHasPermissions(t *testing.T) {
 
 func TestValidate(t *testing.T) {
 	addr := sdk.AccAddress(secp256k1.GenPrivKey().PubKey().Address())
-	baseAcc := types.NewBaseAccount(addr, nil, 0, 0)
+	baseAcc := types.NewBaseAccount(sdk.AccAddressToHeimdallAddress(addr), nil, 0, 0)
 	tests := []struct {
 		name   string
 		acc    types.GenesisAccount
@@ -163,7 +163,7 @@ func TestValidate(t *testing.T) {
 func TestModuleAccountJSON(t *testing.T) {
 	pubkey := secp256k1.GenPrivKey().PubKey()
 	addr := sdk.AccAddress(pubkey.Address())
-	baseAcc := types.NewBaseAccount(addr, nil, 10, 50)
+	baseAcc := types.NewBaseAccount(sdk.AccAddressToHeimdallAddress(addr), nil, 10, 50)
 	acc := types.NewModuleAccount(baseAcc, "test", "burner")
 
 	bz, err := json.Marshal(acc)
@@ -181,7 +181,7 @@ func TestModuleAccountJSON(t *testing.T) {
 func TestGenesisAccountsContains(t *testing.T) {
 	pubkey := secp256k1.GenPrivKey().PubKey()
 	addr := sdk.AccAddress(pubkey.Address())
-	acc := types.NewBaseAccount(addr, secp256k1.GenPrivKey().PubKey(), 0, 0)
+	acc := types.NewBaseAccount(sdk.AccAddressToHeimdallAddress(addr), secp256k1.GenPrivKey().PubKey(), 0, 0)
 
 	genAccounts := types.GenesisAccounts{}
 	require.False(t, genAccounts.Contains(acc.GetAddress()))

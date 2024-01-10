@@ -12,11 +12,6 @@ import (
 // and a pubkey for authentication purposes.
 //
 // Many complex conditions can be used in the concrete struct which implements AccountI.
-
-// TODO HV2 converted AccAddress into types.HeimdallAddress (see heimdall's auth/exported/exported.go)
-//
-//	Is this enough? Check al other interfaces implementing AccountI
-//	Or do we want to separate AccountI from a different interface which is heimdall specific? Like AccountHeimdallI (less impact on upstream)
 type AccountI interface {
 	proto.Message
 

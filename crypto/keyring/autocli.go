@@ -58,7 +58,7 @@ func (a *autoCLIKeyringAdapter) LookupAddressByKeyName(name string) ([]byte, err
 		return nil, err
 	}
 
-	return addr, nil
+	return addr.Bytes(), nil
 }
 
 func (a *autoCLIKeyringAdapter) GetPubKey(name string) (cryptotypes.PubKey, error) {

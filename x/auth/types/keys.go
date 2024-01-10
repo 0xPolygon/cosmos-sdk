@@ -2,7 +2,6 @@ package types
 
 import (
 	"cosmossdk.io/collections"
-	"github.com/cosmos/cosmos-sdk/types"
 )
 
 const (
@@ -15,7 +14,6 @@ const (
 	// FeeCollectorName the root string for the fee collector account address
 	FeeCollectorName = "fee_collector"
 
-	// TODO HV2 check usage of FeeToken in heimdall and implement eventual changes
 	// FeeToken fee token name
 	FeeToken = "matic"
 )
@@ -34,19 +32,9 @@ var (
 	// AccountNumberStoreKeyPrefix prefix for account-by-id store
 	AccountNumberStoreKeyPrefix = collections.NewPrefix("accountNumber")
 
-	// TODO HV2 changed byte to collections. Is it ok?
 	// ProposerKeyPrefix prefix for proposer
-	// ProposerKeyPrefix = []byte("proposer")
 	ProposerKeyPrefix = collections.NewPrefix("proposer")
 )
-
-// TODO HV2 check those 2 functions and import HeimdallAddress
-// TODO HV2 AddressStoreKey is moved (and edited) to x/auth/keeper/migrations.go
-
-// AddressStoreKey turn an address to key used to get it from the account store
-func AddressStoreKey(addr types.HeimdallAddress) []byte {
-	return append(AddressStoreKeyPrefix, addr.Bytes()...)
-}
 
 // ProposerKey returns proposer key
 func ProposerKey() []byte {

@@ -25,7 +25,7 @@ type PreprocessTxFn func(chainID string, key keyring.KeyType, tx TxBuilder) erro
 // Context implements a typical context created in SDK modules for transaction
 // handling and queries.
 type Context struct {
-	FromAddress       sdk.AccAddress
+	FromAddress       sdk.HeimdallAddress
 	Client            CometRPC
 	GRPCClient        *grpc.ClientConn
 	ChainID           string
@@ -204,7 +204,7 @@ func (ctx Context) WithFromName(name string) Context {
 
 // WithFromAddress returns a copy of the context with an updated from account
 // address.
-func (ctx Context) WithFromAddress(addr sdk.AccAddress) Context {
+func (ctx Context) WithFromAddress(addr sdk.HeimdallAddress) Context {
 	ctx.FromAddress = addr
 	return ctx
 }
@@ -371,24 +371,24 @@ func (ctx Context) printOutput(out []byte) error {
 // GetFromFields returns a from account address, account name and keyring type, given either an address or key name.
 // If clientCtx.Simulate is true the keystore is not accessed and a valid address must be provided
 // If clientCtx.GenerateOnly is true the keystore is only accessed if a key name is provided
-// TODO HV2: does this need to be changed (accAddress vs heimdallAddress)?
-func GetFromFields(clientCtx Context, kr keyring.Keyring, from string) (sdk.AccAddress, string, keyring.KeyType, error) {
+func GetFromFields(clientCtx Context, kr keyring.Keyring, from string) (sdk.HeimdallAddress, string, keyring.KeyType, error) {
 	if from == "" {
-		return nil, "", 0, nil
+		return sdk.HeimdallAddress{}, "", 0, nil
 	}
 
 	addr, err := sdk.AccAddressFromBech32(from)
+	heimdallAddress := sdk.AccAddressToHeimdallAddress(addr)
 	switch {
 	case clientCtx.Simulate:
 		if err != nil {
-			return nil, "", 0, fmt.Errorf("a valid bech32 address must be provided in simulation mode: %w", err)
+			return sdk.HeimdallAddress{}, "", 0, fmt.Errorf("a valid bech32 address must be provided in simulation mode: %w", err)
 		}
 
-		return addr, "", 0, nil
+		return heimdallAddress, "", 0, nil
 
 	case clientCtx.GenerateOnly:
 		if err == nil {
-			return addr, "", 0, nil
+			return heimdallAddress, "", 0, nil
 		}
 	}
 
@@ -396,21 +396,21 @@ func GetFromFields(clientCtx Context, kr keyring.Keyring, from string) (sdk.AccA
 	if err == nil {
 		k, err = kr.KeyByAddress(addr)
 		if err != nil {
-			return nil, "", 0, err
+			return sdk.HeimdallAddress{}, "", 0, err
 		}
 	} else {
 		k, err = kr.Key(from)
 		if err != nil {
-			return nil, "", 0, err
+			return sdk.HeimdallAddress{}, "", 0, err
 		}
 	}
 
-	addr, err = k.GetAddress()
+	heimdallAddress, err = k.GetAddress()
 	if err != nil {
-		return nil, "", 0, err
+		return sdk.HeimdallAddress{}, "", 0, err
 	}
 
-	return addr, k.Name, k.GetType(), nil
+	return heimdallAddress, k.Name, k.GetType(), nil
 }
 
 // NewKeyringFromBackend gets a Keyring object from a backend

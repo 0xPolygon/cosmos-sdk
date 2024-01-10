@@ -71,7 +71,6 @@ func (s queryServer) Account(ctx context.Context, req *types.QueryAccountRequest
 		return nil, status.Error(codes.InvalidArgument, "Address cannot be empty")
 	}
 
-	// PSP - TODO HV2 - we might need wo change this to use heimdall address
 	addr, err := s.k.addressCodec.StringToBytes(req.Address)
 	if err != nil {
 		return nil, err

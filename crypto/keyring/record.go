@@ -8,7 +8,7 @@ import (
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/crypto/hd"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
-	"github.com/cosmos/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 var (
@@ -78,12 +78,16 @@ func (k *Record) GetPubKey() (cryptotypes.PubKey, error) {
 }
 
 // GetAddress fetches an address of the record
-func (k Record) GetAddress() (types.AccAddress, error) {
-	pk, err := k.GetPubKey()
+func (k Record) GetAddress() (sdk.HeimdallAddress, error) {
+	// TODO HV2: use pk instead of _
+	_, err := k.GetPubKey()
 	if err != nil {
-		return nil, err
+		return sdk.HeimdallAddress{}, err
 	}
-	return pk.Address().Bytes(), nil
+	// TODO HV2: if this is the heimdall-compliant Address implemented in cometBFT by Raneet, return it (instead of ZeroAddress)
+	//  and it will be fixed by importing the proper comet fork
+	// return pk.Address(), nil
+	return sdk.HeimdallAddress{}, nil
 }
 
 // GetType fetches type of the record
