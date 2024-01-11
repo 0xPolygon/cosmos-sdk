@@ -88,7 +88,7 @@ func (dfd DeductFeeDecorator) checkDeductFee(ctx sdk.Context, sdkTx sdk.Tx, fee 
 	feeGranter := feeTx.FeeGranter()
 	deductFeesFrom := feePayer
 
-	// TODO HV2: I left freeGranter logic intact. As we are not supposed to use it, is this ok?
+	// TODO HV2: left freeGranter logic intact. Since we are not supposed to use it, is this ok?
 	// if feegranter set deduct fee from feegranter account.
 	// this works with only when feegrant enabled.
 	if feeGranter != nil {

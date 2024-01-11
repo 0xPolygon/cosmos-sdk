@@ -49,7 +49,6 @@ type PrivKey interface {
 	LedgerPrivKey
 }
 
-// TODO HV2: is this the heimdall-compliant Address implemented in cometBFT by Raneet?
 type (
 	Address = cmtcrypto.Address
 )

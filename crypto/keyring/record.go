@@ -79,15 +79,11 @@ func (k *Record) GetPubKey() (cryptotypes.PubKey, error) {
 
 // GetAddress fetches an address of the record
 func (k Record) GetAddress() (sdk.HeimdallAddress, error) {
-	// TODO HV2: use pk instead of _
-	_, err := k.GetPubKey()
+	pk, err := k.GetPubKey()
 	if err != nil {
 		return sdk.HeimdallAddress{}, err
 	}
-	// TODO HV2: if this is the heimdall-compliant Address implemented in cometBFT by Raneet, return it (instead of ZeroAddress)
-	//  and it will be fixed by importing the proper comet fork
-	// return pk.Address(), nil
-	return sdk.HeimdallAddress{}, nil
+	return sdk.HeimdallAddress(pk.Address()), nil
 }
 
 // GetType fetches type of the record

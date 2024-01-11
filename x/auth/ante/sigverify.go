@@ -38,7 +38,7 @@ var (
 	// DefaultFeeInMatic represents default fee in matic
 	DefaultFeeInMatic = big.NewInt(10).Exp(big.NewInt(10), big.NewInt(15), nil)
 
-	// TODO HV2 no usage of DefaultFeeWantedPerTx so far. In heimdall, this is used in topup module's side_handler.go
+	// TODO HV2 no usage of DefaultFeeWantedPerTx so far. This is used in heimdall topup module's side_handler.go
 	// DefaultFeeWantedPerTx fee wanted per tx
 	DefaultFeeWantedPerTx = sdk.Coins{sdk.Coin{Denom: types.FeeToken, Amount: math.NewIntFromBigInt(DefaultFeeInMatic)}}
 )
