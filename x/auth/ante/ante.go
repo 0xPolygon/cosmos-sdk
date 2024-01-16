@@ -19,10 +19,8 @@ type HandlerOptions struct {
 	SignModeHandler        *txsigning.HandlerMap
 	SigGasConsumer         func(meter storetypes.GasMeter, sig signing.SignatureV2, params types.Params) error
 	TxFeeChecker           TxFeeChecker
-	FeeCollector           FeeCollector
-	// TODO HV2 import and enable the following
-	// ChainKeeper 		   chainmanager.Keeper
-	// ContractCaller 		   helper.IContractCaller
+	// TODO HV2 is FeeCollector == FeegrantKeeper ? Ask Informal
+	FeeCollector FeeCollector
 }
 
 // NewAnteHandler returns an AnteHandler that checks and increments sequence

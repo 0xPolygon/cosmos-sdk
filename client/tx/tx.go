@@ -278,7 +278,7 @@ func Sign(ctx context.Context, txf Factory, name string, txBuilder client.TxBuil
 		AccountNumber: txf.accountNumber,
 		Sequence:      txf.sequence,
 		PubKey:        pubKey,
-		Address:       sdk.HeimdallAddress(pubKey.Address()).String(),
+		Address:       sdk.AccAddress(pubKey.Address()).String(),
 	}
 
 	// For SIGN_MODE_DIRECT, calling SetSignatures calls setSignerInfos on
@@ -382,7 +382,7 @@ func makeAuxSignerData(clientCtx client.Context, f Factory, msgs ...sdk.Msg) (tx
 		b.SetAccountNumber(f.accountNumber)
 		b.SetSequence(f.sequence)
 	} else {
-		accNum, seq, err := clientCtx.AccountRetriever.GetAccountNumberSequence(clientCtx, sdk.AccAddressToHeimdallAddress(fromAddress))
+		accNum, seq, err := clientCtx.AccountRetriever.GetAccountNumberSequence(clientCtx, fromAddress)
 		if err != nil {
 			return tx.AuxSignerData{}, err
 		}

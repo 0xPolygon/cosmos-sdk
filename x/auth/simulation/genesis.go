@@ -3,6 +3,7 @@ package simulation
 import (
 	"encoding/json"
 	"fmt"
+	"math/big"
 	"math/rand"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -19,8 +20,8 @@ const (
 	TxSizeCostPerByte      = "tx_size_cost_per_byte"
 	SigVerifyCostED25519   = "sig_verify_cost_ed25519"
 	SigVerifyCostSECP256K1 = "sig_verify_cost_secp256k1"
-	MaxGas = "max_tx_gas"
-	TxFees = "tx_fees"
+	MaxGas                 = "max_tx_gas"
+	TxFees                 = "tx_fees"
 )
 
 // RandomGenesisAccounts defines the default RandomGenesisAccountsFn used on the SDK.
@@ -123,10 +124,10 @@ func RandomizedGenState(simState *module.SimulationState, randGenAccountsFn type
 	simState.AppParams.GetOrGenerate(SigVerifyCostSECP256K1, &sigVerifyCostSECP256K1, simState.Rand, func(r *rand.Rand) { sigVerifyCostSECP256K1 = GenSigVerifyCostSECP256K1(r) })
 
 	var maxTxGas uint64
-	simState.AppParams.GetOrGenerate(MaxGas, &maxTxGas, simState.Rand, func(r *rand.Rand){ maxTxGas = GenMaxGas(r) })
+	simState.AppParams.GetOrGenerate(MaxGas, &maxTxGas, simState.Rand, func(r *rand.Rand) { maxTxGas = GenMaxGas(r) })
 
 	var txFees string
-	simState.AppParams.GetOrGenerate(TxFees, &txFees, simState.Rand, func(r *rand.Rand){ txFees = GenTxFees(r) })
+	simState.AppParams.GetOrGenerate(TxFees, &txFees, simState.Rand, func(r *rand.Rand) { txFees = GenTxFees(r) })
 
 	params := types.NewParams(maxMemoChars, txSigLimit, txSizeCostPerByte,
 		sigVerifyCostED25519, sigVerifyCostSECP256K1, maxTxGas, txFees)

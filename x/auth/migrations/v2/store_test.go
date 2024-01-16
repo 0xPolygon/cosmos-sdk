@@ -2,6 +2,7 @@ package v2_test
 
 import (
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 	"sync/atomic"
 	"testing"
 	"time"
@@ -46,6 +47,7 @@ func (ms mockSubspace) GetParamSet(ctx sdk.Context, ps authexported.ParamSet) {
 }
 
 func TestMigrateVestingAccounts(t *testing.T) {
+	t.Skip() // skipped as we're not using depinject
 	encCfg := moduletestutil.MakeTestEncodingConfig(auth.AppModuleBasic{})
 	cdc := encCfg.Codec
 
@@ -58,6 +60,7 @@ func TestMigrateVestingAccounts(t *testing.T) {
 		accountKeeper keeper.AccountKeeper
 		bankKeeper    bankkeeper.Keeper
 		stakingKeeper *stakingkeeper.Keeper
+		feeCollector  ante.FeeCollector
 	)
 	app, err := simtestutil.Setup(
 		depinject.Configs(
@@ -67,6 +70,7 @@ func TestMigrateVestingAccounts(t *testing.T) {
 		&accountKeeper,
 		&bankKeeper,
 		&stakingKeeper,
+		&feeCollector,
 	)
 	require.NoError(t, err)
 

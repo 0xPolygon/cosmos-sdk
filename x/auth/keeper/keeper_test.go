@@ -107,7 +107,8 @@ func (suite *KeeperTestSuite) TestInitGenesis() {
 	}
 
 	ctx := suite.ctx
-	suite.accountKeeper.InitGenesis(ctx, genState)
+	// TODO HV2 passed nil for processors, to change later
+	suite.accountKeeper.InitGenesis(ctx, genState, nil)
 
 	params := suite.accountKeeper.GetParams(ctx)
 	suite.Require().Equal(genState.Params.MaxMemoCharacters, params.MaxMemoCharacters, "MaxMemoCharacters")
@@ -123,7 +124,7 @@ func (suite *KeeperTestSuite) TestInitGenesis() {
 	pubKey2 := ed25519.GenPrivKey().PubKey()
 	accts := []sdk.AccountI{
 		&types.BaseAccount{
-			Address:       sdk.HeimdallAddress(pubKey1.Address()).String(),
+			Address:       sdk.AccAddress(pubKey1.Address()).String(),
 			PubKey:        codectypes.UnsafePackAny(pubKey1),
 			AccountNumber: 0,
 			Sequence:      5,
@@ -139,7 +140,7 @@ func (suite *KeeperTestSuite) TestInitGenesis() {
 			Permissions: nil,
 		},
 		&types.BaseAccount{
-			Address:       sdk.HeimdallAddress(pubKey2.Address()).String(),
+			Address:       sdk.AccAddress(pubKey2.Address()).String(),
 			PubKey:        codectypes.UnsafePackAny(pubKey2),
 			AccountNumber: 5,
 			Sequence:      7,
@@ -152,8 +153,8 @@ func (suite *KeeperTestSuite) TestInitGenesis() {
 	for _, acct := range accts {
 		genState.Accounts = append(genState.Accounts, codectypes.UnsafePackAny(acct))
 	}
-
-	suite.accountKeeper.InitGenesis(ctx, genState)
+	// TODO HV2 passed nil for processors, to change later
+	suite.accountKeeper.InitGenesis(ctx, genState, nil)
 
 	keeperAccts := suite.accountKeeper.GetAllAccounts(ctx)
 	// len(accts)+1 because we initialize fee_collector account after the genState accounts
@@ -192,7 +193,7 @@ func (suite *KeeperTestSuite) TestInitGenesis() {
 		Params: types.DefaultParams(),
 		Accounts: []*codectypes.Any{
 			codectypes.UnsafePackAny(&types.BaseAccount{
-				Address:       sdk.HeimdallAddress(pubKey1.Address()).String(),
+				Address:       sdk.AccAddress(pubKey1.Address()).String(),
 				PubKey:        codectypes.UnsafePackAny(pubKey1),
 				AccountNumber: 0,
 				Sequence:      5,
@@ -200,14 +201,15 @@ func (suite *KeeperTestSuite) TestInitGenesis() {
 		},
 	}
 
-	suite.accountKeeper.InitGenesis(ctx, genState)
+	// TODO HV2 passed nil for processors, to change later
+	suite.accountKeeper.InitGenesis(ctx, genState, nil)
 
 	keeperAccts = suite.accountKeeper.GetAllAccounts(ctx)
 	// len(genState.Accounts)+1 because we initialize fee_collector as account number 1 (last)
 	suite.Require().Equal(len(keeperAccts), len(genState.Accounts)+1, "number of accounts in the keeper vs in genesis state")
 
 	// Check both accounts account numbers
-	suite.Require().Equal(0, int(suite.accountKeeper.GetAccount(ctx, sdk.HeimdallAddress(pubKey1.Address())).GetAccountNumber()))
+	suite.Require().Equal(0, int(suite.accountKeeper.GetAccount(ctx, sdk.AccAddress(pubKey1.Address())).GetAccountNumber()))
 	feeCollector = suite.accountKeeper.GetModuleAccount(ctx, "fee_collector")
 	suite.Require().Equal(1, int(feeCollector.GetAccountNumber()))
 

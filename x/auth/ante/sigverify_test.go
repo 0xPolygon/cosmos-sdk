@@ -37,7 +37,7 @@ func TestSetPubKey(t *testing.T) {
 	priv2, pub2, addr2 := testdata.KeyTestPubAddr()
 	priv3, pub3, addr3 := testdata.KeyTestPubAddrSecp256R1(t)
 
-	addrs := []sdk.HeimdallAddress{addr1, addr2, addr3}
+	addrs := []sdk.AccAddress{addr1, addr2, addr3}
 	pubs := []cryptotypes.PubKey{pub1, pub2, pub3}
 
 	msgs := make([]sdk.Msg, len(addrs))
@@ -152,7 +152,7 @@ func TestSigVerification(t *testing.T) {
 	priv2, _, addr2 := testdata.KeyTestPubAddr()
 	priv3, _, addr3 := testdata.KeyTestPubAddr()
 
-	addrs := []sdk.HeimdallAddress{addr1, addr2, addr3}
+	addrs := []sdk.AccAddress{addr1, addr2, addr3}
 
 	msgs := make([]sdk.Msg, len(addrs))
 	accs := make([]sdk.AccountI, len(addrs))
@@ -278,7 +278,7 @@ func runSigDecorators(t *testing.T, params types.Params, _ bool, privs ...crypto
 	accSeqs := make([]uint64, len(privs))
 	// set accounts and create msg for each address
 	for i, priv := range privs {
-		addr := sdk.HeimdallAddress(priv.PubKey().Address())
+		addr := sdk.AccAddress(priv.PubKey().Address())
 		acc := suite.accountKeeper.NewAccountWithAddress(suite.ctx, addr)
 		require.NoError(t, acc.SetAccountNumber(uint64(i)+1000))
 		suite.accountKeeper.SetAccount(suite.ctx, acc)

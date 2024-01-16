@@ -45,10 +45,10 @@ type (
 		SetSignatures(signatures ...signingtypes.SignatureV2) error
 		SetMemo(memo string)
 		SetFeeAmount(amount sdk.Coins)
-		SetFeePayer(feePayer sdk.HeimdallAddress)
+		SetFeePayer(feePayer sdk.AccAddress)
 		SetGasLimit(limit uint64)
 		SetTimeoutHeight(height uint64)
-		SetFeeGranter(feeGranter sdk.HeimdallAddress)
+		SetFeeGranter(feeGranter sdk.AccAddress)
 		AddAuxSignerData(tx.AuxSignerData) error
 	}
 

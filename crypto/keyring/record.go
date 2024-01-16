@@ -78,12 +78,12 @@ func (k *Record) GetPubKey() (cryptotypes.PubKey, error) {
 }
 
 // GetAddress fetches an address of the record
-func (k Record) GetAddress() (sdk.HeimdallAddress, error) {
+func (k Record) GetAddress() (sdk.AccAddress, error) {
 	pk, err := k.GetPubKey()
 	if err != nil {
-		return sdk.HeimdallAddress{}, err
+		return sdk.AccAddress{}, err
 	}
-	return sdk.HeimdallAddress(pk.Address()), nil
+	return sdk.AccAddress(pk.Address()), nil
 }
 
 // GetType fetches type of the record

@@ -143,11 +143,11 @@ var (
 	_ Address = AccAddress{}
 	_ Address = ValAddress{}
 	_ Address = ConsAddress{}
-	_ Address = HeimdallAddress{}
 )
 
+// TODO HV2 : changed from `type HeimdallAddress common.Address` to `type HeimdallAddress []byte` to use collections
 // HeimdallAddress represents heimdall address
-type HeimdallAddress common.Address
+type HeimdallAddress []byte
 
 // ZeroHeimdallAddress represents zero heimdall address
 var ZeroHeimdallAddress = HeimdallAddress{}
@@ -174,13 +174,13 @@ func (aa HeimdallAddress) Empty() bool {
 // Marshal returns the raw address bytes. It is needed for protobuf
 // compatibility.
 func (aa HeimdallAddress) Marshal() ([]byte, error) {
-	return aa.Bytes(), nil
+	return aa, nil
 }
 
 // Unmarshal sets the address to the given data. It is needed for protobuf
 // compatibility.
 func (aa *HeimdallAddress) Unmarshal(data []byte) error {
-	*aa = HeimdallAddress(common.BytesToAddress(data))
+	*aa = data
 	return nil
 }
 
@@ -247,12 +247,18 @@ func (aa HeimdallAddress) Format(s fmt.State, verb rune) {
 
 // BytesToHeimdallAddress returns Address with value b.
 func BytesToHeimdallAddress(b []byte) HeimdallAddress {
-	return HeimdallAddress(common.BytesToAddress(b))
+	return b
 }
 
-// HexToHeimdallAddress returns Address with value b.
+// HexToHeimdallAddress returns HeimdallAddress with value b.
 func HexToHeimdallAddress(b string) HeimdallAddress {
-	return HeimdallAddress(common.HexToAddress(b))
+	return common.HexToAddress(b).Bytes()
+}
+
+// HeimdallAddressFromHex creates a HeimdallAddress from a hex string.
+func HeimdallAddressFromHex(address string) (addr HeimdallAddress, err error) {
+	bz, err := addressBytesFromHexString(address)
+	return HeimdallAddress(bz), err
 }
 
 // AccAddressToHeimdallAddress returns Address with value b.

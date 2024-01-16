@@ -42,12 +42,12 @@ func TestParams_Validate(t *testing.T) {
 		{"invalid tx size cost per byte", types.NewParams(types.DefaultMaxMemoCharacters, types.DefaultTxSigLimit, 0,
 			types.DefaultSigVerifyCostED25519, types.DefaultSigVerifyCostSecp256k1, types.DefaultMaxTxGas, types.DefaultTxFees),
 			fmt.Errorf("invalid tx size cost per byte: 0")},
-		{"invalid max tx gas", types.NewParams(types.DefaultMaxMemoCharacters, types.DefaultTxSigLimit, 0,
+		{"invalid max tx gas", types.NewParams(types.DefaultMaxMemoCharacters, types.DefaultTxSigLimit, types.DefaultTxSizeCostPerByte,
 			types.DefaultSigVerifyCostED25519, types.DefaultSigVerifyCostSecp256k1, 0, types.DefaultTxFees),
 			fmt.Errorf("invalid max tx gas: 0")},
-		{"invalid tx fees", types.NewParams(types.DefaultMaxMemoCharacters, types.DefaultTxSigLimit, 0,
+		{"invalid tx fees", types.NewParams(types.DefaultMaxMemoCharacters, types.DefaultTxSigLimit, types.DefaultTxSizeCostPerByte,
 			types.DefaultSigVerifyCostED25519, types.DefaultSigVerifyCostSecp256k1, types.DefaultMaxTxGas, ""),
-			fmt.Errorf("invalid tx fees: ''")},
+			fmt.Errorf("invalid tx fees: ")},
 	}
 	for _, tt := range tests {
 		tt := tt

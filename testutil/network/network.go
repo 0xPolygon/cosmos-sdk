@@ -269,7 +269,7 @@ type (
 		APIAddress string
 		RPCAddress string
 		P2PAddress string
-		Address    sdk.HeimdallAddress
+		Address    sdk.AccAddress
 		ValAddress sdk.ValAddress
 		RPCClient  cmtclient.Client
 
@@ -522,7 +522,7 @@ func New(l Logger, baseDir string, cfg Config) (*Network, error) {
 		}
 
 		createValMsg, err := stakingtypes.NewMsgCreateValidator(
-			addr.String(),
+			sdk.ValAddress(addr).String(),
 			valPubKeys[i],
 			sdk.NewCoin(cfg.BondDenom, cfg.BondedTokens),
 			stakingtypes.NewDescription(nodeDirName, "", "", "", ""),
@@ -597,7 +597,7 @@ func New(l Logger, baseDir string, cfg Config) (*Network, error) {
 			P2PAddress: cmtCfg.P2P.ListenAddress,
 			APIAddress: apiAddr,
 			Address:    addr,
-			ValAddress: sdk.ValAddress(sdk.HeimdallAddressToAccAddress(addr)),
+			ValAddress: sdk.ValAddress(addr),
 		}
 	}
 

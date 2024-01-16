@@ -105,7 +105,7 @@ func (suite *DeterministicTestSuite) createAndSetAccounts(t *rapid.T, count int)
 
 	for i := 0; i < count; i++ {
 		pub := pubkeyGenerator(t).Draw(t, "pubkey")
-		addr := sdk.HeimdallAddress(pub.Address())
+		addr := sdk.AccAddress(pub.Address())
 		accNum := accNums[i]
 		seq := rapid.Uint64().Draw(t, "sequence")
 
@@ -144,6 +144,7 @@ func pubkeyGenerator(t *rapid.T) *rapid.Generator[secp256k1.PubKey] {
 }
 
 func (suite *DeterministicTestSuite) TestGRPCQueryAccounts() {
+	// TODO HV2 fix this test? It uses depinject and fails on FeeCollector not being set
 	rapid.Check(suite.T(), func(t *rapid.T) {
 		numAccs := rapid.IntRange(1, 10).Draw(t, "accounts")
 		accs := suite.createAndSetAccounts(t, numAccs)
@@ -203,6 +204,8 @@ func (suite *DeterministicTestSuite) TestGRPCQueryParameters() {
 			rapid.Uint64Min(1).Draw(t, "tx-size-cost-per-byte"),
 			rapid.Uint64Min(1).Draw(t, "sig-verify-cost-ed25519"),
 			rapid.Uint64Min(1).Draw(t, "sig-verify-cost-Secp256k1"),
+			rapid.Uint64Min(1).Draw(t, "max-tx-gas"),
+			rapid.String().Draw(t, "tx-fees"),
 		)
 		err := suite.accountKeeper.Params.Set(suite.ctx, params)
 		suite.Require().NoError(err)
@@ -212,7 +215,7 @@ func (suite *DeterministicTestSuite) TestGRPCQueryParameters() {
 	})
 
 	// Regression test
-	params := types.NewParams(15, 167, 100, 1, 21457)
+	params := types.NewParams(15, 167, 100, 1, 21457, 1, "1")
 
 	err := suite.accountKeeper.Params.Set(suite.ctx, params)
 	suite.Require().NoError(err)

@@ -52,6 +52,7 @@ type AnteTestSuite struct {
 	bankKeeper     *authtestutil.MockBankKeeper
 	txBankKeeper   *txtestutil.MockBankKeeper
 	feeGrantKeeper *antetestutil.MockFeegrantKeeper
+	feeCollector   *antetestutil.MockFeeCollector
 	encCfg         moduletestutil.TestEncodingConfig
 }
 
@@ -62,6 +63,7 @@ func SetupTestSuite(t *testing.T, isCheckTx bool) *AnteTestSuite {
 	suite.bankKeeper = authtestutil.NewMockBankKeeper(ctrl)
 	suite.txBankKeeper = txtestutil.NewMockBankKeeper(ctrl)
 	suite.feeGrantKeeper = antetestutil.NewMockFeegrantKeeper(ctrl)
+	suite.feeCollector = antetestutil.NewMockFeeCollector(ctrl)
 
 	key := storetypes.NewKVStoreKey(types.StoreKey)
 	testCtx := testutil.DefaultContextWithDB(t, key, storetypes.NewTransientStoreKey("transient_test"))
@@ -98,6 +100,7 @@ func SetupTestSuite(t *testing.T, isCheckTx bool) *AnteTestSuite {
 			AccountKeeper:   suite.accountKeeper,
 			BankKeeper:      suite.bankKeeper,
 			FeegrantKeeper:  suite.feeGrantKeeper,
+			FeeCollector:    suite.feeCollector,
 			SignModeHandler: suite.encCfg.TxConfig.SignModeHandler(),
 			SigGasConsumer:  ante.DefaultSigVerificationGasConsumer,
 		},
@@ -235,7 +238,7 @@ func (suite *AnteTestSuite) CreateTestTx(
 	sigsV2 = []signing.SignatureV2{}
 	for i, priv := range privs {
 		signerData := xauthsigning.SignerData{
-			Address:       sdk.HeimdallAddress(priv.PubKey().Address()).String(),
+			Address:       sdk.AccAddress(priv.PubKey().Address()).String(),
 			ChainID:       chainID,
 			AccountNumber: accNums[i],
 			Sequence:      accSeqs[i],

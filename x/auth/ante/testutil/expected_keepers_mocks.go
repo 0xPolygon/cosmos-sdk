@@ -141,3 +141,54 @@ func (mr *MockFeegrantKeeperMockRecorder) UseGrantedFees(ctx, granter, grantee, 
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UseGrantedFees", reflect.TypeOf((*MockFeegrantKeeper)(nil).UseGrantedFees), ctx, granter, grantee, fee, msgs)
 }
+
+// MockFeeCollector is a mock of FeeCollector interface.
+type MockFeeCollector struct {
+	ctrl     *gomock.Controller
+	recorder *MockFeeCollectorMockRecorder
+}
+
+// MockFeeCollectorMockRecorder is the mock recorder for MockFeeCollector.
+type MockFeeCollectorMockRecorder struct {
+	mock *MockFeeCollector
+}
+
+// NewMockFeeCollector creates a new mock instance.
+func NewMockFeeCollector(ctrl *gomock.Controller) *MockFeeCollector {
+	mock := &MockFeeCollector{ctrl: ctrl}
+	mock.recorder = &MockFeeCollectorMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockFeeCollector) EXPECT() *MockFeeCollectorMockRecorder {
+	return m.recorder
+}
+
+// GetModuleAddress mocks base method.
+func (m *MockFeeCollector) GetModuleAddress(arg0 string) types.AccAddress {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetModuleAddress", arg0)
+	ret0, _ := ret[0].(types.AccAddress)
+	return ret0
+}
+
+// GetModuleAddress indicates an expected call of GetModuleAddress.
+func (mr *MockFeeCollectorMockRecorder) GetModuleAddress(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetModuleAddress", reflect.TypeOf((*MockFeeCollector)(nil).GetModuleAddress), arg0)
+}
+
+// SendCoinsFromAccountToModule mocks base method.
+func (m *MockFeeCollector) SendCoinsFromAccountToModule(arg0 types.Context, arg1 types.AccAddress, arg2 string, arg3 types.Coins) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SendCoinsFromAccountToModule", arg0, arg1, arg2, arg3)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// SendCoinsFromAccountToModule indicates an expected call of SendCoinsFromAccountToModule.
+func (mr *MockFeeCollectorMockRecorder) SendCoinsFromAccountToModule(arg0, arg1, arg2, arg3 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendCoinsFromAccountToModule", reflect.TypeOf((*MockFeeCollector)(nil).SendCoinsFromAccountToModule), arg0, arg1, arg2, arg3)
+}

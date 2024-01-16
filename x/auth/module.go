@@ -6,8 +6,6 @@ import (
 	"fmt"
 
 	gwruntime "github.com/grpc-ecosystem/grpc-gateway/runtime"
-	// TODO HV2 import
-	// "github.com/maticnetwork/heimdall/helper"
 
 	modulev1 "cosmossdk.io/api/cosmos/auth/module/v1"
 	"cosmossdk.io/core/address"
@@ -95,8 +93,6 @@ type AppModule struct {
 	// legacySubspace is used solely for migration of x/params managed parameters
 	legacySubspace exported.Subspace
 
-	// TODO HV2 use contractCaller
-	// contractCaller helper.IContractCaller
 	processors []types.AccountProcessor
 }
 
@@ -107,16 +103,13 @@ func (am AppModule) IsOnePerModuleType() {}
 func (am AppModule) IsAppModule() {}
 
 // NewAppModule creates a new AppModule object
-// TODO HV2 use contractCaller instead of nil
-func NewAppModule(cdc codec.Codec, accountKeeper keeper.AccountKeeper, randGenAccountsFn types.RandomGenesisAccountsFn, ss exported.Subspace, nil, processors []types.AccountProcessor) AppModule {
+func NewAppModule(cdc codec.Codec, accountKeeper keeper.AccountKeeper, randGenAccountsFn types.RandomGenesisAccountsFn, ss exported.Subspace, processors []types.AccountProcessor) AppModule {
 	return AppModule{
 		AppModuleBasic:    AppModuleBasic{ac: accountKeeper.AddressCodec()},
 		accountKeeper:     accountKeeper,
 		randGenAccountsFn: randGenAccountsFn,
 		legacySubspace:    ss,
-		// TODO HV2 use contractCaller
-		// contractCaller:    contractCaller,
-		processors: processors,
+		processors:        processors,
 	}
 }
 
@@ -237,7 +230,7 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 	}
 
 	k := keeper.NewAccountKeeper(in.Cdc, in.StoreService, in.AccountI, maccPerms, in.AddressCodec, in.Config.Bech32Prefix, authority.String())
-	m := NewAppModule(in.Cdc, k, in.RandomGenesisAccountsFn, in.LegacySubspace, nil, nil)
+	m := NewAppModule(in.Cdc, k, in.RandomGenesisAccountsFn, in.LegacySubspace, nil)
 
 	return ModuleOutputs{AccountKeeper: k, Module: m}
 }

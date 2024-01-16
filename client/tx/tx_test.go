@@ -125,7 +125,7 @@ func TestBuildSimTx(t *testing.T) {
 	require.NoError(t, err)
 
 	txf := mockTxFactory(txCfg).WithSignMode(defaultSignMode).WithKeybase(kb)
-	msg := banktypes.NewMsgSend(sdk.HeimdallAddress("from"), sdk.HeimdallAddress("to"), nil)
+	msg := banktypes.NewMsgSend(sdk.AccAddress("from"), sdk.AccAddress("to"), nil)
 	bz, err := txf.BuildSimTx(msg)
 	require.NoError(t, err)
 	require.NotNil(t, bz)

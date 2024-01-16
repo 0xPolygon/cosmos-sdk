@@ -15,8 +15,8 @@ import (
 type AccountI interface {
 	proto.Message
 
-	GetAddress() HeimdallAddress
-	SetAddress(HeimdallAddress) error // errors if already set.
+	GetAddress() AccAddress
+	SetAddress(address AccAddress) error // errors if already set.
 
 	GetPubKey() cryptotypes.PubKey // can return nil.
 	SetPubKey(cryptotypes.PubKey) error
@@ -29,6 +29,8 @@ type AccountI interface {
 
 	// Ensure that account implements stringer
 	String() string
+
+	Validate() error
 }
 
 // ModuleAccountI defines an account interface for modules that hold tokens in

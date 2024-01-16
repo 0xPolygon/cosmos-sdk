@@ -3,15 +3,14 @@ package types
 import (
 	"encoding/hex"
 	"errors"
-	"fmt"
+	"github.com/cosmos/cosmos-sdk/x/auth/migrations/legacytx"
 	"reflect"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/rlp"
 )
 
-// TODO HV2 this is imported from heimdall, hence to be used. Check it
+// TODO HV2 this is imported from heimdall, hence to be used
 const (
 	// PulpHashLength pulp hash length
 	PulpHashLength int = 4
@@ -24,7 +23,9 @@ type Pulp struct {
 
 // GetPulpHash returns string hash
 func GetPulpHash(msg sdk.Msg) []byte {
-	return crypto.Keccak256([]byte(fmt.Sprintf("%s::%s", msg.Route(), msg.Type())))[:PulpHashLength]
+	// TODO HV2 msg.Route() and msg.Type() unavailable in cosmos
+	// return crypto.Keccak256([]byte(fmt.Sprintf("%s::%s", msg.Route(), msg.Type())))[:PulpHashLength]
+	return nil
 }
 
 // RegisterConcrete should be used to register concrete types that will appear in
@@ -42,7 +43,7 @@ func (p *Pulp) GetMsgTxInstance(hash []byte) interface{} {
 }
 
 // EncodeToBytes encodes msg to bytes
-func (p *Pulp) EncodeToBytes(tx StdTx) ([]byte, error) {
+func (p *Pulp) EncodeToBytes(tx legacytx.StdTx) ([]byte, error) {
 	msg := tx.GetMsgs()[0]
 
 	txBytes, err := rlp.EncodeToBytes(tx)
@@ -55,7 +56,7 @@ func (p *Pulp) EncodeToBytes(tx StdTx) ([]byte, error) {
 
 // DecodeBytes decodes bytes to msg
 func (p *Pulp) DecodeBytes(data []byte) (interface{}, error) {
-	var txRaw StdTxRaw
+	var txRaw legacytx.StdTxRaw
 
 	if len(data) <= PulpHashLength {
 		return nil, errors.New("Invalid data length, should be greater than PulpPrefix")
@@ -77,9 +78,9 @@ func (p *Pulp) DecodeBytes(data []byte) (interface{}, error) {
 	vptr.Set(reflect.ValueOf(newMsg).Elem())
 	// return vptr.Interface(), nil
 
-	return StdTx{
-		Msg:       vptr.Interface().(sdk.Msg),
-		Signature: txRaw.Signature,
-		Memo:      txRaw.Memo,
+	return legacytx.StdTx{
+		Msgs:       []sdk.Msg{vptr.Interface().(sdk.Msg)},
+		Signatures: []legacytx.StdSignature{txRaw.Signature},
+		Memo:       txRaw.Memo,
 	}, nil
 }

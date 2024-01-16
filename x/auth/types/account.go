@@ -23,7 +23,7 @@ var (
 )
 
 // NewBaseAccount creates a new BaseAccount object.
-func NewBaseAccount(address sdk.HeimdallAddress, pubKey cryptotypes.PubKey, accountNumber, sequence uint64) *BaseAccount {
+func NewBaseAccount(address sdk.AccAddress, pubKey cryptotypes.PubKey, accountNumber, sequence uint64) *BaseAccount {
 	acc := &BaseAccount{
 		Address:       address.String(),
 		AccountNumber: accountNumber,
@@ -45,20 +45,20 @@ func ProtoBaseAccount() sdk.AccountI {
 
 // NewBaseAccountWithAddress - returns a new base account with a given address
 // leaving AccountNumber and Sequence to zero.
-func NewBaseAccountWithAddress(addr sdk.HeimdallAddress) *BaseAccount {
+func NewBaseAccountWithAddress(addr sdk.AccAddress) *BaseAccount {
 	return &BaseAccount{
 		Address: addr.String(),
 	}
 }
 
 // GetAddress - Implements sdk.AccountI.
-func (acc BaseAccount) GetAddress() sdk.HeimdallAddress {
+func (acc BaseAccount) GetAddress() sdk.AccAddress {
 	addr, _ := sdk.AccAddressFromBech32(acc.Address)
-	return sdk.AccAddressToHeimdallAddress(addr)
+	return addr
 }
 
 // SetAddress - Implements sdk.AccountI.
-func (acc *BaseAccount) SetAddress(addr sdk.HeimdallAddress) error {
+func (acc *BaseAccount) SetAddress(addr sdk.AccAddress) error {
 	if len(acc.Address) != 0 {
 		return errors.New("cannot override BaseAccount address")
 	}
@@ -125,7 +125,7 @@ func (acc BaseAccount) Validate() error {
 		return err
 	}
 
-	if !bytes.Equal(acc.GetPubKey().Address().Bytes(), sdk.AccAddressToHeimdallAddress(accAddr).Bytes()) {
+	if !bytes.Equal(acc.GetPubKey().Address().Bytes(), accAddr.Bytes()) {
 		return errors.New("account address and pubkey address do not match")
 	}
 
@@ -141,20 +141,20 @@ func (acc BaseAccount) UnpackInterfaces(unpacker codectypes.AnyUnpacker) error {
 	return unpacker.UnpackAny(acc.PubKey, &pubKey)
 }
 
-// NewModuleAddressOrBech32Address gets an input string and returns a HeimdallAddress.
+// NewModuleAddressOrBech32Address gets an input string and returns a AccAddress.
 // If the input is a valid address, it returns the address.
 // If the input is a module name, it returns the module address.
-func NewModuleAddressOrBech32Address(input string) sdk.HeimdallAddress {
+func NewModuleAddressOrBech32Address(input string) sdk.AccAddress {
 	if addr, err := sdk.AccAddressFromBech32(input); err == nil {
-		return sdk.AccAddressToHeimdallAddress(addr)
+		return addr
 	}
 
 	return NewModuleAddress(input)
 }
 
 // NewModuleAddress creates an AccAddress from the hash of the module's name
-func NewModuleAddress(name string) sdk.HeimdallAddress {
-	return sdk.BytesToHeimdallAddress(crypto.AddressHash([]byte(name)).Bytes())
+func NewModuleAddress(name string) sdk.AccAddress {
+	return crypto.AddressHash([]byte(name)).Bytes()
 }
 
 // NewEmptyModuleAccount creates a empty ModuleAccount from a string
@@ -221,7 +221,7 @@ func (ma ModuleAccount) Validate() error {
 		return errors.New("uninitialized ModuleAccount: BaseAccount is nil")
 	}
 
-	if ma.Address != sdk.BytesToHeimdallAddress(crypto.AddressHash([]byte(ma.Name))).String() {
+	if ma.Address != crypto.AddressHash([]byte(ma.Name)).String() {
 		return fmt.Errorf("address %s cannot be derived from the module name '%s'", ma.Address, ma.Name)
 	}
 
@@ -229,12 +229,12 @@ func (ma ModuleAccount) Validate() error {
 }
 
 type moduleAccountPretty struct {
-	Address       sdk.HeimdallAddress `json:"address"`
-	PubKey        string              `json:"public_key"`
-	AccountNumber uint64              `json:"account_number"`
-	Sequence      uint64              `json:"sequence"`
-	Name          string              `json:"name"`
-	Permissions   []string            `json:"permissions"`
+	Address       sdk.AccAddress `json:"address"`
+	PubKey        string         `json:"public_key"`
+	AccountNumber uint64         `json:"account_number"`
+	Sequence      uint64         `json:"sequence"`
+	Name          string         `json:"name"`
+	Permissions   []string       `json:"permissions"`
 }
 
 // MarshalJSON returns the JSON representation of a ModuleAccount.
@@ -245,7 +245,7 @@ func (ma ModuleAccount) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(moduleAccountPretty{
-		Address:       sdk.AccAddressToHeimdallAddress(accAddr),
+		Address:       accAddr,
 		PubKey:        "",
 		AccountNumber: ma.AccountNumber,
 		Sequence:      ma.Sequence,
@@ -293,7 +293,7 @@ type GenesisAccounts []GenesisAccount
 
 // Contains returns true if the given address exists in a slice of GenesisAccount
 // objects.
-func (ga GenesisAccounts) Contains(addr sdk.HeimdallAddress) bool {
+func (ga GenesisAccounts) Contains(addr sdk.AccAddress) bool {
 	for _, acc := range ga {
 		if acc.GetAddress().Equals(addr) {
 			return true

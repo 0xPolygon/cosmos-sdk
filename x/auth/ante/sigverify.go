@@ -55,17 +55,6 @@ func init() {
 // This is where apps can define their own PubKey
 type SignatureVerificationGasConsumer = func(meter storetypes.GasMeter, sig signing.SignatureV2, params types.Params) error
 
-// FeeCollector interface for fees collector
-type FeeCollector interface {
-	GetModuleAddress(string) sdk.HeimdallAddress
-	SendCoinsFromAccountToModule(
-		sdk.Context,
-		sdk.HeimdallAddress,
-		string,
-		sdk.Coins,
-	) error
-}
-
 // MainTxMsg tx hash
 type MainTxMsg interface {
 	GetTxHash() address.HeimdallHash
@@ -122,7 +111,7 @@ func (spkd SetPubKeyDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate b
 				"pubKey does not match signer address %s with signer index: %d", signerStrs[i], i)
 		}
 
-		acc, err := GetSignerAcc(ctx, spkd.ak, sdk.BytesToHeimdallAddress(signers[i]))
+		acc, err := GetSignerAcc(ctx, spkd.ak, signers[i])
 		if err != nil {
 			return ctx, err
 		}
@@ -215,7 +204,7 @@ func (sgcd SigGasConsumeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simula
 		return newCtx, sdkerrors.ErrTooManySignatures
 	}
 
-	signerAcc, err := GetSignerAcc(ctx, sgcd.ak, sdk.BytesToHeimdallAddress(signers[0]))
+	signerAcc, err := GetSignerAcc(ctx, sgcd.ak, signers[0])
 	if err != nil {
 		return ctx, err
 	}
@@ -309,7 +298,7 @@ func (svd SigVerificationDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simul
 	}
 
 	for i, sig := range sigs {
-		acc, err := GetSignerAcc(ctx, svd.ak, sdk.BytesToHeimdallAddress(signers[i]))
+		acc, err := GetSignerAcc(ctx, svd.ak, signers[i])
 		if err != nil {
 			return ctx, err
 		}
@@ -406,7 +395,7 @@ func (isd IncrementSequenceDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, sim
 	}
 
 	for _, signer := range signers {
-		acc := isd.ak.GetAccount(ctx, sdk.BytesToHeimdallAddress(signer))
+		acc := isd.ak.GetAccount(ctx, signer)
 		if err := acc.SetSequence(acc.GetSequence() + 1); err != nil {
 			panic(err)
 		}
@@ -520,7 +509,7 @@ func ConsumeMultisignatureVerificationGas(
 
 // GetSignerAcc returns an account for a given address that is expected to sign
 // a transaction.
-func GetSignerAcc(ctx sdk.Context, ak AccountKeeper, addr sdk.HeimdallAddress) (sdk.AccountI, error) {
+func GetSignerAcc(ctx sdk.Context, ak AccountKeeper, addr sdk.AccAddress) (sdk.AccountI, error) {
 	if acc := ak.GetAccount(ctx, addr); acc != nil {
 		return acc, nil
 	}
