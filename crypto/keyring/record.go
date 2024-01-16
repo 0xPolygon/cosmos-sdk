@@ -81,9 +81,9 @@ func (k *Record) GetPubKey() (cryptotypes.PubKey, error) {
 func (k Record) GetAddress() (types.AccAddress, error) {
 	pk, err := k.GetPubKey()
 	if err != nil {
-		return types.AccAddress{}, err
+		return nil, err
 	}
-	return types.AccAddress(pk.Address()), nil
+	return pk.Address().Bytes(), nil
 }
 
 // GetType fetches type of the record
