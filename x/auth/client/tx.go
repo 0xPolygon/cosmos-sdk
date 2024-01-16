@@ -52,7 +52,7 @@ func SignTx(txFactory tx.Factory, clientCtx client.Context, name string, txBuild
 	if err != nil {
 		return err
 	}
-	if !isTxSigner(addr.Bytes(), signers) {
+	if !isTxSigner(addr, signers) {
 		return fmt.Errorf("%s: %s", errors.ErrorInvalidSigner, name)
 	}
 	if !offline {
@@ -84,7 +84,7 @@ func SignTxWithSignerAddress(txFactory tx.Factory, clientCtx client.Context, add
 		return err
 	}
 
-	if !isTxSigner(addr.Bytes(), signers) {
+	if !isTxSigner(addr, signers) {
 		return fmt.Errorf("%s: %s", errors.ErrorInvalidSigner, name)
 	}
 

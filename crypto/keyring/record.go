@@ -8,7 +8,7 @@ import (
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/crypto/hd"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/cosmos-sdk/types"
 )
 
 var (
@@ -78,12 +78,12 @@ func (k *Record) GetPubKey() (cryptotypes.PubKey, error) {
 }
 
 // GetAddress fetches an address of the record
-func (k Record) GetAddress() (sdk.AccAddress, error) {
+func (k Record) GetAddress() (types.AccAddress, error) {
 	pk, err := k.GetPubKey()
 	if err != nil {
-		return sdk.AccAddress{}, err
+		return types.AccAddress{}, err
 	}
-	return sdk.AccAddress(pk.Address()), nil
+	return types.AccAddress(pk.Address()), nil
 }
 
 // GetType fetches type of the record

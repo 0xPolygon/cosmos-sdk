@@ -21,7 +21,7 @@ func TestDeductFeeDecorator_ZeroGas(t *testing.T) {
 	s := SetupTestSuite(t, true)
 	s.txBuilder = s.clientCtx.TxConfig.NewTxBuilder()
 
-	mfd := ante.NewDeductFeeDecorator(s.accountKeeper, s.bankKeeper, s.feeGrantKeeper, nil, nil)
+	mfd := ante.NewDeductFeeDecorator(s.accountKeeper, s.bankKeeper, s.feeGrantKeeper, nil, s.feeCollector)
 	antehandler := sdk.ChainAnteDecorators(mfd)
 
 	// keys and addresses
@@ -130,15 +130,15 @@ func TestDeductFees(t *testing.T) {
 	tx, err := s.CreateTestTx(s.ctx, privs, accNums, accSeqs, s.ctx.ChainID(), signing.SignMode_SIGN_MODE_DIRECT)
 	require.NoError(t, err)
 
-	dfd := ante.NewDeductFeeDecorator(s.accountKeeper, s.bankKeeper, nil, nil, nil)
+	dfd := ante.NewDeductFeeDecorator(s.accountKeeper, s.bankKeeper, nil, nil, s.feeCollector)
 	antehandler := sdk.ChainAnteDecorators(dfd)
-	s.bankKeeper.EXPECT().SendCoinsFromAccountToModule(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(sdkerrors.ErrInsufficientFunds)
+	s.feeCollector.EXPECT().SendCoinsFromAccountToModule(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(sdkerrors.ErrInsufficientFunds)
 
 	_, err = antehandler(s.ctx, tx, false)
 
 	require.NotNil(t, err, "Tx did not error when fee payer had insufficient funds")
 
-	s.bankKeeper.EXPECT().SendCoinsFromAccountToModule(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(nil)
+	s.feeCollector.EXPECT().SendCoinsFromAccountToModule(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(nil)
 	_, err = antehandler(s.ctx, tx, false)
 
 	require.Nil(t, err, "Tx errored after account has been set with sufficient funds")

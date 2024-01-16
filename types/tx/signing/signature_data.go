@@ -33,5 +33,4 @@ type MultiSignatureData struct {
 var _, _ SignatureData = &SingleSignatureData{}, &MultiSignatureData{}
 
 func (m *SingleSignatureData) isSignatureData() {}
-
-func (m *MultiSignatureData) isSignatureData() {}
+func (m *MultiSignatureData) isSignatureData()  {}

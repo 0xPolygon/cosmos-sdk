@@ -19,7 +19,7 @@ type HandlerOptions struct {
 	SignModeHandler        *txsigning.HandlerMap
 	SigGasConsumer         func(meter storetypes.GasMeter, sig signing.SignatureV2, params types.Params) error
 	TxFeeChecker           TxFeeChecker
-	// TODO HV2 is FeeCollector == FeegrantKeeper ? Ask Informal
+	// TODO HV2 is FeeCollector == FeegrantKeeper?
 	FeeCollector FeeCollector
 }
 

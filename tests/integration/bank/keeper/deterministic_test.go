@@ -98,8 +98,8 @@ func initDeterministicFixture(t *testing.T) *deterministicFixture {
 		authority.String(),
 		log.NewNopLogger(),
 	)
-	// TODO HV2 add processors
-	authModule := auth.NewAppModule(cdc, accountKeeper, authsims.RandomGenesisAccounts, nil, nil)
+	// TODO HV2 init processors with proper supply.AccountProcessor
+	authModule := auth.NewAppModule(cdc, accountKeeper, authsims.RandomGenesisAccounts, nil, []authtypes.AccountProcessor{})
 	bankModule := bank.NewAppModule(cdc, bankKeeper, accountKeeper, nil)
 
 	integrationApp := integration.NewIntegrationApp(newCtx, logger, keys, cdc, map[string]appmodule.AppModule{

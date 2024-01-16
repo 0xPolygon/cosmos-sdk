@@ -16,7 +16,7 @@ type AccountI interface {
 	proto.Message
 
 	GetAddress() AccAddress
-	SetAddress(address AccAddress) error // errors if already set.
+	SetAddress(AccAddress) error // errors if already set.
 
 	GetPubKey() cryptotypes.PubKey // can return nil.
 	SetPubKey(cryptotypes.PubKey) error

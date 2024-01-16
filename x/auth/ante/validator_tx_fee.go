@@ -19,6 +19,7 @@ func checkTxFeeWithValidatorMinGasPrices(ctx sdk.Context, tx sdk.Tx, params type
 		return nil, 0, errorsmod.Wrap(sdkerrors.ErrInvalidTxFees, "must provide correct txFees")
 	}
 
+	// TODO HV2: imported from heimdall
 	gas := params.GetMaxTxGas()
 	feeCoins := sdk.Coins{sdk.Coin{Denom: types.FeeToken, Amount: amount}}
 

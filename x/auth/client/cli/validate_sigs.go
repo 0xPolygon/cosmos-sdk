@@ -104,7 +104,7 @@ func printAndValidateSigs(
 			sigSanity      = "OK"
 		)
 
-		if i >= len(signers) || !bytes.Equal(sigAddr.Bytes(), signers[i]) {
+		if i >= len(signers) || !bytes.Equal(sigAddr, signers[i]) {
 			sigSanity = "ERROR: signature does not match its respective signer"
 			success = false
 		}

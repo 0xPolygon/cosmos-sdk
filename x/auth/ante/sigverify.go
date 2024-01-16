@@ -55,6 +55,7 @@ func init() {
 // This is where apps can define their own PubKey
 type SignatureVerificationGasConsumer = func(meter storetypes.GasMeter, sig signing.SignatureV2, params types.Params) error
 
+// TODO HV2 double check this and its usage
 // MainTxMsg tx hash
 type MainTxMsg interface {
 	GetTxHash() address.HeimdallHash
@@ -196,6 +197,7 @@ func (sgcd SigGasConsumeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simula
 		return ctx, err
 	}
 
+	// TODO HV2 following checks have been enforced due to heimdall use case. Keep them?
 	if len(signers) == 0 {
 		return ctx, sdkerrors.ErrNoSignatures
 	}
@@ -204,31 +206,33 @@ func (sgcd SigGasConsumeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simula
 		return newCtx, sdkerrors.ErrTooManySignatures
 	}
 
-	signerAcc, err := GetSignerAcc(ctx, sgcd.ak, signers[0])
-	if err != nil {
-		return ctx, err
-	}
+	for i, sig := range sigs {
+		signerAcc, err := GetSignerAcc(ctx, sgcd.ak, signers[i])
+		if err != nil {
+			return ctx, err
+		}
 
-	pubKey := signerAcc.GetPubKey()
+		pubKey := signerAcc.GetPubKey()
 
-	// In simulate mode the transaction comes with no signatures, thus if the
-	// account's pubkey is nil, both signature verification and gasKVStore.Set()
-	// shall consume the largest amount, i.e. it takes more gas to verify
-	// secp256k1 keys than ed25519 ones.
-	if simulate && pubKey == nil {
-		pubKey = simSecp256k1Pubkey
-	}
+		// In simulate mode the transaction comes with no signatures, thus if the
+		// account's pubkey is nil, both signature verification and gasKVStore.Set()
+		// shall consume the largest amount, i.e. it takes more gas to verify
+		// secp256k1 keys than ed25519 ones.
+		if simulate && pubKey == nil {
+			pubKey = simSecp256k1Pubkey
+		}
 
-	// make a SignatureV2 with PubKey filled in from above
-	sig := signing.SignatureV2{
-		PubKey:   pubKey,
-		Data:     sigs[0].Data,
-		Sequence: sigs[0].Sequence,
-	}
+		// make a SignatureV2 with PubKey filled in from above
+		sig = signing.SignatureV2{
+			PubKey:   pubKey,
+			Data:     sigs[0].Data,
+			Sequence: sigs[0].Sequence,
+		}
 
-	err = sgcd.sigGasConsumer(ctx.GasMeter(), sig, params)
-	if err != nil {
-		return ctx, err
+		err = sgcd.sigGasConsumer(ctx.GasMeter(), sig, params)
+		if err != nil {
+			return ctx, err
+		}
 	}
 
 	return next(ctx, tx, simulate)

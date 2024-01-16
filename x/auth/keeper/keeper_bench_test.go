@@ -39,7 +39,7 @@ func BenchmarkAccountMapperGetAccountFound(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		arr := []byte{byte((i & 0xFF0000) >> 16), byte((i & 0xFF00) >> 8), byte(i & 0xFF)}
-		accountKeeper.GetAccount(ctx, arr)
+		accountKeeper.GetAccount(ctx, sdk.AccAddress(arr))
 	}
 }
 

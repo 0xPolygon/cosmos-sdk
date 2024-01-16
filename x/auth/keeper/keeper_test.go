@@ -19,6 +19,7 @@ import (
 	authcodec "github.com/cosmos/cosmos-sdk/x/auth/codec"
 	"github.com/cosmos/cosmos-sdk/x/auth/keeper"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 )
 
 const (
@@ -107,8 +108,8 @@ func (suite *KeeperTestSuite) TestInitGenesis() {
 	}
 
 	ctx := suite.ctx
-	// TODO HV2 passed nil for processors, to change later
-	suite.accountKeeper.InitGenesis(ctx, genState, nil)
+	// TODO HV2 init processors with proper supply.AccountProcessor
+	suite.accountKeeper.InitGenesis(ctx, genState, []authtypes.AccountProcessor{})
 
 	params := suite.accountKeeper.GetParams(ctx)
 	suite.Require().Equal(genState.Params.MaxMemoCharacters, params.MaxMemoCharacters, "MaxMemoCharacters")
@@ -153,8 +154,8 @@ func (suite *KeeperTestSuite) TestInitGenesis() {
 	for _, acct := range accts {
 		genState.Accounts = append(genState.Accounts, codectypes.UnsafePackAny(acct))
 	}
-	// TODO HV2 passed nil for processors, to change later
-	suite.accountKeeper.InitGenesis(ctx, genState, nil)
+	// TODO HV2 init processors with proper supply.AccountProcessor
+	suite.accountKeeper.InitGenesis(ctx, genState, []authtypes.AccountProcessor{})
 
 	keeperAccts := suite.accountKeeper.GetAllAccounts(ctx)
 	// len(accts)+1 because we initialize fee_collector account after the genState accounts
@@ -201,8 +202,8 @@ func (suite *KeeperTestSuite) TestInitGenesis() {
 		},
 	}
 
-	// TODO HV2 passed nil for processors, to change later
-	suite.accountKeeper.InitGenesis(ctx, genState, nil)
+	// TODO HV2 init processors with proper supply.AccountProcessor
+	suite.accountKeeper.InitGenesis(ctx, genState, []authtypes.AccountProcessor{})
 
 	keeperAccts = suite.accountKeeper.GetAllAccounts(ctx)
 	// len(genState.Accounts)+1 because we initialize fee_collector as account number 1 (last)

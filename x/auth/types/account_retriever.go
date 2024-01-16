@@ -64,6 +64,7 @@ func (ar AccountRetriever) EnsureExists(clientCtx client.Context, addr sdk.AccAd
 	if _, err := ar.GetAccount(clientCtx, addr); err != nil {
 		return err
 	}
+
 	return nil
 }
 

@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"github.com/cometbft/cometbft/crypto/secp256k1"
+	kmultisig "github.com/cosmos/cosmos-sdk/crypto/keys/multisig"
+	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	"testing"
 
 	"github.com/cosmos/gogoproto/proto"
@@ -142,6 +144,40 @@ func TestSignatureV2Conversions(t *testing.T) {
 	sigBz, err := SignatureDataToAminoSignature(cdc, sigV2.Data)
 	require.NoError(t, err)
 	require.Equal(t, dummy, sigBz)
+
+	// multisigs
+	_, pubKey2, _ := testdata.KeyTestPubAddr()
+	multiPK := kmultisig.NewLegacyAminoPubKey(1, []cryptotypes.PubKey{
+		pubKey, pubKey2,
+	})
+	dummy2 := []byte("dummySig2")
+	bitArray := cryptotypes.NewCompactBitArray(2)
+	bitArray.SetIndex(0, true)
+	bitArray.SetIndex(1, true)
+	msigData := &signing.MultiSignatureData{
+		BitArray: bitArray,
+		Signatures: []signing.SignatureData{
+			&signing.SingleSignatureData{
+				SignMode:  signing.SignMode_SIGN_MODE_LEGACY_AMINO_JSON,
+				Signature: dummy,
+			},
+			&signing.SingleSignatureData{
+				SignMode:  signing.SignMode_SIGN_MODE_LEGACY_AMINO_JSON,
+				Signature: dummy2,
+			},
+		},
+	}
+
+	msig, err := SignatureDataToAminoSignature(cdc, msigData)
+	require.NoError(t, err)
+
+	sigV2, err = StdSignatureToSignatureV2(cdc, StdSignature{
+		PubKey:    multiPK,
+		Signature: msig,
+	})
+	require.NoError(t, err)
+	require.Equal(t, multiPK, sigV2.PubKey)
+	require.Equal(t, msigData, sigV2.Data)
 }
 
 func TestGetSignaturesV2(t *testing.T) {
