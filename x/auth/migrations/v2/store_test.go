@@ -47,7 +47,7 @@ func (ms mockSubspace) GetParamSet(ctx sdk.Context, ps authexported.ParamSet) {
 }
 
 func TestMigrateVestingAccounts(t *testing.T) {
-	t.Skip() // skipped as we're not using depinject
+	t.Skip() // TODO HV2 skipped as it uses depinject
 	encCfg := moduletestutil.MakeTestEncodingConfig(auth.AppModuleBasic{})
 	cdc := encCfg.Codec
 

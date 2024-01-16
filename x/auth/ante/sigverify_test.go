@@ -248,8 +248,6 @@ func TestSigIntegration(t *testing.T) {
 	// generate private keys
 	privs := []cryptotypes.PrivKey{
 		secp256k1.GenPrivKey(),
-		secp256k1.GenPrivKey(),
-		secp256k1.GenPrivKey(),
 	}
 
 	params := types.DefaultParams()

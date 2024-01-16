@@ -523,7 +523,7 @@ func TestAnteHandlerFees(t *testing.T) {
 
 // Test logic around memo gas consumption.
 func TestAnteHandlerMemoGas(t *testing.T) {
-	t.Skip() // skipped as we don't support memo
+	t.Skip() // TODO HV2 skipped as we don't support memo
 	testCases := []TestCase{
 		{
 			"tx does not have enough gas",

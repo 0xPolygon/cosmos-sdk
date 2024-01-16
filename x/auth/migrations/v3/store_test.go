@@ -43,7 +43,7 @@ func (ms mockSubspace) GetParamSet(ctx sdk.Context, ps authexported.ParamSet) {
 
 // TestMigrateMapAccAddressToAccNumberKey test cases for state migration of map to accAddr to accNum
 func TestMigrateMapAccAddressToAccNumberKey(t *testing.T) {
-	t.Skip() // skipped as we are not using depinject
+	t.Skip() // TODO HV2 skipped as it uses depinject
 	encCfg := moduletestutil.MakeTestEncodingConfig(auth.AppModuleBasic{})
 	cdc := encCfg.Codec
 

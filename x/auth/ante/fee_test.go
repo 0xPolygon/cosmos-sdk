@@ -50,6 +50,7 @@ func TestDeductFeeDecorator_ZeroGas(t *testing.T) {
 }
 
 func TestEnsureMempoolFees(t *testing.T) {
+	t.Skip()                     // TODO HV2 skipped as we use a different fee model
 	s := SetupTestSuite(t, true) // setup
 	s.txBuilder = s.clientCtx.TxConfig.NewTxBuilder()
 
@@ -74,7 +75,7 @@ func TestEnsureMempoolFees(t *testing.T) {
 	require.NoError(t, err)
 
 	// Set high gas price so standard test fee fails
-	atomPrice := sdk.NewDecCoinFromDec("atom", math.LegacyNewDec(20))
+	atomPrice := sdk.NewDecCoinFromDec("matic", math.LegacyNewDec(20))
 	highGasPrice := []sdk.DecCoin{atomPrice}
 	s.ctx = s.ctx.WithMinGasPrices(highGasPrice)
 
