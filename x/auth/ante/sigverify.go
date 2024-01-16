@@ -225,8 +225,8 @@ func (sgcd SigGasConsumeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simula
 		// make a SignatureV2 with PubKey filled in from above
 		sig = signing.SignatureV2{
 			PubKey:   pubKey,
-			Data:     sigs[].Data,
-			Sequence: sigs[].Sequence,
+			Data:     sig.Data,
+			Sequence: sig.Sequence,
 		}
 
 		err = sgcd.sigGasConsumer(ctx.GasMeter(), sig, params)
