@@ -37,7 +37,7 @@ func Test_multiSigKey_Properties(t *testing.T) {
 
 	addr, err := k.GetAddress()
 	require.NoError(t, err)
-	require.Equal(t, "cosmos16wfryel63g7axeamw68630wglalcnk3l0zuadc", sdk.MustBech32ifyAddressBytes("cosmos", addr))
+	require.Equal(t, "cosmos16wfryel63g7axeamw68630wglalcnk3l0zuadc", sdk.MustHexifyAddressBytes("cosmos", addr))
 }
 
 func Test_showKeysCmd(t *testing.T) {

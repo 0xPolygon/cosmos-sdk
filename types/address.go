@@ -22,7 +22,7 @@ import (
 
 const (
 
-	// TODO HV2 do we need all these contants here?
+	// TODO HV2 do we need all these constants here?
 
 	// Constants defined here are the defaults value for address.
 	// You can use the specific values for your project.

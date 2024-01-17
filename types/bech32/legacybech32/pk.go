@@ -60,7 +60,7 @@ func getPrefix(pkt Bech32PubKeyType) string {
 func UnmarshalPubKey(pkt Bech32PubKeyType, pubkeyStr string) (cryptotypes.PubKey, error) {
 	bech32Prefix := getPrefix(pkt)
 
-	bz, err := sdk.GetFromBech32(pubkeyStr, bech32Prefix)
+	bz, err := sdk.GetFromHex(pubkeyStr, bech32Prefix)
 	if err != nil {
 		return nil, err
 	}
