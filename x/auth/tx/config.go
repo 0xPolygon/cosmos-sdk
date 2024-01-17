@@ -91,8 +91,8 @@ func NewTxConfig(protoCodec codec.Codec, enabledSignModes []signingtypes.SignMod
 func NewDefaultSigningOptions() (*txsigning.Options, error) {
 	sdkConfig := sdk.GetConfig()
 	return &txsigning.Options{
-		AddressCodec:          authcodec.NewBech32Codec(sdkConfig.GetBech32AccountAddrPrefix()),
-		ValidatorAddressCodec: authcodec.NewBech32Codec(sdkConfig.GetBech32ValidatorAddrPrefix()),
+		AddressCodec:          authcodec.NewHexCodec(sdkConfig.GetBech32AccountAddrPrefix()),
+		ValidatorAddressCodec: authcodec.NewHexCodec(sdkConfig.GetBech32ValidatorAddrPrefix()),
 	}, nil
 }
 

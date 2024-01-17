@@ -1,8 +1,9 @@
 package v2
 
 import (
-	"encoding/binary"
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 
 	storetypes "cosmossdk.io/store/types"
 
@@ -32,13 +33,15 @@ func Migrate(
 ) error {
 	store := ctx.KVStore(storeKey)
 	curAccVal := groupPolicySeq.CurVal(store)
+	groupPolicyAccountPubKey := make(map[string]cryptotypes.PubKey, 0)
 	groupPolicyAccountDerivationKey := make(map[string][]byte, 0)
 	policyKey := []byte{GroupPolicyTablePrefix}
 	for i := uint64(0); i <= curAccVal; i++ {
-		derivationKey := make([]byte, 8)
-		binary.BigEndian.PutUint64(derivationKey, i)
+		pubKey := secp256k1.GenPrivKey().PubKey()
+		derivationKey := pubKey.Address()
 		groupPolicyAcc := sdk.AccAddress(address.Module(group.ModuleName, policyKey, derivationKey))
 		groupPolicyAccountDerivationKey[groupPolicyAcc.String()] = derivationKey
+		groupPolicyAccountPubKey[groupPolicyAcc.String()] = pubKey
 	}
 
 	// get all group policies
@@ -65,11 +68,11 @@ func Migrate(
 			panic(fmt.Errorf("group policy account %s derivation key not found", policy.Address))
 		}
 
-		ac, err := authtypes.NewModuleCredential(group.ModuleName, []byte{GroupPolicyTablePrefix}, derivationKey)
+		_, err = authtypes.NewModuleCredential(group.ModuleName, []byte{GroupPolicyTablePrefix}, derivationKey)
 		if err != nil {
 			return err
 		}
-		baseAccount, err := authtypes.NewBaseAccountWithPubKey(ac)
+		baseAccount, err := authtypes.NewBaseAccountWithPubKey(groupPolicyAccountPubKey[policy.Address])
 		if err != nil {
 			return fmt.Errorf("failed to create new group policy account: %w", err)
 		}

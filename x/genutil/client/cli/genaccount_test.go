@@ -91,7 +91,7 @@ func TestAddGenesisAccountCmd(t *testing.T) {
 			ctx = context.WithValue(ctx, client.ClientContextKey, &clientCtx)
 			ctx = context.WithValue(ctx, server.ServerContextKey, serverCtx)
 
-			cmd := genutilcli.AddGenesisAccountCmd(home, addresscodec.NewBech32Codec("cosmos"))
+			cmd := genutilcli.AddGenesisAccountCmd(home, addresscodec.NewHexCodec("cosmos"))
 			cmd.SetArgs([]string{
 				tc.addr,
 				tc.denom,

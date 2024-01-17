@@ -1,7 +1,6 @@
 package ante
 
 import (
-	"bytes"
 	"fmt"
 
 	errorsmod "cosmossdk.io/errors"
@@ -86,26 +85,26 @@ func (dfd DeductFeeDecorator) checkDeductFee(ctx sdk.Context, sdkTx sdk.Tx, fee 
 	}
 
 	feePayer := feeTx.FeePayer()
-	feeGranter := feeTx.FeeGranter()
+	// feeGranter := feeTx.FeeGranter()
 	deductFeesFrom := feePayer
 
-	// TODO HV2: left freeGranter logic intact. Since we are not supposed to use it, is this ok?
+	// TODO HV2: removed freeGranter logic as we are not using it in heimdall. Is this ok? Do we want to use it instead of FeeCollector?
 	// if feegranter set deduct fee from feegranter account.
 	// this works with only when feegrant enabled.
-	if feeGranter != nil {
-		feeGranterAddr := sdk.AccAddress(feeGranter)
-
-		if dfd.feegrantKeeper == nil {
-			return sdkerrors.ErrInvalidRequest.Wrap("fee grants are not enabled")
-		} else if !bytes.Equal(feeGranterAddr, feePayer) {
-			err := dfd.feegrantKeeper.UseGrantedFees(ctx, feeGranterAddr, feePayer, fee, sdkTx.GetMsgs())
-			if err != nil {
-				return errorsmod.Wrapf(err, "%s does not allow to pay fees for %s", feeGranter, feePayer)
-			}
-		}
-
-		deductFeesFrom = feeGranterAddr
-	}
+	//if feeGranter != nil {
+	//	feeGranterAddr := sdk.AccAddress(feeGranter)
+	//
+	//	if dfd.feegrantKeeper == nil {
+	//		return sdkerrors.ErrInvalidRequest.Wrap("fee grants are not enabled")
+	//	} else if !bytes.Equal(feeGranterAddr, feePayer) {
+	//		err := dfd.feegrantKeeper.UseGrantedFees(ctx, feeGranterAddr, feePayer, fee, sdkTx.GetMsgs())
+	//		if err != nil {
+	//			return errorsmod.Wrapf(err, "%s does not allow to pay fees for %s", feeGranter, feePayer)
+	//		}
+	//	}
+	//
+	//	deductFeesFrom = feeGranterAddr
+	//}
 
 	deductFeesFromAcc := dfd.accountKeeper.GetAccount(ctx, deductFeesFrom)
 	if deductFeesFromAcc == nil {

@@ -44,7 +44,7 @@ func (m MsgSubmitEvidence) GetEvidence() exported.Evidence {
 }
 
 func (m MsgSubmitEvidence) GetSubmitter() sdk.AccAddress {
-	accAddr, err := sdk.AccAddressFromBech32(m.Submitter)
+	accAddr, err := sdk.AccAddressFromHexUnsafe(m.Submitter)
 	if err != nil {
 		return nil
 	}

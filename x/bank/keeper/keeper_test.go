@@ -139,7 +139,7 @@ func (suite *KeeperTestSuite) SetupTest() {
 	// gomock initializations
 	ctrl := gomock.NewController(suite.T())
 	authKeeper := banktestutil.NewMockAccountKeeper(ctrl)
-	authKeeper.EXPECT().AddressCodec().Return(address.NewBech32Codec("cosmos")).AnyTimes()
+	authKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec("cosmos")).AnyTimes()
 	suite.ctx = ctx
 	suite.authKeeper = authKeeper
 	suite.bankKeeper = keeper.NewBaseKeeper(
@@ -1888,14 +1888,14 @@ func (suite *KeeperTestSuite) TestBalanceTrackingEvents() {
 		case banktypes.EventTypeCoinSpent:
 			coinsSpent, err := sdk.ParseCoinsNormalized(e.Attributes[1].Value)
 			require.NoError(err)
-			spender, err := sdk.AccAddressFromBech32(e.Attributes[0].Value)
+			spender, err := sdk.AccAddressFromHex(e.Attributes[0].Value)
 			require.NoError(err)
 			balances[spender.String()] = balances[spender.String()].Sub(coinsSpent...)
 
 		case banktypes.EventTypeCoinReceived:
 			coinsRecv, err := sdk.ParseCoinsNormalized(e.Attributes[1].Value)
 			require.NoError(err)
-			receiver, err := sdk.AccAddressFromBech32(e.Attributes[0].Value)
+			receiver, err := sdk.AccAddressFromHex(e.Attributes[0].Value)
 			require.NoError(err)
 			balances[receiver.String()] = balances[receiver.String()].Add(coinsRecv...)
 		}

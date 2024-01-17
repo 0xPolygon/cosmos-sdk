@@ -66,7 +66,7 @@ func (s *WithdrawAllTestSuite) TestNewWithdrawAllRewardsGenerateOnly() {
 		val.ClientCtx,
 		val.Address,
 		newAddr,
-		sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, math.NewInt(2000))), address.NewBech32Codec("cosmos"), fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
+		sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, math.NewInt(2000))), address.NewHexCodec("cosmos"), fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 		fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
 		fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, math.NewInt(10))).String()),
 	)
@@ -109,7 +109,7 @@ func (s *WithdrawAllTestSuite) TestNewWithdrawAllRewardsGenerateOnly() {
 			fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
 			fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, math.NewInt(10))).String()),
 		}
-		cmd = cli.NewWithdrawAllRewardsCmd(address.NewBech32Codec("cosmosvaloper"), address.NewBech32Codec("cosmos"))
+		cmd = cli.NewWithdrawAllRewardsCmd(address.NewHexCodec("cosmosvaloper"), address.NewHexCodec("cosmos"))
 		out, err := clitestutil.ExecTestCLICmd(clientCtx, cmd, args)
 		if err != nil {
 			return err
@@ -132,7 +132,7 @@ func (s *WithdrawAllTestSuite) TestNewWithdrawAllRewardsGenerateOnly() {
 		fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
 		fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, math.NewInt(10))).String()),
 	}
-	cmd = cli.NewWithdrawAllRewardsCmd(address.NewBech32Codec("cosmosvaloper"), address.NewBech32Codec("cosmos"))
+	cmd = cli.NewWithdrawAllRewardsCmd(address.NewHexCodec("cosmosvaloper"), address.NewHexCodec("cosmos"))
 	out, err = clitestutil.ExecTestCLICmd(clientCtx, cmd, args)
 	require.NoError(err)
 	// expect 1 transaction in the generated file when --max-msgs in a tx set 2, since there are only delegations.

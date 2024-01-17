@@ -299,7 +299,7 @@ func ProvideAddressCodec(in AddressCodecInputs) (address.Codec, ValidatorAddress
 		in.StakingConfig.Bech32PrefixConsensus = fmt.Sprintf("%svalcons", in.AuthConfig.Bech32Prefix)
 	}
 
-	return addresscodec.NewBech32Codec(in.AuthConfig.Bech32Prefix),
-		addresscodec.NewBech32Codec(in.StakingConfig.Bech32PrefixValidator),
-		addresscodec.NewBech32Codec(in.StakingConfig.Bech32PrefixConsensus)
+	return addresscodec.NewHexCodec(in.AuthConfig.Bech32Prefix),
+		addresscodec.NewHexCodec(in.StakingConfig.Bech32PrefixValidator),
+		addresscodec.NewHexCodec(in.StakingConfig.Bech32PrefixConsensus)
 }

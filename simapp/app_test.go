@@ -3,6 +3,7 @@ package simapp
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/ethereum/go-ethereum/common"
 	"testing"
 
 	abci "github.com/cometbft/cometbft/abci/types"
@@ -56,7 +57,7 @@ func TestSimAppExportAndBlockedAddrs(t *testing.T) {
 	// BlockedAddresses returns a map of addresses in app v1 and a map of modules name in app v2.
 	for acc := range BlockedAddresses() {
 		var addr sdk.AccAddress
-		if modAddr, err := sdk.AccAddressFromBech32(acc); err == nil {
+		if modAddr, err := sdk.AccAddressFromHex(acc); err == nil {
 			addr = modAddr
 		} else {
 			addr = app.AccountKeeper.GetModuleAddress(acc)
@@ -310,7 +311,7 @@ func (c customAddressCodec) StringToBytes(text string) ([]byte, error) {
 }
 
 func (c customAddressCodec) BytesToString(bz []byte) (string, error) {
-	return string(bz), nil
+	return common.Bytes2Hex(bz), nil
 }
 
 func TestAddressCodecFactory(t *testing.T) {

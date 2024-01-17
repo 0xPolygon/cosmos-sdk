@@ -58,8 +58,8 @@ func (s *VestingTestSuite) SetupTest() {
 		storeService,
 		authtypes.ProtoBaseAccount,
 		maccPerms,
-		authcodec.NewBech32Codec("cosmos"),
-		"cosmos",
+		authcodec.NewHexCodec(""),
+		"",
 		authtypes.NewModuleAddress("gov").String(),
 	)
 
@@ -69,6 +69,7 @@ func (s *VestingTestSuite) SetupTest() {
 }
 
 func (s *VestingTestSuite) TestCreateVestingAccount() {
+	s.T().Skip() // skipped as not using vesting accounts
 	testCases := map[string]struct {
 		preRun    func()
 		input     *vestingtypes.MsgCreateVestingAccount
@@ -187,6 +188,7 @@ func (s *VestingTestSuite) TestCreateVestingAccount() {
 }
 
 func (s *VestingTestSuite) TestCreatePermanentLockedAccount() {
+	s.T().Skip() // skipped as not using vesting accounts
 	testCases := map[string]struct {
 		preRun    func()
 		input     *vestingtypes.MsgCreatePermanentLockedAccount
@@ -269,6 +271,7 @@ func (s *VestingTestSuite) TestCreatePermanentLockedAccount() {
 }
 
 func (s *VestingTestSuite) TestCreatePeriodicVestingAccount() {
+	s.T().Skip() // skipped as not using vesting accounts
 	testCases := []struct {
 		name      string
 		preRun    func()

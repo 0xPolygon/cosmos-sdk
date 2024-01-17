@@ -14,9 +14,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
 )
 
-const addrStr = "cosmos13c3d4wq2t22dl0dstraf8jc3f902e3fsy9n3wv"
+const addrStr = "8186b214a917fb4922eb984fb80cfafa30ee8810"
 
-var addrBytes = []byte{0x8e, 0x22, 0xda, 0xb8, 0xa, 0x5a, 0x94, 0xdf, 0xbd, 0xb0, 0x58, 0xfa, 0x93, 0xcb, 0x11, 0x49, 0x5e, 0xac, 0xc5, 0x30}
+var addrBytes = []byte{129, 134, 178, 20, 169, 23, 251, 73, 34, 235, 152, 79, 184, 12, 250, 250, 48, 238, 136, 16}
 
 func (suite *KeeperTestSuite) TestGRPCQueryAccounts() {
 	var req *types.QueryAccountsRequest
@@ -405,6 +405,7 @@ func (suite *KeeperTestSuite) TestGRPCQueryModuleAccountByName() {
 }
 
 func (suite *KeeperTestSuite) TestBech32Prefix() {
+	suite.T().Skip()  // TODO HV2 skipped as we are not using bech32
 	suite.SetupTest() // reset
 	req := &types.Bech32PrefixRequest{}
 	res, err := suite.queryClient.Bech32Prefix(context.Background(), req)

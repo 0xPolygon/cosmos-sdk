@@ -1,6 +1,7 @@
 package tx
 
 import (
+	"github.com/ethereum/go-ethereum/common"
 	"testing"
 
 	"github.com/cosmos/cosmos-proto/rapidproto"
@@ -160,5 +161,5 @@ func (d dummyAddressCodec) StringToBytes(text string) ([]byte, error) {
 }
 
 func (d dummyAddressCodec) BytesToString(bz []byte) (string, error) {
-	return string(bz), nil
+	return common.Bytes2Hex(bz), nil
 }

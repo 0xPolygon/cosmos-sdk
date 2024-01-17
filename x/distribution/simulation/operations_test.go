@@ -113,7 +113,7 @@ func (suite *SimTestSuite) TestSimulateMsgWithdrawDelegatorReward() {
 
 	delegation := stakingtypes.NewDelegation(delegator.Address.String(), validator0.GetOperator(), issuedShares)
 	suite.Require().NoError(suite.stakingKeeper.SetDelegation(suite.ctx, delegation))
-	valBz, err := address.NewBech32Codec("cosmosvaloper").StringToBytes(validator0.GetOperator())
+	valBz, err := address.NewHexCodec("cosmosvaloper").StringToBytes(validator0.GetOperator())
 	suite.Require().NoError(err)
 	suite.distrKeeper.SetDelegatorStartingInfo(suite.ctx, valBz, delegator.Address, types.NewDelegatorStartingInfo(2, math.LegacyOneDec(), 200))
 
@@ -171,7 +171,7 @@ func (suite *SimTestSuite) testSimulateMsgWithdrawValidatorCommission(tokenName 
 		sdk.NewDecCoinFromDec(tokenName, math.LegacyNewDec(5).Quo(math.LegacyNewDec(2))),
 		sdk.NewDecCoinFromDec("stake", math.LegacyNewDec(1).Quo(math.LegacyNewDec(1))),
 	)
-	valCodec := address.NewBech32Codec("cosmosvaloper")
+	valCodec := address.NewHexCodec("cosmosvaloper")
 
 	val0, err := valCodec.StringToBytes(validator0.GetOperator())
 	suite.Require().NoError(err)

@@ -305,7 +305,7 @@ Example:
 func bech32toValAddresses(validators []string) ([]sdk.ValAddress, error) {
 	vals := make([]sdk.ValAddress, len(validators))
 	for i, validator := range validators {
-		addr, err := sdk.ValAddressFromBech32(validator)
+		addr, err := sdk.ValAddressFromHex(validator)
 		if err != nil {
 			return nil, err
 		}

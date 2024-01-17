@@ -38,7 +38,7 @@ func (s *KeeperTestSuite) SetupTest() {
 	storeService := runtime.NewKVStoreService(key)
 	testCtx := testutil.DefaultContextWithDB(s.T(), key, storetypes.NewTransientStoreKey("transient_test"))
 	encCfg := moduletestutil.MakeTestEncodingConfig(crisis.AppModuleBasic{})
-	keeper := keeper.NewKeeper(encCfg.Codec, storeService, 5, supplyKeeper, "", sdk.AccAddress([]byte("addr1_______________")).String(), addresscodec.NewBech32Codec("cosmos"))
+	keeper := keeper.NewKeeper(encCfg.Codec, storeService, 5, supplyKeeper, "", sdk.AccAddress([]byte("addr1_______________")).String(), addresscodec.NewHexCodec("cosmos"))
 
 	s.ctx = testCtx.Ctx
 	s.keeper = keeper

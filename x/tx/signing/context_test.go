@@ -2,6 +2,7 @@ package signing
 
 import (
 	"encoding/hex"
+	"github.com/ethereum/go-ethereum/common"
 	"strings"
 	"testing"
 
@@ -188,7 +189,7 @@ func (d dummyAddressCodec) StringToBytes(text string) ([]byte, error) {
 }
 
 func (d dummyAddressCodec) BytesToString(bz []byte) (string, error) {
-	return hex.EncodeToString(bz), nil
+	return common.Bytes2Hex(bz), nil
 }
 
 var _ address.Codec = dummyAddressCodec{}

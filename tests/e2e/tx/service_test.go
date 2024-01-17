@@ -75,7 +75,7 @@ func (s *E2ETestSuite) SetupSuite() {
 		sdk.NewCoins(
 			sdk.NewCoin(s.cfg.BondDenom, math.NewInt(10)),
 		),
-		addresscodec.NewBech32Codec("cosmos"),
+		addresscodec.NewHexCodec("cosmos"),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 		fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
 		fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, math.NewInt(10))).String()),
@@ -93,7 +93,7 @@ func (s *E2ETestSuite) SetupSuite() {
 		sdk.NewCoins(
 			sdk.NewCoin(s.cfg.BondDenom, math.NewInt(1)),
 		),
-		addresscodec.NewBech32Codec("cosmos"),
+		addresscodec.NewHexCodec("cosmos"),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 		fmt.Sprintf("--%s", flags.FlagOffline),
 		fmt.Sprintf("--%s=0", flags.FlagAccountNumber),
@@ -600,7 +600,7 @@ func (s *E2ETestSuite) TestSimMultiSigTx() {
 		val1.Address,
 		addr,
 		sdk.NewCoins(coins),
-		addresscodec.NewBech32Codec("cosmos"),
+		addresscodec.NewHexCodec("cosmos"),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 		fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
 		fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, math.NewInt(10))).String()),
@@ -621,7 +621,7 @@ func (s *E2ETestSuite) TestSimMultiSigTx() {
 		sdk.NewCoins(
 			sdk.NewInt64Coin(s.cfg.BondDenom, 5),
 		),
-		addresscodec.NewBech32Codec("cosmos"),
+		addresscodec.NewHexCodec("cosmos"),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 		fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
 		fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, math.NewInt(10))).String()),

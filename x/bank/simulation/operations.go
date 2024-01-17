@@ -143,7 +143,7 @@ func sendMsgSend(
 		err  error
 	)
 
-	from, err := sdk.AccAddressFromBech32(msg.FromAddress)
+	from, err := sdk.AccAddressFromHex(msg.FromAddress)
 	if err != nil {
 		return err
 	}

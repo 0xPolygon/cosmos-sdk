@@ -50,7 +50,7 @@ func TestDeposits(t *testing.T) {
 			}
 
 			TestAddrs := simtestutil.AddTestAddrsIncremental(bankKeeper, stakingKeeper, ctx, 2, sdkmath.NewInt(10000000*depositMultiplier))
-			authKeeper.EXPECT().AddressCodec().Return(address.NewBech32Codec("cosmos")).AnyTimes()
+			authKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec("cosmos")).AnyTimes()
 
 			tp := TestProposal
 			proposal, err := govKeeper.SubmitProposal(ctx, tp, "", "title", "summary", TestAddrs[0], tc.expedited)
@@ -211,7 +211,7 @@ func TestDepositAmount(t *testing.T) {
 			trackMockBalances(bankKeeper, distrKeeper)
 
 			testAddrs := simtestutil.AddTestAddrsIncremental(bankKeeper, stakingKeeper, ctx, 2, sdkmath.NewInt(1000000000000000))
-			authKeeper.EXPECT().AddressCodec().Return(address.NewBech32Codec("cosmos")).AnyTimes()
+			authKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec("cosmos")).AnyTimes()
 
 			params, _ := govKeeper.Params.Get(ctx)
 			params.MinDepositRatio = tc.minDepositRatio
@@ -390,7 +390,7 @@ func TestChargeDeposit(t *testing.T) {
 				params := v1.DefaultParams()
 				params.ProposalCancelRatio = tc.proposalCancelRatio
 				TestAddrs := simtestutil.AddTestAddrsIncremental(bankKeeper, stakingKeeper, ctx, 2, sdkmath.NewInt(10000000000))
-				authKeeper.EXPECT().AddressCodec().Return(address.NewBech32Codec("cosmos")).AnyTimes()
+				authKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec("cosmos")).AnyTimes()
 
 				switch i {
 				case 0:
@@ -416,7 +416,7 @@ func TestChargeDeposit(t *testing.T) {
 				_, err = govKeeper.AddDeposit(ctx, proposalID, TestAddrs[0], fiveStake)
 				require.NoError(t, err)
 
-				codec := address.NewBech32Codec("cosmos")
+				codec := address.NewHexCodec("cosmos")
 				// get balances of dest address
 				var prevBalance sdk.Coin
 				if len(params.ProposalCancelDest) != 0 {

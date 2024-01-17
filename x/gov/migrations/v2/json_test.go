@@ -20,7 +20,7 @@ func TestMigrateJSON(t *testing.T) {
 		WithTxConfig(encodingConfig.TxConfig).
 		WithCodec(encodingConfig.Codec)
 
-	voter, err := sdk.AccAddressFromBech32("cosmos1fl48vsnmsdzcv85q5d2q4z5ajdha8yu34mf0eh")
+	voter, err := sdk.AccAddressFromHex("cosmos1fl48vsnmsdzcv85q5d2q4z5ajdha8yu34mf0eh")
 	require.NoError(t, err)
 	govGenState := &v1beta1.GenesisState{
 		Votes: v1beta1.Votes{

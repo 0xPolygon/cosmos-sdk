@@ -41,7 +41,7 @@ type DeterministicTestSuite struct {
 }
 
 var (
-	addr        = sdk.MustAccAddressFromBech32("cosmos1j364pjm8jkxxmujj0vp2xjg0y7w8tyveuamfm6")
+	addr        = sdk.MustAccAddressFromHex("8186b214a917fb4922eb984fb80cfafa30ee8810")
 	pub, _      = hex.DecodeString("01090C02812F010C25200ED40E004105160196E801F70005070EA21603FF06001E")
 	permissions = []string{"burner", "minter", "staking", "random"}
 )
@@ -73,7 +73,7 @@ func (suite *DeterministicTestSuite) SetupTest() {
 		storeService,
 		types.ProtoBaseAccount,
 		maccPerms,
-		authcodec.NewBech32Codec("cosmos"),
+		authcodec.NewHexCodec(""),
 		"cosmos",
 		types.NewModuleAddress("gov").String(),
 	)
@@ -132,19 +132,21 @@ func (suite *DeterministicTestSuite) TestGRPCQueryAccount() {
 
 	req := &types.QueryAccountRequest{Address: acc1.GetAddress().String()}
 
-	testdata.DeterministicIterations(suite.ctx, suite.T(), req, suite.queryClient.Account, 1543, false)
+	testdata.DeterministicIterations(suite.ctx, suite.T(), req, suite.queryClient.Account, 1528, false)
 }
 
 // pubkeyGenerator creates and returns a random pubkey generator using rapid.
 func pubkeyGenerator(t *rapid.T) *rapid.Generator[secp256k1.PubKey] {
 	return rapid.Custom(func(t *rapid.T) secp256k1.PubKey {
-		pkBz := rapid.SliceOfN(rapid.Byte(), 33, 33).Draw(t, "hex")
+		pkBz := rapid.SliceOfNDistinct(rapid.Byte(), 33, 33, func(i byte) byte {
+			return i
+		}).Draw(t, "hex")
 		return secp256k1.PubKey{Key: pkBz}
 	})
 }
 
 func (suite *DeterministicTestSuite) TestGRPCQueryAccounts() {
-	suite.T().Skip() // TODO HV2 skipped as it uses depinject
+	// suite.T().Skip() // TODO HV2 skipped as it uses depinject
 	rapid.Check(suite.T(), func(t *rapid.T) {
 		numAccs := rapid.IntRange(1, 10).Draw(t, "accounts")
 		accs := suite.createAndSetAccounts(t, numAccs)
@@ -158,7 +160,7 @@ func (suite *DeterministicTestSuite) TestGRPCQueryAccounts() {
 	})
 
 	// Regression test
-	addr1, err := suite.accountKeeper.AddressCodec().StringToBytes("cosmos1892yr6fzlj7ud0kfkah2ctrav3a4p4n060ze8f")
+	addr1, err := suite.accountKeeper.AddressCodec().StringToBytes("0x8186b214a917fb4922eb984fb80cfafa30ee8810")
 	suite.Require().NoError(err)
 	pub1, err := hex.DecodeString("D1002E1B019000010BB7034500E71F011F1CA90D5B000E134BFB0F3603030D0303")
 	suite.Require().NoError(err)
@@ -175,7 +177,7 @@ func (suite *DeterministicTestSuite) TestGRPCQueryAccounts() {
 	suite.accountKeeper.SetAccount(suite.ctx, acc2)
 
 	req := &types.QueryAccountsRequest{}
-	testdata.DeterministicIterations(suite.ctx, suite.T(), req, suite.queryClient.Accounts, 1716, false)
+	testdata.DeterministicIterations(suite.ctx, suite.T(), req, suite.queryClient.Accounts, 1110, false)
 }
 
 func (suite *DeterministicTestSuite) TestGRPCQueryAccountAddressByID() {
@@ -197,7 +199,7 @@ func (suite *DeterministicTestSuite) TestGRPCQueryAccountAddressByID() {
 }
 
 func (suite *DeterministicTestSuite) TestGRPCQueryParameters() {
-	suite.T().Skip() // TODO HV2 skipped as we use a different fee model
+	// suite.T().Skip() // TODO HV2 skipped as we use a different fee model
 	rapid.Check(suite.T(), func(t *rapid.T) {
 		params := types.NewParams(
 			rapid.Uint64Min(1).Draw(t, "max-memo-characters"),
@@ -222,7 +224,7 @@ func (suite *DeterministicTestSuite) TestGRPCQueryParameters() {
 	suite.Require().NoError(err)
 
 	req := &types.QueryParamsRequest{}
-	testdata.DeterministicIterations(suite.ctx, suite.T(), req, suite.queryClient.Params, 1042, false)
+	testdata.DeterministicIterations(suite.ctx, suite.T(), req, suite.queryClient.Params, 1057, false)
 }
 
 func (suite *DeterministicTestSuite) TestGRPCQueryAccountInfo() {
@@ -242,7 +244,7 @@ func (suite *DeterministicTestSuite) TestGRPCQueryAccountInfo() {
 
 	suite.accountKeeper.SetAccount(suite.ctx, acc)
 	req := &types.QueryAccountInfoRequest{Address: acc.GetAddress().String()}
-	testdata.DeterministicIterations(suite.ctx, suite.T(), req, suite.queryClient.AccountInfo, 1543, false)
+	testdata.DeterministicIterations(suite.ctx, suite.T(), req, suite.queryClient.AccountInfo, 1528, false)
 }
 
 func (suite *DeterministicTestSuite) createAndReturnQueryClient(ak keeper.AccountKeeper) types.QueryClient {
@@ -297,7 +299,7 @@ func (suite *DeterministicTestSuite) TestGRPCQueryModuleAccounts() {
 			suite.storeService,
 			types.ProtoBaseAccount,
 			maccPerms,
-			authcodec.NewBech32Codec("cosmos"),
+			authcodec.NewHexCodec(""),
 			"cosmos",
 			types.NewModuleAddress("gov").String(),
 		)
@@ -317,7 +319,7 @@ func (suite *DeterministicTestSuite) TestGRPCQueryModuleAccounts() {
 
 	queryClient := suite.createAndReturnQueryClient(suite.accountKeeper)
 	req := &types.QueryModuleAccountsRequest{}
-	testdata.DeterministicIterations(suite.ctx, suite.T(), req, queryClient.ModuleAccounts, 8565, false)
+	testdata.DeterministicIterations(suite.ctx, suite.T(), req, queryClient.ModuleAccounts, 8475, false)
 }
 
 func (suite *DeterministicTestSuite) TestGRPCQueryModuleAccountByName() {
@@ -344,8 +346,8 @@ func (suite *DeterministicTestSuite) TestGRPCQueryModuleAccountByName() {
 			suite.storeService,
 			types.ProtoBaseAccount,
 			maccPerms,
-			authcodec.NewBech32Codec("cosmos"),
-			"cosmos",
+			authcodec.NewHexCodec(""),
+			"",
 			types.NewModuleAddress("gov").String(),
 		)
 		suite.setModuleAccounts(suite.ctx, ak, []string{mName})
@@ -364,5 +366,5 @@ func (suite *DeterministicTestSuite) TestGRPCQueryModuleAccountByName() {
 
 	queryClient := suite.createAndReturnQueryClient(suite.accountKeeper)
 	req := &types.QueryModuleAccountByNameRequest{Name: "mint"}
-	testdata.DeterministicIterations(suite.ctx, suite.T(), req, queryClient.ModuleAccountByName, 1372, false)
+	testdata.DeterministicIterations(suite.ctx, suite.T(), req, queryClient.ModuleAccountByName, 1357, false)
 }

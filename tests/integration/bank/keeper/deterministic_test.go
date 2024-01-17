@@ -35,7 +35,7 @@ import (
 
 var (
 	denomRegex   = sdk.DefaultCoinDenomRegex()
-	addr1        = sdk.MustAccAddressFromBech32("cosmos139f7kncmglres2nf3h4hc4tade85ekfr8sulz5")
+	addr1        = sdk.MustAccAddressFromHex("cosmos139f7kncmglres2nf3h4hc4tade85ekfr8sulz5")
 	coin1        = sdk.NewCoin("denom", math.NewInt(10))
 	metadataAtom = banktypes.Metadata{
 		Description: "The native staking token of the Cosmos Hub.",
@@ -82,7 +82,7 @@ func initDeterministicFixture(t *testing.T) *deterministicFixture {
 		runtime.NewKVStoreService(keys[authtypes.StoreKey]),
 		authtypes.ProtoBaseAccount,
 		maccPerms,
-		addresscodec.NewBech32Codec(sdk.Bech32MainPrefix),
+		addresscodec.NewHexCodec(sdk.Bech32MainPrefix),
 		sdk.Bech32MainPrefix,
 		authority.String(),
 	)
@@ -508,7 +508,7 @@ func TestGRPCDenomOwners(t *testing.T) {
 	}
 
 	for i := 0; i < len(denomOwners); i++ {
-		addr, err := sdk.AccAddressFromBech32(denomOwners[i].Address)
+		addr, err := sdk.AccAddressFromHex(denomOwners[i].Address)
 		assert.NilError(t, err)
 
 		err = banktestutil.FundAccount(f.ctx, f.bankKeeper, addr, sdk.NewCoins(coin1))

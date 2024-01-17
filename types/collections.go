@@ -13,19 +13,19 @@ var (
 	// AccAddressKey follows the same semantics of collections.BytesKey.
 	// It just uses humanized format for the String() and EncodeJSON().
 	AccAddressKey collcodec.KeyCodec[AccAddress] = genericAddressKey[AccAddress]{
-		stringDecoder: AccAddressFromBech32,
+		stringDecoder: AccAddressFromHex,
 		keyType:       "sdk.AccAddress",
 	}
 
 	// ValAddressKey follows the same semantics as AccAddressKey.
 	ValAddressKey collcodec.KeyCodec[ValAddress] = genericAddressKey[ValAddress]{
-		stringDecoder: ValAddressFromBech32,
+		stringDecoder: ValAddressFromHex,
 		keyType:       "sdk.ValAddress",
 	}
 
 	// ConsAddressKey follows the same semantics as ConsAddressKey.
 	ConsAddressKey collcodec.KeyCodec[ConsAddress] = genericAddressKey[ConsAddress]{
-		stringDecoder: ConsAddressFromBech32,
+		stringDecoder: ConsAddressFromHex,
 		keyType:       "sdk.ConsAddress",
 	}
 

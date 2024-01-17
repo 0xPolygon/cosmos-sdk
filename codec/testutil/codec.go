@@ -19,20 +19,20 @@ type CodecOptions struct {
 // NewInterfaceRegistry returns a new InterfaceRegistry with the given options.
 func (o CodecOptions) NewInterfaceRegistry() codectypes.InterfaceRegistry {
 	accAddressPrefix := o.AccAddressPrefix
-	if accAddressPrefix == "" {
-		accAddressPrefix = "cosmos"
-	}
+	//if accAddressPrefix == "" {
+	//	accAddressPrefix = "cosmos"
+	//}
 
 	valAddressPrefix := o.ValAddressPrefix
-	if valAddressPrefix == "" {
-		valAddressPrefix = "cosmosvaloper"
-	}
+	//if valAddressPrefix == "" {
+	//	valAddressPrefix = "cosmosvaloper"
+	//}
 
 	ir, err := codectypes.NewInterfaceRegistryWithOptions(codectypes.InterfaceRegistryOptions{
 		ProtoFiles: proto.HybridResolver,
 		SigningOptions: signing.Options{
-			AddressCodec:          address.NewBech32Codec(accAddressPrefix),
-			ValidatorAddressCodec: address.NewBech32Codec(valAddressPrefix),
+			AddressCodec:          address.NewHexCodec(accAddressPrefix),
+			ValidatorAddressCodec: address.NewHexCodec(valAddressPrefix),
 		},
 	})
 	if err != nil {

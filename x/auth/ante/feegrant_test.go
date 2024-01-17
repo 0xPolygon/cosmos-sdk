@@ -2,7 +2,6 @@ package ante_test
 
 import (
 	"context"
-	"errors"
 	"math/rand"
 	"testing"
 	"time"
@@ -91,57 +90,6 @@ func TestDeductFeesNoDelegation(t *testing.T) {
 				}, nil
 			},
 		},
-		"valid fee grant": {
-			// note: the original test said "valid fee grant with no account".
-			// this is impossible given that feegrant.GrantAllowance calls
-			// SetAccount for the grantee.
-			fee:   50,
-			valid: true,
-			malleate: func(suite *AnteTestSuite) (TestAccount, sdk.AccAddress) {
-				accs := suite.CreateTestAccounts(2)
-
-				suite.feeGrantKeeper.EXPECT().UseGrantedFees(gomock.Any(), accs[1].acc.GetAddress(), accs[0].acc.GetAddress(), gomock.Any(), gomock.Any()).Return(nil).Times(2)
-				suite.feeCollector.EXPECT().SendCoinsFromAccountToModule(gomock.Any(), accs[1].acc.GetAddress(), authtypes.FeeCollectorName, gomock.Any()).Return(nil).Times(2)
-				return accs[0], accs[1].acc.GetAddress()
-			},
-		},
-		"no fee grant": {
-			fee:   2,
-			valid: false,
-			err:   sdkerrors.ErrNotFound,
-			malleate: func(suite *AnteTestSuite) (TestAccount, sdk.AccAddress) {
-				accs := suite.CreateTestAccounts(2)
-				suite.feeGrantKeeper.EXPECT().
-					UseGrantedFees(gomock.Any(), accs[1].acc.GetAddress(), accs[0].acc.GetAddress(), gomock.Any(), gomock.Any()).
-					Return(sdkerrors.ErrNotFound.Wrap("fee-grant not found")).
-					Times(2)
-				return accs[0], accs[1].acc.GetAddress()
-			},
-		},
-		"allowance smaller than requested fee": {
-			fee:    50,
-			valid:  false,
-			errMsg: "fee limit exceeded",
-			malleate: func(suite *AnteTestSuite) (TestAccount, sdk.AccAddress) {
-				accs := suite.CreateTestAccounts(2)
-				suite.feeGrantKeeper.EXPECT().
-					UseGrantedFees(gomock.Any(), accs[1].acc.GetAddress(), accs[0].acc.GetAddress(), gomock.Any(), gomock.Any()).
-					Return(errors.New("fee limit exceeded")).
-					Times(2)
-				return accs[0], accs[1].acc.GetAddress()
-			},
-		},
-		"granter cannot cover allowed fee grant": {
-			fee:   50,
-			valid: false,
-			err:   sdkerrors.ErrInsufficientFunds,
-			malleate: func(suite *AnteTestSuite) (TestAccount, sdk.AccAddress) {
-				accs := suite.CreateTestAccounts(2)
-				suite.feeGrantKeeper.EXPECT().UseGrantedFees(gomock.Any(), accs[1].acc.GetAddress(), accs[0].acc.GetAddress(), gomock.Any(), gomock.Any()).Return(nil).Times(2)
-				suite.feeCollector.EXPECT().SendCoinsFromAccountToModule(gomock.Any(), accs[1].acc.GetAddress(), authtypes.FeeCollectorName, gomock.Any()).Return(sdkerrors.ErrInsufficientFunds).Times(2)
-				return accs[0], accs[1].acc.GetAddress()
-			},
-		},
 	}
 
 	for name, stc := range cases {
@@ -158,7 +106,7 @@ func TestDeductFeesNoDelegation(t *testing.T) {
 
 			signer, feeAcc := stc.malleate(suite)
 
-			fee := sdk.NewCoins(sdk.NewInt64Coin("atom", tc.fee))
+			fee := sdk.NewCoins(sdk.NewInt64Coin("matic", tc.fee))
 			msgs := []sdk.Msg{testdata.NewTestMsg(signer.acc.GetAddress())}
 
 			acc := suite.accountKeeper.GetAccount(suite.ctx, signer.acc.GetAddress())

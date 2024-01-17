@@ -257,7 +257,7 @@ func TestValidatorsSortDeterminism(t *testing.T) {
 	}
 
 	// Save sorted copy
-	sort.Sort(types.Validators{Validators: vals, ValidatorCodec: address.NewBech32Codec("cosmosvaloper")})
+	sort.Sort(types.Validators{Validators: vals, ValidatorCodec: address.NewHexCodec("cosmosvaloper")})
 	copy(sortedVals, vals)
 
 	// Randomly shuffle validators, sort, and check it is equal to original sort
@@ -266,7 +266,7 @@ func TestValidatorsSortDeterminism(t *testing.T) {
 			vals[i], vals[j] = vals[j], vals[i]
 		})
 
-		types.Validators{Validators: vals, ValidatorCodec: address.NewBech32Codec("cosmosvaloper")}.Sort()
+		types.Validators{Validators: vals, ValidatorCodec: address.NewHexCodec("cosmosvaloper")}.Sort()
 		require.Equal(t, sortedVals, vals, "Validator sort returned different slices")
 	}
 }
@@ -287,7 +287,7 @@ func TestValidatorsSortCometBFT(t *testing.T) {
 		vals[i].Tokens = math.NewInt(1000000)
 	}
 
-	valz := types.Validators{Validators: vals, ValidatorCodec: address.NewBech32Codec("cosmosvaloper")}
+	valz := types.Validators{Validators: vals, ValidatorCodec: address.NewHexCodec("cosmosvaloper")}
 
 	// create expected CometBFT validators by converting to CometBFT then sorting
 	expectedVals, err := testutil.ToCmtValidators(valz, sdk.DefaultPowerReduction)

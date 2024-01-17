@@ -102,7 +102,7 @@ func (s *CLITestSuite) SetupSuite() {
 	_, err = kb.SaveMultisig("multi", multi)
 	s.Require().NoError(err)
 
-	s.ac = addresscodec.NewBech32Codec("cosmos")
+	s.ac = addresscodec.NewHexCodec("cosmos")
 }
 
 func (s *CLITestSuite) TestCLIValidateSignatures() {

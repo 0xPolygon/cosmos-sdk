@@ -3,9 +3,9 @@ package keeper
 import (
 	"bytes"
 	"context"
-	"encoding/binary"
 	"encoding/json"
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	"strings"
 
 	errorsmod "cosmossdk.io/errors"
@@ -373,9 +373,8 @@ func (k Keeper) CreateGroupPolicy(goCtx context.Context, msg *group.MsgCreateGro
 	// loop here in the rare case where a ADR-028-derived address creates a
 	// collision with an existing address.
 	for {
-		nextAccVal := k.groupPolicySeq.NextVal(ctx.KVStore(k.key))
-		derivationKey := make([]byte, 8)
-		binary.BigEndian.PutUint64(derivationKey, nextAccVal)
+		pubKey := secp256k1.GenPrivKey().PubKey()
+		derivationKey := pubKey.Address()
 
 		ac, err := authtypes.NewModuleCredential(group.ModuleName, []byte{GroupPolicyTablePrefix}, derivationKey)
 		if err != nil {
@@ -389,7 +388,7 @@ func (k Keeper) CreateGroupPolicy(goCtx context.Context, msg *group.MsgCreateGro
 		}
 
 		// group policy accounts are unclaimable base accounts
-		account, err := authtypes.NewBaseAccountWithPubKey(ac)
+		account, err := authtypes.NewBaseAccountWithPubKey(pubKey)
 		if err != nil {
 			return nil, errorsmod.Wrap(err, "could not create group policy account")
 		}

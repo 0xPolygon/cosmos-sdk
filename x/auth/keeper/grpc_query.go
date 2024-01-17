@@ -199,7 +199,7 @@ func (s queryServer) Bech32Prefix(ctx context.Context, req *types.Bech32PrefixRe
 }
 
 // AddressBytesToString converts an address from bytes to string, using the
-// keeper's bech32 prefix.
+// keeper's hex prefix.
 func (s queryServer) AddressBytesToString(ctx context.Context, req *types.AddressBytesToStringRequest) (*types.AddressBytesToStringResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "empty request")
@@ -218,7 +218,7 @@ func (s queryServer) AddressBytesToString(ctx context.Context, req *types.Addres
 }
 
 // AddressStringToBytes converts an address from string to bytes, using the
-// keeper's bech32 prefix.
+// keeper's hex prefix.
 func (s queryServer) AddressStringToBytes(ctx context.Context, req *types.AddressStringToBytesRequest) (*types.AddressStringToBytesResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "empty request")

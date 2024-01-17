@@ -46,7 +46,7 @@ func TestCancelUnbondingDelegation(t *testing.T) {
 	assert.NilError(t, err)
 	assert.NilError(t, f.stakingKeeper.SetValidator(ctx, validator))
 
-	validatorAddr, err := sdk.ValAddressFromBech32(validator.OperatorAddress)
+	validatorAddr, err := sdk.ValAddressFromHex(validator.OperatorAddress)
 	assert.NilError(t, err)
 
 	// setting the ubd entry
@@ -56,7 +56,7 @@ func TestCancelUnbondingDelegation(t *testing.T) {
 		ctx.BlockTime().Add(time.Minute*10),
 		unbondingAmount.Amount,
 		0,
-		address.NewBech32Codec("cosmosvaloper"), address.NewBech32Codec("cosmos"),
+		address.NewHexCodec("cosmosvaloper"), address.NewHexCodec("cosmos"),
 	)
 
 	// set and retrieve a record

@@ -176,7 +176,7 @@ func (s *SimTestSuite) TestSimulateMsgCreateValidator() {
 	require.NoError(err)
 	require.True(operationMsg.OK)
 	require.Equal(sdk.MsgTypeURL(&types.MsgCreateValidator{}), sdk.MsgTypeURL(&msg))
-	valaddr, err := sdk.ValAddressFromBech32(msg.ValidatorAddress)
+	valaddr, err := sdk.ValAddressFromHex(msg.ValidatorAddress)
 	require.NoError(err)
 	require.Equal("cosmos1p8wcgrjr4pjju90xg6u9cgq55dxwq8j7u4x9a0", sdk.AccAddress(valaddr).String())
 	require.Equal("cosmosvaloper1p8wcgrjr4pjju90xg6u9cgq55dxwq8j7epjs3u", msg.ValidatorAddress)
@@ -206,7 +206,7 @@ func (s *SimTestSuite) TestSimulateMsgCancelUnbondingDelegation() {
 	s.setupValidatorRewards(ctx, val0bz)
 
 	// unbonding delegation
-	udb := types.NewUnbondingDelegation(delegator.Address, val0bz, s.app.LastBlockHeight()+1, blockTime.Add(2*time.Minute), delTokens, 0, address.NewBech32Codec("cosmosvaloper"), address.NewBech32Codec("cosmos"))
+	udb := types.NewUnbondingDelegation(delegator.Address, val0bz, s.app.LastBlockHeight()+1, blockTime.Add(2*time.Minute), delTokens, 0, address.NewHexCodec("cosmosvaloper"), address.NewHexCodec("cosmos"))
 	require.NoError(s.stakingKeeper.SetUnbondingDelegation(ctx, udb))
 	s.setupValidatorRewards(ctx, val0bz)
 

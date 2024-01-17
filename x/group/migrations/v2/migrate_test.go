@@ -25,9 +25,9 @@ import (
 
 var (
 	policies      = []sdk.AccAddress{policyAddr1, policyAddr2, policyAddr3}
-	policyAddr1   = sdk.MustAccAddressFromBech32("cosmos1q32tjg5qm3n9fj8wjgpd7gl98prefntrckjkyvh8tntp7q33zj0s5tkjrk")
-	policyAddr2   = sdk.MustAccAddressFromBech32("cosmos1afk9zr2hn2jsac63h4hm60vl9z3e5u69gndzf7c99cqge3vzwjzsfwkgpd")
-	policyAddr3   = sdk.MustAccAddressFromBech32("cosmos1dlszg2sst9r69my4f84l3mj66zxcf3umcgujys30t84srg95dgvsmn3jeu")
+	policyAddr1   = sdk.MustAccAddressFromHex("cosmos1q32tjg5qm3n9fj8wjgpd7gl98prefntrckjkyvh8tntp7q33zj0s5tkjrk")
+	policyAddr2   = sdk.MustAccAddressFromHex("cosmos1afk9zr2hn2jsac63h4hm60vl9z3e5u69gndzf7c99cqge3vzwjzsfwkgpd")
+	policyAddr3   = sdk.MustAccAddressFromHex("cosmos1dlszg2sst9r69my4f84l3mj66zxcf3umcgujys30t84srg95dgvsmn3jeu")
 	authorityAddr = sdk.AccAddress("authority")
 )
 
@@ -79,7 +79,7 @@ func createGroupPolicies(ctx sdk.Context, storeKey storetypes.StoreKey, cdc code
 
 // createOldPolicyAccount re-creates the group policy account using a module account
 func createOldPolicyAccount(ctx sdk.Context, storeKey storetypes.StoreKey, cdc codec.Codec, policies []sdk.AccAddress) ([]*authtypes.ModuleAccount, group.AccountKeeper) {
-	accountKeeper := authkeeper.NewAccountKeeper(cdc, runtime.NewKVStoreService(storeKey.(*storetypes.KVStoreKey)), authtypes.ProtoBaseAccount, nil, addresscodec.NewBech32Codec(sdk.Bech32MainPrefix), sdk.Bech32MainPrefix, authorityAddr.String())
+	accountKeeper := authkeeper.NewAccountKeeper(cdc, runtime.NewKVStoreService(storeKey.(*storetypes.KVStoreKey)), authtypes.ProtoBaseAccount, nil, addresscodec.NewHexCodec(sdk.Bech32MainPrefix), sdk.Bech32MainPrefix, authorityAddr.String())
 
 	oldPolicyAccounts := make([]*authtypes.ModuleAccount, len(policies))
 	for i, policyAddr := range policies {

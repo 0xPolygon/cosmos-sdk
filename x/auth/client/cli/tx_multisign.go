@@ -152,7 +152,7 @@ func makeMultiSignCmd() func(cmd *cobra.Command, args []string) (err error) {
 				err = signing.VerifySignature(cmd.Context(), sig.PubKey, txSignerData, sig.Data,
 					txCfg.SignModeHandler(), txData)
 				if err != nil {
-					addr, _ := sdk.AccAddressFromHexUnsafe(sig.PubKey.Address().String())
+					addr, _ := sdk.AccAddressFromHex(sig.PubKey.Address().String())
 					return fmt.Errorf("couldn't verify signature for address %s", addr)
 				}
 

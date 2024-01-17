@@ -219,7 +219,7 @@ func TestGetSigners(t *testing.T) {
 type testAddressCodec struct{}
 
 func (t testAddressCodec) StringToBytes(text string) ([]byte, error) {
-	return sdk.AccAddressFromBech32(text)
+	return sdk.AccAddressFromHex(text)
 }
 
 func (t testAddressCodec) BytesToString(bz []byte) (string, error) {

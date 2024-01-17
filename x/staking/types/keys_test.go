@@ -48,7 +48,7 @@ func TestGetValidatorPowerRank(t *testing.T) {
 		{val4, "230000010000000000149c288ede7df62742fc3b7d0962045a8cef0f79f6"},
 	}
 	for i, tt := range tests {
-		got := hex.EncodeToString(types.GetValidatorsByPowerIndexKey(tt.validator, sdk.DefaultPowerReduction, address.NewBech32Codec("cosmosvaloper")))
+		got := hex.EncodeToString(types.GetValidatorsByPowerIndexKey(tt.validator, sdk.DefaultPowerReduction, address.NewHexCodec("cosmosvaloper")))
 
 		require.Equal(t, tt.wantHex, got, "Keys did not match on test case %d", i)
 	}

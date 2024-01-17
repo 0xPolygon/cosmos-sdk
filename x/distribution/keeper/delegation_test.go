@@ -36,8 +36,8 @@ func TestCalculateRewardsBasic(t *testing.T) {
 	accountKeeper := distrtestutil.NewMockAccountKeeper(ctrl)
 
 	accountKeeper.EXPECT().GetModuleAddress("distribution").Return(distrAcc.GetAddress())
-	stakingKeeper.EXPECT().ValidatorAddressCodec().Return(address.NewBech32Codec(sdk.Bech32PrefixValAddr)).AnyTimes()
-	accountKeeper.EXPECT().AddressCodec().Return(address.NewBech32Codec(sdk.Bech32MainPrefix)).AnyTimes()
+	stakingKeeper.EXPECT().ValidatorAddressCodec().Return(address.NewHexCodec(sdk.Bech32PrefixValAddr)).AnyTimes()
+	accountKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec(sdk.Bech32MainPrefix)).AnyTimes()
 
 	distrKeeper := keeper.NewKeeper(
 		encCfg.Codec,
@@ -121,8 +121,8 @@ func TestCalculateRewardsAfterSlash(t *testing.T) {
 	accountKeeper := distrtestutil.NewMockAccountKeeper(ctrl)
 
 	accountKeeper.EXPECT().GetModuleAddress("distribution").Return(distrAcc.GetAddress())
-	stakingKeeper.EXPECT().ValidatorAddressCodec().Return(address.NewBech32Codec(sdk.Bech32PrefixValAddr)).AnyTimes()
-	accountKeeper.EXPECT().AddressCodec().Return(address.NewBech32Codec(sdk.Bech32MainPrefix)).AnyTimes()
+	stakingKeeper.EXPECT().ValidatorAddressCodec().Return(address.NewHexCodec(sdk.Bech32PrefixValAddr)).AnyTimes()
+	accountKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec(sdk.Bech32MainPrefix)).AnyTimes()
 
 	distrKeeper := keeper.NewKeeper(
 		encCfg.Codec,
@@ -224,8 +224,8 @@ func TestCalculateRewardsAfterManySlashes(t *testing.T) {
 	accountKeeper := distrtestutil.NewMockAccountKeeper(ctrl)
 
 	accountKeeper.EXPECT().GetModuleAddress("distribution").Return(distrAcc.GetAddress())
-	stakingKeeper.EXPECT().ValidatorAddressCodec().Return(address.NewBech32Codec(sdk.Bech32PrefixValAddr)).AnyTimes()
-	accountKeeper.EXPECT().AddressCodec().Return(address.NewBech32Codec(sdk.Bech32MainPrefix)).AnyTimes()
+	stakingKeeper.EXPECT().ValidatorAddressCodec().Return(address.NewHexCodec(sdk.Bech32PrefixValAddr)).AnyTimes()
+	accountKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec(sdk.Bech32MainPrefix)).AnyTimes()
 
 	distrKeeper := keeper.NewKeeper(
 		encCfg.Codec,
@@ -348,8 +348,8 @@ func TestCalculateRewardsMultiDelegator(t *testing.T) {
 	accountKeeper := distrtestutil.NewMockAccountKeeper(ctrl)
 
 	accountKeeper.EXPECT().GetModuleAddress("distribution").Return(distrAcc.GetAddress())
-	stakingKeeper.EXPECT().ValidatorAddressCodec().Return(address.NewBech32Codec(sdk.Bech32PrefixValAddr)).AnyTimes()
-	accountKeeper.EXPECT().AddressCodec().Return(address.NewBech32Codec(sdk.Bech32MainPrefix)).AnyTimes()
+	stakingKeeper.EXPECT().ValidatorAddressCodec().Return(address.NewHexCodec(sdk.Bech32PrefixValAddr)).AnyTimes()
+	accountKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec(sdk.Bech32MainPrefix)).AnyTimes()
 
 	distrKeeper := keeper.NewKeeper(
 		encCfg.Codec,
@@ -445,8 +445,8 @@ func TestWithdrawDelegationRewardsBasic(t *testing.T) {
 	accountKeeper := distrtestutil.NewMockAccountKeeper(ctrl)
 
 	accountKeeper.EXPECT().GetModuleAddress("distribution").Return(distrAcc.GetAddress())
-	stakingKeeper.EXPECT().ValidatorAddressCodec().Return(address.NewBech32Codec(sdk.Bech32PrefixValAddr)).AnyTimes()
-	accountKeeper.EXPECT().AddressCodec().Return(address.NewBech32Codec(sdk.Bech32MainPrefix)).AnyTimes()
+	stakingKeeper.EXPECT().ValidatorAddressCodec().Return(address.NewHexCodec(sdk.Bech32PrefixValAddr)).AnyTimes()
+	accountKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec(sdk.Bech32MainPrefix)).AnyTimes()
 
 	distrKeeper := keeper.NewKeeper(
 		encCfg.Codec,
@@ -520,8 +520,8 @@ func TestCalculateRewardsAfterManySlashesInSameBlock(t *testing.T) {
 	accountKeeper := distrtestutil.NewMockAccountKeeper(ctrl)
 
 	accountKeeper.EXPECT().GetModuleAddress("distribution").Return(distrAcc.GetAddress())
-	stakingKeeper.EXPECT().ValidatorAddressCodec().Return(address.NewBech32Codec(sdk.Bech32PrefixValAddr)).AnyTimes()
-	accountKeeper.EXPECT().AddressCodec().Return(address.NewBech32Codec(sdk.Bech32MainPrefix)).AnyTimes()
+	stakingKeeper.EXPECT().ValidatorAddressCodec().Return(address.NewHexCodec(sdk.Bech32PrefixValAddr)).AnyTimes()
+	accountKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec(sdk.Bech32MainPrefix)).AnyTimes()
 
 	distrKeeper := keeper.NewKeeper(
 		encCfg.Codec,
@@ -636,8 +636,8 @@ func TestCalculateRewardsMultiDelegatorMultiSlash(t *testing.T) {
 	accountKeeper := distrtestutil.NewMockAccountKeeper(ctrl)
 
 	accountKeeper.EXPECT().GetModuleAddress("distribution").Return(distrAcc.GetAddress())
-	stakingKeeper.EXPECT().ValidatorAddressCodec().Return(address.NewBech32Codec(sdk.Bech32PrefixValAddr)).AnyTimes()
-	accountKeeper.EXPECT().AddressCodec().Return(address.NewBech32Codec(sdk.Bech32MainPrefix)).AnyTimes()
+	stakingKeeper.EXPECT().ValidatorAddressCodec().Return(address.NewHexCodec(sdk.Bech32PrefixValAddr)).AnyTimes()
+	accountKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec(sdk.Bech32MainPrefix)).AnyTimes()
 
 	distrKeeper := keeper.NewKeeper(
 		encCfg.Codec,
@@ -773,8 +773,8 @@ func TestCalculateRewardsMultiDelegatorMultWithdraw(t *testing.T) {
 	accountKeeper := distrtestutil.NewMockAccountKeeper(ctrl)
 
 	accountKeeper.EXPECT().GetModuleAddress("distribution").Return(distrAcc.GetAddress())
-	stakingKeeper.EXPECT().ValidatorAddressCodec().Return(address.NewBech32Codec(sdk.Bech32PrefixValAddr)).AnyTimes()
-	accountKeeper.EXPECT().AddressCodec().Return(address.NewBech32Codec(sdk.Bech32MainPrefix)).AnyTimes()
+	stakingKeeper.EXPECT().ValidatorAddressCodec().Return(address.NewHexCodec(sdk.Bech32PrefixValAddr)).AnyTimes()
+	accountKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec(sdk.Bech32MainPrefix)).AnyTimes()
 
 	distrKeeper := keeper.NewKeeper(
 		encCfg.Codec,
@@ -972,8 +972,8 @@ func Test100PercentCommissionReward(t *testing.T) {
 	accountKeeper := distrtestutil.NewMockAccountKeeper(ctrl)
 
 	accountKeeper.EXPECT().GetModuleAddress("distribution").Return(distrAcc.GetAddress())
-	stakingKeeper.EXPECT().ValidatorAddressCodec().Return(address.NewBech32Codec(sdk.Bech32PrefixValAddr)).AnyTimes()
-	accountKeeper.EXPECT().AddressCodec().Return(address.NewBech32Codec(sdk.Bech32MainPrefix)).AnyTimes()
+	stakingKeeper.EXPECT().ValidatorAddressCodec().Return(address.NewHexCodec(sdk.Bech32PrefixValAddr)).AnyTimes()
+	accountKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec(sdk.Bech32MainPrefix)).AnyTimes()
 
 	distrKeeper := keeper.NewKeeper(
 		encCfg.Codec,

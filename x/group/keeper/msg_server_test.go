@@ -40,7 +40,7 @@ func (s *TestSuite) createGroupAndGetMembers(numMembers int) []*group.GroupMembe
 			Address: addressPool[i].String(),
 			Weight:  "1",
 		}
-		s.accountKeeper.EXPECT().AddressCodec().Return(address.NewBech32Codec("cosmos")).AnyTimes()
+		s.accountKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec("cosmos")).AnyTimes()
 	}
 
 	g, err := s.groupKeeper.CreateGroup(s.ctx, &group.MsgCreateGroup{
@@ -205,9 +205,9 @@ func (s *TestSuite) TestCreateGroup() {
 			s.Require().Equal(len(members), len(loadedMembers))
 			// we reorder members by address to be able to compare them
 			sort.Slice(members, func(i, j int) bool {
-				addri, err := sdk.AccAddressFromBech32(members[i].Address)
+				addri, err := sdk.AccAddressFromHex(members[i].Address)
 				s.Require().NoError(err)
-				addrj, err := sdk.AccAddressFromBech32(members[j].Address)
+				addrj, err := sdk.AccAddressFromHex(members[j].Address)
 				s.Require().NoError(err)
 				return bytes.Compare(addri, addrj) < 0
 			})
@@ -552,9 +552,9 @@ func (s *TestSuite) TestUpdateGroupMembers() {
 			s.Require().Equal(len(spec.expMembers), len(loadedMembers))
 			// we reorder group members by address to be able to compare them
 			sort.Slice(spec.expMembers, func(i, j int) bool {
-				addri, err := sdk.AccAddressFromBech32(spec.expMembers[i].Member.Address)
+				addri, err := sdk.AccAddressFromHex(spec.expMembers[i].Member.Address)
 				s.Require().NoError(err)
-				addrj, err := sdk.AccAddressFromBech32(spec.expMembers[j].Member.Address)
+				addrj, err := sdk.AccAddressFromHex(spec.expMembers[j].Member.Address)
 				s.Require().NoError(err)
 				return bytes.Compare(addri, addrj) < 0
 			})
@@ -958,9 +958,9 @@ func (s *TestSuite) TestCreateGroupWithPolicy() {
 			s.Require().Equal(len(members), len(loadedMembers))
 			// we reorder members by address to be able to compare them
 			sort.Slice(members, func(i, j int) bool {
-				addri, err := sdk.AccAddressFromBech32(members[i].Address)
+				addri, err := sdk.AccAddressFromHex(members[i].Address)
 				s.Require().NoError(err)
-				addrj, err := sdk.AccAddressFromBech32(members[j].Address)
+				addrj, err := sdk.AccAddressFromHex(members[j].Address)
 				s.Require().NoError(err)
 				return bytes.Compare(addri, addrj) < 0
 			})

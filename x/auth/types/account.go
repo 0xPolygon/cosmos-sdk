@@ -54,7 +54,7 @@ func NewBaseAccountWithAddress(addr sdk.AccAddress) *BaseAccount {
 
 // GetAddress - Implements sdk.AccountI.
 func (acc BaseAccount) GetAddress() sdk.AccAddress {
-	addr, _ := sdk.AccAddressFromBech32(acc.Address)
+	addr, _ := sdk.AccAddressFromHex(acc.Address)
 	return addr
 }
 
@@ -121,7 +121,7 @@ func (acc BaseAccount) Validate() error {
 		return nil
 	}
 
-	accAddr, err := sdk.AccAddressFromBech32(acc.Address)
+	accAddr, err := sdk.AccAddressFromHex(acc.Address)
 	if err != nil {
 		return err
 	}
@@ -146,7 +146,7 @@ func (acc BaseAccount) UnpackInterfaces(unpacker codectypes.AnyUnpacker) error {
 // If the input is a valid address, it returns the address.
 // If the input is a module name, it returns the module address.
 func NewModuleAddressOrBech32Address(input string) sdk.AccAddress {
-	if addr, err := sdk.AccAddressFromBech32(input); err == nil {
+	if addr, err := sdk.AccAddressFromHex(input); err == nil {
 		return addr
 	}
 
@@ -240,7 +240,7 @@ type moduleAccountPretty struct {
 
 // MarshalJSON returns the JSON representation of a ModuleAccount.
 func (ma ModuleAccount) MarshalJSON() ([]byte, error) {
-	accAddr, err := sdk.AccAddressFromBech32(ma.Address)
+	accAddr, err := sdk.AccAddressFromHex(ma.Address)
 	if err != nil {
 		return nil, err
 	}

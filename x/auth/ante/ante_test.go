@@ -37,7 +37,7 @@ func TestSimulateGasCost(t *testing.T) {
 
 	testCases := []TestCase{
 		{
-			"tx with 150atom fee",
+			"tx with 1000000000000000matic fee",
 			func(suite *AnteTestSuite) TestCaseArgs {
 				accs := suite.CreateTestAccounts(1)
 				suite.feeCollector.EXPECT().SendCoinsFromAccountToModule(gomock.Any(), accs[0].acc.GetAddress(), authtypes.FeeCollectorName, feeAmount).Return(nil)

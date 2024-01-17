@@ -87,7 +87,7 @@ func CreateIncrementalAccounts(accNum int) []sdk.AccAddress {
 		buffer.WriteString("A58856F0FD53BF058B4909A21AEC019107BA6") // base address string
 
 		buffer.WriteString(numString) // adding on final two digits to make addresses unique
-		res, _ := sdk.AccAddressFromHexUnsafe(buffer.String())
+		res, _ := sdk.AccAddressFromHex(buffer.String())
 		bech := res.String()
 		addr, _ := TestAddr(buffer.String(), bech)
 
@@ -110,7 +110,7 @@ func CreateRandomAccounts(accNum int) []sdk.AccAddress {
 }
 
 func TestAddr(addr, bech string) (sdk.AccAddress, error) {
-	res, err := sdk.AccAddressFromHexUnsafe(addr)
+	res, err := sdk.AccAddressFromHex(addr)
 	if err != nil {
 		return nil, err
 	}
@@ -119,7 +119,7 @@ func TestAddr(addr, bech string) (sdk.AccAddress, error) {
 		return nil, fmt.Errorf("bech encoding doesn't match reference")
 	}
 
-	bechres, err := sdk.AccAddressFromBech32(bech)
+	bechres, err := sdk.AccAddressFromHex(bech)
 	if err != nil {
 		return nil, err
 	}

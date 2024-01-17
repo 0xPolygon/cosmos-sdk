@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/hex"
 	"fmt"
+	"github.com/ethereum/go-ethereum/common"
 	"testing"
 
 	"github.com/cosmos/cosmos-proto/anyutil"
@@ -160,7 +161,7 @@ func (d dummyAddressCodec) StringToBytes(text string) ([]byte, error) {
 }
 
 func (d dummyAddressCodec) BytesToString(bz []byte) (string, error) {
-	return hex.EncodeToString(bz), nil
+	return common.Bytes2Hex(bz), nil
 }
 
 var _ address.Codec = dummyAddressCodec{}

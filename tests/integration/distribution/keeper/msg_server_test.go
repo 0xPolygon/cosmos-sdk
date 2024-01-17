@@ -81,7 +81,7 @@ func initFixture(t testing.TB) *fixture {
 		runtime.NewKVStoreService(keys[authtypes.StoreKey]),
 		authtypes.ProtoBaseAccount,
 		maccPerms,
-		addresscodec.NewBech32Codec(sdk.Bech32MainPrefix),
+		addresscodec.NewHexCodec(sdk.Bech32MainPrefix),
 		sdk.Bech32MainPrefix,
 		authority.String(),
 	)
@@ -98,7 +98,7 @@ func initFixture(t testing.TB) *fixture {
 		log.NewNopLogger(),
 	)
 
-	stakingKeeper := stakingkeeper.NewKeeper(cdc, runtime.NewKVStoreService(keys[stakingtypes.StoreKey]), accountKeeper, bankKeeper, authority.String(), addresscodec.NewBech32Codec(sdk.Bech32PrefixValAddr), addresscodec.NewBech32Codec(sdk.Bech32PrefixConsAddr))
+	stakingKeeper := stakingkeeper.NewKeeper(cdc, runtime.NewKVStoreService(keys[stakingtypes.StoreKey]), accountKeeper, bankKeeper, authority.String(), addresscodec.NewHexCodec(sdk.Bech32PrefixValAddr), addresscodec.NewHexCodec(sdk.Bech32PrefixConsAddr))
 
 	distrKeeper := distrkeeper.NewKeeper(
 		cdc, runtime.NewKVStoreService(keys[distrtypes.StoreKey]), accountKeeper, bankKeeper, stakingKeeper, distrtypes.ModuleName, authority.String(),
@@ -968,7 +968,7 @@ func TestMsgDepositValidatorRewardsPool(t *testing.T) {
 				err = f.cdc.Unmarshal(res.Value, &result)
 				assert.NilError(t, err)
 
-				val, err := sdk.ValAddressFromBech32(tc.msg.ValidatorAddress)
+				val, err := sdk.ValAddressFromHex(tc.msg.ValidatorAddress)
 				assert.NilError(t, err)
 
 				// check validator outstanding rewards

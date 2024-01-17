@@ -9,6 +9,6 @@ import (
 )
 
 func CreateGrant(clientCtx client.Context, args []string) (testutil.BufferWriter, error) {
-	cmd := cli.NewCmdGrantAuthorization(addresscodec.NewBech32Codec("cosmos"))
+	cmd := cli.NewCmdGrantAuthorization(addresscodec.NewHexCodec("cosmos"))
 	return clitestutil.ExecTestCLICmd(clientCtx, cmd, args)
 }

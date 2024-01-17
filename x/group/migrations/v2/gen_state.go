@@ -1,8 +1,7 @@
 package v2
 
 import (
-	"encoding/binary"
-
+	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 )
@@ -29,16 +28,14 @@ func MigrateGenState(oldState *authtypes.GenesisState) *authtypes.GenesisState {
 			continue
 		}
 
-		// Replace group policy accounts from module accounts to base accounts.
-		// These accounts were wrongly created and the address was equal to the module name.
-		derivationKey := make([]byte, 8)
-		binary.BigEndian.PutUint64(derivationKey, groupPolicyAccountCounter)
+		pubKey := secp256k1.GenPrivKey().PubKey()
+		derivationKey := pubKey.Address()
 
-		cred, err := authtypes.NewModuleCredential(ModuleName, []byte{GroupPolicyTablePrefix}, derivationKey)
+		_, err = authtypes.NewModuleCredential(ModuleName, []byte{GroupPolicyTablePrefix}, derivationKey)
 		if err != nil {
 			panic(err)
 		}
-		baseAccount, err := authtypes.NewBaseAccountWithPubKey(cred)
+		baseAccount, err := authtypes.NewBaseAccountWithPubKey(pubKey)
 		if err != nil {
 			panic(err)
 		}

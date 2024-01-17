@@ -255,15 +255,15 @@ $ %s debug addr cosmos1e0jnq2sun3dzjh8p2xq95kk0expwmd7shwjpfg
 			addrString := args[0]
 			var addr []byte
 
-			// try hex, then bech32
+			// try hex, then bech32 (in our case will always try hex; kept the other code for compatibility)
 			var err error
 			addr, err = hex.DecodeString(addrString)
 			if err != nil {
 				var err2 error
-				addr, err2 = sdk.AccAddressFromBech32(addrString)
+				addr, err2 = sdk.AccAddressFromHex(addrString)
 				if err2 != nil {
 					var err3 error
-					addr, err3 = sdk.ValAddressFromBech32(addrString)
+					addr, err3 = sdk.ValAddressFromHex(addrString)
 
 					if err3 != nil {
 						return fmt.Errorf("expected hex or bech32. Got errors: hex: %v, bech32 acc: %v, bech32 val: %v", err, err2, err3)

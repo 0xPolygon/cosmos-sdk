@@ -29,17 +29,17 @@ func ValidatePromptURL(input string) error {
 
 // ValidatePromptAddress validates that the input is a valid Bech32 address.
 func ValidatePromptAddress(input string) error {
-	_, err := sdk.AccAddressFromBech32(input)
+	_, err := sdk.AccAddressFromHex(input)
 	if err == nil {
 		return nil
 	}
 
-	_, err = sdk.ValAddressFromBech32(input)
+	_, err = sdk.ValAddressFromHex(input)
 	if err == nil {
 		return nil
 	}
 
-	_, err = sdk.ConsAddressFromBech32(input)
+	_, err = sdk.ConsAddressFromHex(input)
 	if err == nil {
 		return nil
 	}
@@ -47,7 +47,7 @@ func ValidatePromptAddress(input string) error {
 	return fmt.Errorf("invalid address: %w", err)
 }
 
-// ValidatePromptYesNo validates that the input is valid sdk.COins
+// ValidatePromptCoins validates that the input is valid sdk.Coins
 func ValidatePromptCoins(input string) error {
 	if _, err := sdk.ParseCoinsNormalized(input); err != nil {
 		return fmt.Errorf("invalid coins: %w", err)

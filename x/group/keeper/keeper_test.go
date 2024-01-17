@@ -2,7 +2,7 @@ package keeper_test
 
 import (
 	"context"
-	"encoding/binary"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	"testing"
 	"time"
 
@@ -60,7 +60,7 @@ func (s *TestSuite) SetupTest() {
 	for i := range s.addrs {
 		s.accountKeeper.EXPECT().GetAccount(gomock.Any(), s.addrs[i]).Return(authtypes.NewBaseAccountWithAddress(s.addrs[i])).AnyTimes()
 	}
-	s.accountKeeper.EXPECT().AddressCodec().Return(address.NewBech32Codec("cosmos")).AnyTimes()
+	s.accountKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec("cosmos")).AnyTimes()
 
 	s.bankKeeper = grouptestutil.NewMockBankKeeper(ctrl)
 
@@ -111,7 +111,7 @@ func (s *TestSuite) SetupTest() {
 	policyRes, err := s.groupKeeper.CreateGroupPolicy(s.ctx, policyReq)
 	s.Require().NoError(err)
 
-	addrbz, err := address.NewBech32Codec("cosmos").StringToBytes(policyRes.Address)
+	addrbz, err := address.NewHexCodec("cosmos").StringToBytes(policyRes.Address)
 	s.Require().NoError(err)
 	s.policy = policy
 	s.groupPolicyAddr = addrbz
@@ -124,16 +124,16 @@ func (s *TestSuite) SetupTest() {
 
 func (s *TestSuite) setNextAccount() {
 	nextAccVal := s.groupKeeper.GetGroupPolicySeq(s.sdkCtx) + 1
-	derivationKey := make([]byte, 8)
-	binary.BigEndian.PutUint64(derivationKey, nextAccVal)
+	pubKey := secp256k1.GenPrivKey().PubKey()
+	derivationKey := pubKey.Address()
 
 	ac, err := authtypes.NewModuleCredential(group.ModuleName, []byte{keeper.GroupPolicyTablePrefix}, derivationKey)
 	s.Require().NoError(err)
 
-	groupPolicyAcc, err := authtypes.NewBaseAccountWithPubKey(ac)
+	groupPolicyAcc, err := authtypes.NewBaseAccountWithPubKey(pubKey)
 	s.Require().NoError(err)
 
-	groupPolicyAccBumpAccountNumber, err := authtypes.NewBaseAccountWithPubKey(ac)
+	groupPolicyAccBumpAccountNumber, err := authtypes.NewBaseAccountWithPubKey(pubKey)
 	s.Require().NoError(err)
 	groupPolicyAccBumpAccountNumber.SetAccountNumber(nextAccVal)
 
@@ -484,7 +484,7 @@ func (s *TestSuite) TestTallyProposalsAtVPEnd_GroupMemberLeaving() {
 	groupRes, err := s.groupKeeper.CreateGroupWithPolicy(s.ctx, groupMsg)
 	s.Require().NoError(err)
 	accountAddr := groupRes.GetGroupPolicyAddress()
-	groupPolicy, err := sdk.AccAddressFromBech32(accountAddr)
+	groupPolicy, err := sdk.AccAddressFromHex(accountAddr)
 	s.Require().NoError(err)
 	s.Require().NotNil(groupPolicy)
 

@@ -57,15 +57,15 @@ func (s *addressTestSuite) TestEmptyAddresses() {
 	s.Require().Equal((types.ValAddress{}).String(), "")
 	s.Require().Equal((types.ConsAddress{}).String(), "")
 
-	accAddr, err := types.AccAddressFromBech32("")
+	accAddr, err := types.AccAddressFromHex("")
 	s.Require().True(accAddr.Empty())
 	s.Require().Error(err)
 
-	valAddr, err := types.ValAddressFromBech32("")
+	valAddr, err := types.ValAddressFromHex("")
 	s.Require().True(valAddr.Empty())
 	s.Require().Error(err)
 
-	consAddr, err := types.ConsAddressFromBech32("")
+	consAddr, err := types.ConsAddressFromHex("")
 	s.Require().True(consAddr.Empty())
 	s.Require().Error(err)
 }
@@ -101,28 +101,28 @@ func (s *addressTestSuite) TestRandBech32AccAddrConsistency() {
 		s.testMarshal(&acc, &res, acc.Marshal, (&res).Unmarshal)
 
 		str := acc.String()
-		res, err := types.AccAddressFromBech32(str)
+		res, err := types.AccAddressFromHex(str)
 		s.Require().Nil(err)
 		s.Require().Equal(acc, res)
 
 		str = hex.EncodeToString(acc)
-		res, err = types.AccAddressFromHexUnsafe(str)
+		res, err = types.AccAddressFromHex(str)
 		s.Require().Nil(err)
 		s.Require().Equal(acc, res)
 	}
 
 	for _, str := range invalidStrs {
-		_, err := types.AccAddressFromHexUnsafe(str)
+		_, err := types.AccAddressFromHex(str)
 		s.Require().NotNil(err)
 
-		_, err = types.AccAddressFromBech32(str)
+		_, err = types.AccAddressFromHex(str)
 		s.Require().NotNil(err)
 
 		err = (*types.AccAddress)(nil).UnmarshalJSON([]byte("\"" + str + "\""))
 		s.Require().NotNil(err)
 	}
 
-	_, err := types.AccAddressFromHexUnsafe("")
+	_, err := types.AccAddressFromHex("")
 	s.Require().Equal(types.ErrEmptyHexAddress, err)
 }
 
@@ -211,7 +211,7 @@ func (s *addressTestSuite) TestValAddr() {
 		s.testMarshal(&acc, &res, acc.Marshal, (&res).Unmarshal)
 
 		str := acc.String()
-		res, err := types.ValAddressFromBech32(str)
+		res, err := types.ValAddressFromHex(str)
 		s.Require().Nil(err)
 		s.Require().Equal(acc, res)
 
@@ -226,7 +226,7 @@ func (s *addressTestSuite) TestValAddr() {
 		_, err := types.ValAddressFromHex(str)
 		s.Require().NotNil(err)
 
-		_, err = types.ValAddressFromBech32(str)
+		_, err = types.ValAddressFromHex(str)
 		s.Require().NotNil(err)
 
 		err = (*types.ValAddress)(nil).UnmarshalJSON([]byte("\"" + str + "\""))
@@ -252,7 +252,7 @@ func (s *addressTestSuite) TestConsAddress() {
 		s.testMarshal(&acc, &res, acc.Marshal, (&res).Unmarshal)
 
 		str := acc.String()
-		res, err := types.ConsAddressFromBech32(str)
+		res, err := types.ConsAddressFromHex(str)
 		s.Require().Nil(err)
 		s.Require().Equal(acc, res)
 
@@ -266,7 +266,7 @@ func (s *addressTestSuite) TestConsAddress() {
 		_, err := types.ConsAddressFromHex(str)
 		s.Require().NotNil(err)
 
-		_, err = types.ConsAddressFromBech32(str)
+		_, err = types.ConsAddressFromHex(str)
 		s.Require().NotNil(err)
 
 		err = (*types.ConsAddress)(nil).UnmarshalJSON([]byte("\"" + str + "\""))
@@ -358,13 +358,13 @@ func (s *addressTestSuite) TestAddressInterface() {
 	for _, addr := range addrs {
 		switch addr := addr.(type) {
 		case types.AccAddress:
-			_, err := types.AccAddressFromBech32(addr.String())
+			_, err := types.AccAddressFromHex(addr.String())
 			s.Require().Nil(err)
 		case types.ValAddress:
-			_, err := types.ValAddressFromBech32(addr.String())
+			_, err := types.ValAddressFromHex(addr.String())
 			s.Require().Nil(err)
 		case types.ConsAddress:
-			_, err := types.ConsAddressFromBech32(addr.String())
+			_, err := types.ConsAddressFromHex(addr.String())
 			s.Require().Nil(err)
 		default:
 			s.T().Fail()
@@ -402,11 +402,11 @@ func (s *addressTestSuite) TestCustomAddressVerifier() {
 	// between 1-255 bytes.
 	err := types.VerifyAddressFormat(addr)
 	s.Require().Nil(err)
-	_, err = types.AccAddressFromBech32(accBech)
+	_, err = types.AccAddressFromHex(accBech)
 	s.Require().Nil(err)
-	_, err = types.ValAddressFromBech32(valBech)
+	_, err = types.ValAddressFromHex(valBech)
 	s.Require().Nil(err)
-	_, err = types.ConsAddressFromBech32(consBech)
+	_, err = types.ConsAddressFromHex(consBech)
 	s.Require().Nil(err)
 
 	// Set a custom address verifier only accepts 20 byte addresses
@@ -421,11 +421,11 @@ func (s *addressTestSuite) TestCustomAddressVerifier() {
 	// Verifiy that the custom logic rejects this 10 byte address
 	err = types.VerifyAddressFormat(addr)
 	s.Require().NotNil(err)
-	_, err = types.AccAddressFromBech32(accBech)
+	_, err = types.AccAddressFromHex(accBech)
 	s.Require().NotNil(err)
-	_, err = types.ValAddressFromBech32(valBech)
+	_, err = types.ValAddressFromHex(valBech)
 	s.Require().NotNil(err)
-	_, err = types.ConsAddressFromBech32(consBech)
+	_, err = types.ConsAddressFromHex(consBech)
 	s.Require().NotNil(err)
 
 	// Reinitialize the global config to default address verifier (nil)
@@ -455,7 +455,7 @@ func (s *addressTestSuite) TestBech32ifyAddressBytes() {
 	for _, tt := range tests {
 		tt := tt
 		s.T().Run(tt.name, func(t *testing.T) {
-			got, err := types.Bech32ifyAddressBytes(tt.args.prefix, tt.args.bs)
+			got, err := types.HexifyAddressBytes(tt.args.prefix, tt.args.bs)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Bech32ifyBytes() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -489,10 +489,10 @@ func (s *addressTestSuite) TestMustBech32ifyAddressBytes() {
 		tt := tt
 		s.T().Run(tt.name, func(t *testing.T) {
 			if tt.wantPanic {
-				require.Panics(t, func() { types.MustBech32ifyAddressBytes(tt.args.prefix, tt.args.bs) })
+				require.Panics(t, func() { types.MustHexifyAddressBytes(tt.args.prefix, tt.args.bs) })
 				return
 			}
-			require.Equal(t, tt.want, types.MustBech32ifyAddressBytes(tt.args.prefix, tt.args.bs))
+			require.Equal(t, tt.want, types.MustHexifyAddressBytes(tt.args.prefix, tt.args.bs))
 		})
 	}
 }
@@ -551,10 +551,10 @@ func (s *addressTestSuite) TestGetConsAddress() {
 }
 
 func (s *addressTestSuite) TestGetFromBech32() {
-	_, err := types.GetFromBech32("", "prefix")
+	_, err := types.GetFromHex("", "prefix")
 	s.Require().Error(err)
 	s.Require().Equal("decoding Bech32 address failed: must provide a non empty address", err.Error())
-	_, err = types.GetFromBech32("cosmos1qqqsyqcyq5rqwzqfys8f67", "x")
+	_, err = types.GetFromHex("cosmos1qqqsyqcyq5rqwzqfys8f67", "x")
 	s.Require().Error(err)
 	s.Require().Equal("invalid Bech32 prefix; expected x, got cosmos", err.Error())
 }

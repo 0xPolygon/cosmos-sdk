@@ -162,7 +162,7 @@ func (s *CLITestSuite) TestPrepareConfigForTxCreateValidator() {
 
 func (s *CLITestSuite) TestNewCreateValidatorCmd() {
 	require := s.Require()
-	cmd := cli.NewCreateValidatorCmd(addresscodec.NewBech32Codec("cosmosvaloper"))
+	cmd := cli.NewCreateValidatorCmd(addresscodec.NewHexCodec("cosmosvaloper"))
 
 	validJSON := fmt.Sprintf(`
 	{
@@ -309,7 +309,7 @@ func (s *CLITestSuite) TestNewCreateValidatorCmd() {
 }
 
 func (s *CLITestSuite) TestNewEditValidatorCmd() {
-	cmd := cli.NewEditValidatorCmd(addresscodec.NewBech32Codec("cosmos"))
+	cmd := cli.NewEditValidatorCmd(addresscodec.NewHexCodec("cosmos"))
 
 	moniker := "testing"
 	details := "bio"
@@ -432,7 +432,7 @@ func (s *CLITestSuite) TestNewEditValidatorCmd() {
 }
 
 func (s *CLITestSuite) TestNewDelegateCmd() {
-	cmd := cli.NewDelegateCmd(addresscodec.NewBech32Codec("cosmosvaloper"), addresscodec.NewBech32Codec("cosmos"))
+	cmd := cli.NewDelegateCmd(addresscodec.NewHexCodec("cosmosvaloper"), addresscodec.NewHexCodec("cosmos"))
 
 	testCases := []struct {
 		name         string
@@ -495,7 +495,7 @@ func (s *CLITestSuite) TestNewDelegateCmd() {
 }
 
 func (s *CLITestSuite) TestNewRedelegateCmd() {
-	cmd := cli.NewRedelegateCmd(addresscodec.NewBech32Codec("cosmosvaloper"), addresscodec.NewBech32Codec("cosmos"))
+	cmd := cli.NewRedelegateCmd(addresscodec.NewHexCodec("cosmosvaloper"), addresscodec.NewHexCodec("cosmos"))
 
 	testCases := []struct {
 		name         string
@@ -577,7 +577,7 @@ func (s *CLITestSuite) TestNewRedelegateCmd() {
 }
 
 func (s *CLITestSuite) TestNewUnbondCmd() {
-	cmd := cli.NewUnbondCmd(addresscodec.NewBech32Codec("cosmosvaloper"), addresscodec.NewBech32Codec("cosmos"))
+	cmd := cli.NewUnbondCmd(addresscodec.NewHexCodec("cosmosvaloper"), addresscodec.NewHexCodec("cosmos"))
 
 	testCases := []struct {
 		name         string
@@ -640,7 +640,7 @@ func (s *CLITestSuite) TestNewUnbondCmd() {
 }
 
 func (s *CLITestSuite) TestNewCancelUnbondingDelegationCmd() {
-	cmd := cli.NewCancelUnbondingDelegation(addresscodec.NewBech32Codec("cosmosvaloper"), addresscodec.NewBech32Codec("cosmos"))
+	cmd := cli.NewCancelUnbondingDelegation(addresscodec.NewHexCodec("cosmosvaloper"), addresscodec.NewHexCodec("cosmos"))
 
 	testCases := []struct {
 		name         string

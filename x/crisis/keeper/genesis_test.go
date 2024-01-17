@@ -46,7 +46,7 @@ func (s *GenesisTestSuite) SetupTest() {
 
 	supplyKeeper := crisistestutil.NewMockSupplyKeeper(ctrl)
 
-	s.keeper = *keeper.NewKeeper(s.cdc, storeService, 5, supplyKeeper, "", "", addresscodec.NewBech32Codec("cosmos"))
+	s.keeper = *keeper.NewKeeper(s.cdc, storeService, 5, supplyKeeper, "", "", addresscodec.NewHexCodec("cosmos"))
 }
 
 func (s *GenesisTestSuite) TestImportExportGenesis() {
