@@ -6,7 +6,7 @@ sidebar_position: 1
 
 ## Abstract
 
-This document specifies the auth module of the Cosmos SDK.
+This document specifies the auth module of the Polygon's PoS Cosmos SDK fork.
 
 The auth module is responsible for specifying the base transaction and account types
 for an application, since the SDK itself is agnostic to these particulars. It contains
@@ -116,6 +116,8 @@ type AccountI interface {
 
 	// Ensure that account implements stringer
 	String() string
+	
+	Validate()
 }
 ```
 
@@ -138,7 +140,8 @@ message BaseAccount {
 
 ### Vesting Account
 
-See [Vesting](https://docs.cosmos.network/main/modules/auth/vesting/).
+See [Vesting](https://docs.cosmos.network/main/modules/auth/vesting/).  
+Heimdall does not currently support vesting accounts, so they will be treated as base accounts.
 
 ## AnteHandlers
 
@@ -176,6 +179,8 @@ The auth module provides `AnteDecorator`s that are recursively chained together 
 * `SigVerificationDecorator`: Verifies all signatures are valid. This requires pubkeys to be set in context for all signers as part of `SetPubKeyDecorator`.
 
 * `IncrementSequenceDecorator`: Increments the account sequence for each signer to prevent replay attacks.
+
+Some of these decorators may be disabled due to Heimdall's specific requirements.
 
 ## Keepers
 
@@ -225,13 +230,15 @@ type AccountKeeperI interface {
 
 The auth module contains the following parameters:
 
-| Key                    | Type            | Example |
-| ---------------------- | --------------- | ------- |
-| MaxMemoCharacters      |      uint64     | 256     |
-| TxSigLimit             |      uint64     | 7       |
-| TxSizeCostPerByte      |      uint64     | 10      |
-| SigVerifyCostED25519   |      uint64     | 590     |
-| SigVerifyCostSecp256k1 |      uint64     | 1000    |
+| Key                    | Type   | Example |
+|------------------------|--------| ------- |
+| MaxMemoCharacters      | uint64 | 256     |
+| TxSigLimit             | uint64 | 7       |
+| TxSizeCostPerByte      | uint64 | 10      |
+| SigVerifyCostED25519   | uint64 | 590     |
+| SigVerifyCostSecp256k1 | uint64 | 1000    |
+| MaxTxGas               | uint64 | 1000    |
+| TxFees                 | string | "1000"    |
 
 ## Client
 
@@ -266,7 +273,7 @@ Example Output:
 ```bash
 '@type': /cosmos.auth.v1beta1.BaseAccount
 account_number: "0"
-address: cosmos1zwg6tpl8aw4rawv8sgag9086lpw5hv33u5ctr2
+address: 0x...
 pub_key:
   '@type': /cosmos.crypto.secp256k1.PubKey
   key: ApDrE38zZdd7wLmFS9YmqO684y5DG6fjZ4rVeihF/AQD
@@ -293,7 +300,7 @@ Example Output:
 accounts:
 - '@type': /cosmos.auth.v1beta1.BaseAccount
   account_number: "0"
-  address: cosmos1zwg6tpl8aw4rawv8sgag9086lpw5hv33u5ctr2
+  address: 0x...
   pub_key:
     '@type': /cosmos.crypto.secp256k1.PubKey
     key: ApDrE38zZdd7wLmFS9YmqO684y5DG6fjZ4rVeihF/AQD
@@ -301,7 +308,7 @@ accounts:
 - '@type': /cosmos.auth.v1beta1.ModuleAccount
   base_account:
     account_number: "8"
-    address: cosmos1yl6hdjhmkf37639730gffanpzndzdpmhwlkfhr
+    address: 0x...
     pub_key: null
     sequence: "0"
   name: transfer
@@ -311,7 +318,7 @@ accounts:
 - '@type': /cosmos.auth.v1beta1.ModuleAccount
   base_account:
     account_number: "4"
-    address: cosmos1fl48vsnmsdzcv85q5d2q4z5ajdha8yu34mf0eh
+    address: 0x...
     pub_key: null
     sequence: "0"
   name: bonded_tokens_pool
@@ -321,7 +328,7 @@ accounts:
 - '@type': /cosmos.auth.v1beta1.ModuleAccount
   base_account:
     account_number: "5"
-    address: cosmos1tygms3xhhs3yv487phx3dw4a95jn7t7lpm470r
+    address: 0x...
     pub_key: null
     sequence: "0"
   name: not_bonded_tokens_pool
@@ -331,7 +338,7 @@ accounts:
 - '@type': /cosmos.auth.v1beta1.ModuleAccount
   base_account:
     account_number: "6"
-    address: cosmos10d07y265gmmuvt4z0w9aw880jnsr700j6zn9kn
+    address: 0x...
     pub_key: null
     sequence: "0"
   name: gov
@@ -340,20 +347,20 @@ accounts:
 - '@type': /cosmos.auth.v1beta1.ModuleAccount
   base_account:
     account_number: "3"
-    address: cosmos1jv65s3grqf6v6jl3dp4t6c9t9rk99cd88lyufl
+    address: 0x...
     pub_key: null
     sequence: "0"
   name: distribution
   permissions: []
 - '@type': /cosmos.auth.v1beta1.BaseAccount
   account_number: "1"
-  address: cosmos147k3r7v2tvwqhcmaxcfql7j8rmkrlsemxshd3j
+  address: 0x...
   pub_key: null
   sequence: "0"
 - '@type': /cosmos.auth.v1beta1.ModuleAccount
   base_account:
     account_number: "7"
-    address: cosmos1m3h30wlvsf8llruxtpukdvsy0km2kum8g38c8q
+    address: 0x...
     pub_key: null
     sequence: "0"
   name: mint
@@ -362,7 +369,7 @@ accounts:
 - '@type': /cosmos.auth.v1beta1.ModuleAccount
   base_account:
     account_number: "2"
-    address: cosmos17xpfvakm2amg962yls6f84z3kell8c5lserqta
+    address: 0x...
     pub_key: null
     sequence: "0"
   name: fee_collector
@@ -394,6 +401,9 @@ sig_verify_cost_ed25519: "590"
 sig_verify_cost_secp256k1: "1000"
 tx_sig_limit: "7"
 tx_size_cost_per_byte: "10"
+max_tx_gas: "1000";
+tx_fees: "1000";
+
 ```
 
 ### Transactions
@@ -439,7 +449,8 @@ More information about the `sign-batch` command can be found running `simd tx si
 
 #### `multi-sign`
 
-The `multi-sign` command allows users to sign transactions that was generated offline by a multisig account.
+The `multi-sign` command allows users to sign transactions that was generated offline by a multisig account.  
+The multi signature functionality is not supported by Heimdall.
 
 ```bash
 simd tx multisign transaction.json k1k2k3 k1sig.json k2sig.json k3sig.json
@@ -452,7 +463,8 @@ More information about the `multi-sign` command can be found running `simd tx mu
 #### `multisign-batch`
 
 The `multisign-batch` works the same way as `sign-batch`, but for multisig accounts.
-With the difference that the `multisign-batch` command requires all transactions to be in one file, and the `--append` flag does not exist.
+With the difference that the `multisign-batch` command requires all transactions to be in one file, and the `--append` flag does not exist.  
+The multi signature functionality is not supported by Heimdall.
 
 More information about the `multisign-batch` command can be found running `simd tx multisign-batch --help`.
 
@@ -463,10 +475,10 @@ The `validate-signatures` command allows users to validate the signatures of a s
 ```bash
 $ simd tx validate-signatures tx.signed.json
 Signers:
-  0: cosmos1l6vsqhh7rnwsyr2kyz3jjg3qduaz8gwgyl8275
+  0: 0x...
 
 Signatures:
-  0: cosmos1l6vsqhh7rnwsyr2kyz3jjg3qduaz8gwgyl8275                      [OK]
+  0: 0x...                                [OK]
 ```
 
 More information about the `validate-signatures` command can be found running `simd tx validate-signatures --help`.
@@ -509,7 +521,7 @@ Example Output:
 {
   "account":{
     "@type":"/cosmos.auth.v1beta1.BaseAccount",
-    "address":"cosmos1zwg6tpl8aw4rawv8sgag9086lpw5hv33u5ctr2",
+    "address":"0x...",
     "pubKey":{
       "@type":"/cosmos.crypto.secp256k1.PubKey",
       "key":"ApDrE38zZdd7wLmFS9YmqO684y5DG6fjZ4rVeihF/AQD"
@@ -542,7 +554,7 @@ Example Output:
    "accounts":[
       {
          "@type":"/cosmos.auth.v1beta1.BaseAccount",
-         "address":"cosmos1zwg6tpl8aw4rawv8sgag9086lpw5hv33u5ctr2",
+         "address":"0x...",
          "pubKey":{
             "@type":"/cosmos.crypto.secp256k1.PubKey",
             "key":"ApDrE38zZdd7wLmFS9YmqO684y5DG6fjZ4rVeihF/AQD"
@@ -552,7 +564,7 @@ Example Output:
       {
          "@type":"/cosmos.auth.v1beta1.ModuleAccount",
          "baseAccount":{
-            "address":"cosmos1yl6hdjhmkf37639730gffanpzndzdpmhwlkfhr",
+            "address":"0x...",
             "accountNumber":"8"
          },
          "name":"transfer",
@@ -564,7 +576,7 @@ Example Output:
       {
          "@type":"/cosmos.auth.v1beta1.ModuleAccount",
          "baseAccount":{
-            "address":"cosmos1fl48vsnmsdzcv85q5d2q4z5ajdha8yu34mf0eh",
+            "address":"0x...",
             "accountNumber":"4"
          },
          "name":"bonded_tokens_pool",
@@ -576,7 +588,7 @@ Example Output:
       {
          "@type":"/cosmos.auth.v1beta1.ModuleAccount",
          "baseAccount":{
-            "address":"cosmos1tygms3xhhs3yv487phx3dw4a95jn7t7lpm470r",
+            "address":"0x...",
             "accountNumber":"5"
          },
          "name":"not_bonded_tokens_pool",
@@ -588,7 +600,7 @@ Example Output:
       {
          "@type":"/cosmos.auth.v1beta1.ModuleAccount",
          "baseAccount":{
-            "address":"cosmos10d07y265gmmuvt4z0w9aw880jnsr700j6zn9kn",
+            "address":"0x...",
             "accountNumber":"6"
          },
          "name":"gov",
@@ -599,7 +611,7 @@ Example Output:
       {
          "@type":"/cosmos.auth.v1beta1.ModuleAccount",
          "baseAccount":{
-            "address":"cosmos1jv65s3grqf6v6jl3dp4t6c9t9rk99cd88lyufl",
+            "address":"0x...",
             "accountNumber":"3"
          },
          "name":"distribution"
@@ -607,12 +619,12 @@ Example Output:
       {
          "@type":"/cosmos.auth.v1beta1.BaseAccount",
          "accountNumber":"1",
-         "address":"cosmos147k3r7v2tvwqhcmaxcfql7j8rmkrlsemxshd3j"
+         "address":"0x..."
       },
       {
          "@type":"/cosmos.auth.v1beta1.ModuleAccount",
          "baseAccount":{
-            "address":"cosmos1m3h30wlvsf8llruxtpukdvsy0km2kum8g38c8q",
+            "address":"0x...",
             "accountNumber":"7"
          },
          "name":"mint",
@@ -623,7 +635,7 @@ Example Output:
       {
          "@type":"/cosmos.auth.v1beta1.ModuleAccount",
          "baseAccount":{
-            "address":"cosmos17xpfvakm2amg962yls6f84z3kell8c5lserqta",
+            "address":"0x...",
             "accountNumber":"2"
          },
          "name":"fee_collector"
@@ -661,6 +673,8 @@ Example Output:
     "txSizeCostPerByte": "10",
     "sigVerifyCostEd25519": "590",
     "sigVerifyCostSecp256k1": "1000"
+    "maxTxGas": "1000",
+    "txFees": "1000"
   }
 }
 ```
@@ -692,3 +706,7 @@ The `params` endpoint allow users to query the current auth parameters.
 ```bash
 /cosmos/auth/v1beta1/params
 ```
+
+### Heimdall Notes
+
+Note that in the example provided here, `0x...` is used as a placeholder for an actual ethereum compatible address.
