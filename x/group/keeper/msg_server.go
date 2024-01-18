@@ -374,7 +374,7 @@ func (k Keeper) CreateGroupPolicy(goCtx context.Context, msg *group.MsgCreateGro
 	// loop here in the rare case where a ADR-028-derived address creates a
 	// collision with an existing address.
 	for {
-		// TODO HV2 double check this implementation. Ask Informal
+		// TODO HV2 double check this code, only implemented for compatibility. Is there a go-ethereum solution for this?
 		pubKey := secp256k1.GenPrivKey().PubKey()
 		derivationKey := pubKey.Address()
 

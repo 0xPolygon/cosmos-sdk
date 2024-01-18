@@ -28,7 +28,7 @@ func MigrateGenState(oldState *authtypes.GenesisState) *authtypes.GenesisState {
 			continue
 		}
 
-		// TODO HV2 double check this implementation. Ask Informal
+		// TODO HV2 double check this code, only implemented for compatibility. Is there a go-ethereum solution for this?
 		pubKey := secp256k1.GenPrivKey().PubKey()
 		derivationKey := pubKey.Address()
 
