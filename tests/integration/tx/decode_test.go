@@ -1,11 +1,11 @@
 package tx
 
 import (
-	"github.com/ethereum/go-ethereum/common"
 	"testing"
 
 	"github.com/cosmos/cosmos-proto/rapidproto"
 	gogoproto "github.com/cosmos/gogoproto/proto"
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/proto"
 	"pgregory.net/rapid"

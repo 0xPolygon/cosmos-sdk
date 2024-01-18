@@ -9,6 +9,7 @@ import (
 	"sync"
 	"sync/atomic"
 
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/hashicorp/golang-lru/simplelru"
 	"sigs.k8s.io/yaml"
 
@@ -16,8 +17,6 @@ import (
 
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-
-	"github.com/ethereum/go-ethereum/common"
 )
 
 const (
@@ -179,27 +178,6 @@ func MustAccAddressFromHex(address string) AccAddress {
 	return addr
 }
 
-// AccAddressFromBech32 creates an AccAddress from a Bech32 string.
-//func AccAddressFromBech32(address string) (addr AccAddress, err error) {
-//	if len(strings.TrimSpace(address)) == 0 {
-//		return AccAddress{}, errors.New("empty address string is not allowed")
-//	}
-//
-//	bech32PrefixAccAddr := GetConfig().GetBech32AccountAddrPrefix()
-//
-//	bz, err := GetFromBech32(address, bech32PrefixAccAddr)
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	err = VerifyAddressFormat(bz)
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	return AccAddress(bz), nil
-//}
-
 // Equals Returns boolean for whether two AccAddresses are Equal
 func (aa AccAddress) Equals(aa2 Address) bool {
 	if aa.Empty() && aa2.Empty() {
@@ -296,27 +274,6 @@ func ValAddressFromHex(address string) (addr ValAddress, err error) {
 	bz, err := addressBytesFromHexString(address)
 	return ValAddress(bz), err
 }
-
-// ValAddressFromBech32 creates a ValAddress from a Bech32 string.
-//func ValAddressFromBech32(address string) (addr ValAddress, err error) {
-//	if len(strings.TrimSpace(address)) == 0 {
-//		return ValAddress{}, errors.New("empty address string is not allowed")
-//	}
-//
-//	bech32PrefixValAddr := GetConfig().GetBech32ValidatorAddrPrefix()
-//
-//	bz, err := GetFromBech32(address, bech32PrefixValAddr)
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	err = VerifyAddressFormat(bz)
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	return ValAddress(bz), nil
-//}
 
 // Equals Returns boolean for whether two ValAddresses are Equal
 func (va ValAddress) Equals(va2 Address) bool {
@@ -415,27 +372,6 @@ func ConsAddressFromHex(address string) (addr ConsAddress, err error) {
 	return ConsAddress(bz), err
 }
 
-// ConsAddressFromBech32 creates a ConsAddress from a Bech32 string.
-//func ConsAddressFromBech32(address string) (addr ConsAddress, err error) {
-//	if len(strings.TrimSpace(address)) == 0 {
-//		return ConsAddress{}, errors.New("empty address string is not allowed")
-//	}
-//
-//	bech32PrefixConsAddr := GetConfig().GetBech32ConsensusAddrPrefix()
-//
-//	bz, err := GetFromBech32(address, bech32PrefixConsAddr)
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	err = VerifyAddressFormat(bz)
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	return ConsAddress(bz), nil
-//}
-
 // GetConsAddress get ConsAddress from pubkey
 func GetConsAddress(pubkey cryptotypes.PubKey) ConsAddress {
 	return ConsAddress(pubkey.Address())
@@ -512,19 +448,6 @@ func (ca ConsAddress) String() string {
 	return common.Bytes2Hex(ca.Bytes())
 }
 
-// Bech32ifyAddressBytes returns a bech32 representation of address bytes.
-// Returns an empty sting if the byte slice is 0-length. Returns an error if the bech32 conversion
-// fails or the prefix is empty.
-//func Bech32ifyAddressBytes(prefix string, bs []byte) (string, error) {
-//	if len(bs) == 0 {
-//		return "", nil
-//	}
-//	if len(prefix) == 0 {
-//		return "", errors.New("prefix cannot be empty")
-//	}
-//	return bech32.ConvertAndEncode(prefix, bs)
-//}
-
 // HexifyAddressBytes returns a hex representation of address bytes.
 // Returns an empty sting if the byte slice is 0-length. Returns an error if the hex conversion
 // fails or the prefix is empty.
@@ -537,17 +460,6 @@ func HexifyAddressBytes(prefix string, bs []byte) (string, error) {
 	}
 	return "0x" + hex.EncodeToString(bs), nil
 }
-
-// MustBech32ifyAddressBytes returns a bech32 representation of address bytes.
-// Returns an empty sting if the byte slice is 0-length. It panics if the bech32 conversion
-// fails or the prefix is empty.
-//func MustBech32ifyAddressBytes(prefix string, bs []byte) string {
-//	s, err := Bech32ifyAddressBytes(prefix, bs)
-//	if err != nil {
-//		panic(err)
-//	}
-//	return s
-//}
 
 // MustHexifyAddressBytes returns a hex representation of address bytes.
 // Returns an empty sting if the byte slice is 0-length. It panics if the hex conversion
@@ -579,24 +491,6 @@ func (ca ConsAddress) Format(s fmt.State, verb rune) {
 
 var errHexEmptyAddress = errors.New("decoding hex address failed: must provide a non empty address")
 
-// GetFromBech32 decodes a bytestring from a Bech32 encoded string.
-//func GetFromBech32(bech32str, prefix string) ([]byte, error) {
-//	if len(bech32str) == 0 {
-//		return nil, errBech32EmptyAddress
-//	}
-//
-//	hrp, bz, err := bech32.DecodeAndConvert(bech32str)
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	if hrp != prefix {
-//		return nil, fmt.Errorf("invalid Bech32 prefix; expected %s, got %s", prefix, hrp)
-//	}
-//
-//	return bz, nil
-//}
-
 // GetFromHex decodes a bytestring from a hex encoded string.
 func GetFromHex(hexStr, prefix string) ([]byte, error) {
 	if len(hexStr) == 0 {
@@ -618,15 +512,3 @@ func addressBytesFromHexString(address string) ([]byte, error) {
 
 	return common.FromHex(address), nil
 }
-
-// cacheBech32Addr is not concurrency safe. Concurrent access to cache causes race condition.
-//func cacheBech32Addr(prefix string, addr []byte, cache *simplelru.LRU, cacheKey string) string {
-//	bech32Addr, err := bech32.ConvertAndEncode(prefix, addr)
-//	if err != nil {
-//		panic(err)
-//	}
-//	if IsAddrCacheEnabled() {
-//		cache.Add(cacheKey, bech32Addr)
-//	}
-//	return bech32Addr
-//}

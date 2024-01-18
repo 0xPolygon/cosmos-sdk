@@ -2,8 +2,9 @@ package address
 
 import (
 	"errors"
-	"github.com/ethereum/go-ethereum/common"
 	"strings"
+
+	"github.com/ethereum/go-ethereum/common"
 
 	"cosmossdk.io/core/address"
 	sdk "github.com/cosmos/cosmos-sdk/types"

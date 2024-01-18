@@ -3,11 +3,12 @@ package types
 import (
 	"encoding/hex"
 	"errors"
-	"github.com/cosmos/cosmos-sdk/x/auth/migrations/legacytx"
 	"reflect"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/rlp"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/cosmos-sdk/x/auth/migrations/legacytx"
 )
 
 // TODO HV2 this is imported from heimdall, hence to be used. Double check

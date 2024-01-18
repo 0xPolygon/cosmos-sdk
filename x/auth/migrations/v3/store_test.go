@@ -1,7 +1,6 @@
 package v3_test
 
 import (
-	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 	"math/rand"
 	"testing"
 	"time"
@@ -21,6 +20,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	moduletestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
 	"github.com/cosmos/cosmos-sdk/x/auth"
+	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 	authexported "github.com/cosmos/cosmos-sdk/x/auth/exported"
 	"github.com/cosmos/cosmos-sdk/x/auth/keeper"
 	v1 "github.com/cosmos/cosmos-sdk/x/auth/migrations/v1"
