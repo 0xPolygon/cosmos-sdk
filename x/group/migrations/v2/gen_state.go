@@ -28,6 +28,7 @@ func MigrateGenState(oldState *authtypes.GenesisState) *authtypes.GenesisState {
 			continue
 		}
 
+		// TODO HV2 double check this implementation. Ask Informal
 		pubKey := secp256k1.GenPrivKey().PubKey()
 		derivationKey := pubKey.Address()
 

@@ -2,7 +2,6 @@ package types
 
 import (
 	"bytes"
-	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -22,6 +21,7 @@ import (
 const (
 
 	// TODO HV2 prefixes are now all empty strings. Do we need Purpose, CoinType, FullFundraiserPath ?
+	// TODO HV2 bech32 > hex in comments
 
 	// Constants defined here are the defaults value for address.
 	// You can use the specific values for your project.
@@ -146,7 +146,7 @@ var (
 // ----------------------------------------------------------------------------
 
 // AccAddress a wrapper around bytes meant to represent an account address.
-// When marshaled to a string or JSON, it uses Bech32.
+// When marshaled to a string or JSON, it uses hex.
 type AccAddress []byte
 
 // AccAddressFromHex creates an AccAddress from a HEX-encoded string.
@@ -205,12 +205,12 @@ func (aa *AccAddress) Unmarshal(data []byte) error {
 	return nil
 }
 
-// MarshalJSON marshals to JSON using Bech32.
+// MarshalJSON marshals to JSON using hex.
 func (aa AccAddress) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aa.String())
 }
 
-// MarshalYAML marshals to YAML using Bech32.
+// MarshalYAML marshals to YAML using hex.
 func (aa AccAddress) MarshalYAML() (interface{}, error) {
 	return aa.String(), nil
 }
@@ -266,7 +266,7 @@ func (aa AccAddress) Format(s fmt.State, verb rune) {
 // ----------------------------------------------------------------------------
 
 // ValAddress defines a wrapper around bytes meant to present a validator's
-// operator. When marshaled to a string or JSON, it uses Bech32.
+// operator. When marshaled to a string or JSON, it uses hex.
 type ValAddress []byte
 
 // ValAddressFromHex creates a ValAddress from a hex string.
@@ -302,17 +302,17 @@ func (va *ValAddress) Unmarshal(data []byte) error {
 	return nil
 }
 
-// MarshalJSON marshals to JSON using Bech32.
+// MarshalJSON marshals to JSON using hex.
 func (va ValAddress) MarshalJSON() ([]byte, error) {
 	return json.Marshal(va.String())
 }
 
-// MarshalYAML marshals to YAML using Bech32.
+// MarshalYAML marshals to YAML using hex.
 func (va ValAddress) MarshalYAML() (interface{}, error) {
 	return va.String(), nil
 }
 
-// UnmarshalJSON unmarshals from JSON assuming Bech32 encoding.
+// UnmarshalJSON unmarshals from JSON assuming hex encoding.
 func (va *ValAddress) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {
@@ -324,7 +324,7 @@ func (va *ValAddress) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// UnmarshalYAML unmarshals from YAML assuming Bech32 encoding.
+// UnmarshalYAML unmarshals from YAML assuming hex encoding.
 func (va *ValAddress) UnmarshalYAML(data []byte) error {
 	var s string
 	if err := yaml.Unmarshal(data, &s); err != nil {
@@ -363,7 +363,7 @@ func (va ValAddress) Format(s fmt.State, verb rune) {
 // ----------------------------------------------------------------------------
 
 // ConsAddress defines a wrapper around bytes meant to present a consensus node.
-// When marshaled to a string or JSON, it uses Bech32.
+// When marshaled to a string or JSON, it uses hex.
 type ConsAddress []byte
 
 // ConsAddressFromHex creates a ConsAddress from a hex string.
@@ -404,17 +404,17 @@ func (ca *ConsAddress) Unmarshal(data []byte) error {
 	return nil
 }
 
-// MarshalJSON marshals to JSON using Bech32.
+// MarshalJSON marshals to JSON using hex.
 func (ca ConsAddress) MarshalJSON() ([]byte, error) {
 	return json.Marshal(ca.String())
 }
 
-// MarshalYAML marshals to YAML using Bech32.
+// MarshalYAML marshals to YAML using hex.
 func (ca ConsAddress) MarshalYAML() (interface{}, error) {
 	return ca.String(), nil
 }
 
-// UnmarshalJSON unmarshals from JSON assuming Bech32 encoding.
+// UnmarshalJSON unmarshals from JSON assuming hex encoding.
 func (ca *ConsAddress) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {
@@ -426,7 +426,7 @@ func (ca *ConsAddress) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// UnmarshalYAML unmarshals from YAML assuming Bech32 encoding.
+// UnmarshalYAML unmarshals from YAML assuming hex encoding.
 func (ca *ConsAddress) UnmarshalYAML(data []byte) error {
 	var s string
 	if err := yaml.Unmarshal(data, &s); err != nil {
@@ -451,14 +451,11 @@ func (ca ConsAddress) String() string {
 // HexifyAddressBytes returns a hex representation of address bytes.
 // Returns an empty sting if the byte slice is 0-length. Returns an error if the hex conversion
 // fails or the prefix is empty.
-func HexifyAddressBytes(prefix string, bs []byte) (string, error) {
+func HexifyAddressBytes(_ string, bs []byte) (string, error) {
 	if len(bs) == 0 {
 		return "", nil
 	}
-	if len(prefix) == 0 {
-		return "", errors.New("prefix cannot be empty")
-	}
-	return "0x" + hex.EncodeToString(bs), nil
+	return common.Bytes2Hex(bs), nil
 }
 
 // MustHexifyAddressBytes returns a hex representation of address bytes.
@@ -492,7 +489,7 @@ func (ca ConsAddress) Format(s fmt.State, verb rune) {
 var errHexEmptyAddress = errors.New("decoding hex address failed: must provide a non empty address")
 
 // GetFromHex decodes a bytestring from a hex encoded string.
-func GetFromHex(hexStr, prefix string) ([]byte, error) {
+func GetFromHex(hexStr, _ string) ([]byte, error) {
 	if len(hexStr) == 0 {
 		return nil, errHexEmptyAddress
 	}

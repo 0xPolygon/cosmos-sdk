@@ -2,7 +2,9 @@ package v2
 
 import (
 	"fmt"
+
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 
 	storetypes "cosmossdk.io/store/types"
@@ -37,6 +39,7 @@ func Migrate(
 	groupPolicyAccountDerivationKey := make(map[string][]byte, 0)
 	policyKey := []byte{GroupPolicyTablePrefix}
 	for i := uint64(0); i <= curAccVal; i++ {
+		// TODO HV2 double check this implementation. Ask Informal
 		pubKey := secp256k1.GenPrivKey().PubKey()
 		derivationKey := pubKey.Address()
 		groupPolicyAcc := sdk.AccAddress(address.Module(group.ModuleName, policyKey, derivationKey))

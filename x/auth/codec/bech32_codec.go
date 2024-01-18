@@ -41,6 +41,10 @@ func (bc hexCodec) BytesToString(bz []byte) (string, error) {
 		return "", nil
 	}
 
+	if err := sdk.VerifyAddressFormat(bz); err != nil {
+		return "", err
+	}
+
 	text := common.Bytes2Hex(bz)
 
 	return text, nil

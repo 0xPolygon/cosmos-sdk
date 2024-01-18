@@ -5,10 +5,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	"strings"
 
 	errorsmod "cosmossdk.io/errors"
+
+	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -373,6 +374,7 @@ func (k Keeper) CreateGroupPolicy(goCtx context.Context, msg *group.MsgCreateGro
 	// loop here in the rare case where a ADR-028-derived address creates a
 	// collision with an existing address.
 	for {
+		// TODO HV2 double check this implementation. Ask Informal
 		pubKey := secp256k1.GenPrivKey().PubKey()
 		derivationKey := pubKey.Address()
 
