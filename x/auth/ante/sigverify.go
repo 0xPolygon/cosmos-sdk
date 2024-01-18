@@ -197,7 +197,7 @@ func (sgcd SigGasConsumeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simula
 		return ctx, err
 	}
 
-	// TODO HV2 following checks have been enforced due to heimdall use case. Keep them?
+	// TODO HV2 following checks have been enforced due to heimdall use case
 	if len(signers) == 0 {
 		return ctx, sdkerrors.ErrNoSignatures
 	}

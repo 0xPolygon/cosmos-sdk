@@ -79,10 +79,9 @@ func SetupTestSuite(t *testing.T, isCheckTx bool) *AnteTestSuite {
 		"random":                 {"random"},
 	}
 
-	// TODO HV2 fix codec and prefix here according to new hex configs
 	suite.accountKeeper = keeper.NewAccountKeeper(
-		suite.encCfg.Codec, runtime.NewKVStoreService(key), types.ProtoBaseAccount, maccPerms, authcodec.NewHexCodec(""),
-		"", types.NewModuleAddress("gov").String(),
+		suite.encCfg.Codec, runtime.NewKVStoreService(key), types.ProtoBaseAccount, maccPerms, authcodec.NewHexCodec(sdk.Bech32MainPrefix),
+		sdk.Bech32MainPrefix, types.NewModuleAddress("gov").String(),
 	)
 	suite.accountKeeper.GetModuleAccount(suite.ctx, types.FeeCollectorName)
 	err := suite.accountKeeper.Params.Set(suite.ctx, types.DefaultParams())

@@ -22,7 +22,7 @@ import (
 
 const (
 
-	// TODO HV2 do we need all these constants here?
+	// TODO HV2 prefixes are now all empty strings. Do we need Purpose, CoinType, FullFundraiserPath ?
 
 	// Constants defined here are the defaults value for address.
 	// You can use the specific values for your project.
@@ -37,7 +37,7 @@ const (
 	//	config.Seal()
 
 	// Bech32MainPrefix defines the main SDK Bech32 prefix of an account's address
-	Bech32MainPrefix = "cosmos"
+	Bech32MainPrefix = ""
 
 	// Purpose is the ATOM purpose as defined in SLIP44 (https://github.com/satoshilabs/slips/blob/master/slip-0044.md)
 	Purpose = 44
@@ -50,18 +50,18 @@ const (
 	FullFundraiserPath = "m/44'/118'/0'/0/0"
 
 	// PrefixAccount is the prefix for account keys
-	PrefixAccount = "acc"
+	PrefixAccount = ""
 	// PrefixValidator is the prefix for validator keys
-	PrefixValidator = "val"
+	PrefixValidator = ""
 	// PrefixConsensus is the prefix for consensus keys
-	PrefixConsensus = "cons"
+	PrefixConsensus = ""
 	// PrefixPublic is the prefix for public keys
-	PrefixPublic = "pub"
+	PrefixPublic = ""
 	// PrefixOperator is the prefix for operator keys
-	PrefixOperator = "oper"
+	PrefixOperator = ""
 
 	// PrefixAddress is the prefix for addresses
-	PrefixAddress = "addr"
+	PrefixAddress = ""
 
 	// Bech32PrefixAccAddr defines the Bech32 prefix of an account's address
 	Bech32PrefixAccAddr = Bech32MainPrefix

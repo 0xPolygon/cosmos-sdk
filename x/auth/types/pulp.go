@@ -10,7 +10,7 @@ import (
 	"github.com/ethereum/go-ethereum/rlp"
 )
 
-// TODO HV2 this is imported from heimdall, hence to be used
+// TODO HV2 this is imported from heimdall, hence to be used. Double check
 const (
 	// PulpHashLength pulp hash length
 	PulpHashLength int = 4
@@ -23,7 +23,7 @@ type Pulp struct {
 
 // GetPulpHash returns string hash
 func GetPulpHash(msg sdk.Msg) []byte {
-	// TODO HV2 msg.Route() and msg.Type() unavailable in cosmos
+	// TODO HV2 msg.Route() and msg.Type() unavailable in cosmos. Check if there is an equivalent and fix one pulp must be used.
 	// return crypto.Keccak256([]byte(fmt.Sprintf("%s::%s", msg.Route(), msg.Type())))[:PulpHashLength]
 	return nil
 }

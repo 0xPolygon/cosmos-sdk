@@ -8,7 +8,7 @@ import (
 	assert "github.com/stretchr/testify/require"
 )
 
-// TODO HV2 this is imported from heimdall, fix it and unskip
+// TODO HV2 this is imported from heimdall, fix it (by implementing GetPulpHash properly) and unskip the test
 
 func TestGetPulpHash(t *testing.T) {
 	t.Skip()

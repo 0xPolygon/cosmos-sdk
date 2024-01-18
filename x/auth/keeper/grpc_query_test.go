@@ -405,7 +405,6 @@ func (suite *KeeperTestSuite) TestGRPCQueryModuleAccountByName() {
 }
 
 func (suite *KeeperTestSuite) TestBech32Prefix() {
-	suite.T().Skip()  // TODO HV2 skipped as we are not using bech32
 	suite.SetupTest() // reset
 	req := &types.Bech32PrefixRequest{}
 	res, err := suite.queryClient.Bech32Prefix(context.Background(), req)

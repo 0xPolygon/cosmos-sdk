@@ -1,6 +1,7 @@
 package keeper_test
 
 import (
+	"math/big"
 	"testing"
 
 	"github.com/stretchr/testify/suite"
@@ -66,8 +67,8 @@ func (suite *KeeperTestSuite) SetupTest() {
 		storeService,
 		types.ProtoBaseAccount,
 		maccPerms,
-		authcodec.NewHexCodec(""),
-		"",
+		authcodec.NewHexCodec(sdk.Bech32MainPrefix),
+		sdk.Bech32MainPrefix,
 		types.NewModuleAddress("gov").String(),
 	)
 	suite.msgServer = keeper.NewMsgServerImpl(suite.accountKeeper)
@@ -96,6 +97,9 @@ func (suite *KeeperTestSuite) TestSupply_ValidatePermissions() {
 func (suite *KeeperTestSuite) TestInitGenesis() {
 	suite.SetupTest() // reset
 
+	txFees1, txFees2 := big.NewInt(0), big.NewInt(0)
+	txFeesSum := (big.NewInt(0).Add(txFees1, txFees2)).String()
+
 	// Check if params are set
 	genState := types.GenesisState{
 		Params: types.Params{
@@ -104,6 +108,8 @@ func (suite *KeeperTestSuite) TestInitGenesis() {
 			TxSizeCostPerByte:      types.DefaultTxSizeCostPerByte + 1,
 			SigVerifyCostED25519:   types.DefaultSigVerifyCostED25519 + 1,
 			SigVerifyCostSecp256k1: types.DefaultSigVerifyCostSecp256k1 + 1,
+			MaxTxGas:               types.DefaultMaxTxGas + 1,
+			TxFees:                 txFeesSum,
 		},
 	}
 
@@ -117,6 +123,8 @@ func (suite *KeeperTestSuite) TestInitGenesis() {
 	suite.Require().Equal(genState.Params.TxSizeCostPerByte, params.TxSizeCostPerByte, "TxSizeCostPerByte")
 	suite.Require().Equal(genState.Params.SigVerifyCostED25519, params.SigVerifyCostED25519, "SigVerifyCostED25519")
 	suite.Require().Equal(genState.Params.SigVerifyCostSecp256k1, params.SigVerifyCostSecp256k1, "SigVerifyCostSecp256k1")
+	suite.Require().Equal(genState.Params.MaxTxGas, params.MaxTxGas, "MaxTxGas")
+	suite.Require().Equal(genState.Params.TxFees, params.TxFees, "TxFees")
 
 	suite.SetupTest() // reset
 	ctx = suite.ctx
