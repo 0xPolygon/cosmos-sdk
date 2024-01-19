@@ -100,7 +100,8 @@ func NewStdTx(msgs []sdk.Msg, fee StdFee, sigs []StdSignature, memo string) StdT
 	}
 }
 
-// TODO HV2 replace StdSignature (deprecated) in favour of proto generated one?
+// TODO HV2: do we need to replace the deprecated StdSignature in StdTxRaw?
+//  Also StdTxRaw has its only usage in `pulp.go`, which is also not used anywhere. Can we remove it?
 
 // StdTxRaw is a standard way to wrap a RLP Msg with Fee and Signatures.
 // It is used by heimdall to verify special txs on L1 (e.g. checkpoints).

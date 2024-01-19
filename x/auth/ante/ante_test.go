@@ -26,7 +26,7 @@ import (
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 )
 
-// TODO HV2: reconcile this file with heimdall's auth/ante_test.go (e.g. implement heimdall specific tests like TestCheckpointGasLimit and milestones tests)
+// TODO HV2: reconcile this file with heimdall's `auth/ante_test.go` (e.g. implement heimdall specific tests like `TestCheckpointGasLimit` and milestones related tests)
 
 // Test that simulate transaction accurately estimates gas cost
 func TestSimulateGasCost(t *testing.T) {
@@ -524,7 +524,7 @@ func TestAnteHandlerFees(t *testing.T) {
 
 // Test logic around memo gas consumption.
 func TestAnteHandlerMemoGas(t *testing.T) {
-	t.Skip() // TODO HV2 skipped as we don't support memo
+	t.Skip() // TODO HV2: skipped as we don't support memo. To be fixed?
 	testCases := []TestCase{
 		{
 			"tx does not have enough gas",
@@ -1215,7 +1215,7 @@ func TestCustomSignatureVerificationGasConsumer(t *testing.T) {
 }
 
 func TestAnteHandlerReCheck(t *testing.T) {
-	t.Skip() // TODO HV2 fix this test?
+	t.Skip() // TODO HV2: This test is currently broken. To be fixed?
 	suite := SetupTestSuite(t, false)
 	// Set recheck=true
 	suite.ctx = suite.ctx.WithIsReCheckTx(true)

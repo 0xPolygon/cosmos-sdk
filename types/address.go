@@ -19,9 +19,6 @@ import (
 )
 
 const (
-
-	// TODO HV2 prefixes are now all empty strings. Do we need Purpose, CoinType, FullFundraiserPath ?
-
 	// Constants defined here are the defaults value for address.
 	// You can use the specific values for your project.
 	// Add the follow lines to the `main()` of your server.
@@ -33,6 +30,11 @@ const (
 	//	config.SetPurpose(yourPurpose)
 	//	config.SetCoinType(yourCoinType)
 	//	config.Seal()
+
+	// TODO HV2: all prefixes are now empty strings.
+	//  Another solution (closer to what's being done in cosmos-sdk) would be to use "0x" as our prefix.
+	//  This would require changes to the codecs
+	//  Also, our app won't use `Purpose`, `CoinType` and `FullFundraiserPath`. Kept them for compatibility only.
 
 	// Bech32MainPrefix defines the main SDK Bech32 prefix of an account's address
 	Bech32MainPrefix = ""
@@ -348,7 +350,8 @@ func (va ValAddress) String() string {
 	if va.Empty() {
 		return ""
 	}
-	// TODO HV2: is the 0x addition to be done for all Tx related types? Like TxHash. In case, is there a way to do it with proto?
+	// TODO HV2: the "0x" addition is preserved from heimdall and necessary to have eth addresses string representations
+	//  Does it need to be done for all `Tx` related types? Like `TxHash`
 	return "0x" + common.Bytes2Hex(va.Bytes())
 }
 

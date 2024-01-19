@@ -88,7 +88,7 @@ func (dfd DeductFeeDecorator) checkDeductFee(ctx sdk.Context, sdkTx sdk.Tx, fee 
 	// feeGranter := feeTx.FeeGranter()
 	deductFeesFrom := feePayer
 
-	// TODO HV2: removed freeGranter logic as we are not using it in heimdall. Is this ok? Do we want to use it instead of FeeCollector?
+	// TODO HV2: removed `FeeGranter` logic as we are not using it in heimdall. Is this ok? Do we want to use it instead of `FeeCollector`?
 	// if feegranter set deduct fee from feegranter account.
 	// this works with only when feegrant enabled.
 	//if feeGranter != nil {

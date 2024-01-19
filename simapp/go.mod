@@ -215,6 +215,6 @@ replace (
 	// replace broken goleveldb
 	github.com/syndtr/goleveldb => github.com/syndtr/goleveldb v1.0.1-0.20210819022825-2ae1ddf74ef7
 
-	// TODO HV2 this fixes the build temporarily > to remove once we have our version of the cosmos-sdk fork
+	// TODO HV2: this fixes the app build temporarily > to remove once we have our version of the cosmos-sdk fork
 	cosmossdk.io/x/evidence => ../x/evidence
 )

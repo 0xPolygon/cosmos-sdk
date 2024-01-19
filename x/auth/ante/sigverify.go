@@ -38,7 +38,9 @@ var (
 	// DefaultFeeInMatic represents default fee in matic
 	DefaultFeeInMatic = big.NewInt(10).Exp(big.NewInt(10), big.NewInt(15), nil)
 
-	// TODO HV2 no usage of DefaultFeeWantedPerTx so far. This is used in heimdall topup module's side_handler.go
+	// TODO HV2: no usage of DefaultFeeWantedPerTx so far.
+	//  This is used in heimdall topup module's `side_handler.go`
+
 	// DefaultFeeWantedPerTx fee wanted per tx
 	DefaultFeeWantedPerTx = sdk.Coins{sdk.Coin{Denom: types.FeeToken, Amount: math.NewIntFromBigInt(DefaultFeeInMatic)}}
 )
@@ -55,7 +57,8 @@ func init() {
 // This is where apps can define their own PubKey
 type SignatureVerificationGasConsumer = func(meter storetypes.GasMeter, sig signing.SignatureV2, params types.Params) error
 
-// TODO HV2 double check this and its usage
+// TODO HV2: MainTxMsg has no usage so far. Double check it by looking at heimdall's code.
+
 // MainTxMsg tx hash
 type MainTxMsg interface {
 	GetTxHash() address.HeimdallHash
@@ -197,7 +200,7 @@ func (sgcd SigGasConsumeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simula
 		return ctx, err
 	}
 
-	// TODO HV2 following checks have been enforced due to heimdall use case
+	// TODO HV2: following checks have been enforced due to heimdall business logic (we don't support multisig yet)
 	if len(signers) == 0 {
 		return ctx, sdkerrors.ErrNoSignatures
 	}
@@ -277,7 +280,8 @@ func OnlyLegacyAminoSigners(sigData signing.SignatureData) bool {
 }
 
 func (svd SigVerificationDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.AnteHandler) (newCtx sdk.Context, err error) {
-	// TODO HV2 do we need any change here?
+
+	// TODO HV2: do we need any change here to be compliant with heimdall's business logic?
 
 	sigTx, ok := tx.(authsigning.Tx)
 	if !ok {

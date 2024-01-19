@@ -114,7 +114,7 @@ func (suite *KeeperTestSuite) TestInitGenesis() {
 	}
 
 	ctx := suite.ctx
-	// TODO HV2 init processors with proper supply.AccountProcessor
+	// TODO HV2: init processors with proper supply.AccountProcessor (supply module has been merged with bank module upstream)
 	suite.accountKeeper.InitGenesis(ctx, genState, []authtypes.AccountProcessor{})
 
 	params := suite.accountKeeper.GetParams(ctx)
@@ -162,7 +162,7 @@ func (suite *KeeperTestSuite) TestInitGenesis() {
 	for _, acct := range accts {
 		genState.Accounts = append(genState.Accounts, codectypes.UnsafePackAny(acct))
 	}
-	// TODO HV2 init processors with proper supply.AccountProcessor
+	// TODO HV2: init processors with proper supply.AccountProcessor (supply module has been merged with bank module upstream)
 	suite.accountKeeper.InitGenesis(ctx, genState, []authtypes.AccountProcessor{})
 
 	keeperAccts := suite.accountKeeper.GetAllAccounts(ctx)
@@ -210,7 +210,7 @@ func (suite *KeeperTestSuite) TestInitGenesis() {
 		},
 	}
 
-	// TODO HV2 init processors with proper supply.AccountProcessor
+	// TODO HV2: init processors with proper supply.AccountProcessor (supply module has been merged with bank module upstream)
 	suite.accountKeeper.InitGenesis(ctx, genState, []authtypes.AccountProcessor{})
 
 	keeperAccts = suite.accountKeeper.GetAllAccounts(ctx)

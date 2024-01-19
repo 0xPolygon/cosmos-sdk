@@ -8,7 +8,8 @@ import (
 	assert "github.com/stretchr/testify/require"
 )
 
-// TODO HV2 this is imported from heimdall, fix it (by implementing GetPulpHash properly) and unskip the test
+// TODO HV2: this is imported from heimdall, but not used anywhere (not heimdall, not cosmos).
+//  Can we delete it? Also the test fails because of the missing implementation of the GetPulpHash function
 
 func TestGetPulpHash(t *testing.T) {
 	t.Skip()

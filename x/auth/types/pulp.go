@@ -11,7 +11,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth/migrations/legacytx"
 )
 
-// TODO HV2 this is imported from heimdall, hence to be used. Double check
+// TODO HV2: this is imported from heimdall, but not used anywhere (not heimdall, not cosmos). Can we delete it?
 const (
 	// PulpHashLength pulp hash length
 	PulpHashLength int = 4
@@ -24,7 +24,8 @@ type Pulp struct {
 
 // GetPulpHash returns string hash
 func GetPulpHash(msg sdk.Msg) []byte {
-	// TODO HV2 msg.Route() and msg.Type() unavailable in cosmos. Check if there is an equivalent and fix one pulp must be used.
+	// TODO HV2: msg.Route() and msg.Type() unavailable in cosmos.
+	//  Anyway this function is not used anywhere in heimdall, hence I believe it can be deleted.
 	// return crypto.Keccak256([]byte(fmt.Sprintf("%s::%s", msg.Route(), msg.Type())))[:PulpHashLength]
 	return nil
 }

@@ -128,7 +128,7 @@ func initFixture(t testing.TB) *fixture {
 	router := evidencetypes.NewRouter()
 	router = router.AddRoute(evidencetypes.RouteEquivocation, testEquivocationHandler(evidenceKeeper))
 	evidenceKeeper.SetRouter(router)
-	// TODO HV2 init processors with proper supply.AccountProcessor
+	// TODO HV2: init processors with proper supply.AccountProcessor (supply module has been merged with bank module upstream)
 	authModule := auth.NewAppModule(cdc, accountKeeper, authsims.RandomGenesisAccounts, nil, []authtypes.AccountProcessor{})
 	bankModule := bank.NewAppModule(cdc, bankKeeper, accountKeeper, nil)
 	stakingModule := staking.NewAppModule(cdc, stakingKeeper, accountKeeper, bankKeeper, nil)

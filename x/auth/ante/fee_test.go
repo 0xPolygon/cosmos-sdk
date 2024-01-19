@@ -50,7 +50,7 @@ func TestDeductFeeDecorator_ZeroGas(t *testing.T) {
 }
 
 func TestEnsureMempoolFees(t *testing.T) {
-	t.Skip()                     // TODO HV2 skipped as we use a different fee model. Double check
+	t.Skip()                     // TODO HV2: skipped as we use a different fee model. To be fixed?
 	s := SetupTestSuite(t, true) // setup
 	s.txBuilder = s.clientCtx.TxConfig.NewTxBuilder()
 

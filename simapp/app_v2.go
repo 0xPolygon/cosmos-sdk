@@ -243,7 +243,7 @@ func NewSimApp(
 	//
 	// NOTE: this is not required apps that don't use the simulator for fuzz testing
 	// transactions
-	// TODO HV2 init processors with proper supply.AccountProcessor
+	// TODO HV2: init processors with proper supply.AccountProcessor (supply module has been merged with bank module upstream)
 	overrideModules := map[string]module.AppModuleSimulation{
 		authtypes.ModuleName: auth.NewAppModule(app.appCodec, app.AccountKeeper, authsims.RandomGenesisAccounts, app.GetSubspace(authtypes.ModuleName), []authtypes.AccountProcessor{}),
 	}
