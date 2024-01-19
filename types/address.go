@@ -244,6 +244,9 @@ func (aa AccAddress) Bytes() []byte {
 
 // String implements the Stringer interface.
 func (aa AccAddress) String() string {
+	if aa.Empty() {
+		return ""
+	}
 	return "0x" + common.Bytes2Hex(aa.Bytes())
 }
 
@@ -342,7 +345,10 @@ func (va ValAddress) Bytes() []byte {
 
 // String implements the Stringer interface.
 func (va ValAddress) String() string {
-	// TODO HV2: does this need to be done for all Tx related types? Like TxHash. Is there a way to do it with proto?
+	if va.Empty() {
+		return ""
+	}
+	// TODO HV2: is the 0x addition to be done for all Tx related types? Like TxHash. In case, is there a way to do it with proto?
 	return "0x" + common.Bytes2Hex(va.Bytes())
 }
 
@@ -445,6 +451,9 @@ func (ca ConsAddress) Bytes() []byte {
 
 // String implements the Stringer interface.
 func (ca ConsAddress) String() string {
+	if ca.Empty() {
+		return ""
+	}
 	return "0x" + common.Bytes2Hex(ca.Bytes())
 }
 

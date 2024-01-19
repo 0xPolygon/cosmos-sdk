@@ -317,11 +317,7 @@ func (w *wrapper) SetFeePayer(feePayer sdk.AccAddress) {
 		w.tx.AuthInfo.Fee = &tx.Fee{}
 	}
 
-	if feePayer == nil {
-		w.tx.AuthInfo.Fee.Payer = ""
-	} else {
-		w.tx.AuthInfo.Fee.Payer = feePayer.String()
-	}
+	w.tx.AuthInfo.Fee.Payer = feePayer.String()
 
 	// set authInfoBz to nil because the cached authInfoBz no longer matches tx.AuthInfo
 	w.authInfoBz = nil
@@ -332,11 +328,7 @@ func (w *wrapper) SetFeeGranter(feeGranter sdk.AccAddress) {
 		w.tx.AuthInfo.Fee = &tx.Fee{}
 	}
 
-	if feeGranter == nil {
-		w.tx.AuthInfo.Fee.Granter = ""
-	} else {
-		w.tx.AuthInfo.Fee.Granter = feeGranter.String()
-	}
+	w.tx.AuthInfo.Fee.Granter = feeGranter.String()
 
 	// set authInfoBz to nil because the cached authInfoBz no longer matches tx.AuthInfo
 	w.authInfoBz = nil
