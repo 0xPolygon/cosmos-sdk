@@ -21,7 +21,6 @@ import (
 const (
 
 	// TODO HV2 prefixes are now all empty strings. Do we need Purpose, CoinType, FullFundraiserPath ?
-	// TODO HV2 bech32 > hex in comments
 
 	// Constants defined here are the defaults value for address.
 	// You can use the specific values for your project.
@@ -245,7 +244,7 @@ func (aa AccAddress) Bytes() []byte {
 
 // String implements the Stringer interface.
 func (aa AccAddress) String() string {
-	return common.Bytes2Hex(aa.Bytes())
+	return "0x" + common.Bytes2Hex(aa.Bytes())
 }
 
 // Format implements the fmt.Formatter interface.
@@ -343,7 +342,8 @@ func (va ValAddress) Bytes() []byte {
 
 // String implements the Stringer interface.
 func (va ValAddress) String() string {
-	return common.Bytes2Hex(va.Bytes())
+	// TODO HV2: does this need to be done for all Tx related types? Like TxHash. Is there a way to do it with proto?
+	return "0x" + common.Bytes2Hex(va.Bytes())
 }
 
 // Format implements the fmt.Formatter interface.
@@ -445,11 +445,11 @@ func (ca ConsAddress) Bytes() []byte {
 
 // String implements the Stringer interface.
 func (ca ConsAddress) String() string {
-	return common.Bytes2Hex(ca.Bytes())
+	return "0x" + common.Bytes2Hex(ca.Bytes())
 }
 
 // HexifyAddressBytes returns a hex representation of address bytes.
-// Returns an empty sting if the byte slice is 0-length. Returns an error if the hex conversion
+// Returns an empty string if the byte slice is 0-length. Returns an error if the hex conversion
 // fails or the prefix is empty.
 func HexifyAddressBytes(_ string, bs []byte) (string, error) {
 	if len(bs) == 0 {

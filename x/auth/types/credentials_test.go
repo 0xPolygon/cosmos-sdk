@@ -45,7 +45,7 @@ func TestNewModuleCrendentials(t *testing.T) {
 	expected := sdk.MustAccAddressFromHex(address.String())
 	c, err = authtypes.NewModuleCredential("group", address)
 	require.NoError(t, err)
-	require.Equal(t, strings.ToLower(expected.String()), strings.ToLower(address.String()))
+	require.Equal(t, strings.ToLower(expected.String()), "0x"+strings.ToLower(address.String()))
 }
 
 func TestNewBaseAccountWithPubKey(t *testing.T) {

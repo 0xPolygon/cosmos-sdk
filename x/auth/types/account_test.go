@@ -95,10 +95,10 @@ func TestGenesisAccountValidate(t *testing.T) {
 func TestModuleAccountString(t *testing.T) {
 	name := "test"
 	moduleAcc := types.NewEmptyModuleAccount(name, types.Minter, types.Burner, types.Staking)
-	want := `base_account:<address:"9f86d081884c7d659a2feaa0c55ad015a3bf4f1b" > name:"test" permissions:"minter" permissions:"burner" permissions:"staking" `
+	want := `base_account:<address:"0x9f86d081884c7d659a2feaa0c55ad015a3bf4f1b" > name:"test" permissions:"minter" permissions:"burner" permissions:"staking" `
 	require.Equal(t, want, moduleAcc.String())
 	moduleAcc.SetSequence(10)
-	want = `base_account:<address:"9f86d081884c7d659a2feaa0c55ad015a3bf4f1b" sequence:10 > name:"test" permissions:"minter" permissions:"burner" permissions:"staking" `
+	want = `base_account:<address:"0x9f86d081884c7d659a2feaa0c55ad015a3bf4f1b" sequence:10 > name:"test" permissions:"minter" permissions:"burner" permissions:"staking" `
 	require.Equal(t, want, moduleAcc.String())
 }
 
@@ -189,9 +189,9 @@ func TestGenesisAccountsContains(t *testing.T) {
 }
 
 func TestNewModuleAddressOrBech32Address(t *testing.T) {
-	input := "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b"
+	input := "0x9f86d081884c7d659a2feaa0c55ad015a3bf4f1b"
 	require.Equal(t, input, types.NewModuleAddressOrBech32Address(input).String())
-	require.Equal(t, "93354845030274cd4bf1686abd60ab28ec52e1a7", types.NewModuleAddressOrBech32Address("distribution").String())
+	require.Equal(t, "0x93354845030274cd4bf1686abd60ab28ec52e1a7", types.NewModuleAddressOrBech32Address("distribution").String())
 }
 
 func TestModuleAccountValidateNilBaseAccount(t *testing.T) {

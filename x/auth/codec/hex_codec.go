@@ -37,7 +37,7 @@ func (bc hexCodec) StringToBytes(text string) ([]byte, error) {
 
 // BytesToString decodes bytes to text
 func (bc hexCodec) BytesToString(bz []byte) (string, error) {
-	if len(bz) == 0 {
+	if len(bz) == 0 || bz == nil {
 		return "", nil
 	}
 
