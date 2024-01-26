@@ -35,7 +35,7 @@ func NewAuxTxBuilder() AuxTxBuilder {
 	return AuxTxBuilder{}
 }
 
-// SetAddress sets the aux signer's bech32 address.
+// SetAddress sets the aux signer's address.
 func (b *AuxTxBuilder) SetAddress(addr string) {
 	b.checkEmptyFields()
 

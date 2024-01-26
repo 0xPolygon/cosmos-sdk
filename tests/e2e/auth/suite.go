@@ -748,7 +748,7 @@ func (s *E2ETestSuite) TestCLIMultisignInsufficientCosigners() {
 		sdk.NewCoins(
 			sdk.NewInt64Coin(s.cfg.BondDenom, 5),
 		),
-		addresscodec.NewHexCodec("cosmos"),
+		addresscodec.NewHexCodec(),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 		fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
 		fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, math.NewInt(10))).String()),
@@ -865,7 +865,7 @@ func (s *E2ETestSuite) TestCLIMultisignSortSignatures() {
 		sdk.NewCoins(
 			sdk.NewInt64Coin(s.cfg.BondDenom, 5),
 		),
-		addresscodec.NewHexCodec("cosmos"),
+		addresscodec.NewHexCodec(),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 		fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
 		fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, math.NewInt(10))).String()),
@@ -943,7 +943,7 @@ func (s *E2ETestSuite) TestSignWithMultisig() {
 		sdk.NewCoins(
 			sdk.NewInt64Coin(s.cfg.BondDenom, 5),
 		),
-		addresscodec.NewHexCodec("cosmos"),
+		addresscodec.NewHexCodec(),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 		fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
 		fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, math.NewInt(10))).String()),
@@ -1008,7 +1008,7 @@ func (s *E2ETestSuite) TestCLIMultisign() {
 		sdk.NewCoins(
 			sdk.NewInt64Coin(s.cfg.BondDenom, 5),
 		),
-		addresscodec.NewHexCodec("cosmos"),
+		addresscodec.NewHexCodec(),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 		fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
 		fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, math.NewInt(10))).String()),
@@ -1102,7 +1102,7 @@ func (s *E2ETestSuite) TestSignBatchMultisig() {
 		sdk.NewCoins(
 			sdk.NewCoin(s.cfg.BondDenom, math.NewInt(1)),
 		),
-		addresscodec.NewHexCodec("cosmos"),
+		addresscodec.NewHexCodec(),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 		fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
 		fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, math.NewInt(10))).String()),
@@ -1168,7 +1168,7 @@ func (s *E2ETestSuite) TestMultisignBatch() {
 		sdk.NewCoins(
 			sdk.NewCoin(s.cfg.BondDenom, math.NewInt(1)),
 		),
-		addresscodec.NewHexCodec("cosmos"),
+		addresscodec.NewHexCodec(),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 		fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
 		fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, math.NewInt(10))).String()),
@@ -1717,7 +1717,7 @@ func (s *E2ETestSuite) createBankMsg(val *network.Validator, toAddr sdk.AccAddre
 	}
 
 	flags = append(flags, extraFlags...)
-	return clitestutil.MsgSendExec(val.ClientCtx, val.Address, toAddr, amount, addresscodec.NewHexCodec("cosmos"), flags...)
+	return clitestutil.MsgSendExec(val.ClientCtx, val.Address, toAddr, amount, addresscodec.NewHexCodec(), flags...)
 }
 
 func (s *E2ETestSuite) getBalances(clientCtx client.Context, addr sdk.AccAddress, denom string) math.Int {

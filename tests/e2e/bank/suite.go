@@ -113,7 +113,7 @@ func (s *E2ETestSuite) TestNewSendTxCmdGenOnly() {
 		fmt.Sprintf("--%s=true", flags.FlagGenerateOnly),
 	}
 
-	bz, err := clitestutil.MsgSendExec(clientCtx, from, to, amount, addresscodec.NewHexCodec("cosmos"), args...)
+	bz, err := clitestutil.MsgSendExec(clientCtx, from, to, amount, addresscodec.NewHexCodec(), args...)
 	s.Require().NoError(err)
 	tx, err := s.cfg.TxConfig.TxJSONDecoder()(bz.Bytes())
 	s.Require().NoError(err)
@@ -142,7 +142,7 @@ func (s *E2ETestSuite) TestNewSendTxCmdDryRun() {
 	r, w, _ := os.Pipe()
 	os.Stderr = w
 
-	_, err := clitestutil.MsgSendExec(clientCtx, from, to, amount, addresscodec.NewHexCodec("cosmos"), args...)
+	_, err := clitestutil.MsgSendExec(clientCtx, from, to, amount, addresscodec.NewHexCodec(), args...)
 	s.Require().NoError(err)
 
 	w.Close()
@@ -240,7 +240,7 @@ func (s *E2ETestSuite) TestNewSendTxCmd() {
 		s.Run(tc.name, func() {
 			clientCtx := val.ClientCtx
 
-			bz, err := clitestutil.MsgSendExec(clientCtx, tc.from, tc.to, tc.amount, addresscodec.NewHexCodec("cosmos"), tc.args...)
+			bz, err := clitestutil.MsgSendExec(clientCtx, tc.from, tc.to, tc.amount, addresscodec.NewHexCodec(), tc.args...)
 			if tc.expectErr {
 				s.Require().Error(err)
 			} else {
@@ -403,5 +403,5 @@ func MsgMultiSendExec(clientCtx client.Context, from sdk.AccAddress, to []sdk.Ac
 	args = append(args, amount.String())
 	args = append(args, extraArgs...)
 
-	return clitestutil.ExecTestCLICmd(clientCtx, cli.NewMultiSendTxCmd(addresscodec.NewHexCodec("cosmos")), args)
+	return clitestutil.ExecTestCLICmd(clientCtx, cli.NewMultiSendTxCmd(addresscodec.NewHexCodec()), args)
 }

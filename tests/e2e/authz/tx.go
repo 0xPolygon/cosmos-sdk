@@ -151,7 +151,7 @@ func (s *E2ETestSuite) msgSendExec(grantee sdk.AccAddress) {
 		val.ClientCtx,
 		val.Address,
 		grantee,
-		sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, math.NewInt(200))), addresscodec.NewHexCodec("cosmos"), fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
+		sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, math.NewInt(200))), addresscodec.NewHexCodec(), fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 		fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
 		fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, math.NewInt(10))).String()),
 	)
@@ -172,7 +172,7 @@ var (
 )
 
 func execDelegate(val *network.Validator, args []string) (testutil.BufferWriter, error) {
-	cmd := stakingcli.NewDelegateCmd(addresscodec.NewHexCodec("cosmosvaloper"), addresscodec.NewHexCodec("cosmos"))
+	cmd := stakingcli.NewDelegateCmd(addresscodec.NewHexCodec(), addresscodec.NewHexCodec())
 	clientCtx := val.ClientCtx
 	return clitestutil.ExecTestCLICmd(clientCtx, cmd, args)
 }
@@ -310,7 +310,7 @@ func (s *E2ETestSuite) TestCmdRevokeAuthorizations() {
 	for _, tc := range testCases {
 		tc := tc
 		s.Run(tc.name, func() {
-			cmd := cli.NewCmdRevokeAuthorization(addresscodec.NewHexCodec("cosmos"))
+			cmd := cli.NewCmdRevokeAuthorization(addresscodec.NewHexCodec())
 			clientCtx := val.ClientCtx
 
 			out, err := clitestutil.ExecTestCLICmd(clientCtx, cmd, tc.args)
@@ -503,7 +503,7 @@ func (s *E2ETestSuite) TestNewExecGrantAuthorized() {
 		val.Address,
 		grantee,
 		tokens,
-		addresscodec.NewHexCodec("cosmos"),
+		addresscodec.NewHexCodec(),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 		fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
 		fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, math.NewInt(10))).String()),
@@ -618,7 +618,7 @@ func (s *E2ETestSuite) TestExecSendAuthzWithAllowList() {
 		val.Address,
 		allowedAddr,
 		tokens,
-		addresscodec.NewHexCodec("cosmos"),
+		addresscodec.NewHexCodec(),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 		fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
 		fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, math.NewInt(10))).String()),
@@ -633,7 +633,7 @@ func (s *E2ETestSuite) TestExecSendAuthzWithAllowList() {
 		val.Address,
 		notAllowedAddr,
 		tokens,
-		addresscodec.NewHexCodec("cosmos"),
+		addresscodec.NewHexCodec(),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 		fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
 		fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, math.NewInt(10))).String()),

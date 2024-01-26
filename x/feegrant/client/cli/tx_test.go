@@ -128,7 +128,7 @@ func (s *CLITestSuite) createGrant(granter, grantee sdk.Address) {
 		commonFlags...,
 	)
 
-	cmd := cli.NewCmdFeeGrant(codecaddress.NewBech32Codec("cosmos"))
+	cmd := cli.NewCmdFeeGrant(codecaddress.NewHexCodec())
 	out, err := clitestutil.ExecTestCLICmd(s.clientCtx, cmd, args)
 	s.Require().NoError(err)
 
@@ -415,7 +415,7 @@ func (s *CLITestSuite) TestNewCmdFeeGrant() {
 		tc := tc
 
 		s.Run(tc.name, func() {
-			cmd := cli.NewCmdFeeGrant(codecaddress.NewBech32Codec("cosmos"))
+			cmd := cli.NewCmdFeeGrant(codecaddress.NewHexCodec())
 			out, err := clitestutil.ExecTestCLICmd(clientCtx, cmd, tc.args)
 
 			if tc.expectErr {
@@ -458,7 +458,7 @@ func (s *CLITestSuite) TestTxWithFeeGrant() {
 		commonFlags...,
 	)
 
-	cmd := cli.NewCmdFeeGrant(codecaddress.NewBech32Codec("cosmos"))
+	cmd := cli.NewCmdFeeGrant(codecaddress.NewHexCodec())
 
 	var res sdk.TxResponse
 	out, err := clitestutil.ExecTestCLICmd(clientCtx, cmd, args)
@@ -611,7 +611,7 @@ func (s *CLITestSuite) TestFilteredFeeAllowance() {
 		tc := tc
 
 		s.Run(tc.name, func() {
-			cmd := cli.NewCmdFeeGrant(codecaddress.NewBech32Codec("cosmos"))
+			cmd := cli.NewCmdFeeGrant(codecaddress.NewHexCodec())
 			out, err := clitestutil.ExecTestCLICmd(clientCtx, cmd, tc.args)
 			if tc.expectErrMsg != "" {
 				s.Require().Error(err)
@@ -661,7 +661,7 @@ func (s *CLITestSuite) TestFilteredFeeAllowance() {
 					commonFlags...,
 				)
 
-				cmd := cli.NewCmdFeeGrant(codecaddress.NewBech32Codec("cosmos"))
+				cmd := cli.NewCmdFeeGrant(codecaddress.NewHexCodec())
 				out, err := clitestutil.ExecTestCLICmd(clientCtx, cmd, args)
 				s.Require().NoError(clientCtx.Codec.UnmarshalJSON(out.Bytes(), &sdk.TxResponse{}), out.String())
 

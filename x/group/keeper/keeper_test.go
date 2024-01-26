@@ -60,7 +60,7 @@ func (s *TestSuite) SetupTest() {
 	for i := range s.addrs {
 		s.accountKeeper.EXPECT().GetAccount(gomock.Any(), s.addrs[i]).Return(authtypes.NewBaseAccountWithAddress(s.addrs[i])).AnyTimes()
 	}
-	s.accountKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec("cosmos")).AnyTimes()
+	s.accountKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
 
 	s.bankKeeper = grouptestutil.NewMockBankKeeper(ctrl)
 
@@ -111,7 +111,7 @@ func (s *TestSuite) SetupTest() {
 	policyRes, err := s.groupKeeper.CreateGroupPolicy(s.ctx, policyReq)
 	s.Require().NoError(err)
 
-	addrbz, err := address.NewHexCodec("cosmos").StringToBytes(policyRes.Address)
+	addrbz, err := address.NewHexCodec().StringToBytes(policyRes.Address)
 	s.Require().NoError(err)
 	s.policy = policy
 	s.groupPolicyAddr = addrbz

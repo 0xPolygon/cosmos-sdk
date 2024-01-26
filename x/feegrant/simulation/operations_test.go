@@ -106,7 +106,7 @@ func (suite *SimTestSuite) TestWeightedOperations() {
 	weightedOps := simulation.WeightedOperations(
 		suite.interfaceRegistry,
 		appParams, suite.cdc, suite.txConfig, suite.accountKeeper,
-		suite.bankKeeper, suite.feegrantKeeper, codecaddress.NewBech32Codec("cosmos"),
+		suite.bankKeeper, suite.feegrantKeeper, codecaddress.NewHexCodec(),
 	)
 
 	s := rand.NewSource(1)
@@ -198,7 +198,7 @@ func (suite *SimTestSuite) TestSimulateMsgRevokeAllowance() {
 	require.NoError(err)
 
 	// execute operation
-	op := simulation.SimulateMsgRevokeAllowance(codec.NewProtoCodec(suite.interfaceRegistry), suite.txConfig, suite.accountKeeper, suite.bankKeeper, suite.feegrantKeeper, codecaddress.NewBech32Codec("cosmos"))
+	op := simulation.SimulateMsgRevokeAllowance(codec.NewProtoCodec(suite.interfaceRegistry), suite.txConfig, suite.accountKeeper, suite.bankKeeper, suite.feegrantKeeper, codecaddress.NewHexCodec())
 	operationMsg, futureOperations, err := op(r, app.BaseApp, ctx, accounts, "")
 	require.NoError(err)
 

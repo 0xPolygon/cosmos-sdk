@@ -2,7 +2,6 @@ package v2_test
 
 import (
 	"fmt"
-	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 	"sync/atomic"
 	"testing"
 	"time"
@@ -60,7 +59,6 @@ func TestMigrateVestingAccounts(t *testing.T) {
 		accountKeeper keeper.AccountKeeper
 		bankKeeper    bankkeeper.Keeper
 		stakingKeeper *stakingkeeper.Keeper
-		feeCollector  ante.FeeCollector
 	)
 	app, err := simtestutil.Setup(
 		depinject.Configs(
@@ -70,7 +68,6 @@ func TestMigrateVestingAccounts(t *testing.T) {
 		&accountKeeper,
 		&bankKeeper,
 		&stakingKeeper,
-		&feeCollector,
 	)
 	require.NoError(t, err)
 

@@ -360,7 +360,7 @@ func signTx(cmd *cobra.Command, clientCtx client.Context, txF tx.Factory, newTx 
 	}
 
 	if multisig != "" {
-		// Bech32 decode error, maybe it's a name, we try to fetch from keyring
+		// hex decode error, maybe it's a name, we try to fetch from keyring
 		multisigAddr, multisigName, _, err := client.GetFromFields(clientCtx, txF.Keybase(), multisig)
 		if err != nil {
 			return fmt.Errorf("error getting account from keybase: %w", err)

@@ -135,7 +135,7 @@ func NewSimApp(
 				// func() sdk.AccountI { return authtypes.ProtoBaseAccount() },
 				//
 				// For providing a different address codec, add it below.
-				// By default the auth module uses a Bech32 address codec,
+				// By default the auth module uses a hex address codec,
 				// with the prefix defined in the auth module configuration.
 				//
 				// func() address.Codec { return <- custom address codec type -> }
@@ -144,7 +144,7 @@ func NewSimApp(
 				// STAKING
 				//
 				// For provinding a different validator and consensus address codec, add it below.
-				// By default the staking module uses the bech32 prefix provided in the auth config,
+				// By default the staking module uses the hex prefix provided in the auth config,
 				// and appends "valoper" and "valcons" for validator and consensus addresses respectively.
 				// When providing a custom address codec in auth, custom address codecs must be provided here as well.
 				//

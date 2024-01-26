@@ -42,7 +42,7 @@ func TestDeductFeesNoDelegation(t *testing.T) {
 			malleate: func(suite *AnteTestSuite) (TestAccount, sdk.AccAddress) {
 				accs := suite.CreateTestAccounts(1)
 				// 2 calls are needed because we run the ante twice
-				suite.feeCollector.EXPECT().SendCoinsFromAccountToModule(gomock.Any(), accs[0].acc.GetAddress(), authtypes.FeeCollectorName, gomock.Any()).Return(sdkerrors.ErrInsufficientFunds).Times(2)
+				suite.bankKeeper.EXPECT().SendCoinsFromAccountToModule(gomock.Any(), accs[0].acc.GetAddress(), authtypes.FeeCollectorName, gomock.Any()).Return(sdkerrors.ErrInsufficientFunds).Times(2)
 				return accs[0], nil
 			},
 		},
@@ -51,7 +51,7 @@ func TestDeductFeesNoDelegation(t *testing.T) {
 			valid: true,
 			malleate: func(suite *AnteTestSuite) (TestAccount, sdk.AccAddress) {
 				accs := suite.CreateTestAccounts(1)
-				suite.feeCollector.EXPECT().SendCoinsFromAccountToModule(gomock.Any(), accs[0].acc.GetAddress(), authtypes.FeeCollectorName, gomock.Any()).Return(nil).Times(2)
+				suite.bankKeeper.EXPECT().SendCoinsFromAccountToModule(gomock.Any(), accs[0].acc.GetAddress(), authtypes.FeeCollectorName, gomock.Any()).Return(nil).Times(2)
 				return accs[0], nil
 			},
 		},
@@ -73,7 +73,7 @@ func TestDeductFeesNoDelegation(t *testing.T) {
 			valid: true,
 			malleate: func(suite *AnteTestSuite) (TestAccount, sdk.AccAddress) {
 				accs := suite.CreateTestAccounts(1)
-				suite.feeCollector.EXPECT().SendCoinsFromAccountToModule(gomock.Any(), accs[0].acc.GetAddress(), authtypes.FeeCollectorName, gomock.Any()).Return(nil).Times(2)
+				suite.bankKeeper.EXPECT().SendCoinsFromAccountToModule(gomock.Any(), accs[0].acc.GetAddress(), authtypes.FeeCollectorName, gomock.Any()).Return(nil).Times(2)
 				return accs[0], nil
 			},
 		},
@@ -98,7 +98,7 @@ func TestDeductFeesNoDelegation(t *testing.T) {
 			suite := SetupTestSuite(t, false)
 			protoTxCfg := tx.NewTxConfig(codec.NewProtoCodec(suite.encCfg.InterfaceRegistry), tx.DefaultSignModes)
 			// this just tests our handler
-			dfd := ante.NewDeductFeeDecorator(suite.accountKeeper, suite.bankKeeper, suite.feeGrantKeeper, nil, suite.feeCollector)
+			dfd := ante.NewDeductFeeDecorator(suite.accountKeeper, suite.bankKeeper, suite.feeGrantKeeper, nil)
 			feeAnteHandler := sdk.ChainAnteDecorators(dfd)
 
 			// this tests the whole stack

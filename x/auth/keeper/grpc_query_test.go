@@ -404,15 +404,6 @@ func (suite *KeeperTestSuite) TestGRPCQueryModuleAccountByName() {
 	}
 }
 
-func (suite *KeeperTestSuite) TestBech32Prefix() {
-	suite.SetupTest() // reset
-	req := &types.Bech32PrefixRequest{}
-	res, err := suite.queryClient.Bech32Prefix(context.Background(), req)
-	suite.Require().NoError(err)
-	suite.Require().NotNil(res)
-	suite.Require().Equal(sdk.Bech32MainPrefix, res.Bech32Prefix)
-}
-
 func (suite *KeeperTestSuite) TestAddressBytesToString() {
 	testCases := []struct {
 		msg     string

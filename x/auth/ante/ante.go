@@ -19,11 +19,6 @@ type HandlerOptions struct {
 	SignModeHandler        *txsigning.HandlerMap
 	SigGasConsumer         func(meter storetypes.GasMeter, sig signing.SignatureV2, params types.Params) error
 	TxFeeChecker           TxFeeChecker
-	// TODO HV2: is FeeCollector == FeegrantKeeper?
-	//  Can our business logic be implemented by using the FeegrantKeeper and avoid additional changes?
-	//  Also, heimdall uses FeeCollector for its interface method `SendCoinsFromAccountToModule`.
-	//  Since supply module is merged with bank module upstream, is BankKeeper's method enough?
-	FeeCollector FeeCollector
 }
 
 // TODO HV2: We need to double check the NewAnteHandler function and all the Decorators it uses (especially the AnteHandle methods of each Decorator).
@@ -45,10 +40,6 @@ func NewAnteHandler(options HandlerOptions) (sdk.AnteHandler, error) {
 		return nil, errorsmod.Wrap(sdkerrors.ErrLogic, "sign mode handler is required for ante builder")
 	}
 
-	if options.FeeCollector == nil {
-		return nil, errorsmod.Wrap(sdkerrors.ErrLogic, "fee collector has not been set")
-	}
-
 	anteDecorators := []sdk.AnteDecorator{
 		NewSetUpContextDecorator(), // outermost AnteDecorator. SetUpContext must be called first
 		NewExtensionOptionsDecorator(options.ExtensionOptionChecker),
@@ -56,7 +47,7 @@ func NewAnteHandler(options HandlerOptions) (sdk.AnteHandler, error) {
 		// NewTxTimeoutHeightDecorator(), // TODO HV2: this is not present in heimdall. Is it safe to remove?
 		NewValidateMemoDecorator(options.AccountKeeper), // TODO HV2: can we keep this despite we don't support Memo? Or is it better/safer to remove it?
 		// NewConsumeGasForTxSizeDecorator(options.AccountKeeper), // TODO HV2: this was removed in heimdall's `auth/ante.go` (original ancestor's method `newCtx.GasMeter().ConsumeGas`)
-		NewDeductFeeDecorator(options.AccountKeeper, options.BankKeeper, options.FeegrantKeeper, options.TxFeeChecker, options.FeeCollector), // TODO HV2: heavily changed, double check
+		NewDeductFeeDecorator(options.AccountKeeper, options.BankKeeper, options.FeegrantKeeper, options.TxFeeChecker), // TODO HV2: heavily changed, double check
 		NewSetPubKeyDecorator(options.AccountKeeper), // SetPubKeyDecorator must be called before all signature verification decorators
 		// NewValidateSigCountDecorator(options.AccountKeeper), // TODO HV2: this was removed in heimdall's `auth/ante.go` (original ancestor's method `ValidateSigCount`)
 		NewSigGasConsumeDecorator(options.AccountKeeper, options.SigGasConsumer),

@@ -78,7 +78,6 @@ func newSplitAndApply(
 
 // NewWithdrawRewardsCmd returns a CLI command handler for creating a MsgWithdrawDelegatorReward transaction.
 func NewWithdrawRewardsCmd(valCodec, ac address.Codec) *cobra.Command {
-	bech32PrefixValAddr := sdk.GetConfig().GetBech32ValidatorAddrPrefix()
 
 	cmd := &cobra.Command{
 		Use:   "withdraw-rewards [validator-addr]",
@@ -88,10 +87,10 @@ func NewWithdrawRewardsCmd(valCodec, ac address.Codec) *cobra.Command {
 and optionally withdraw validator commission if the delegation address given is a validator operator.
 
 Example:
-$ %s tx distribution withdraw-rewards %s1gghjut3ccd8ay0zduzj64hwre2fxs9ldmqhffj --from mykey
-$ %s tx distribution withdraw-rewards %s1gghjut3ccd8ay0zduzj64hwre2fxs9ldmqhffj --from mykey --commission
+$ %s tx distribution withdraw-rewards 0x... --from mykey
+$ %s tx distribution withdraw-rewards 0x... --from mykey --commission
 `,
-				version.AppName, bech32PrefixValAddr, version.AppName, bech32PrefixValAddr,
+				version.AppName, version.AppName,
 			),
 		),
 		Args: cobra.ExactArgs(1),
@@ -191,7 +190,6 @@ $ %[1]s tx distribution withdraw-all-rewards --from mykey
 
 // NewSetWithdrawAddrCmd returns a CLI command handler for creating a MsgSetWithdrawAddress transaction.
 func NewSetWithdrawAddrCmd(ac address.Codec) *cobra.Command {
-	bech32PrefixAccAddr := sdk.GetConfig().GetBech32AccountAddrPrefix()
 
 	cmd := &cobra.Command{
 		Use:   "set-withdraw-addr [withdraw-addr]",
@@ -200,9 +198,9 @@ func NewSetWithdrawAddrCmd(ac address.Codec) *cobra.Command {
 			fmt.Sprintf(`Set the withdraw address for rewards associated with a delegator address.
 
 Example:
-$ %s tx distribution set-withdraw-addr %s1gghjut3ccd8ay0zduzj64hwre2fxs9ld75ru9p --from mykey
+$ %s tx distribution set-withdraw-addr 0x... --from mykey
 `,
-				version.AppName, bech32PrefixAccAddr,
+				version.AppName,
 			),
 		),
 		Args: cobra.ExactArgs(1),

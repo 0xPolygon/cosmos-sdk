@@ -17,14 +17,7 @@ import (
 )
 
 func bech32Prefixes(config *sdk.Config) []string {
-	return []string{
-		config.GetBech32AccountAddrPrefix(),
-		config.GetBech32AccountPubPrefix(),
-		config.GetBech32ValidatorAddrPrefix(),
-		config.GetBech32ValidatorPubPrefix(),
-		config.GetBech32ConsensusAddrPrefix(),
-		config.GetBech32ConsensusPubPrefix(),
-	}
+	return []string{}
 }
 
 type hexOutput struct {

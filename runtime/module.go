@@ -283,23 +283,11 @@ func ProvideAddressCodec(in AddressCodecInputs) (address.Codec, ValidatorAddress
 		return in.AddressCodecFactory(), in.ValidatorAddressCodecFactory(), in.ConsensusAddressCodecFactory()
 	}
 
-	if in.AuthConfig == nil || in.AuthConfig.Bech32Prefix == "" {
-		panic("auth config bech32 prefix cannot be empty if no custom address codec is provided")
-	}
-
 	if in.StakingConfig == nil {
 		in.StakingConfig = &stakingmodulev1.Module{}
 	}
 
-	if in.StakingConfig.Bech32PrefixValidator == "" {
-		in.StakingConfig.Bech32PrefixValidator = fmt.Sprintf("%svaloper", in.AuthConfig.Bech32Prefix)
-	}
-
-	if in.StakingConfig.Bech32PrefixConsensus == "" {
-		in.StakingConfig.Bech32PrefixConsensus = fmt.Sprintf("%svalcons", in.AuthConfig.Bech32Prefix)
-	}
-
-	return addresscodec.NewHexCodec(in.AuthConfig.Bech32Prefix),
-		addresscodec.NewHexCodec(in.StakingConfig.Bech32PrefixValidator),
-		addresscodec.NewHexCodec(in.StakingConfig.Bech32PrefixConsensus)
+	return addresscodec.NewHexCodec(),
+		addresscodec.NewHexCodec(),
+		addresscodec.NewHexCodec()
 }

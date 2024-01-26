@@ -142,10 +142,10 @@ func (acc BaseAccount) UnpackInterfaces(unpacker codectypes.AnyUnpacker) error {
 	return unpacker.UnpackAny(acc.PubKey, &pubKey)
 }
 
-// NewModuleAddressOrBech32Address gets an input string and returns a AccAddress.
+// NewModuleAddressOrHexAddress gets an input string and returns a AccAddress.
 // If the input is a valid address, it returns the address.
 // If the input is a module name, it returns the module address.
-func NewModuleAddressOrBech32Address(input string) sdk.AccAddress {
+func NewModuleAddressOrHexAddress(input string) sdk.AccAddress {
 	if addr, err := sdk.AccAddressFromHex(input); err == nil {
 		return addr
 	}

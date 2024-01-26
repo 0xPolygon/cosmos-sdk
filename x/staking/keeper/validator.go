@@ -504,8 +504,7 @@ func (k Keeper) DeleteValidatorQueue(ctx context.Context, val types.Validator) e
 	}
 	newAddrs := []string{}
 
-	// since address string may change due to Bech32 prefix change, we parse the addresses into bytes
-	// format for normalization
+	// we parse the addresses into bytes format for normalization
 	deletingAddr, err := k.validatorAddressCodec.StringToBytes(val.OperatorAddress)
 	if err != nil {
 		return err

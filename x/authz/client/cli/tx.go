@@ -114,7 +114,7 @@ Examples:
 					}
 				}
 
-				allowed, err := bech32toAccAddresses(allowList, ac)
+				allowed, err := hexToAccAddresses(allowList, ac)
 				if err != nil {
 					return err
 				}
@@ -167,12 +167,12 @@ Examples:
 					delegateLimit = &spendLimit
 				}
 
-				allowed, err := bech32toValAddresses(allowValidators)
+				allowed, err := hexToValAddresses(allowValidators)
 				if err != nil {
 					return err
 				}
 
-				denied, err := bech32toValAddresses(denyValidators)
+				denied, err := hexToValAddresses(denyValidators)
 				if err != nil {
 					return err
 				}
@@ -301,8 +301,8 @@ Example:
 	return cmd
 }
 
-// bech32toValAddresses returns []ValAddress from a list of Bech32 string addresses.
-func bech32toValAddresses(validators []string) ([]sdk.ValAddress, error) {
+// hexToValAddresses returns []ValAddress from a list of hex string addresses.
+func hexToValAddresses(validators []string) ([]sdk.ValAddress, error) {
 	vals := make([]sdk.ValAddress, len(validators))
 	for i, validator := range validators {
 		addr, err := sdk.ValAddressFromHex(validator)
@@ -314,8 +314,8 @@ func bech32toValAddresses(validators []string) ([]sdk.ValAddress, error) {
 	return vals, nil
 }
 
-// bech32toAccAddresses returns []AccAddress from a list of Bech32 string addresses.
-func bech32toAccAddresses(accAddrs []string, ac address.Codec) ([]sdk.AccAddress, error) {
+// hexToAccAddresses returns []AccAddress from a list of hex string addresses.
+func hexToAccAddresses(accAddrs []string, ac address.Codec) ([]sdk.AccAddress, error) {
 	addrs := make([]sdk.AccAddress, len(accAddrs))
 	for i, addr := range accAddrs {
 		accAddr, err := ac.StringToBytes(addr)

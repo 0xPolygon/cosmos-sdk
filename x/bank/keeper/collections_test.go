@@ -35,7 +35,7 @@ func TestBankStateCompatibility(t *testing.T) {
 	// gomock initializations
 	ctrl := gomock.NewController(t)
 	authKeeper := banktestutil.NewMockAccountKeeper(ctrl)
-	authKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec("cosmos")).AnyTimes()
+	authKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
 
 	k := keeper.NewBaseKeeper(
 		encCfg.Codec,

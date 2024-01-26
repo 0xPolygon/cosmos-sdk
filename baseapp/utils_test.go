@@ -89,9 +89,9 @@ func GenesisStateWithSingleValidator(t *testing.T, codec codec.Codec, builder *r
 func makeMinimalConfig() depinject.Config {
 	var (
 		mempoolOpt            = baseapp.SetMempool(mempool.NewSenderNonceMempool())
-		addressCodec          = func() address.Codec { return addresscodec.NewHexCodec("cosmos") }
-		validatorAddressCodec = func() runtime.ValidatorAddressCodec { return addresscodec.NewHexCodec("cosmosvaloper") }
-		consensusAddressCodec = func() runtime.ConsensusAddressCodec { return addresscodec.NewHexCodec("cosmosvalcons") }
+		addressCodec          = func() address.Codec { return addresscodec.NewHexCodec() }
+		validatorAddressCodec = func() runtime.ValidatorAddressCodec { return addresscodec.NewHexCodec() }
+		consensusAddressCodec = func() runtime.ConsensusAddressCodec { return addresscodec.NewHexCodec() }
 	)
 
 	return depinject.Configs(

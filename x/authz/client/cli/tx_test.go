@@ -70,7 +70,7 @@ func (s *CLITestSuite) SetupSuite() {
 		WithOutput(io.Discard).
 		WithChainID("test-chain")
 
-	s.ac = addresscodec.NewHexCodec("cosmos")
+	s.ac = addresscodec.NewHexCodec()
 
 	ctxGen := func() client.Context {
 		bz, _ := s.encCfg.Codec.Marshal(&sdk.TxResponse{})
@@ -594,7 +594,7 @@ func (s *CLITestSuite) TestCmdRevokeAuthorizations() {
 	for _, tc := range testCases {
 		tc := tc
 		s.Run(tc.name, func() {
-			cmd := cli.NewCmdRevokeAuthorization(addresscodec.NewHexCodec("cosmos"))
+			cmd := cli.NewCmdRevokeAuthorization(addresscodec.NewHexCodec())
 
 			out, err := clitestutil.ExecTestCLICmd(s.clientCtx, cmd, tc.args)
 			if tc.expectErr {

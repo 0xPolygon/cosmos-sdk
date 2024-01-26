@@ -89,8 +89,7 @@ func initDeterministicFixture(t *testing.T) *deterministicFixture {
 		runtime.NewKVStoreService(keys[authtypes.StoreKey]),
 		authtypes.ProtoBaseAccount,
 		maccPerms,
-		addresscodec.NewHexCodec(sdk.Bech32MainPrefix),
-		sdk.Bech32MainPrefix,
+		addresscodec.NewHexCodec(),
 		authority.String(),
 	)
 
@@ -106,7 +105,7 @@ func initDeterministicFixture(t *testing.T) *deterministicFixture {
 		log.NewNopLogger(),
 	)
 
-	stakingKeeper := stakingkeeper.NewKeeper(cdc, runtime.NewKVStoreService(keys[stakingtypes.StoreKey]), accountKeeper, bankKeeper, authority.String(), addresscodec.NewHexCodec(sdk.Bech32PrefixValAddr), addresscodec.NewHexCodec(sdk.Bech32PrefixConsAddr))
+	stakingKeeper := stakingkeeper.NewKeeper(cdc, runtime.NewKVStoreService(keys[stakingtypes.StoreKey]), accountKeeper, bankKeeper, authority.String(), addresscodec.NewHexCodec(), addresscodec.NewHexCodec())
 	// TODO HV2: init processors with proper supply.AccountProcessor (supply module has been merged with bank module upstream)
 	authModule := auth.NewAppModule(cdc, accountKeeper, authsims.RandomGenesisAccounts, nil, []authtypes.AccountProcessor{})
 	bankModule := bank.NewAppModule(cdc, bankKeeper, accountKeeper, nil)

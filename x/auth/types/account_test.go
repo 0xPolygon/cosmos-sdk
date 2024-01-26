@@ -188,10 +188,10 @@ func TestGenesisAccountsContains(t *testing.T) {
 	require.True(t, genAccounts.Contains(acc.GetAddress()))
 }
 
-func TestNewModuleAddressOrBech32Address(t *testing.T) {
+func TestNewModuleAddressOrHexAddress(t *testing.T) {
 	input := "0x9f86d081884c7d659a2feaa0c55ad015a3bf4f1b"
-	require.Equal(t, input, types.NewModuleAddressOrBech32Address(input).String())
-	require.Equal(t, "0x93354845030274cd4bf1686abd60ab28ec52e1a7", types.NewModuleAddressOrBech32Address("distribution").String())
+	require.Equal(t, input, types.NewModuleAddressOrHexAddress(input).String())
+	require.Equal(t, "0x93354845030274cd4bf1686abd60ab28ec52e1a7", types.NewModuleAddressOrHexAddress("distribution").String())
 }
 
 func TestModuleAccountValidateNilBaseAccount(t *testing.T) {

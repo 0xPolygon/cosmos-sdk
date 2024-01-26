@@ -50,7 +50,7 @@ func (s *CLITestSuite) SetupSuite() {
 
 func (s *CLITestSuite) TestSendTxCmd() {
 	accounts := testutil.CreateKeyringAccounts(s.T(), s.kr, 1)
-	cmd := cli.NewSendTxCmd(address.NewHexCodec("cosmos"))
+	cmd := cli.NewSendTxCmd(address.NewHexCodec())
 	cmd.SetOutput(io.Discard)
 
 	extraArgs := []string{
@@ -136,7 +136,7 @@ func (s *CLITestSuite) TestSendTxCmd() {
 func (s *CLITestSuite) TestMultiSendTxCmd() {
 	accounts := testutil.CreateKeyringAccounts(s.T(), s.kr, 3)
 
-	cmd := cli.NewMultiSendTxCmd(address.NewHexCodec("cosmos"))
+	cmd := cli.NewMultiSendTxCmd(address.NewHexCodec())
 	cmd.SetOutput(io.Discard)
 
 	extraArgs := []string{

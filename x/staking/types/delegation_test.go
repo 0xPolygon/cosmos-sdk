@@ -37,7 +37,7 @@ func TestDelegationString(t *testing.T) {
 
 func TestUnbondingDelegationEqual(t *testing.T) {
 	ubd1 := types.NewUnbondingDelegation(sdk.AccAddress(valAddr1), valAddr2, 0,
-		time.Unix(0, 0), math.NewInt(0), 1, addresscodec.NewHexCodec("cosmosvaloper"), addresscodec.NewHexCodec("cosmos"))
+		time.Unix(0, 0), math.NewInt(0), 1, addresscodec.NewHexCodec(), addresscodec.NewHexCodec())
 	ubd2 := ubd1
 
 	ok := ubd1.String() == ubd2.String()
@@ -52,7 +52,7 @@ func TestUnbondingDelegationEqual(t *testing.T) {
 
 func TestUnbondingDelegationString(t *testing.T) {
 	ubd := types.NewUnbondingDelegation(sdk.AccAddress(valAddr1), valAddr2, 0,
-		time.Unix(0, 0), math.NewInt(0), 1, addresscodec.NewHexCodec("cosmosvaloper"), addresscodec.NewHexCodec("cosmos"))
+		time.Unix(0, 0), math.NewInt(0), 1, addresscodec.NewHexCodec(), addresscodec.NewHexCodec())
 
 	require.NotEmpty(t, ubd.String())
 }
@@ -60,10 +60,10 @@ func TestUnbondingDelegationString(t *testing.T) {
 func TestRedelegationEqual(t *testing.T) {
 	r1 := types.NewRedelegation(sdk.AccAddress(valAddr1), valAddr2, valAddr3, 0,
 		time.Unix(0, 0), math.NewInt(0),
-		math.LegacyNewDec(0), 1, addresscodec.NewHexCodec("cosmosvaloper"), addresscodec.NewHexCodec("cosmos"))
+		math.LegacyNewDec(0), 1, addresscodec.NewHexCodec(), addresscodec.NewHexCodec())
 	r2 := types.NewRedelegation(sdk.AccAddress(valAddr1), valAddr2, valAddr3, 0,
 		time.Unix(0, 0), math.NewInt(0),
-		math.LegacyNewDec(0), 1, addresscodec.NewHexCodec("cosmosvaloper"), addresscodec.NewHexCodec("cosmos"))
+		math.LegacyNewDec(0), 1, addresscodec.NewHexCodec(), addresscodec.NewHexCodec())
 	require.True(t, proto.Equal(&r1, &r2))
 
 	r2.Entries[0].SharesDst = math.LegacyNewDec(10)
@@ -74,7 +74,7 @@ func TestRedelegationEqual(t *testing.T) {
 func TestRedelegationString(t *testing.T) {
 	r := types.NewRedelegation(sdk.AccAddress(valAddr1), valAddr2, valAddr3, 0,
 		time.Unix(0, 0), math.NewInt(0),
-		math.LegacyNewDec(10), 1, addresscodec.NewHexCodec("cosmosvaloper"), addresscodec.NewHexCodec("cosmos"))
+		math.LegacyNewDec(10), 1, addresscodec.NewHexCodec(), addresscodec.NewHexCodec())
 
 	require.NotEmpty(t, r.String())
 }

@@ -220,7 +220,7 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 	// default to governance authority if not provided
 	authority := types.NewModuleAddress(GovModuleName)
 	if in.Config.Authority != "" {
-		authority = types.NewModuleAddressOrBech32Address(in.Config.Authority)
+		authority = types.NewModuleAddressOrHexAddress(in.Config.Authority)
 	}
 
 	if in.RandomGenesisAccountsFn == nil {
@@ -231,7 +231,7 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 		in.AccountI = types.ProtoBaseAccount
 	}
 
-	k := keeper.NewAccountKeeper(in.Cdc, in.StoreService, in.AccountI, maccPerms, in.AddressCodec, in.Config.Bech32Prefix, authority.String())
+	k := keeper.NewAccountKeeper(in.Cdc, in.StoreService, in.AccountI, maccPerms, in.AddressCodec, authority.String())
 	m := NewAppModule(in.Cdc, k, in.RandomGenesisAccountsFn, in.LegacySubspace, in.Processors)
 
 	return ModuleOutputs{AccountKeeper: k, Module: m}

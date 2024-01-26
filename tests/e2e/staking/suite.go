@@ -107,7 +107,7 @@ func (s *E2ETestSuite) TestBlockResults() {
 		val.ClientCtx,
 		val.Address,
 		newAddr,
-		sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, math.NewInt(200))), addresscodec.NewHexCodec("cosmos"), fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
+		sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, math.NewInt(200))), addresscodec.NewHexCodec(), fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 		fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
 		fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, math.NewInt(10))).String()),
 	)
@@ -115,7 +115,7 @@ func (s *E2ETestSuite) TestBlockResults() {
 	require.NoError(s.network.WaitForNextBlock())
 
 	// Use CLI to create a delegation from the new account to validator `val`.
-	cmd := cli.NewDelegateCmd(addresscodec.NewHexCodec("cosmosvaloper"), addresscodec.NewHexCodec("cosmos"))
+	cmd := cli.NewDelegateCmd(addresscodec.NewHexCodec(), addresscodec.NewHexCodec())
 	_, err = clitestutil.ExecTestCLICmd(val.ClientCtx, cmd, []string{
 		val.ValAddress.String(),
 		sdk.NewCoin(s.cfg.BondDenom, math.NewInt(150)).String(),

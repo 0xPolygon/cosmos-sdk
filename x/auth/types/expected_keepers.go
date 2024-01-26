@@ -6,10 +6,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-// TODO HV2: check this file (it was deleted in heimdall).
-//  Is this needed? Does it clash with heimdall's SupplyKeeper in `gov/expected_keepers.go`?
-//  Can we use its method SendCoinsFromAccountToModule instead of the one implemented by FeeCollector?
-
 // BankKeeper defines the contract needed for supply related APIs (noalias)
 type BankKeeper interface {
 	IsSendEnabledCoins(ctx context.Context, coins ...sdk.Coin) error

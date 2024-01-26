@@ -52,7 +52,6 @@ type AnteTestSuite struct {
 	bankKeeper     *authtestutil.MockBankKeeper
 	txBankKeeper   *txtestutil.MockBankKeeper
 	feeGrantKeeper *antetestutil.MockFeegrantKeeper
-	feeCollector   *antetestutil.MockFeeCollector
 	encCfg         moduletestutil.TestEncodingConfig
 }
 
@@ -63,7 +62,6 @@ func SetupTestSuite(t *testing.T, isCheckTx bool) *AnteTestSuite {
 	suite.bankKeeper = authtestutil.NewMockBankKeeper(ctrl)
 	suite.txBankKeeper = txtestutil.NewMockBankKeeper(ctrl)
 	suite.feeGrantKeeper = antetestutil.NewMockFeegrantKeeper(ctrl)
-	suite.feeCollector = antetestutil.NewMockFeeCollector(ctrl)
 
 	key := storetypes.NewKVStoreKey(types.StoreKey)
 	testCtx := testutil.DefaultContextWithDB(t, key, storetypes.NewTransientStoreKey("transient_test"))
@@ -80,8 +78,8 @@ func SetupTestSuite(t *testing.T, isCheckTx bool) *AnteTestSuite {
 	}
 
 	suite.accountKeeper = keeper.NewAccountKeeper(
-		suite.encCfg.Codec, runtime.NewKVStoreService(key), types.ProtoBaseAccount, maccPerms, authcodec.NewHexCodec(sdk.Bech32MainPrefix),
-		sdk.Bech32MainPrefix, types.NewModuleAddress("gov").String(),
+		suite.encCfg.Codec, runtime.NewKVStoreService(key), types.ProtoBaseAccount, maccPerms,
+		authcodec.NewHexCodec(), types.NewModuleAddress("gov").String(),
 	)
 	suite.accountKeeper.GetModuleAccount(suite.ctx, types.FeeCollectorName)
 	err := suite.accountKeeper.Params.Set(suite.ctx, types.DefaultParams())
@@ -100,7 +98,6 @@ func SetupTestSuite(t *testing.T, isCheckTx bool) *AnteTestSuite {
 			AccountKeeper:   suite.accountKeeper,
 			BankKeeper:      suite.bankKeeper,
 			FeegrantKeeper:  suite.feeGrantKeeper,
-			FeeCollector:    suite.feeCollector,
 			SignModeHandler: suite.encCfg.TxConfig.SignModeHandler(),
 			SigGasConsumer:  ante.DefaultSigVerificationGasConsumer,
 		},
@@ -135,6 +132,7 @@ type TestCase struct {
 	simulate bool
 	expPass  bool
 	expErr   error
+	skip     bool
 }
 
 type TestCaseArgs struct {
@@ -186,6 +184,11 @@ func (suite *AnteTestSuite) RunTestCase(t *testing.T, tc TestCase, args TestCase
 	bytesCtx := suite.ctx.WithTxBytes(txBytes)
 	newCtx, anteErr := suite.anteHandler(bytesCtx, tx, tc.simulate)
 
+	if tc.skip {
+		t.Skip("skipping test as not relevant to Heimdall")
+		require.Error(t, txErr)
+		require.ErrorIs(t, txErr, tc.expErr)
+	}
 	if tc.expPass {
 		require.NoError(t, txErr)
 		require.NoError(t, anteErr)

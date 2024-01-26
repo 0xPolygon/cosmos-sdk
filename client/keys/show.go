@@ -23,8 +23,6 @@ const (
 	FlagAddress = "address"
 	// FlagPublicKey represents the user's public key on the command line.
 	FlagPublicKey = "pubkey"
-	// FlagBechPrefix defines a desired Bech32 prefix encoding for a key.
-	FlagBechPrefix = "bech"
 	// FlagDevice indicates that the information should be shown in the device
 	FlagDevice = "device"
 
@@ -43,7 +41,6 @@ consisting of all the keys provided by name and multisig threshold.`,
 		RunE: runShowCmd,
 	}
 	f := cmd.Flags()
-	f.String(FlagBechPrefix, sdk.PrefixAccount, "The Bech32 prefix encoding for a key (acc|val|cons)")
 	f.BoolP(FlagAddress, "a", false, "Output the address only (overrides --output)")
 	f.BoolP(FlagPublicKey, "p", false, "Output the public key only (overrides --output)")
 	f.BoolP(FlagDevice, "d", false, "Output the address in a ledger device")
@@ -110,8 +107,7 @@ func runShowCmd(cmd *cobra.Command, args []string) (err error) {
 		return errors.New("cannot use --output with --address or --pubkey")
 	}
 
-	bechPrefix, _ := cmd.Flags().GetString(FlagBechPrefix)
-	bechKeyOut, err := getBechKeyOut(bechPrefix)
+	bechKeyOut, err := getHexKeyOut("")
 	if err != nil {
 		return err
 	}
@@ -144,9 +140,6 @@ func runShowCmd(cmd *cobra.Command, args []string) (err error) {
 		if isShowPubKey {
 			return fmt.Errorf("the device flag (-d) can only be used for addresses not pubkeys")
 		}
-		if bechPrefix != "acc" {
-			return fmt.Errorf("the device flag (-d) can only be used for accounts")
-		}
 
 		// Override and show in the device
 		if k.GetType() != keyring.TypeLedger {
@@ -163,7 +156,7 @@ func runShowCmd(cmd *cobra.Command, args []string) (err error) {
 			return err
 		}
 
-		return ledger.ShowAddress(*ledgerItem.Path, pk, sdk.GetConfig().GetBech32AccountAddrPrefix())
+		return ledger.ShowAddress(*ledgerItem.Path, pk, "")
 	}
 
 	return nil
@@ -199,7 +192,7 @@ func validateMultisigThreshold(k, nKeys int) error {
 	return nil
 }
 
-func getBechKeyOut(bechPrefix string) (bechKeyOutFn, error) {
+func getHexKeyOut(bechPrefix string) (bechKeyOutFn, error) {
 	if bechPrefix == "" {
 		return MkAccKeyOutput, nil
 	}

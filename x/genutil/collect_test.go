@@ -61,7 +61,7 @@ func TestCollectTxsHandlesDirectories(t *testing.T) {
 
 	dnc := &doNothingUnmarshalJSON{cdc}
 	if _, _, err := genutil.CollectTxs(dnc, txDecoder, "foo", testDir, genesis, balItr, types.DefaultMessageValidator,
-		addresscodec.NewHexCodec("cosmosvaloper")); err != nil {
+		addresscodec.NewHexCodec()); err != nil {
 		t.Fatal(err)
 	}
 }

@@ -19,3 +19,10 @@ While all user facing interfaces to Cosmos software should exposed Bech32 interf
 To covert between other binary representation of addresses and keys, it is important to first apply the Amino encoding process before Bech32 encoding.
 
 A complete implementation of the Amino serialization format is unnecessary in most cases. Simply prepending bytes from this [table](https://github.com/cometbft/cometbft/blob/main/spec/blockchain/encoding.md) to the byte string payload before Bech32 encoding will sufficient for compatible representation.
+
+
+# From Bech32 to Hex on Heimdall
+
+Heimdall prefers to use the hex address format wherever users must handle binary data, to remain compatible with etherum based addresses.
+
+In the Heimdall implementation, keys and addresses may refer to a number of different roles in the network like accounts, validators etc., but all of them have been standardized to be hex encoded.

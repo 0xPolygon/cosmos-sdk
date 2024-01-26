@@ -134,7 +134,7 @@ func (s *CLITestSuite) TestTxWithdrawRewardsCmd() {
 			args := append([]string{tc.valAddr.String()}, tc.args...)
 
 			ctx := svrcmd.CreateExecuteContext(context.Background())
-			cmd := cli.NewWithdrawRewardsCmd(address.NewHexCodec("cosmosvaloper"), address.NewHexCodec("cosmos"))
+			cmd := cli.NewWithdrawRewardsCmd(address.NewHexCodec(), address.NewHexCodec())
 			cmd.SetContext(ctx)
 			cmd.SetArgs(args)
 			s.Require().NoError(client.SetCmdClientContextHandler(s.clientCtx, cmd))
@@ -186,7 +186,7 @@ func (s *CLITestSuite) TestTxWithdrawAllRewardsCmd() {
 		tc := tc
 
 		s.Run(tc.name, func() {
-			cmd := cli.NewWithdrawAllRewardsCmd(address.NewHexCodec("cosmosvaloper"), address.NewHexCodec("cosmos"))
+			cmd := cli.NewWithdrawAllRewardsCmd(address.NewHexCodec(), address.NewHexCodec())
 
 			out, err := clitestutil.ExecTestCLICmd(s.clientCtx, cmd, tc.args)
 			if tc.expectErrMsg != "" {
@@ -238,7 +238,7 @@ func (s *CLITestSuite) TestTxSetWithdrawAddrCmd() {
 		tc := tc
 
 		s.Run(tc.name, func() {
-			cmd := cli.NewSetWithdrawAddrCmd(address.NewHexCodec("cosmos"))
+			cmd := cli.NewSetWithdrawAddrCmd(address.NewHexCodec())
 
 			out, err := clitestutil.ExecTestCLICmd(s.clientCtx, cmd, tc.args)
 			if tc.expectErr {
@@ -288,7 +288,7 @@ func (s *CLITestSuite) TestTxFundCommunityPoolCmd() {
 		tc := tc
 
 		s.Run(tc.name, func() {
-			cmd := cli.NewFundCommunityPoolCmd(address.NewHexCodec("cosmos"))
+			cmd := cli.NewFundCommunityPoolCmd(address.NewHexCodec())
 
 			out, err := clitestutil.ExecTestCLICmd(s.clientCtx, cmd, tc.args)
 			if tc.expectErr {

@@ -23,14 +23,3 @@ type AccountKeeper interface {
 type FeegrantKeeper interface {
 	UseGrantedFees(ctx context.Context, granter, grantee sdk.AccAddress, fee sdk.Coins, msgs []sdk.Msg) error
 }
-
-// FeeCollector defines the expected fee collector.
-type FeeCollector interface {
-	GetModuleAddress(string) sdk.AccAddress
-	SendCoinsFromAccountToModule(
-		sdk.Context,
-		sdk.AccAddress,
-		string,
-		sdk.Coins,
-	) error
-}

@@ -69,7 +69,7 @@ func (s *TestSuite) SetupTest() {
 	ctrl := gomock.NewController(s.T())
 	s.accountKeeper = authztestutil.NewMockAccountKeeper(ctrl)
 
-	s.accountKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec("cosmos")).AnyTimes()
+	s.accountKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
 
 	s.bankKeeper = authztestutil.NewMockBankKeeper(ctrl)
 	banktypes.RegisterInterfaces(s.encCfg.InterfaceRegistry)

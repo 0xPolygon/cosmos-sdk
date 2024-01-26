@@ -134,17 +134,17 @@ func (aa *HeimdallHash) Unmarshal(data []byte) error {
 	return nil
 }
 
-// MarshalJSON marshals to JSON using Bech32.
+// MarshalJSON marshals to JSON using hex.
 func (aa HeimdallHash) MarshalJSON() ([]byte, error) {
 	return jsoniter.ConfigFastest.Marshal(aa.String())
 }
 
-// MarshalYAML marshals to YAML using Bech32.
+// MarshalYAML marshals to YAML using hex.
 func (aa HeimdallHash) MarshalYAML() (interface{}, error) {
 	return aa.String(), nil
 }
 
-// UnmarshalJSON unmarshals from JSON assuming Bech32 encoding.
+// UnmarshalJSON unmarshals from JSON assuming hex encoding.
 func (aa *HeimdallHash) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := jsoniter.ConfigFastest.Unmarshal(data, &s); err != nil {
@@ -156,7 +156,7 @@ func (aa *HeimdallHash) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// UnmarshalYAML unmarshals from JSON assuming Bech32 encoding.
+// UnmarshalYAML unmarshals from JSON assuming hex encoding.
 func (aa *HeimdallHash) UnmarshalYAML(data []byte) error {
 	var s string
 	if err := yaml.Unmarshal(data, &s); err != nil {

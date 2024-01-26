@@ -77,15 +77,15 @@ func (suite *KeeperTestSuite) reset() {
 	suite.legacyMsgSrvr = keeper.NewLegacyMsgServerImpl(govAcct.String(), suite.msgSrvr)
 	suite.addrs = simtestutil.AddTestAddrsIncremental(bankKeeper, stakingKeeper, ctx, 3, sdkmath.NewInt(30000000))
 
-	suite.acctKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec("cosmos")).AnyTimes()
+	suite.acctKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
 }
 
 func TestIncrementProposalNumber(t *testing.T) {
 	govKeeper, authKeeper, _, _, _, _, ctx := setupGovKeeper(t)
 
-	authKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec("cosmos")).AnyTimes()
+	authKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
 
-	ac := address.NewHexCodec("cosmos")
+	ac := address.NewHexCodec()
 	addrBz, err := ac.StringToBytes(address1)
 	require.NoError(t, err)
 
@@ -109,10 +109,10 @@ func TestIncrementProposalNumber(t *testing.T) {
 func TestProposalQueues(t *testing.T) {
 	govKeeper, authKeeper, _, _, _, _, ctx := setupGovKeeper(t)
 
-	ac := address.NewHexCodec("cosmos")
+	ac := address.NewHexCodec()
 	addrBz, err := ac.StringToBytes(address1)
 	require.NoError(t, err)
-	authKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec("cosmos")).AnyTimes()
+	authKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
 
 	// create test proposals
 	tp := TestProposal

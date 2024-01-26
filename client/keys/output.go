@@ -38,7 +38,7 @@ func NewKeyOutput(name string, keyType keyring.KeyType, a sdk.Address, pk crypto
 	}, nil
 }
 
-// MkConsKeyOutput create a KeyOutput in with "cons" Bech32 prefixes.
+// MkConsKeyOutput create a KeyOutput for Cons
 func MkConsKeyOutput(k *keyring.Record) (KeyOutput, error) {
 	pk, err := k.GetPubKey()
 	if err != nil {
@@ -48,7 +48,7 @@ func MkConsKeyOutput(k *keyring.Record) (KeyOutput, error) {
 	return NewKeyOutput(k.Name, k.GetType(), addr, pk)
 }
 
-// MkValKeyOutput create a KeyOutput in with "val" Bech32 prefixes.
+// MkValKeyOutput create a KeyOutput or Vals
 func MkValKeyOutput(k *keyring.Record) (KeyOutput, error) {
 	pk, err := k.GetPubKey()
 	if err != nil {
@@ -60,7 +60,7 @@ func MkValKeyOutput(k *keyring.Record) (KeyOutput, error) {
 	return NewKeyOutput(k.Name, k.GetType(), addr, pk)
 }
 
-// MkAccKeyOutput create a KeyOutput in with "acc" Bech32 prefixes. If the
+// MkAccKeyOutput create a KeyOutput for Accs. If the
 // public key is a multisig public key, then the threshold and constituent
 // public keys will be added.
 func MkAccKeyOutput(k *keyring.Record) (KeyOutput, error) {
@@ -72,8 +72,8 @@ func MkAccKeyOutput(k *keyring.Record) (KeyOutput, error) {
 	return NewKeyOutput(k.Name, k.GetType(), addr, pk)
 }
 
-// MkAccKeysOutput returns a slice of KeyOutput objects, each with the "acc"
-// Bech32 prefixes, given a slice of Record objects. It returns an error if any
+// MkAccKeysOutput returns a slice of KeyOutput objects,
+// given a slice of Record objects. It returns an error if any
 // call to MkKeyOutput fails.
 func MkAccKeysOutput(records []*keyring.Record) ([]KeyOutput, error) {
 	kos := make([]KeyOutput, len(records))

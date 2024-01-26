@@ -45,7 +45,7 @@ func initFixture(t *testing.T) *genesisFixture {
 
 	ctrl := gomock.NewController(t)
 	accountKeeper := feegranttestutil.NewMockAccountKeeper(ctrl)
-	accountKeeper.EXPECT().AddressCodec().Return(address.NewBech32Codec("cosmos")).AnyTimes()
+	accountKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
 
 	return &genesisFixture{
 		ctx:            testCtx.Ctx,
@@ -58,7 +58,7 @@ func TestImportExportGenesis(t *testing.T) {
 	f := initFixture(t)
 
 	f.accountKeeper.EXPECT().GetAccount(gomock.Any(), granteeAddr).Return(authtypes.NewBaseAccountWithAddress(granteeAddr)).AnyTimes()
-	f.accountKeeper.EXPECT().AddressCodec().Return(address.NewBech32Codec("cosmos")).AnyTimes()
+	f.accountKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
 
 	coins := sdk.NewCoins(sdk.NewCoin("foo", math.NewInt(1_000)))
 	now := f.ctx.BlockHeader().Time

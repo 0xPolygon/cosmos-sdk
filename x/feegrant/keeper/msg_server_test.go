@@ -17,7 +17,7 @@ func (suite *KeeperTestSuite) TestGrantAllowance() {
 	oneYear := ctx.BlockTime().AddDate(1, 0, 0)
 	yesterday := ctx.BlockTime().AddDate(0, 0, -1)
 
-	addressCodec := codecaddress.NewBech32Codec("cosmos")
+	addressCodec := codecaddress.NewHexCodec()
 
 	testCases := []struct {
 		name      string

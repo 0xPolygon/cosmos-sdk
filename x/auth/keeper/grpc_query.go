@@ -154,16 +154,6 @@ func (s queryServer) ModuleAccountByName(c context.Context, req *types.QueryModu
 	return &types.QueryModuleAccountByNameResponse{Account: any}, nil
 }
 
-// Bech32Prefix returns the keeper internally stored bech32 prefix.
-func (s queryServer) Bech32Prefix(ctx context.Context, req *types.Bech32PrefixRequest) (*types.Bech32PrefixResponse, error) {
-	bech32Prefix, err := s.k.getBech32Prefix()
-	if err != nil {
-		return nil, err
-	}
-
-	return &types.Bech32PrefixResponse{Bech32Prefix: bech32Prefix}, nil
-}
-
 // AddressBytesToString converts an address from bytes to string, using the
 // keeper's hex prefix.
 func (s queryServer) AddressBytesToString(ctx context.Context, req *types.AddressBytesToStringRequest) (*types.AddressBytesToStringResponse, error) {

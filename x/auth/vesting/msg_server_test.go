@@ -58,8 +58,7 @@ func (s *VestingTestSuite) SetupTest() {
 		storeService,
 		authtypes.ProtoBaseAccount,
 		maccPerms,
-		authcodec.NewHexCodec(""),
-		"",
+		authcodec.NewHexCodec(),
 		authtypes.NewModuleAddress("gov").String(),
 	)
 

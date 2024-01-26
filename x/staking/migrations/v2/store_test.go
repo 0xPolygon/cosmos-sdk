@@ -65,7 +65,7 @@ func TestStoreMigration(t *testing.T) {
 		{
 			"ValidatorsByPowerIndexKey",
 			v1.GetValidatorsByPowerIndexKey(val),
-			types.GetValidatorsByPowerIndexKey(val, sdk.DefaultPowerReduction, address.NewHexCodec("cosmosvaloper")),
+			types.GetValidatorsByPowerIndexKey(val, sdk.DefaultPowerReduction, address.NewHexCodec()),
 		},
 		{
 			"DelegationKey",

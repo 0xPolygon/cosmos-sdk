@@ -22,22 +22,10 @@ const (
 	// Constants defined here are the defaults value for address.
 	// You can use the specific values for your project.
 	// Add the follow lines to the `main()` of your server.
-	//
-	//	config := sdk.GetConfig()
-	//	config.SetBech32PrefixForAccount(yourBech32PrefixAccAddr, yourBech32PrefixAccPub)
-	//	config.SetBech32PrefixForValidator(yourBech32PrefixValAddr, yourBech32PrefixValPub)
-	//	config.SetBech32PrefixForConsensusNode(yourBech32PrefixConsAddr, yourBech32PrefixConsPub)
-	//	config.SetPurpose(yourPurpose)
+
+	//  config.SetPurpose(yourPurpose)
 	//	config.SetCoinType(yourCoinType)
 	//	config.Seal()
-
-	// TODO HV2: all prefixes are now empty strings.
-	//  Another solution (closer to what's being done in cosmos-sdk) would be to use "0x" as our prefix.
-	//  This would require changes to the codecs
-	//  Also, our app won't use `Purpose`, `CoinType` and `FullFundraiserPath`. Kept them for compatibility only.
-
-	// Bech32MainPrefix defines the main SDK Bech32 prefix of an account's address
-	Bech32MainPrefix = ""
 
 	// Purpose is the ATOM purpose as defined in SLIP44 (https://github.com/satoshilabs/slips/blob/master/slip-0044.md)
 	Purpose = 44
@@ -48,33 +36,6 @@ const (
 	// FullFundraiserPath is the parts of the BIP44 HD path that are fixed by
 	// what we used during the ATOM fundraiser.
 	FullFundraiserPath = "m/44'/118'/0'/0/0"
-
-	// PrefixAccount is the prefix for account keys
-	PrefixAccount = ""
-	// PrefixValidator is the prefix for validator keys
-	PrefixValidator = ""
-	// PrefixConsensus is the prefix for consensus keys
-	PrefixConsensus = ""
-	// PrefixPublic is the prefix for public keys
-	PrefixPublic = ""
-	// PrefixOperator is the prefix for operator keys
-	PrefixOperator = ""
-
-	// PrefixAddress is the prefix for addresses
-	PrefixAddress = ""
-
-	// Bech32PrefixAccAddr defines the Bech32 prefix of an account's address
-	Bech32PrefixAccAddr = Bech32MainPrefix
-	// Bech32PrefixAccPub defines the Bech32 prefix of an account's public key
-	Bech32PrefixAccPub = Bech32MainPrefix + PrefixPublic
-	// Bech32PrefixValAddr defines the Bech32 prefix of a validator's operator address
-	Bech32PrefixValAddr = Bech32MainPrefix + PrefixValidator + PrefixOperator
-	// Bech32PrefixValPub defines the Bech32 prefix of a validator's operator public key
-	Bech32PrefixValPub = Bech32MainPrefix + PrefixValidator + PrefixOperator + PrefixPublic
-	// Bech32PrefixConsAddr defines the Bech32 prefix of a consensus node address
-	Bech32PrefixConsAddr = Bech32MainPrefix + PrefixValidator + PrefixConsensus
-	// Bech32PrefixConsPub defines the Bech32 prefix of a consensus node public key
-	Bech32PrefixConsPub = Bech32MainPrefix + PrefixValidator + PrefixConsensus + PrefixPublic
 )
 
 // cache variables
@@ -222,7 +183,10 @@ func (aa *AccAddress) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &s); err != nil {
 		return err
 	}
-
+	if s == "" {
+		*aa = AccAddress{}
+		return nil
+	}
 	*aa = common.HexToAddress(s).Bytes()
 	return nil
 }
@@ -241,7 +205,7 @@ func (aa *AccAddress) UnmarshalYAML(data []byte) error {
 
 // Bytes returns the raw address bytes.
 func (aa AccAddress) Bytes() []byte {
-	return aa[:]
+	return aa
 }
 
 // String implements the Stringer interface.
@@ -261,7 +225,7 @@ func (aa AccAddress) Format(s fmt.State, verb rune) {
 	case 'p':
 		s.Write([]byte(fmt.Sprintf("%p", aa)))
 	default:
-		s.Write([]byte(fmt.Sprintf("%X", aa.Bytes())))
+		s.Write([]byte(fmt.Sprintf("%X", []byte(aa))))
 	}
 }
 
@@ -322,7 +286,10 @@ func (va *ValAddress) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &s); err != nil {
 		return err
 	}
-
+	if s == "" {
+		*va = ValAddress{}
+		return nil
+	}
 	*va = common.HexToAddress(s).Bytes()
 
 	return nil
@@ -342,7 +309,7 @@ func (va *ValAddress) UnmarshalYAML(data []byte) error {
 
 // Bytes returns the raw address bytes.
 func (va ValAddress) Bytes() []byte {
-	return va[:]
+	return va
 }
 
 // String implements the Stringer interface.
@@ -350,8 +317,6 @@ func (va ValAddress) String() string {
 	if va.Empty() {
 		return ""
 	}
-	// TODO HV2: the "0x" addition is preserved from heimdall and necessary to have eth addresses string representations
-	//  Does it need to be done for all `Tx` related types? Like `TxHash`
 	return "0x" + common.Bytes2Hex(va.Bytes())
 }
 
@@ -363,7 +328,7 @@ func (va ValAddress) Format(s fmt.State, verb rune) {
 	case 'p':
 		s.Write([]byte(fmt.Sprintf("%p", va)))
 	default:
-		s.Write([]byte(fmt.Sprintf("%X", va.Bytes())))
+		s.Write([]byte(fmt.Sprintf("%X", []byte(va))))
 	}
 }
 
@@ -429,7 +394,10 @@ func (ca *ConsAddress) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &s); err != nil {
 		return err
 	}
-
+	if s == "" {
+		*ca = ConsAddress{}
+		return nil
+	}
 	*ca = common.HexToAddress(s).Bytes()
 
 	return nil
@@ -449,7 +417,7 @@ func (ca *ConsAddress) UnmarshalYAML(data []byte) error {
 
 // Bytes returns the raw address bytes.
 func (ca ConsAddress) Bytes() []byte {
-	return ca[:]
+	return ca
 }
 
 // String implements the Stringer interface.
@@ -490,7 +458,7 @@ func (ca ConsAddress) Format(s fmt.State, verb rune) {
 	case 'p':
 		s.Write([]byte(fmt.Sprintf("%p", ca)))
 	default:
-		s.Write([]byte(fmt.Sprintf("%X", ca.Bytes())))
+		s.Write([]byte(fmt.Sprintf("%X", []byte(ca))))
 	}
 }
 
@@ -498,17 +466,9 @@ func (ca ConsAddress) Format(s fmt.State, verb rune) {
 // auxiliary
 // ----------------------------------------------------------------------------
 
-var errHexEmptyAddress = errors.New("decoding hex address failed: must provide a non empty address")
-
 // GetFromHex decodes a bytestring from a hex encoded string.
 func GetFromHex(hexStr, _ string) ([]byte, error) {
-	if len(hexStr) == 0 {
-		return nil, errHexEmptyAddress
-	}
-
-	bz := common.FromHex(hexStr)
-
-	return bz, nil
+	return addressBytesFromHexString(hexStr)
 }
 
 func addressBytesFromHexString(address string) ([]byte, error) {

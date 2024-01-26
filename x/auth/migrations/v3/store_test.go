@@ -20,7 +20,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	moduletestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
 	"github.com/cosmos/cosmos-sdk/x/auth"
-	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 	authexported "github.com/cosmos/cosmos-sdk/x/auth/exported"
 	"github.com/cosmos/cosmos-sdk/x/auth/keeper"
 	v1 "github.com/cosmos/cosmos-sdk/x/auth/migrations/v1"
@@ -53,7 +52,6 @@ func TestMigrateMapAccAddressToAccNumberKey(t *testing.T) {
 	storeService := runtime.NewKVStoreService(storeKey)
 
 	var accountKeeper keeper.AccountKeeper
-	var feeCollector ante.FeeCollector
 
 	app, err := simtestutil.Setup(
 		depinject.Configs(
@@ -61,7 +59,6 @@ func TestMigrateMapAccAddressToAccNumberKey(t *testing.T) {
 			depinject.Supply(log.NewNopLogger()),
 		),
 		&accountKeeper,
-		&feeCollector,
 	)
 	require.NoError(t, err)
 

@@ -27,7 +27,7 @@ func ValidatePromptURL(input string) error {
 	return nil
 }
 
-// ValidatePromptAddress validates that the input is a valid Bech32 address.
+// ValidatePromptAddress validates that the input is a valid hex address.
 func ValidatePromptAddress(input string) error {
 	_, err := sdk.AccAddressFromHex(input)
 	if err == nil {

@@ -32,7 +32,7 @@ func MsgRedelegateExec(clientCtx client.Context, from, src, dst, amount fmt.Stri
 	args = append(args, extraArgs...)
 
 	args = append(args, commonArgs...)
-	return clitestutil.ExecTestCLICmd(clientCtx, stakingcli.NewRedelegateCmd(addresscodec.NewHexCodec("cosmosvaloper"), addresscodec.NewHexCodec("cosmos")), args)
+	return clitestutil.ExecTestCLICmd(clientCtx, stakingcli.NewRedelegateCmd(addresscodec.NewHexCodec(), addresscodec.NewHexCodec()), args)
 }
 
 // MsgUnbondExec creates a unbond message.
@@ -48,5 +48,5 @@ func MsgUnbondExec(clientCtx client.Context, from, valAddress,
 
 	args = append(args, commonArgs...)
 	args = append(args, extraArgs...)
-	return clitestutil.ExecTestCLICmd(clientCtx, stakingcli.NewUnbondCmd(addresscodec.NewHexCodec("cosmosvaloper"), addresscodec.NewHexCodec("cosmos")), args)
+	return clitestutil.ExecTestCLICmd(clientCtx, stakingcli.NewUnbondCmd(addresscodec.NewHexCodec(), addresscodec.NewHexCodec()), args)
 }

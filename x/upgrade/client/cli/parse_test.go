@@ -12,7 +12,7 @@ import (
 )
 
 func TestParsePlan(t *testing.T) {
-	fs := NewCmdSubmitUpgradeProposal(addresscodec.NewBech32Codec("cosmos")).Flags()
+	fs := NewCmdSubmitUpgradeProposal(addresscodec.NewHexCodec()).Flags()
 
 	proposal := types.MsgSoftwareUpgrade{
 		Plan: types.Plan{

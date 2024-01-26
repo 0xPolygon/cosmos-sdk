@@ -454,8 +454,8 @@ func (k Keeper) completeUnbondingValidator(ctx context.Context, validator types.
 	return validator, nil
 }
 
-// map of operator bech32-addresses to serialized power
-// We use bech32 strings here, because we can't have slices as keys: map[[]byte][]byte
+// map of operator hex-addresses to serialized power
+// We use hex strings here, because we can't have slices as keys: map[[]byte][]byte
 type validatorsByAddr map[string][]byte
 
 // get the last validator set

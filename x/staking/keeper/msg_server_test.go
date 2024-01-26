@@ -23,7 +23,7 @@ var (
 )
 
 func (s *KeeperTestSuite) execExpectCalls() {
-	s.accountKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec("cosmos")).AnyTimes()
+	s.accountKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
 	s.bankKeeper.EXPECT().DelegateCoinsFromAccountToModule(gomock.Any(), Addr, stakingtypes.NotBondedPoolName, gomock.Any()).AnyTimes()
 }
 

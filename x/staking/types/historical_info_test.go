@@ -31,7 +31,7 @@ func createValidators(t *testing.T) []types.Validator {
 func TestHistoricalInfo(t *testing.T) {
 	validators := createValidators(t)
 
-	vals := types.Validators{Validators: validators, ValidatorCodec: addresscodec.NewHexCodec("cosmosvaloper")}
+	vals := types.Validators{Validators: validators, ValidatorCodec: addresscodec.NewHexCodec()}
 	hi := types.NewHistoricalInfo(header, vals, sdk.DefaultPowerReduction)
 	require.True(t, sort.IsSorted(vals), "Validators are not sorted")
 
@@ -55,7 +55,7 @@ func TestValidateBasic(t *testing.T) {
 	hi := types.HistoricalInfo{
 		Header: header,
 	}
-	ac := addresscodec.NewHexCodec("cosmosvaloper")
+	ac := addresscodec.NewHexCodec()
 	err := types.ValidateBasic(hi, ac)
 	require.Error(t, err, "ValidateBasic passed on nil ValSet")
 

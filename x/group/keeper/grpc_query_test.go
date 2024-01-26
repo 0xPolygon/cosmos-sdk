@@ -60,7 +60,7 @@ func initKeeper(t *testing.T) *fixture {
 	for _, addr := range addrs {
 		accountKeeper.EXPECT().GetAccount(gomock.Any(), addr).Return(authtypes.NewBaseAccountWithAddress(addr)).AnyTimes()
 	}
-	accountKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec("cosmos")).AnyTimes()
+	accountKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
 
 	// group policy expected calls
 	accountKeeper.EXPECT().GetAccount(gomock.Any(), gomock.Any()).Return(nil).AnyTimes()

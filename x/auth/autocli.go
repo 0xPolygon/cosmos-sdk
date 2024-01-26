@@ -65,11 +65,6 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "address_string"}},
 				},
 				{
-					RpcMethod: "Bech32Prefix",
-					Use:       "bech32-prefix",
-					Short:     "Query the chain bech32 prefix (if applicable)",
-				},
-				{
 					RpcMethod: "Params",
 					Use:       "params",
 					Short:     "Query the current auth parameters",

@@ -56,7 +56,7 @@ func TestCancelUnbondingDelegation(t *testing.T) {
 		ctx.BlockTime().Add(time.Minute*10),
 		unbondingAmount.Amount,
 		0,
-		address.NewHexCodec("cosmosvaloper"), address.NewHexCodec("cosmos"),
+		address.NewHexCodec(), address.NewHexCodec(),
 	)
 
 	// set and retrieve a record

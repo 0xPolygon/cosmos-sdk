@@ -18,14 +18,12 @@ type CodecOptions struct {
 
 // NewInterfaceRegistry returns a new InterfaceRegistry with the given options.
 func (o CodecOptions) NewInterfaceRegistry() codectypes.InterfaceRegistry {
-	accAddressPrefix := o.AccAddressPrefix
-	valAddressPrefix := o.ValAddressPrefix
 
 	ir, err := codectypes.NewInterfaceRegistryWithOptions(codectypes.InterfaceRegistryOptions{
 		ProtoFiles: proto.HybridResolver,
 		SigningOptions: signing.Options{
-			AddressCodec:          address.NewHexCodec(accAddressPrefix),
-			ValidatorAddressCodec: address.NewHexCodec(valAddressPrefix),
+			AddressCodec:          address.NewHexCodec(),
+			ValidatorAddressCodec: address.NewHexCodec(),
 		},
 	})
 	if err != nil {

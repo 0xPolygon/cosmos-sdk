@@ -11,13 +11,12 @@ import (
 )
 
 type hexCodec struct {
-	hexPrefix string
 }
 
 var _ address.Codec = &hexCodec{}
 
-func NewHexCodec(prefix string) address.Codec {
-	return hexCodec{prefix}
+func NewHexCodec() address.Codec {
+	return hexCodec{}
 }
 
 // StringToBytes encodes text to bytes

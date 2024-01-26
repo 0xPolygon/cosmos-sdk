@@ -50,7 +50,6 @@ type ModuleInputs struct {
 	MetadataBankKeeper     BankKeeper                         `optional:"true"`
 	AccountKeeper          ante.AccountKeeper                 `optional:"true"`
 	FeeGrantKeeper         ante.FeegrantKeeper                `optional:"true"`
-	FeeCollector           ante.FeeCollector                  `optional:"true"`
 	CustomSignModeHandlers func() []txsigning.SignModeHandler `optional:"true"`
 }
 

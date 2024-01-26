@@ -139,7 +139,7 @@ func (s *E2ETestSuite) TestNewWithdrawRewardsCmd() {
 			_, _ = s.network.WaitForHeightWithTimeout(10, time.Minute)
 
 			ctx := svrcmd.CreateExecuteContext(context.Background())
-			cmd := cli.NewWithdrawRewardsCmd(address.NewHexCodec("cosmosvaloper"), address.NewHexCodec("cosmos"))
+			cmd := cli.NewWithdrawRewardsCmd(address.NewHexCodec(), address.NewHexCodec())
 			cmd.SetContext(ctx)
 			cmd.SetArgs(args)
 			s.Require().NoError(client.SetCmdClientContextHandler(clientCtx, cmd))
@@ -227,7 +227,7 @@ func (s *E2ETestSuite) TestNewWithdrawAllRewardsCmd() {
 		tc := tc
 
 		s.Run(tc.name, func() {
-			cmd := cli.NewWithdrawAllRewardsCmd(address.NewHexCodec("cosmosvaloper"), address.NewHexCodec("cosmos"))
+			cmd := cli.NewWithdrawAllRewardsCmd(address.NewHexCodec(), address.NewHexCodec())
 			clientCtx := val.ClientCtx
 
 			_, _ = s.network.WaitForHeightWithTimeout(10, time.Minute)
@@ -312,7 +312,7 @@ func (s *E2ETestSuite) TestNewSetWithdrawAddrCmd() {
 		tc := tc
 
 		s.Run(tc.name, func() {
-			cmd := cli.NewSetWithdrawAddrCmd(address.NewHexCodec("cosmos"))
+			cmd := cli.NewSetWithdrawAddrCmd(address.NewHexCodec())
 			clientCtx := val.ClientCtx
 
 			out, err := clitestutil.ExecTestCLICmd(clientCtx, cmd, tc.args)
@@ -367,7 +367,7 @@ func (s *E2ETestSuite) TestNewFundCommunityPoolCmd() {
 		tc := tc
 
 		s.Run(tc.name, func() {
-			cmd := cli.NewFundCommunityPoolCmd(address.NewHexCodec("cosmos"))
+			cmd := cli.NewFundCommunityPoolCmd(address.NewHexCodec())
 			clientCtx := val.ClientCtx
 
 			out, err := clitestutil.ExecTestCLICmd(clientCtx, cmd, tc.args)

@@ -68,7 +68,7 @@ func (s *IntegrationTestSuite) SetupTest() {
 
 	s.addrs = simtestutil.AddTestAddrsIncremental(s.bankKeeper, s.stakingKeeper, ctx, 4, math.NewInt(30000000))
 
-	s.addressCodec = codecaddress.NewHexCodec("cosmos")
+	s.addressCodec = codecaddress.NewHexCodec()
 }
 
 func (s *IntegrationTestSuite) TestEndBlockerPruning() {

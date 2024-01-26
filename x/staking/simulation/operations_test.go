@@ -206,7 +206,7 @@ func (s *SimTestSuite) TestSimulateMsgCancelUnbondingDelegation() {
 	s.setupValidatorRewards(ctx, val0bz)
 
 	// unbonding delegation
-	udb := types.NewUnbondingDelegation(delegator.Address, val0bz, s.app.LastBlockHeight()+1, blockTime.Add(2*time.Minute), delTokens, 0, address.NewHexCodec("cosmosvaloper"), address.NewHexCodec("cosmos"))
+	udb := types.NewUnbondingDelegation(delegator.Address, val0bz, s.app.LastBlockHeight()+1, blockTime.Add(2*time.Minute), delTokens, 0, address.NewHexCodec(), address.NewHexCodec())
 	require.NoError(s.stakingKeeper.SetUnbondingDelegation(ctx, udb))
 	s.setupValidatorRewards(ctx, val0bz)
 
