@@ -652,7 +652,7 @@ func TestAnteHandlerFees(t *testing.T) {
 
 // Test logic around memo gas consumption.
 func TestAnteHandlerMemoGas(t *testing.T) {
-	t.Skip("skipping test as not relevant to Heimdall")
+	t.Skip("skipping test as not relevant to Heimdall (no memo)")
 	testCases := []TestCase{
 		{
 			"tx does not have enough gas",
@@ -733,7 +733,7 @@ func TestAnteHandlerMemoGas(t *testing.T) {
 }
 
 func TestAnteHandlerMultiSigner(t *testing.T) {
-	t.Skip("skipping test as not relevant to Heimdall")
+	t.Skip("skipping test as not relevant to Heimdall (no multisign)")
 	feeAmount := testdata.NewTestFeeAmount()
 	gasLimit := testdata.NewTestGasLimit()
 
@@ -1385,7 +1385,7 @@ func TestCustomSignatureVerificationGasConsumer(t *testing.T) {
 }
 
 func TestAnteHandlerReCheck(t *testing.T) {
-	t.Skip() // TODO HV2: This test is currently broken. To be fixed?
+	t.Skip("skipping test as not relevant to Heimdall (no checkTx)")
 	suite := SetupTestSuite(t, false)
 	// Set recheck=true
 	suite.ctx = suite.ctx.WithIsReCheckTx(true)

@@ -18,7 +18,7 @@ import (
 )
 
 func TestDeductFeeDecorator_ZeroGas(t *testing.T) {
-	s := SetupTestSuite(t, true)
+	s := SetupTestSuite(t, false)
 	s.txBuilder = s.clientCtx.TxConfig.NewTxBuilder()
 
 	mfd := ante.NewDeductFeeDecorator(s.accountKeeper, s.bankKeeper, s.feeGrantKeeper, nil)
@@ -50,7 +50,7 @@ func TestDeductFeeDecorator_ZeroGas(t *testing.T) {
 }
 
 func TestEnsureMempoolFees(t *testing.T) {
-	t.Skip()                     // TODO HV2: skipped as we use a different fee model. To be fixed?
+	t.Skip("skipping test as not relevant to Heimdall (no checkTx")
 	s := SetupTestSuite(t, true) // setup
 	s.txBuilder = s.clientCtx.TxConfig.NewTxBuilder()
 

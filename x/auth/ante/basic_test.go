@@ -18,7 +18,7 @@ import (
 )
 
 func TestValidateBasic(t *testing.T) {
-	suite := SetupTestSuite(t, true)
+	suite := SetupTestSuite(t, false)
 	suite.txBuilder = suite.clientCtx.TxConfig.NewTxBuilder()
 
 	// keys and addresses
@@ -59,7 +59,7 @@ func TestValidateBasic(t *testing.T) {
 }
 
 func TestValidateMemo(t *testing.T) {
-	suite := SetupTestSuite(t, true)
+	suite := SetupTestSuite(t, false)
 	suite.txBuilder = suite.clientCtx.TxConfig.NewTxBuilder()
 
 	// keys and addresses
@@ -95,7 +95,7 @@ func TestValidateMemo(t *testing.T) {
 }
 
 func TestConsumeGasForTxSize(t *testing.T) {
-	suite := SetupTestSuite(t, true)
+	suite := SetupTestSuite(t, false)
 
 	// keys and addresses
 	priv1, _, addr1 := testdata.KeyTestPubAddr()
@@ -179,7 +179,7 @@ func TestConsumeGasForTxSize(t *testing.T) {
 }
 
 func TestTxHeightTimeoutDecorator(t *testing.T) {
-	suite := SetupTestSuite(t, true)
+	suite := SetupTestSuite(t, false)
 
 	antehandler := sdk.ChainAnteDecorators(ante.NewTxTimeoutHeightDecorator())
 

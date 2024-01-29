@@ -13,7 +13,7 @@ import (
 )
 
 func TestRejectExtensionOptionsDecorator(t *testing.T) {
-	suite := SetupTestSuite(t, true)
+	suite := SetupTestSuite(t, false)
 
 	testCases := []struct {
 		msg   string

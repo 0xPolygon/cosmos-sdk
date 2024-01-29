@@ -17,7 +17,7 @@ import (
 )
 
 func TestSetupDecorator_BlockMaxGas(t *testing.T) {
-	suite := SetupTestSuite(t, true)
+	suite := SetupTestSuite(t, false)
 	suite.txBuilder = suite.clientCtx.TxConfig.NewTxBuilder()
 
 	// keys and addresses
@@ -51,7 +51,7 @@ func TestSetupDecorator_BlockMaxGas(t *testing.T) {
 }
 
 func TestSetup(t *testing.T) {
-	suite := SetupTestSuite(t, true)
+	suite := SetupTestSuite(t, false)
 	suite.txBuilder = suite.clientCtx.TxConfig.NewTxBuilder()
 
 	// keys and addresses
@@ -86,7 +86,7 @@ func TestSetup(t *testing.T) {
 }
 
 func TestRecoverPanic(t *testing.T) {
-	suite := SetupTestSuite(t, true)
+	suite := SetupTestSuite(t, false)
 	suite.txBuilder = suite.clientCtx.TxConfig.NewTxBuilder()
 
 	// keys and addresses

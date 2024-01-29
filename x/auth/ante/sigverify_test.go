@@ -29,7 +29,7 @@ import (
 )
 
 func TestSetPubKey(t *testing.T) {
-	suite := SetupTestSuite(t, true)
+	suite := SetupTestSuite(t, false)
 	suite.txBuilder = suite.clientCtx.TxConfig.NewTxBuilder()
 
 	// keys and addresses
@@ -71,7 +71,7 @@ func TestSetPubKey(t *testing.T) {
 }
 
 func TestConsumeSignatureVerificationGas(t *testing.T) {
-	suite := SetupTestSuite(t, true)
+	suite := SetupTestSuite(t, false)
 	params := types.DefaultParams()
 	msg := []byte{1, 2, 3, 4}
 
@@ -125,7 +125,7 @@ func TestConsumeSignatureVerificationGas(t *testing.T) {
 }
 
 func TestSigVerification(t *testing.T) {
-	suite := SetupTestSuite(t, true)
+	suite := SetupTestSuite(t, false)
 	suite.txBankKeeper.EXPECT().DenomMetadata(gomock.Any(), gomock.Any()).Return(&banktypes.QueryDenomMetadataResponse{}, nil).AnyTimes()
 
 	enabledSignModes := []signing.SignMode{signing.SignMode_SIGN_MODE_DIRECT, signing.SignMode_SIGN_MODE_TEXTUAL, signing.SignMode_SIGN_MODE_LEGACY_AMINO_JSON}
@@ -262,7 +262,7 @@ func TestSigIntegration(t *testing.T) {
 }
 
 func runSigDecorators(t *testing.T, params types.Params, _ bool, privs ...cryptotypes.PrivKey) (storetypes.Gas, error) {
-	suite := SetupTestSuite(t, true)
+	suite := SetupTestSuite(t, false)
 	suite.txBuilder = suite.clientCtx.TxConfig.NewTxBuilder()
 
 	// Make block-height non-zero to include accNum in SignBytes
@@ -311,7 +311,7 @@ func runSigDecorators(t *testing.T, params types.Params, _ bool, privs ...crypto
 }
 
 func TestIncrementSequenceDecorator(t *testing.T) {
-	suite := SetupTestSuite(t, true)
+	suite := SetupTestSuite(t, false)
 	suite.txBuilder = suite.clientCtx.TxConfig.NewTxBuilder()
 
 	priv, _, addr := testdata.KeyTestPubAddr()
