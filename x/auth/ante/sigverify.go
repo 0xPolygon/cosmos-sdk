@@ -6,7 +6,6 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
-	"github.com/cosmos/cosmos-sdk/types/address"
 	"math/big"
 
 	"google.golang.org/protobuf/types/known/anypb"
@@ -56,14 +55,6 @@ func init() {
 // consume gas when verifying signatures and also to accept or reject different types of pubkeys
 // This is where apps can define their own PubKey
 type SignatureVerificationGasConsumer = func(meter storetypes.GasMeter, sig signing.SignatureV2, params types.Params) error
-
-// TODO HV2: MainTxMsg has no usage so far. Double check it by looking at heimdall's code.
-
-// MainTxMsg tx hash
-type MainTxMsg interface {
-	GetTxHash() address.HeimdallHash
-	GetLogIndex() uint64
-}
 
 // SetPubKeyDecorator sets PubKeys in context for any signer which does not already have pubkey set
 // PubKeys must be set in context for all signers before any other sigverify decorators run

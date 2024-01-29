@@ -1,11 +1,8 @@
 package v2
 
 import (
+	"encoding/binary"
 	"fmt"
-
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
-
-	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 
 	storetypes "cosmossdk.io/store/types"
 
@@ -35,21 +32,13 @@ func Migrate(
 ) error {
 	store := ctx.KVStore(storeKey)
 	curAccVal := groupPolicySeq.CurVal(store)
-	groupPolicyAccountPubKey := make(map[string]cryptotypes.PubKey, 0)
 	groupPolicyAccountDerivationKey := make(map[string][]byte, 0)
 	policyKey := []byte{GroupPolicyTablePrefix}
 	for i := uint64(0); i <= curAccVal; i++ {
-		// TODO HV2: this code should work, but I believe it breaks the intended functionality of the group module.
-		//  This implementation is here only for compatibility and allow the tests to pass.
-		//  Otherwise, NewBaseAccountWithPubKey(pubKey) would fail with any derivationKey.
-		//  This is because it calls NewBaseAccountWithAddress, which validates the address to be ethereum hex compatible
-		//  We are not going to use group module (as we don't use multisig or accounts policies).
-		//  However, is there a better alternative which keeps the group module operational?
-		pubKey := secp256k1.GenPrivKey().PubKey()
-		derivationKey := pubKey.Address()
+		derivationKey := make([]byte, 8)
+		binary.BigEndian.PutUint64(derivationKey, i)
 		groupPolicyAcc := sdk.AccAddress(address.Module(group.ModuleName, policyKey, derivationKey))
 		groupPolicyAccountDerivationKey[groupPolicyAcc.String()] = derivationKey
-		groupPolicyAccountPubKey[groupPolicyAcc.String()] = pubKey
 	}
 
 	// get all group policies
@@ -76,11 +65,11 @@ func Migrate(
 			panic(fmt.Errorf("group policy account %s derivation key not found", policy.Address))
 		}
 
-		_, err = authtypes.NewModuleCredential(group.ModuleName, []byte{GroupPolicyTablePrefix}, derivationKey)
+		ac, err := authtypes.NewModuleCredential(group.ModuleName, []byte{GroupPolicyTablePrefix}, derivationKey)
 		if err != nil {
 			return err
 		}
-		baseAccount, err := authtypes.NewBaseAccountWithPubKey(groupPolicyAccountPubKey[policy.Address])
+		baseAccount, err := authtypes.NewBaseAccountWithPubKey(ac)
 		if err != nil {
 			return fmt.Errorf("failed to create new group policy account: %w", err)
 		}

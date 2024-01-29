@@ -16,7 +16,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	"github.com/cosmos/cosmos-sdk/types"
-	//nolint:staticcheck
 )
 
 type addressTestSuite struct {
@@ -250,6 +249,65 @@ func RandString(n int) string {
 	return string(b)
 }
 
+// TODO HV2: removed as irrelevant to Heimdall
+/*
+func (s *addressTestSuite) TestConfiguredPrefix() {
+	pubBz := make([]byte, ed25519.PubKeySize)
+	pub := &ed25519.PubKey{Key: pubBz}
+	for length := 1; length < 10; length++ {
+		for times := 1; times < 20; times++ {
+			rand.Read(pub.Key[:])
+			// Test if randomly generated prefix of a given length works
+			prefix := RandString(length)
+
+			// Assuming that GetConfig is not sealed.
+			config := types.GetConfig()
+			config.SetBech32PrefixForAccount(
+				prefix+types.PrefixAccount,
+				prefix+types.PrefixPublic)
+
+			acc := types.AccAddress(pub.Address())
+			s.Require().True(strings.HasPrefix(
+				acc.String(),
+				prefix+types.PrefixAccount), acc.String())
+
+			bech32Pub := legacybech32.MustMarshalPubKey(legacybech32.AccPK, pub) //nolint:staticcheck // SA1019: legacybech32 is deprecated: use the bech32 package instead.
+			s.Require().True(strings.HasPrefix(
+				bech32Pub,
+				prefix+types.PrefixPublic))
+
+			config.SetBech32PrefixForValidator(
+				prefix+types.PrefixValidator+types.PrefixAddress,
+				prefix+types.PrefixValidator+types.PrefixPublic)
+
+			val := types.ValAddress(pub.Address())
+			s.Require().True(strings.HasPrefix(
+				val.String(),
+				prefix+types.PrefixValidator+types.PrefixAddress))
+
+			bech32ValPub := legacybech32.MustMarshalPubKey(legacybech32.ValPK, pub) //nolint:staticcheck // SA1019: legacybech32 is deprecated: use the bech32 package instead.
+			s.Require().True(strings.HasPrefix(
+				bech32ValPub,
+				prefix+types.PrefixValidator+types.PrefixPublic))
+
+			config.SetBech32PrefixForConsensusNode(
+				prefix+types.PrefixConsensus+types.PrefixAddress,
+				prefix+types.PrefixConsensus+types.PrefixPublic)
+
+			cons := types.ConsAddress(pub.Address())
+			s.Require().True(strings.HasPrefix(
+				cons.String(),
+				prefix+types.PrefixConsensus+types.PrefixAddress))
+
+			bech32ConsPub := legacybech32.MustMarshalPubKey(legacybech32.ConsPK, pub) //nolint:staticcheck // SA1019: legacybech32 is deprecated: use the bech32 package instead.
+			s.Require().True(strings.HasPrefix(
+				bech32ConsPub,
+				prefix+types.PrefixConsensus+types.PrefixPublic))
+		}
+	}
+}
+*/
+
 func (s *addressTestSuite) TestAddressInterface() {
 	pubBz := make([]byte, ed25519.PubKeySize)
 	pub := &ed25519.PubKey{Key: pubBz}
@@ -362,7 +420,7 @@ func (s *addressTestSuite) TestBech32ifyAddressBytes() {
 	for _, tt := range tests {
 		tt := tt
 		s.T().Run(tt.name, func(t *testing.T) {
-			got, err := types.HexifyAddressBytes(tt.args.prefix, tt.args.bs)
+			got, err := types.HexifyAddressBytes(tt.args.bs)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Bech32ifyBytes() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -396,10 +454,10 @@ func (s *addressTestSuite) TestMustBech32ifyAddressBytes() {
 		tt := tt
 		s.T().Run(tt.name, func(t *testing.T) {
 			if tt.wantPanic {
-				require.Panics(t, func() { types.MustHexifyAddressBytes(tt.args.prefix, tt.args.bs) })
+				require.Panics(t, func() { types.MustHexifyAddressBytes(tt.args.bs) })
 				return
 			}
-			require.Equal(t, tt.want, types.MustHexifyAddressBytes(tt.args.prefix, tt.args.bs))
+			require.Equal(t, tt.want, types.MustHexifyAddressBytes(tt.args.bs))
 		})
 	}
 }
@@ -458,10 +516,10 @@ func (s *addressTestSuite) TestGetConsAddress() {
 }
 
 func (s *addressTestSuite) TestGetFromBech32() {
-	_, err := types.GetFromHex("", "prefix")
+	_, err := types.GetFromHex("")
 	s.Require().Error(err)
 	s.Require().Equal("decoding Bech32 address failed: must provide a non empty address", err.Error())
-	_, err = types.GetFromHex("cosmos1qqqsyqcyq5rqwzqfys8f67", "x")
+	_, err = types.GetFromHex("cosmos1qqqsyqcyq5rqwzqfys8f67")
 	s.Require().Error(err)
 	s.Require().Equal("invalid Bech32 prefix; expected x, got cosmos", err.Error())
 }

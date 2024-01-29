@@ -275,20 +275,31 @@ func (ak AccountKeeper) GetBlockProposer(ctx sdk.Context) (sdk.AccAddress, bool)
 	kvStore := ak.storeService.OpenKVStore(ctx)
 	isProposerPresent, _ := kvStore.Has(types.ProposerKey())
 	if !isProposerPresent {
-		return nil, false
+		return sdk.AccAddress{}, false
 	}
-	blockProposerBytes, _ := kvStore.Get(types.ProposerKey())
+	blockProposerBytes, err := kvStore.Get(types.ProposerKey())
+	if err != nil {
+		return sdk.AccAddress{}, false
+	}
 	return blockProposerBytes, true
 }
 
 // SetBlockProposer sets block proposer
-func (ak AccountKeeper) SetBlockProposer(ctx sdk.Context, addr sdk.AccAddress) {
+func (ak AccountKeeper) SetBlockProposer(ctx sdk.Context, addr sdk.AccAddress) error {
 	kvStore := ak.storeService.OpenKVStore(ctx)
-	kvStore.Set(types.ProposerKey(), addr.Bytes())
+	err := kvStore.Set(types.ProposerKey(), addr.Bytes())
+	if err != nil {
+		return errorsmod.Wrapf(sdkerrors.ErrSetBlockProposer, "account %s could not be set as block proposer", addr.String())
+	}
+	return nil
 }
 
 // RemoveBlockProposer removes block proposer from store
-func (ak AccountKeeper) RemoveBlockProposer(ctx sdk.Context) {
+func (ak AccountKeeper) RemoveBlockProposer(ctx sdk.Context) error {
 	kvStore := ak.storeService.OpenKVStore(ctx)
-	kvStore.Delete(types.ProposerKey())
+	err := kvStore.Delete(types.ProposerKey())
+	if err != nil {
+		return errorsmod.Wrapf(sdkerrors.ErrRemoveBlockProposer, "block proposer could not be removed")
+	}
+	return nil
 }

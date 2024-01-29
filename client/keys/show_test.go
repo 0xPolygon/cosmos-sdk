@@ -37,7 +37,7 @@ func Test_multiSigKey_Properties(t *testing.T) {
 
 	addr, err := k.GetAddress()
 	require.NoError(t, err)
-	require.Equal(t, "cosmos16wfryel63g7axeamw68630wglalcnk3l0zuadc", sdk.MustHexifyAddressBytes("cosmos", addr))
+	require.Equal(t, "cosmos16wfryel63g7axeamw68630wglalcnk3l0zuadc", sdk.MustHexifyAddressBytes(addr))
 }
 
 func Test_showKeysCmd(t *testing.T) {
@@ -186,3 +186,36 @@ func Test_validateMultisigThreshold(t *testing.T) {
 		})
 	}
 }
+
+// TODO HV2: removed as irrelevant to Heimdall
+/*
+func Test_getBechKeyOut(t *testing.T) {
+	type args struct {
+		bechPrefix string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    bechKeyOutFn
+		wantErr bool
+	}{
+		{"empty", args{""}, nil, true},
+		{"wrong", args{"???"}, nil, true},
+		{"acc", args{sdk.PrefixAccount}, MkAccKeyOutput, false},
+		{"val", args{sdk.PrefixValidator}, MkValKeyOutput, false},
+		{"cons", args{sdk.PrefixConsensus}, MkConsKeyOutput, false},
+	}
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := getBechKeyOut(tt.args.bechPrefix)
+			if tt.wantErr {
+				require.Error(t, err)
+			} else {
+				require.NoError(t, err)
+				require.NotNil(t, got)
+			}
+		})
+	}
+}
+*/

@@ -13,12 +13,12 @@ const (
 	DefaultTxSizeCostPerByte      uint64 = 10
 	DefaultSigVerifyCostED25519   uint64 = 590
 	DefaultSigVerifyCostSecp256k1 uint64 = 1000
-	DefaultMaxTxGas uint64 = 1000000
-	DefaultTxFees   string = "1000000000000000"
+	DefaultMaxTxGas               uint64 = 1000000
+	DefaultTxFees                 string = "1000000000000000"
 )
 
 // NewParams creates a new Params object
-func NewParams(maxMemoCharacters, txSigLimit, txSizeCostPerByte, sigVerifyCostED25519, sigVerifyCostSecp256k1,maxTxGas uint64, txFees string) Params {
+func NewParams(maxMemoCharacters, txSigLimit, txSizeCostPerByte, sigVerifyCostED25519, sigVerifyCostSecp256k1, maxTxGas uint64, txFees string) Params {
 	return Params{
 		MaxMemoCharacters:      maxMemoCharacters,
 		TxSigLimit:             txSigLimit,
@@ -123,7 +123,6 @@ func validateTxSizeCostPerByte(i interface{}) error {
 func validateMaxTxGas(i interface{}) error {
 	v, ok := i.(uint64)
 	if !ok {
-
 		return fmt.Errorf("invalid parameter type: %T", i)
 	}
 

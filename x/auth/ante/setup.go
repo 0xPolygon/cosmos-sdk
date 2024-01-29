@@ -37,6 +37,12 @@ func (sud SetUpContextDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate
 		return newCtx, errorsmod.Wrap(sdkerrors.ErrTxDecode, "Tx must be GasTx")
 	}
 
+	// TODO HV2: implement this check for milestones execution?
+	// Check whether the chain has reached the hard fork length to execute milestone msgs
+	// if ctx.BlockHeight() < helper.GetAalborgHardForkHeight() && (stdTx.Msg.Type() == checkpointTypes.EventTypeMilestone || stdTx.Msg.Type() == checkpointTypes.EventTypeMilestoneTimeout) {
+	//	 newCtx = SetGasMeter(simulate, ctx, 0)
+	//	 return newCtx, sdk.ErrTxDecode("error decoding transaction").Result(), true
+	// }
 	newCtx = SetGasMeter(simulate, ctx, gasTx.GetGas())
 
 	if cp := ctx.ConsensusParams(); cp.Block != nil {

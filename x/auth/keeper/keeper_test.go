@@ -225,3 +225,34 @@ func (suite *KeeperTestSuite) TestInitGenesis() {
 	// we expect nextNum to be 2 because we initialize fee_collector as account number 1
 	suite.Require().Equal(2, int(nextNum))
 }
+
+func (suite *KeeperTestSuite) TestProposer() {
+	suite.SetupTest()
+
+	proposer, ok := suite.accountKeeper.GetBlockProposer(suite.ctx)
+	suite.Require().False(ok)
+	suite.Require().Equal(sdk.AccAddress{}.Bytes(), proposer.Bytes())
+
+	testAddress, err := sdk.GetFromHex("0x9f86D081884C7d659A2fEaA0C55AD015A3bf4F1B")
+	suite.Require().NoError(err)
+
+	// set addr as proposer
+	address, err := sdk.HexifyAddressBytes(testAddress)
+	suite.Require().NoError(err)
+	proposer, err = sdk.AccAddressFromHex(address)
+	suite.Require().NoError(err)
+	err = suite.accountKeeper.SetBlockProposer(suite.ctx, proposer)
+	suite.Require().NoError(err)
+
+	proposer, ok = suite.accountKeeper.GetBlockProposer(suite.ctx)
+	suite.Require().True(ok)
+	suite.Require().Equal(testAddress, proposer.Bytes())
+
+	// remove block proposer
+	err = suite.accountKeeper.RemoveBlockProposer(suite.ctx)
+	suite.Require().NoError(err)
+
+	proposer, ok = suite.accountKeeper.GetBlockProposer(suite.ctx)
+	suite.Require().False(ok)
+	suite.Require().Equal(sdk.AccAddress{}.Bytes(), proposer.Bytes())
+}

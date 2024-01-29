@@ -23,7 +23,7 @@ func checkTxFeeWithValidatorMinGasPrices(ctx sdk.Context, tx sdk.Tx, params type
 	gas := params.GetMaxTxGas()
 	feeCoins := sdk.Coins{sdk.Coin{Denom: types.FeeToken, Amount: amount}}
 
-	// TODO HV2: removed as not present in heimdall. Is this safe? Would it be better/safer to implement it?
+	// TODO HV2: removed as not present in heimdall
 	// Ensure that the provided fees meet a minimum threshold for the validator,
 	// if this is a CheckTx. This is only for local mempool purposes, and thus
 	// is only ran on check tx.

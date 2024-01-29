@@ -1,7 +1,8 @@
 package v2
 
 import (
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"encoding/binary"
+	
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 )
@@ -28,20 +29,16 @@ func MigrateGenState(oldState *authtypes.GenesisState) *authtypes.GenesisState {
 			continue
 		}
 
-		// TODO HV2: this code should work, but I believe it breaks the intended functionality of the group module.
-		//  This implementation is here only for compatibility and allow the tests to pass.
-		//  Otherwise, NewBaseAccountWithPubKey(pubKey) would fail with any derivationKey.
-		//  This is because it calls NewBaseAccountWithAddress, which validates the address to be ethereum hex compatible
-		//  We are not going to use group module (as we don't use multisig or accounts policies).
-		//  However, is there a better alternative which keeps the group module operational?
-		pubKey := secp256k1.GenPrivKey().PubKey()
-		derivationKey := pubKey.Address()
+		// Replace group policy accounts from module accounts to base accounts.
+		// These accounts were wrongly created and the address was equal to the module name.
+		derivationKey := make([]byte, 8)
+		binary.BigEndian.PutUint64(derivationKey, groupPolicyAccountCounter)
 
-		_, err = authtypes.NewModuleCredential(ModuleName, []byte{GroupPolicyTablePrefix}, derivationKey)
+		cred, err := authtypes.NewModuleCredential(ModuleName, []byte{GroupPolicyTablePrefix}, derivationKey)
 		if err != nil {
 			panic(err)
 		}
-		baseAccount, err := authtypes.NewBaseAccountWithPubKey(pubKey)
+		baseAccount, err := authtypes.NewBaseAccountWithPubKey(cred)
 		if err != nil {
 			panic(err)
 		}

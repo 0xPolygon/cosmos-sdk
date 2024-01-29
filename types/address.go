@@ -431,7 +431,7 @@ func (ca ConsAddress) String() string {
 // HexifyAddressBytes returns a hex representation of address bytes.
 // Returns an empty string if the byte slice is 0-length. Returns an error if the hex conversion
 // fails or the prefix is empty.
-func HexifyAddressBytes(_ string, bs []byte) (string, error) {
+func HexifyAddressBytes(bs []byte) (string, error) {
 	if len(bs) == 0 {
 		return "", nil
 	}
@@ -441,8 +441,8 @@ func HexifyAddressBytes(_ string, bs []byte) (string, error) {
 // MustHexifyAddressBytes returns a hex representation of address bytes.
 // Returns an empty sting if the byte slice is 0-length. It panics if the hex conversion
 // fails or the prefix is empty.
-func MustHexifyAddressBytes(prefix string, bs []byte) string {
-	s, err := HexifyAddressBytes(prefix, bs)
+func MustHexifyAddressBytes(bs []byte) string {
+	s, err := HexifyAddressBytes(bs)
 	if err != nil {
 		panic(err)
 	}
@@ -467,7 +467,7 @@ func (ca ConsAddress) Format(s fmt.State, verb rune) {
 // ----------------------------------------------------------------------------
 
 // GetFromHex decodes a bytestring from a hex encoded string.
-func GetFromHex(hexStr, _ string) ([]byte, error) {
+func GetFromHex(hexStr string) ([]byte, error) {
 	return addressBytesFromHexString(hexStr)
 }
 

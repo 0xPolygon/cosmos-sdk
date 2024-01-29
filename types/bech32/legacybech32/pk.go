@@ -47,9 +47,7 @@ func getPrefix(pkt Bech32PubKeyType) string {
 // Deprecated: UnmarshalPubKey returns a PublicKey from a bech32-encoded PublicKey with
 // a given key type.
 func UnmarshalPubKey(pkt Bech32PubKeyType, pubkeyStr string) (cryptotypes.PubKey, error) {
-	bech32Prefix := getPrefix(pkt)
-
-	bz, err := sdk.GetFromHex(pubkeyStr, bech32Prefix)
+	bz, err := sdk.GetFromHex(pubkeyStr)
 	if err != nil {
 		return nil, err
 	}

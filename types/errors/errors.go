@@ -145,4 +145,10 @@ var (
 
 	// ErrPanic should only be set when we recovering from a panic
 	ErrPanic = errorsmod.ErrPanic
+
+	// ErrSetBlockProposer defines an error when setting the block proposer fails.
+	ErrSetBlockProposer = errorsmod.Register(RootCodespace, 43, "error setting block proposer")
+
+	// ErrRemoveBlockProposer defines an error when removing the block proposer fails.
+	ErrRemoveBlockProposer = errorsmod.Register(RootCodespace, 44, "error removing block proposer")
 )

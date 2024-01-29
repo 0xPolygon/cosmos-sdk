@@ -54,7 +54,10 @@ func NewBaseAccountWithAddress(addr sdk.AccAddress) *BaseAccount {
 
 // GetAddress - Implements sdk.AccountI.
 func (acc BaseAccount) GetAddress() sdk.AccAddress {
-	addr, _ := sdk.AccAddressFromHex(acc.Address)
+	addr, err := sdk.AccAddressFromHex(acc.Address)
+	if err != nil {
+		return sdk.AccAddress{}
+	}
 	return addr
 }
 

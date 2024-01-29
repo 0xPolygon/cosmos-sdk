@@ -3,13 +3,12 @@ package keeper
 import (
 	"bytes"
 	"context"
+	"encoding/binary"
 	"encoding/json"
 	"fmt"
 	"strings"
 
 	errorsmod "cosmossdk.io/errors"
-
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -374,14 +373,9 @@ func (k Keeper) CreateGroupPolicy(goCtx context.Context, msg *group.MsgCreateGro
 	// loop here in the rare case where a ADR-028-derived address creates a
 	// collision with an existing address.
 	for {
-		// TODO HV2: this code should work, but I believe it breaks the intended functionality of the group module.
-		//  This implementation is here only for compatibility and allow the tests to pass.
-		//  Otherwise, NewBaseAccountWithPubKey(pubKey) would fail with any derivationKey.
-		//  This is because it calls NewBaseAccountWithAddress, which validates the address to be ethereum hex compatible
-		//  We are not going to use group module (as we don't use multisig or accounts policies).
-		//  However, is there a better alternative which keeps the group module operational?
-		pubKey := secp256k1.GenPrivKey().PubKey()
-		derivationKey := pubKey.Address()
+		nextAccVal := k.groupPolicySeq.NextVal(ctx.KVStore(k.key))
+		derivationKey := make([]byte, 8)
+		binary.BigEndian.PutUint64(derivationKey, nextAccVal)
 
 		ac, err := authtypes.NewModuleCredential(group.ModuleName, []byte{GroupPolicyTablePrefix}, derivationKey)
 		if err != nil {
@@ -395,7 +389,7 @@ func (k Keeper) CreateGroupPolicy(goCtx context.Context, msg *group.MsgCreateGro
 		}
 
 		// group policy accounts are unclaimable base accounts
-		account, err := authtypes.NewBaseAccountWithPubKey(pubKey)
+		account, err := authtypes.NewBaseAccountWithPubKey(ac)
 		if err != nil {
 			return nil, errorsmod.Wrap(err, "could not create group policy account")
 		}
