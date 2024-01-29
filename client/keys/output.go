@@ -48,7 +48,7 @@ func MkConsKeyOutput(k *keyring.Record) (KeyOutput, error) {
 	return NewKeyOutput(k.Name, k.GetType(), addr, pk)
 }
 
-// MkValKeyOutput create a KeyOutput or Vals
+// MkValKeyOutput create a KeyOutput for Vals
 func MkValKeyOutput(k *keyring.Record) (KeyOutput, error) {
 	pk, err := k.GetPubKey()
 	if err != nil {
