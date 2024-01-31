@@ -1,6 +1,7 @@
 package ante_test
 
 import (
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -14,7 +15,6 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
 	"github.com/cosmos/cosmos-sdk/x/auth/ante"
-	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 )
 
 func TestDeductFeeDecorator_ZeroGas(t *testing.T) {
@@ -50,7 +50,6 @@ func TestDeductFeeDecorator_ZeroGas(t *testing.T) {
 }
 
 func TestEnsureMempoolFees(t *testing.T) {
-	t.Skip("skipping test as not relevant to Heimdall (no checkTx")
 	s := SetupTestSuite(t, true) // setup
 	s.txBuilder = s.clientCtx.TxConfig.NewTxBuilder()
 
@@ -68,15 +67,16 @@ func TestEnsureMempoolFees(t *testing.T) {
 	s.txBuilder.SetFeeAmount(feeAmount)
 	s.txBuilder.SetGasLimit(gasLimit)
 
-	s.bankKeeper.EXPECT().SendCoinsFromAccountToModule(gomock.Any(), accs[0].acc.GetAddress(), authtypes.FeeCollectorName, feeAmount).Return(nil).Times(3)
+	// called once more than vanilla cosmos-sdk as decorator will not throw an error for heimdall (CheckTx is disabled)
+	s.bankKeeper.EXPECT().SendCoinsFromAccountToModule(gomock.Any(), accs[0].acc.GetAddress(), authtypes.FeeCollectorName, feeAmount).Return(nil).Times(4)
 
 	privs, accNums, accSeqs := []cryptotypes.PrivKey{accs[0].priv}, []uint64{0}, []uint64{0}
 	tx, err := s.CreateTestTx(s.ctx, privs, accNums, accSeqs, s.ctx.ChainID(), signing.SignMode_SIGN_MODE_DIRECT)
 	require.NoError(t, err)
 
 	// Set high gas price so standard test fee fails
-	atomPrice := sdk.NewDecCoinFromDec("matic", math.LegacyNewDec(20))
-	highGasPrice := []sdk.DecCoin{atomPrice}
+	maticPrice := sdk.NewDecCoinFromDec("matic", math.LegacyNewDec(20))
+	highGasPrice := []sdk.DecCoin{maticPrice}
 	s.ctx = s.ctx.WithMinGasPrices(highGasPrice)
 
 	// Set IsCheckTx to true
@@ -84,7 +84,7 @@ func TestEnsureMempoolFees(t *testing.T) {
 
 	// antehandler errors with insufficient fees
 	_, err = antehandler(s.ctx, tx, false)
-	require.NotNil(t, err, "Decorator should have errored on too low fee for local gasPrice")
+	require.Nil(t, err, "Decorator will not throw an error for heimdall as CheckTx is disabled")
 
 	// antehandler should not error since we do not check minGasPrice in simulation mode
 	cacheCtx, _ := s.ctx.CacheContext()
@@ -101,15 +101,15 @@ func TestEnsureMempoolFees(t *testing.T) {
 	// Set IsCheckTx back to true for testing sufficient mempool fee
 	s.ctx = s.ctx.WithIsCheckTx(true)
 
-	atomPrice = sdk.NewDecCoinFromDec("atom", math.LegacyNewDec(0).Quo(math.LegacyNewDec(100000)))
-	lowGasPrice := []sdk.DecCoin{atomPrice}
+	maticPrice = sdk.NewDecCoinFromDec("matic", math.LegacyNewDec(0).Quo(math.LegacyNewDec(1000000000000000)))
+	lowGasPrice := []sdk.DecCoin{maticPrice}
 	s.ctx = s.ctx.WithMinGasPrices(lowGasPrice)
 
 	newCtx, err := antehandler(s.ctx, tx, false)
 	require.Nil(t, err, "Decorator should not have errored on fee higher than local gasPrice")
 	// Priority is the smallest gas price amount in any denom. Since we have only 1 gas price
-	// of 10atom, the priority here is 10.
-	require.Equal(t, int64(10), newCtx.Priority())
+	// of 1000000000matic, the priority here is 1000000000.
+	require.Equal(t, int64(1000000000), newCtx.Priority())
 }
 
 func TestDeductFees(t *testing.T) {

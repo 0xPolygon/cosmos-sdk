@@ -55,7 +55,6 @@ func (dfd DeductFeeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bo
 	)
 
 	params := dfd.accountKeeper.GetParams(ctx)
-	gas := params.GetMaxTxGas()
 
 	fee := feeTx.GetFee()
 	if !simulate {
@@ -68,7 +67,7 @@ func (dfd DeductFeeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bo
 		return ctx, err
 	}
 
-	newCtx := SetGasMeter(simulate, ctx, gas).WithPriority(priority)
+	newCtx := ctx.WithPriority(priority)
 
 	return next(newCtx, tx, simulate)
 }
