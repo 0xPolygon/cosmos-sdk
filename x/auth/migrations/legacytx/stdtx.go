@@ -9,8 +9,6 @@ import (
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
-
-	"github.com/ethereum/go-ethereum/rlp"
 )
 
 // Interface implementation checks
@@ -98,18 +96,6 @@ func NewStdTx(msgs []sdk.Msg, fee StdFee, sigs []StdSignature, memo string) StdT
 		Signatures: sigs,
 		Memo:       memo,
 	}
-}
-
-// TODO HV2: do we need to replace the deprecated StdSignature in StdTxRaw?
-//  Also StdTxRaw has its only usage in `pulp.go`, which is also not used anywhere. Can we remove it?
-
-// StdTxRaw is a standard way to wrap a RLP Msg with Fee and Signatures.
-// It is used by heimdall to verify special txs on L1 (e.g. checkpoints).
-// These special transactions uses pulp (RLP based) encoding instead of default amino encoding.
-type StdTxRaw struct {
-	Msg       rlp.RawValue
-	Signature StdSignature
-	Memo      string
 }
 
 // GetMsgs returns the all the transaction's messages.
