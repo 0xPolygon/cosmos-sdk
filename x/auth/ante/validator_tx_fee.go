@@ -19,11 +19,11 @@ func checkTxFeeWithValidatorMinGasPrices(ctx sdk.Context, tx sdk.Tx, params type
 		return nil, 0, errorsmod.Wrap(sdkerrors.ErrInvalidTxFees, "must provide correct txFees")
 	}
 
-	// TODO HV2: gas is retrieved from Params as currently done in heimdall
+	// HV2: gas is retrieved from Params as currently done in heimdall
 	gas := params.GetMaxTxGas()
 	feeCoins := sdk.Coins{sdk.Coin{Denom: types.FeeToken, Amount: amount}}
 
-	// TODO HV2: removed because it had also been removed in heimdall
+	// HV2: removed because it had also been removed in heimdall
 	// Ensure that the provided fees meet a minimum threshold for the validator,
 	// if this is a CheckTx. This is only for local mempool purposes, and thus
 	// is only ran on check tx.

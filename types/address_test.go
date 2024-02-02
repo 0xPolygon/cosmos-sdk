@@ -249,7 +249,7 @@ func RandString(n int) string {
 	return string(b)
 }
 
-// TODO HV2: removed as irrelevant to Heimdall
+// HV2: removed as irrelevant to Heimdall
 /*
 func (s *addressTestSuite) TestConfiguredPrefix() {
 	pubBz := make([]byte, ed25519.PubKeySize)

@@ -147,7 +147,7 @@ func TestConsumeGasForTxSize(t *testing.T) {
 			suite.ctx, err = antehandler(suite.ctx, tx, false)
 			require.Nil(t, err, "ConsumeTxSizeGasDecorator returned error: %v", err)
 
-			// TODO HV2: removed as `ConsumeGas` is not used in heimdall
+			// HV2: removed as `ConsumeGas` is not used in heimdall
 			// require that decorator consumes expected amount of gas
 			// consumedGas := suite.ctx.GasMeter().GasConsumed() - beforeGas
 			// require.Equal(t, expectedGas, consumedGas, "Decorator did not consume the correct amount of gas")

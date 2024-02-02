@@ -37,8 +37,7 @@ var (
 	// DefaultFeeInMatic represents default fee in matic
 	DefaultFeeInMatic = big.NewInt(10).Exp(big.NewInt(10), big.NewInt(15), nil)
 
-	// TODO HV2: no usage of DefaultFeeWantedPerTx so far.
-	//  This is used in heimdall topup module's `side_handler.go`
+	// TODO HV2: no usage of DefaultFeeWantedPerTx so far. This is used in heimdall topup module's `side_handler.go`
 
 	// DefaultFeeWantedPerTx fee wanted per tx
 	DefaultFeeWantedPerTx = sdk.Coins{sdk.Coin{Denom: types.FeeToken, Amount: math.NewIntFromBigInt(DefaultFeeInMatic)}}
@@ -191,7 +190,7 @@ func (sgcd SigGasConsumeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simula
 		return ctx, err
 	}
 
-	// TODO HV2: following checks have been enforced due to heimdall business logic (we don't support multisig yet)
+	// HV2: following checks have been enforced due to heimdall business logic (we don't support multisig yet)
 	if len(signers) == 0 {
 		return ctx, sdkerrors.ErrNoSignatures
 	}

@@ -85,7 +85,7 @@ func (dfd DeductFeeDecorator) checkDeductFee(ctx sdk.Context, sdkTx sdk.Tx, fee 
 	feePayer := feeTx.FeePayer()
 	deductFeesFrom := feePayer
 
-	// TODO HV2: feeGranter set to nil as not used in heimdall
+	// HV2: feeGranter set to nil as not used in heimdall
 	feeGranter := []byte(nil) // feeGranter := feeTx.FeeGranter()
 
 	// if feegranter set deduct fee from feegranter account.

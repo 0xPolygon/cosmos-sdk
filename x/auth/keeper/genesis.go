@@ -29,7 +29,7 @@ func (ak AccountKeeper) InitGenesis(ctx sdk.Context, data types.GenesisState, pr
 			lastAccNum = &n
 		}
 
-		// TODO HV2: this is imported (and modified) from heimdall
+		// HV2: this is imported (and modified) from heimdall
 		acc := sdk.AccountI(gacc) //nolint
 		baseAcc := types.NewBaseAccount(acc.GetAddress(), acc.GetPubKey(), accNum, acc.GetSequence())
 

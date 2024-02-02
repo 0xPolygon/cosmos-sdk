@@ -16,6 +16,7 @@ PROJECT_NAME = $(shell git remote get-url origin | xargs basename -s .git)
 
 # process build tags
 build_tags = netgo
+build_tags += app_v1
 ifeq ($(LEDGER_ENABLED),true)
 	ifeq ($(OS),Windows_NT)
 	GCCEXE = $(shell where gcc.exe 2> NUL)

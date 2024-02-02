@@ -707,7 +707,7 @@ func TestAnteHandlerMemoGas(t *testing.T) {
 			func(suite *AnteTestSuite) TestCaseArgs {
 				accs := suite.CreateTestAccounts(1)
 				suite.txBuilder.SetMemo(strings.Repeat("0123456789", 10))
-				// TODO HV2 in heimdall the fee is taken from params.GetTxFees() (hence not zero here), so we expect a call to SendCoinsFromAccountToModule
+				// HV2 in heimdall, the fee is taken from params.GetTxFees() (hence not zero here), so we expect a call to SendCoinsFromAccountToModule
 				suite.bankKeeper.EXPECT().SendCoinsFromAccountToModule(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(nil).Times(1)
 				return TestCaseArgs{
 					feeAmount: sdk.NewCoins(sdk.NewInt64Coin("matic", 0)),
@@ -1386,7 +1386,6 @@ func TestCustomSignatureVerificationGasConsumer(t *testing.T) {
 }
 
 func TestAnteHandlerReCheck(t *testing.T) {
-	t.Skip("skipping test as not relevant to Heimdall (no checkTx)")
 	suite := SetupTestSuite(t, false)
 	// Set recheck=true
 	suite.ctx = suite.ctx.WithIsReCheckTx(true)
@@ -1416,7 +1415,8 @@ func TestAnteHandlerReCheck(t *testing.T) {
 	txBuilder, err := suite.clientCtx.TxConfig.WrapTxBuilder(tx)
 	require.NoError(t, err)
 
-	suite.bankKeeper.EXPECT().SendCoinsFromAccountToModule(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(nil).Times(2)
+	// HV2: SendCoinsFromAccountToModule is invoked more times as recheck is disabled hence all the decorators run as expected
+	suite.bankKeeper.EXPECT().SendCoinsFromAccountToModule(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(nil).Times(4)
 	_, err = suite.anteHandler(suite.ctx, txBuilder.GetTx(), false)
 	require.Nil(t, err, "AnteHandler errored on recheck unexpectedly: %v", err)
 
