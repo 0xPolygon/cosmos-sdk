@@ -187,28 +187,23 @@ func Test_validateMultisigThreshold(t *testing.T) {
 	}
 }
 
-// TODO HV2: removed as irrelevant to Heimdall
-/*
-func Test_getBechKeyOut(t *testing.T) {
+func Test_getHexKeyOut(t *testing.T) {
 	type args struct {
-		bechPrefix string
+		hexPrefix string
 	}
 	tests := []struct {
 		name    string
 		args    args
-		want    bechKeyOutFn
+		want    hexKeyOutFn
 		wantErr bool
 	}{
-		{"empty", args{""}, nil, true},
+		{"empty", args{""}, nil, false},
 		{"wrong", args{"???"}, nil, true},
-		{"acc", args{sdk.PrefixAccount}, MkAccKeyOutput, false},
-		{"val", args{sdk.PrefixValidator}, MkValKeyOutput, false},
-		{"cons", args{sdk.PrefixConsensus}, MkConsKeyOutput, false},
 	}
 	for _, tt := range tests {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := getBechKeyOut(tt.args.bechPrefix)
+			got, err := getHexKeyOut(tt.args.hexPrefix)
 			if tt.wantErr {
 				require.Error(t, err)
 			} else {
@@ -218,4 +213,3 @@ func Test_getBechKeyOut(t *testing.T) {
 		})
 	}
 }
-*/

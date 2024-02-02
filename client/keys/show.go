@@ -107,7 +107,7 @@ func runShowCmd(cmd *cobra.Command, args []string) (err error) {
 		return errors.New("cannot use --output with --address or --pubkey")
 	}
 
-	bechKeyOut, err := getHexKeyOut("")
+	hexKeyOut, err := getHexKeyOut("")
 	if err != nil {
 		return err
 	}
@@ -118,7 +118,7 @@ func runShowCmd(cmd *cobra.Command, args []string) (err error) {
 
 	switch {
 	case isShowAddr, isShowPubKey:
-		ko, err := bechKeyOut(k)
+		ko, err := hexKeyOut(k)
 		if err != nil {
 			return err
 		}
@@ -131,7 +131,7 @@ func runShowCmd(cmd *cobra.Command, args []string) (err error) {
 			return err
 		}
 	default:
-		if err := printKeyringRecord(cmd.OutOrStdout(), k, bechKeyOut, outputFormat); err != nil {
+		if err := printKeyringRecord(cmd.OutOrStdout(), k, hexKeyOut, outputFormat); err != nil {
 			return err
 		}
 	}
@@ -192,7 +192,7 @@ func validateMultisigThreshold(k, nKeys int) error {
 	return nil
 }
 
-func getHexKeyOut(bechPrefix string) (bechKeyOutFn, error) {
+func getHexKeyOut(bechPrefix string) (hexKeyOutFn, error) {
 	if bechPrefix == "" {
 		return MkAccKeyOutput, nil
 	}

@@ -652,7 +652,6 @@ func TestAnteHandlerFees(t *testing.T) {
 
 // Test logic around memo gas consumption.
 func TestAnteHandlerMemoGas(t *testing.T) {
-	t.Skip("skipping test as not relevant to Heimdall (no memo)")
 	testCases := []TestCase{
 		{
 			"tx does not have enough gas",
@@ -666,8 +665,8 @@ func TestAnteHandlerMemoGas(t *testing.T) {
 			},
 			false,
 			false,
-			sdkerrors.ErrInvalidGasLimit,
-			true,
+			sdkerrors.ErrOutOfGas,
+			false,
 		},
 		{
 			"tx with memo doesn't have enough gas",
@@ -684,7 +683,7 @@ func TestAnteHandlerMemoGas(t *testing.T) {
 			false,
 			false,
 			sdkerrors.ErrOutOfGas,
-			true,
+			false,
 		},
 		{
 			"memo too large",
@@ -701,13 +700,15 @@ func TestAnteHandlerMemoGas(t *testing.T) {
 			false,
 			false,
 			sdkerrors.ErrMemoTooLarge,
-			true,
+			false,
 		},
 		{
 			"tx with memo has enough gas",
 			func(suite *AnteTestSuite) TestCaseArgs {
 				accs := suite.CreateTestAccounts(1)
 				suite.txBuilder.SetMemo(strings.Repeat("0123456789", 10))
+				// TODO HV2 in heimdall the fee is taken from params.GetTxFees() (hence not zero here), so we expect a call to SendCoinsFromAccountToModule
+				suite.bankKeeper.EXPECT().SendCoinsFromAccountToModule(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(nil).Times(1)
 				return TestCaseArgs{
 					feeAmount: sdk.NewCoins(sdk.NewInt64Coin("matic", 0)),
 					gasLimit:  60000,
@@ -717,7 +718,7 @@ func TestAnteHandlerMemoGas(t *testing.T) {
 			false,
 			true,
 			nil,
-			true,
+			false,
 		},
 	}
 

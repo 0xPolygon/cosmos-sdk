@@ -16,10 +16,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/bech32"
 )
 
-func bech32Prefixes(config *sdk.Config) []string {
-	return []string{}
-}
-
 type hexOutput struct {
 	Human string `json:"human"`
 	Bytes string `json:"bytes"`
@@ -38,17 +34,13 @@ type bech32Output struct {
 }
 
 func newBech32Output(config *sdk.Config, bs []byte) bech32Output {
-	bech32Prefixes := bech32Prefixes(config)
-	out := bech32Output{Formats: make([]string, len(bech32Prefixes))}
-
-	for i, prefix := range bech32Prefixes {
-		bech32Addr, err := bech32.ConvertAndEncode(prefix, bs)
-		if err != nil {
-			panic(err)
-		}
-
-		out.Formats[i] = bech32Addr
+	out := bech32Output{Formats: make([]string, 1)}
+	bech32Addr, err := bech32.ConvertAndEncode("", bs)
+	if err != nil {
+		panic(err)
 	}
+
+	out.Formats[0] = bech32Addr
 
 	return out
 }

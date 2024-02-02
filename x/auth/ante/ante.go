@@ -45,10 +45,10 @@ func NewAnteHandler(options HandlerOptions) (sdk.AnteHandler, error) {
 		NewExtensionOptionsDecorator(options.ExtensionOptionChecker),
 		NewValidateBasicDecorator(),
 		// NewTxTimeoutHeightDecorator(), // TODO HV2: this is not present in heimdall. Is it safe to remove?
-		NewValidateMemoDecorator(options.AccountKeeper), // TODO HV2: can we keep this despite we don't support Memo? Or is it better/safer to remove it?
-		// NewConsumeGasForTxSizeDecorator(options.AccountKeeper), // TODO HV2: this was removed in heimdall's `auth/ante.go` (original ancestor's method `newCtx.GasMeter().ConsumeGas`)
+		NewValidateMemoDecorator(options.AccountKeeper),                                                                // TODO HV2: can we keep this despite we don't support Memo? Or is it better/safer to remove it?
+		NewConsumeGasForTxSizeDecorator(options.AccountKeeper),                                                         // TODO HV2: removed `ConsumeGas` in it as done in heimdall's `auth/ante.go` (original ancestor's method `newCtx.GasMeter().ConsumeGas`)
 		NewDeductFeeDecorator(options.AccountKeeper, options.BankKeeper, options.FeegrantKeeper, options.TxFeeChecker), // TODO HV2: heavily changed, double check
-		NewSetPubKeyDecorator(options.AccountKeeper), // SetPubKeyDecorator must be called before all signature verification decorators
+		NewSetPubKeyDecorator(options.AccountKeeper),                                                                   // SetPubKeyDecorator must be called before all signature verification decorators
 		// NewValidateSigCountDecorator(options.AccountKeeper), // TODO HV2: this was removed in heimdall's `auth/ante.go` (original ancestor's method `ValidateSigCount`)
 		NewSigGasConsumeDecorator(options.AccountKeeper, options.SigGasConsumer),
 		NewSigVerificationDecorator(options.AccountKeeper, options.SignModeHandler),

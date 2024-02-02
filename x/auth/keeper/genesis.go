@@ -22,19 +22,20 @@ func (ak AccountKeeper) InitGenesis(ctx sdk.Context, data types.GenesisState, pr
 
 	// Set the accounts and make sure the global account number matches the largest account number (even if zero).
 	var lastAccNum *uint64
-	for _, acc := range accounts {
-		accNum := acc.GetAccountNumber()
+	for _, gacc := range accounts {
+		accNum := gacc.GetAccountNumber()
 		for lastAccNum == nil || *lastAccNum < accNum {
 			n := ak.NextAccountNumber(ctx)
 			lastAccNum = &n
 		}
 
-		// TODO HV2: this is imported from heimdall
+		// TODO HV2: this is imported (and modified) from heimdall
+		acc := sdk.AccountI(gacc) //nolint
 		baseAcc := types.NewBaseAccount(acc.GetAddress(), acc.GetPubKey(), accNum, acc.GetSequence())
 
 		// execute account processors
 		for _, p := range processors {
-			acc = p(&acc, baseAcc) //nolint
+			acc = p(&gacc, baseAcc) //nolint
 		}
 		ak.SetAccount(ctx, acc)
 	}
