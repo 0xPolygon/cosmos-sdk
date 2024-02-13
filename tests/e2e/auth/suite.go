@@ -107,7 +107,7 @@ func (s *E2ETestSuite) TestCLISignGenOnly() {
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 		fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
 	}
-	generatedStd, err := clitestutil.ExecTestCLICmd(val.ClientCtx, bank.NewSendTxCmd(addresscodec.NewHexCodec("cosmos")), args)
+	generatedStd, err := clitestutil.ExecTestCLICmd(val.ClientCtx, bank.NewSendTxCmd(addresscodec.NewHexCodec()), args)
 	s.Require().NoError(err)
 	opFile := testutil.WriteToNewTempFile(s.T(), generatedStd.String())
 	defer opFile.Close()
