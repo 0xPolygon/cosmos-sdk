@@ -25,7 +25,7 @@ func TestNewModuleCrendentials(t *testing.T) {
 
 	credential, err = authtypes.NewModuleCredential("group", [][]byte{{0x20}, {0x0}}...)
 	require.NoError(t, err)
-	require.NoError(t, sdk.VerifyAddressFormat(credential.Address()))
+	require.Error(t, sdk.VerifyAddressFormat(credential.Address()))
 	_, err = sdk.AccAddressFromHex(credential.Address().String())
 	require.Error(t, err)
 

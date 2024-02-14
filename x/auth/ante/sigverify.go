@@ -2,12 +2,9 @@ package ante
 
 import (
 	"bytes"
-	"cosmossdk.io/math"
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
-	"math/big"
-
 	"google.golang.org/protobuf/types/known/anypb"
 
 	errorsmod "cosmossdk.io/errors"
@@ -33,14 +30,6 @@ var (
 	key                = make([]byte, secp256k1.PubKeySize)
 	simSecp256k1Pubkey = &secp256k1.PubKey{Key: key}
 	simSecp256k1Sig    [64]byte
-
-	// DefaultFeeInMatic represents default fee in matic
-	DefaultFeeInMatic = big.NewInt(10).Exp(big.NewInt(10), big.NewInt(15), nil)
-
-	// TODO HV2: no usage of DefaultFeeWantedPerTx so far. This is used in heimdall topup module's `side_handler.go`
-
-	// DefaultFeeWantedPerTx fee wanted per tx
-	DefaultFeeWantedPerTx = sdk.Coins{sdk.Coin{Denom: types.FeeToken, Amount: math.NewIntFromBigInt(DefaultFeeInMatic)}}
 )
 
 func init() {

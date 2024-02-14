@@ -2,7 +2,6 @@ package directaux_test
 
 import (
 	"context"
-	"encoding/hex"
 	"fmt"
 	"github.com/ethereum/go-ethereum/common"
 	"testing"
@@ -157,7 +156,7 @@ func TestDirectAuxHandler(t *testing.T) {
 type dummyAddressCodec struct{}
 
 func (d dummyAddressCodec) StringToBytes(text string) ([]byte, error) {
-	return hex.DecodeString(text)
+	return common.FromHex(text), nil
 }
 
 func (d dummyAddressCodec) BytesToString(bz []byte) (string, error) {
