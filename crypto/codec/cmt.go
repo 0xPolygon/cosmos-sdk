@@ -20,9 +20,10 @@ func FromCmtProtoPublicKey(protoPk cmtprotocrypto.PublicKey) (cryptotypes.PubKey
 		return &ed25519.PubKey{
 			Key: protoPk.Ed25519,
 		}, nil
-	case *cmtprotocrypto.PublicKey_Secp256K1:
+	// NOTE(Heimdall-v2): heimdall needs uncompressed secp256k1 public key for ECDSA
+	case *cmtprotocrypto.PublicKey_Secp256K1Uncompressed:
 		return &secp256k1.PubKey{
-			Key: protoPk.Secp256K1,
+			Key: protoPk.Secp256K1Uncompressed,
 		}, nil
 	default:
 		return nil, errors.Wrapf(sdkerrors.ErrInvalidType, "cannot convert %v from Tendermint public key", protoPk)
@@ -40,8 +41,9 @@ func ToCmtProtoPublicKey(pk cryptotypes.PubKey) (cmtprotocrypto.PublicKey, error
 		}, nil
 	case *secp256k1.PubKey:
 		return cmtprotocrypto.PublicKey{
-			Sum: &cmtprotocrypto.PublicKey_Secp256K1{
-				Secp256K1: pk.Key,
+			// NOTE(Heimdall-v2): heimdall needs uncompressed secp256k1 public key for ECDSA
+			Sum: &cmtprotocrypto.PublicKey_Secp256K1Uncompressed{
+				Secp256K1Uncompressed: pk.Key,
 			},
 		}, nil
 	default:
