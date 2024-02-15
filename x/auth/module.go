@@ -102,14 +102,17 @@ func (am AppModule) IsOnePerModuleType() {}
 // IsAppModule implements the appmodule.AppModule interface.
 func (am AppModule) IsAppModule() {}
 
+// TODO HV2: check processors if/when enabled
+
 // NewAppModule creates a new AppModule object
-func NewAppModule(cdc codec.Codec, accountKeeper keeper.AccountKeeper, randGenAccountsFn types.RandomGenesisAccountsFn, ss exported.Subspace, processors []types.AccountProcessor) AppModule {
+func NewAppModule(cdc codec.Codec, accountKeeper keeper.AccountKeeper, randGenAccountsFn types.RandomGenesisAccountsFn, ss exported.Subspace /* processors []types.AccountProcessor */) AppModule {
 	return AppModule{
 		AppModuleBasic:    AppModuleBasic{ac: accountKeeper.AddressCodec()},
 		accountKeeper:     accountKeeper,
 		randGenAccountsFn: randGenAccountsFn,
 		legacySubspace:    ss,
-		processors:        processors,
+		// TODO HV2: check processors if/when enabled
+		// processors:        processors,
 	}
 }
 
@@ -201,7 +204,8 @@ type ModuleInputs struct {
 	// LegacySubspace is used solely for migration of x/params managed parameters
 	LegacySubspace exported.Subspace `optional:"true"`
 
-	Processors []types.AccountProcessor
+	// TODO HV2: check processors if/when enabled
+	// Processors []types.AccountProcessor
 }
 
 type ModuleOutputs struct {
@@ -232,7 +236,8 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 	}
 
 	k := keeper.NewAccountKeeper(in.Cdc, in.StoreService, in.AccountI, maccPerms, in.AddressCodec, authority.String())
-	m := NewAppModule(in.Cdc, k, in.RandomGenesisAccountsFn, in.LegacySubspace, in.Processors)
+	// TODO HV2: check processors if/when enabled
+	m := NewAppModule(in.Cdc, k, in.RandomGenesisAccountsFn, in.LegacySubspace /* , in.Processors */)
 
 	return ModuleOutputs{AccountKeeper: k, Module: m}
 }
