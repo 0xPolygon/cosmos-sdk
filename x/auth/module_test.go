@@ -15,7 +15,6 @@ import (
 )
 
 func TestItCreatesModuleAccountOnInitBlock(t *testing.T) {
-	t.Skip("skipping test as not relevant to Heimdall (no depinject)") // TODO HV2: setup app without depinject and enable it?
 	var accountKeeper keeper.AccountKeeper
 	app, err := simtestutil.SetupAtGenesis(
 		depinject.Configs(

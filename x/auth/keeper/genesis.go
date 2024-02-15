@@ -5,6 +5,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
 )
 
+// TODO HV2: check AccountProcessor if/when enabled
+
 // InitGenesis - Init store state from genesis data
 //
 // CONTRACT: old coins from the FeeCollectionKeeper need to be transferred through
