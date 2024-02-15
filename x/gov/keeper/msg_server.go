@@ -194,6 +194,10 @@ func (k msgServer) Vote(goCtx context.Context, msg *v1.MsgVote) (*v1.MsgVoteResp
 
 // VoteWeighted implements the MsgServer.VoteWeighted method.
 func (k msgServer) VoteWeighted(goCtx context.Context, msg *v1.MsgVoteWeighted) (*v1.MsgVoteWeightedResponse, error) {
+
+	// HV2: disabled in heimdall as we do not support WeighedVoteOptions
+	return nil, errors.Wrap(govtypes.ErrWeightedVoteOptionsNotSupported, "not implemented")
+
 	accAddr, accErr := k.authKeeper.AddressCodec().StringToBytes(msg.Voter)
 	if accErr != nil {
 		return nil, sdkerrors.ErrInvalidAddress.Wrapf("invalid voter address: %s", accErr)
@@ -348,6 +352,10 @@ func (k legacyMsgServer) Vote(goCtx context.Context, msg *v1beta1.MsgVote) (*v1b
 }
 
 func (k legacyMsgServer) VoteWeighted(goCtx context.Context, msg *v1beta1.MsgVoteWeighted) (*v1beta1.MsgVoteWeightedResponse, error) {
+
+	// HV2: disabled in heimdall as we do not support WeighedVoteOptions
+	return nil, errors.Wrap(govtypes.ErrWeightedVoteOptionsNotSupported, "not implemented")
+
 	opts := make([]*v1.WeightedVoteOption, len(msg.Options))
 	for idx, opt := range msg.Options {
 		opts[idx] = &v1.WeightedVoteOption{

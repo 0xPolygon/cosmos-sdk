@@ -26,8 +26,6 @@ func NormalizeVoteOption(option string) string {
 	}
 }
 
-// TODO HV2: if NewCmdWeightedVote is re-enabled, enforce constraints here
-
 // NormalizeWeightedVoteOptions - normalize vote options param string
 func NormalizeWeightedVoteOptions(options string) string {
 	newOptions := []string{}

@@ -90,8 +90,8 @@ func NewKeeper(
 		config.MaxMetadataLen = types.DefaultConfig().MaxMetadataLen
 	}
 
-	// If MaxOptionsLen not set by app developer, set to default value.
-	if config.MaxOptionsLen == 0 {
+	// Enforce MaxOptionsLen to be 1.
+	if config.MaxOptionsLen != 1 {
 		config.MaxOptionsLen = types.DefaultConfig().MaxOptionsLen
 	}
 

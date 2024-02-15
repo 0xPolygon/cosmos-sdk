@@ -356,8 +356,6 @@ $ %s tx gov vote 1 yes --from mykey
 	return cmd
 }
 
-// HV2: disabled in heimdall as we do not support WeighedVoteOptions. Shall we re-enable it and enforce the constraints?
-/*
 // NewCmdWeightedVote implements creating a new weighted vote command.
 func NewCmdWeightedVote() *cobra.Command {
 	cmd := &cobra.Command{
@@ -375,6 +373,10 @@ $ %s tx gov weighted-vote 1 yes=0.6,no=0.3,abstain=0.05,no_with_veto=0.05 --from
 			),
 		),
 		RunE: func(cmd *cobra.Command, args []string) error {
+
+			// HV2: disabled in heimdall as we do not support WeighedVoteOptions
+			return fmt.Errorf("weighted-vote are currently not supported in heimdall")
+
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
@@ -411,4 +413,3 @@ $ %s tx gov weighted-vote 1 yes=0.6,no=0.3,abstain=0.05,no_with_veto=0.05 --from
 
 	return cmd
 }
-*/

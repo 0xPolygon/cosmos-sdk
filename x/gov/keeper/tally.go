@@ -113,22 +113,22 @@ func (keeper Keeper) Tally(ctx context.Context, proposal v1.Proposal) (passes, b
 		votingPower := sharesAfterDeductions.MulInt(val.BondedTokens).Quo(val.DelegatorShares)
 		*/
 
-		// HV2: There should be only 1 option with weight 1
+		// HV2: check on the length of the options.
+		// This should never fail as all votes must have only 1 option
 		err := keeper.assertOptionsLength(val.Vote)
 		if err != nil {
 			return false, false, tallyResults, err
 		}
 
 		for _, option := range val.Vote {
-			// HV2: validate vote option
+			// HV2: check on the weight of the option.
+			// This should never fail as the only option should have weight=1
 			if !v1.ValidWeightedVoteOption(*option) {
 				return false, false, tallyResults, err
 			}
-			/* HV2: removed because we don't support weighted votes
 			weight, _ := math.LegacyNewDecFromStr(option.Weight)
 			subPower := votingPower.Mul(weight)
-			*/
-			results[option.Option] = results[option.Option].Add(votingPower)
+			results[option.Option] = results[option.Option].Add(subPower)
 		}
 		totalVotingPower = totalVotingPower.Add(votingPower)
 	}

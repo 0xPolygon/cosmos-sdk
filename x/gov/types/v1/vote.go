@@ -109,8 +109,6 @@ func VoteOptionFromString(str string) (VoteOption, error) {
 	return VoteOption(option), nil
 }
 
-// TODO HV2: if NewCmdWeightedVote is re-enabled, enforce constraints here
-
 // WeightedVoteOptionsFromString returns weighted vote options from string. It returns an error
 // if the string is invalid.
 func WeightedVoteOptionsFromString(str string) (WeightedVoteOptions, error) {
