@@ -45,8 +45,7 @@ message WeightedVoteOption {
   ];
 }
 
-// TODO HV2: this was deleted from heimdall's gov/types/proposal.go.
-//  Did not remove as it is used only in tests and simulations. Is this ok?
+// TODO HV2: heimdall removed TextProposal. Why shouldn't we keep it?
 
 // TextProposal defines a standard text proposal whose changes need to be manually updated in case of approval.
 message TextProposal {

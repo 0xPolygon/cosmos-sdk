@@ -27,8 +27,6 @@ func (keeper Keeper) SetDeposit(ctx context.Context, deposit v1.Deposit) error {
 
 // GetDeposits returns all the deposits of a proposal
 func (keeper Keeper) GetDeposits(ctx context.Context, proposalID uint64) (deposits v1.Deposits, err error) {
-	// TODO HV2: in heimdall this function was getting the validator from its ID by using `keeper.sk.GetValidatorFromValID(ctx, deposit.Depositor)`
-	//  I don't think this is needed as we now use the validator string in the deposit struct. To double check.
 	err = keeper.IterateDeposits(ctx, proposalID, func(_ collections.Pair[uint64, sdk.AccAddress], deposit v1.Deposit) (bool, error) {
 		deposits = append(deposits, &deposit)
 		return false, nil

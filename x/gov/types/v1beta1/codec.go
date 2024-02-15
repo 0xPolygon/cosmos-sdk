@@ -8,8 +8,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/msgservice"
 )
 
-// TODO HV2: reconcile this with heimdall's gov/types/codec.go
-
 // RegisterLegacyAminoCodec registers all the necessary types and interfaces for the
 // governance module.
 func RegisterLegacyAminoCodec(cdc *codec.LegacyAmino) {
@@ -18,6 +16,7 @@ func RegisterLegacyAminoCodec(cdc *codec.LegacyAmino) {
 	legacy.RegisterAminoMsg(cdc, &MsgDeposit{}, "cosmos-sdk/MsgDeposit")
 	legacy.RegisterAminoMsg(cdc, &MsgVote{}, "cosmos-sdk/MsgVote")
 	legacy.RegisterAminoMsg(cdc, &MsgVoteWeighted{}, "cosmos-sdk/MsgVoteWeighted")
+	// TODO HV2: heimdall removed TextProposal. Why shouldn't we keep it?
 	cdc.RegisterConcrete(&TextProposal{}, "cosmos-sdk/TextProposal", nil)
 }
 
@@ -28,11 +27,6 @@ func RegisterInterfaces(registry codectypes.InterfaceRegistry) {
 		&MsgVote{},
 		&MsgVoteWeighted{},
 		&MsgDeposit{},
-	)
-	registry.RegisterInterface(
-		"cosmos.gov.v1beta1.Content",
-		(*Content)(nil),
-		&TextProposal{},
 	)
 
 	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)
