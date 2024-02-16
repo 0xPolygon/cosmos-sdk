@@ -244,7 +244,7 @@ func NewSimApp(
 	// transactions
 	// TODO HV2: init processors with proper supply.AccountProcessor (supply module has been merged with bank module upstream)
 	overrideModules := map[string]module.AppModuleSimulation{
-		authtypes.ModuleName: auth.NewAppModule(app.appCodec, app.AccountKeeper, authsims.RandomGenesisAccounts, app.GetSubspace(authtypes.ModuleName), []authtypes.AccountProcessor{}),
+		authtypes.ModuleName: auth.NewAppModule(app.appCodec, app.AccountKeeper, authsims.RandomGenesisAccounts, app.GetSubspace(authtypes.ModuleName) /*, []authtypes.AccountProcessor{}*/),
 	}
 	app.sm = module.NewSimulationManagerFromAppModules(app.ModuleManager.Modules, overrideModules)
 
