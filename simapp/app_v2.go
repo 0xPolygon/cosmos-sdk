@@ -144,8 +144,7 @@ func NewSimApp(
 				// STAKING
 				//
 				// For provinding a different validator and consensus address codec, add it below.
-				// By default the staking module uses the hex prefix provided in the auth config,
-				// and appends "valoper" and "valcons" for validator and consensus addresses respectively.
+				// By default the staking module uses the hex prefix provided in the auth config.
 				// When providing a custom address codec in auth, custom address codecs must be provided here as well.
 				//
 				// func() runtime.ValidatorAddressCodec { return <- custom validator address codec type -> }
@@ -245,7 +244,7 @@ func NewSimApp(
 	// transactions
 	// TODO HV2: init processors with proper supply.AccountProcessor (supply module has been merged with bank module upstream)
 	overrideModules := map[string]module.AppModuleSimulation{
-		authtypes.ModuleName: auth.NewAppModule(app.appCodec, app.AccountKeeper, authsims.RandomGenesisAccounts, app.GetSubspace(authtypes.ModuleName), []authtypes.AccountProcessor{}),
+		authtypes.ModuleName: auth.NewAppModule(app.appCodec, app.AccountKeeper, authsims.RandomGenesisAccounts, app.GetSubspace(authtypes.ModuleName) /*, []authtypes.AccountProcessor{}*/),
 	}
 	app.sm = module.NewSimulationManagerFromAppModules(app.ModuleManager.Modules, overrideModules)
 
