@@ -20,7 +20,7 @@ func TestVotes(t *testing.T) {
 	authKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
 
 	tp := TestProposal
-	proposal, err := govKeeper.SubmitProposal(ctx, tp, "", "title", "description", sdk.AccAddress("cosmos1ghekyjucln7y67ntx7cf27m9dpuxxemn4c8g4r"), false)
+	proposal, err := govKeeper.SubmitProposal(ctx, tp, "", "title", "description", sdk.AccAddress("0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff"), false)
 	require.NoError(t, err)
 	proposalID := proposal.Id
 	metadata := "metadata"
@@ -54,14 +54,17 @@ func TestVotes(t *testing.T) {
 	require.Equal(t, v1.OptionYes, vote.Options[0].Option)
 
 	// Test second vote
-	require.NoError(t, govKeeper.AddVote(ctx, proposalID, addrs[1], v1.WeightedVoteOptions{
+	err = govKeeper.AddVote(ctx, proposalID, addrs[1], v1.WeightedVoteOptions{
 		v1.NewWeightedVoteOption(v1.OptionYes, sdkmath.LegacyNewDecWithPrec(60, 2)),
 		v1.NewWeightedVoteOption(v1.OptionNo, sdkmath.LegacyNewDecWithPrec(30, 2)),
 		v1.NewWeightedVoteOption(v1.OptionAbstain, sdkmath.LegacyNewDecWithPrec(5, 2)),
 		v1.NewWeightedVoteOption(v1.OptionNoWithVeto, sdkmath.LegacyNewDecWithPrec(5, 2)),
-	}, ""))
+	}, "")
+	require.Error(t, err)
+	require.ErrorContains(t, err, "too many vote options")
 	vote, err = govKeeper.Votes.Get(ctx, collections.Join(proposalID, addrs[1]))
-	require.Nil(t, err)
+	require.NotNil(t, err)
+	/* HV2: WeightedVoteOptions is not supported, heimdall won't have the vote options here
 	require.Equal(t, addrs[1].String(), vote.Voter)
 	require.Equal(t, proposalID, vote.ProposalId)
 	require.True(t, len(vote.Options) == 4)
@@ -73,6 +76,7 @@ func TestVotes(t *testing.T) {
 	require.Equal(t, vote.Options[1].Weight, sdkmath.LegacyNewDecWithPrec(30, 2).String())
 	require.Equal(t, vote.Options[2].Weight, sdkmath.LegacyNewDecWithPrec(5, 2).String())
 	require.Equal(t, vote.Options[3].Weight, sdkmath.LegacyNewDecWithPrec(5, 2).String())
+	*/
 
 	// Test vote iterator
 	// NOTE order of deposits is determined by the addresses
@@ -81,7 +85,7 @@ func TestVotes(t *testing.T) {
 		votes = append(votes, &value)
 		return false, nil
 	}))
-	require.Len(t, votes, 2)
+	require.Len(t, votes, 1)
 	var propVotes v1.Votes
 	require.NoError(t, govKeeper.Votes.Walk(ctx, collections.NewPrefixedPairRange[uint64, sdk.AccAddress](proposalID), func(_ collections.Pair[uint64, sdk.AccAddress], value v1.Vote) (stop bool, err error) {
 		propVotes = append(propVotes, &value)
@@ -92,6 +96,7 @@ func TestVotes(t *testing.T) {
 	require.Equal(t, proposalID, votes[0].ProposalId)
 	require.True(t, len(votes[0].Options) == 1)
 	require.Equal(t, v1.OptionYes, votes[0].Options[0].Option)
+	/* HV2: no additional votes here as second vote option hasn't been added
 	require.Equal(t, addrs[1].String(), votes[1].Voter)
 	require.Equal(t, proposalID, votes[1].ProposalId)
 	require.True(t, len(votes[1].Options) == 4)
@@ -99,7 +104,7 @@ func TestVotes(t *testing.T) {
 	require.Equal(t, votes[1].Options[1].Weight, sdkmath.LegacyNewDecWithPrec(30, 2).String())
 	require.Equal(t, votes[1].Options[2].Weight, sdkmath.LegacyNewDecWithPrec(5, 2).String())
 	require.Equal(t, votes[1].Options[3].Weight, sdkmath.LegacyNewDecWithPrec(5, 2).String())
-
+	*/
 	// non existent vote
 	_, err = govKeeper.Votes.Get(ctx, collections.Join(proposalID+100, addrs[1]))
 	require.ErrorIs(t, err, collections.ErrNotFound)

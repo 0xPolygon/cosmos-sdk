@@ -15,7 +15,7 @@ const (
 
 // Default governance params
 var (
-	DefaultMinDepositTokens = math.NewInt(10000000)
+	DefaultMinDepositTokens = math.NewInt(100000000000000000)
 	DefaultQuorum           = math.LegacyNewDecWithPrec(334, 3)
 	DefaultThreshold        = math.LegacyNewDecWithPrec(5, 1)
 	DefaultVetoThreshold    = math.LegacyNewDecWithPrec(334, 3)

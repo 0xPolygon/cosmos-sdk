@@ -22,7 +22,7 @@ import (
 	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
 )
 
-var address1 = "0xb316fa9Fa91700D7084D377bfdC81Eb9F232f5Ff"
+var address1 = "0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff"
 
 type KeeperTestSuite struct {
 	suite.Suite

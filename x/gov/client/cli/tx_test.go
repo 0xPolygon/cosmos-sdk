@@ -72,7 +72,8 @@ func (s *CLITestSuite) SetupSuite() {
 
 	// vote for proposal
 	_, err = govclitestutil.MsgVote(s.clientCtx, val[0].Address.String(), "1", "yes")
-	s.Require().NoError(err)
+	s.Require().Error(err)
+	s.Require().ErrorContains(err, "weighted-vote are currently not supported in heimdall")
 
 	// create a proposal without deposit
 	_, err = govclitestutil.MsgSubmitLegacyProposal(s.clientCtx, val[0].Address.String(),
@@ -87,7 +88,8 @@ func (s *CLITestSuite) SetupSuite() {
 
 	// vote for proposal3 as val
 	_, err = govclitestutil.MsgVote(s.clientCtx, val[0].Address.String(), "3", "yes=0.6,no=0.3,abstain=0.05,no_with_veto=0.05")
-	s.Require().NoError(err)
+	s.Require().Error(err)
+	s.Require().ErrorContains(err, "weighted-vote are currently not supported in heimdall")
 }
 
 func (s *CLITestSuite) TestNewCmdSubmitProposal() {
@@ -428,7 +430,7 @@ func (s *CLITestSuite) TestNewCmdWeightedVote() {
 				fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
 				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(10))).String()),
 			},
-			"proposal-id abc not a valid int, please input a valid proposal-id",
+			"weighted-vote are currently not supported in heimdall",
 		},
 		{
 			"invalid vote",
@@ -440,7 +442,7 @@ func (s *CLITestSuite) TestNewCmdWeightedVote() {
 				fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
 				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(10))).String()),
 			},
-			"'AYE' is not a valid vote option",
+			"weighted-vote are currently not supported in heimdall",
 		},
 		{
 			"valid vote",
@@ -452,7 +454,7 @@ func (s *CLITestSuite) TestNewCmdWeightedVote() {
 				fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
 				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(10))).String()),
 			},
-			"",
+			"weighted-vote are currently not supported in heimdall",
 		},
 		{
 			"valid vote with metadata",
@@ -465,7 +467,7 @@ func (s *CLITestSuite) TestNewCmdWeightedVote() {
 				fmt.Sprintf("--metadata=%s", "AQ=="),
 				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(10))).String()),
 			},
-			"",
+			"weighted-vote are currently not supported in heimdall",
 		},
 		{
 			"invalid valid split vote string",
@@ -477,7 +479,7 @@ func (s *CLITestSuite) TestNewCmdWeightedVote() {
 				fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
 				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(10))).String()),
 			},
-			"'yes/0.6' is not a valid vote option",
+			"weighted-vote are currently not supported in heimdall",
 		},
 		{
 			"valid split vote",
@@ -489,7 +491,7 @@ func (s *CLITestSuite) TestNewCmdWeightedVote() {
 				fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
 				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(10))).String()),
 			},
-			"",
+			"weighted-vote are currently not supported in heimdall",
 		},
 	}
 

@@ -49,7 +49,7 @@ func TestDeposits(t *testing.T) {
 				depositMultiplier = v1.DefaultMinExpeditedDepositTokensRatio
 			}
 
-			TestAddrs := simtestutil.AddTestAddrsIncremental(bankKeeper, stakingKeeper, ctx, 2, sdkmath.NewInt(10000000*depositMultiplier))
+			TestAddrs := simtestutil.AddTestAddrsIncremental(bankKeeper, stakingKeeper, ctx, 2, sdkmath.NewInt(100000000000000000*depositMultiplier))
 			authKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
 
 			tp := TestProposal
@@ -210,7 +210,7 @@ func TestDepositAmount(t *testing.T) {
 			govKeeper, authKeeper, bankKeeper, stakingKeeper, distrKeeper, _, ctx := setupGovKeeper(t)
 			trackMockBalances(bankKeeper, distrKeeper)
 
-			testAddrs := simtestutil.AddTestAddrsIncremental(bankKeeper, stakingKeeper, ctx, 2, sdkmath.NewInt(1000000000000000))
+			testAddrs := simtestutil.AddTestAddrsIncremental(bankKeeper, stakingKeeper, ctx, 2, sdkmath.NewInt(100000000000000000))
 			authKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
 
 			params, _ := govKeeper.Params.Get(ctx)
@@ -389,7 +389,7 @@ func TestChargeDeposit(t *testing.T) {
 				govKeeper, authKeeper, bankKeeper, stakingKeeper, _, _, ctx := setupGovKeeper(t)
 				params := v1.DefaultParams()
 				params.ProposalCancelRatio = tc.proposalCancelRatio
-				TestAddrs := simtestutil.AddTestAddrsIncremental(bankKeeper, stakingKeeper, ctx, 2, sdkmath.NewInt(10000000000))
+				TestAddrs := simtestutil.AddTestAddrsIncremental(bankKeeper, stakingKeeper, ctx, 2, sdkmath.NewInt(100000000000000000))
 				authKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
 
 				switch i {

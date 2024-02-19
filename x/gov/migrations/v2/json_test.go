@@ -20,7 +20,7 @@ func TestMigrateJSON(t *testing.T) {
 		WithTxConfig(encodingConfig.TxConfig).
 		WithCodec(encodingConfig.Codec)
 
-	voter, err := sdk.AccAddressFromHex("0xb316fa9Fa91700D7084D377bfdC81Eb9F232f5Ff")
+	voter, err := sdk.AccAddressFromHex("0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff")
 	require.NoError(t, err)
 	govGenState := &v1beta1.GenesisState{
 		Votes: v1beta1.Votes{
@@ -69,7 +69,7 @@ func TestMigrateJSON(t *testing.T) {
 				}
 			],
 			"proposal_id": "1",
-			"voter": "0xb316fa9Fa91700D7084D377bfdC81Eb9F232f5Ff"
+			"voter": "0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff"
 		},
 		{
 			"option": "VOTE_OPTION_UNSPECIFIED",
@@ -80,7 +80,7 @@ func TestMigrateJSON(t *testing.T) {
 				}
 			],
 			"proposal_id": "2",
-			"voter": "0xb316fa9Fa91700D7084D377bfdC81Eb9F232f5Ff"
+			"voter": "0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff"
 		},
 		{
 			"option": "VOTE_OPTION_UNSPECIFIED",
@@ -91,7 +91,7 @@ func TestMigrateJSON(t *testing.T) {
 				}
 			],
 			"proposal_id": "3",
-			"voter": "0xb316fa9Fa91700D7084D377bfdC81Eb9F232f5Ff"
+			"voter": "0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff"
 		},
 		{
 			"option": "VOTE_OPTION_UNSPECIFIED",
@@ -102,7 +102,7 @@ func TestMigrateJSON(t *testing.T) {
 				}
 			],
 			"proposal_id": "4",
-			"voter": "0xb316fa9Fa91700D7084D377bfdC81Eb9F232f5Ff"
+			"voter": "0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff"
 		},
 		{
 			"option": "VOTE_OPTION_UNSPECIFIED",
@@ -113,7 +113,7 @@ func TestMigrateJSON(t *testing.T) {
 				}
 			],
 			"proposal_id": "5",
-			"voter": "0xb316fa9Fa91700D7084D377bfdC81Eb9F232f5Ff"
+			"voter": "0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff"
 		}
 	],
 	"voting_params": {

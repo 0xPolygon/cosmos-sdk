@@ -156,11 +156,13 @@ func TestSimulateMsgSubmitProposal(t *testing.T) {
 	var msg v1.MsgSubmitProposal
 	err = proto.Unmarshal(operationMsg.Msg, &msg)
 	require.NoError(t, err)
-	require.True(t, operationMsg.OK)
-	require.Equal(t, "cosmos1ghekyjucln7y67ntx7cf27m9dpuxxemn4c8g4r", msg.Proposer)
+	require.False(t, operationMsg.OK)
+	/* HV2: WeightedProposals are not supported, heimdall won't have the vote options here
+	require.Equal(t, "0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff", msg.Proposer)
 	require.NotEqual(t, len(msg.InitialDeposit), 0)
 	require.Equal(t, "47841094stake", msg.InitialDeposit[0].String())
 	require.Equal(t, simulation.TypeMsgSubmitProposal, sdk.MsgTypeURL(&msg))
+	*/
 }
 
 // TestSimulateMsgSubmitProposal tests the normal scenario of a valid message of type TypeMsgSubmitProposal.
