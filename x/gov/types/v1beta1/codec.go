@@ -28,6 +28,11 @@ func RegisterInterfaces(registry codectypes.InterfaceRegistry) {
 		&MsgVoteWeighted{},
 		&MsgDeposit{},
 	)
+	registry.RegisterInterface(
+		"cosmos.gov.v1beta1.Content",
+		(*Content)(nil),
+		&TextProposal{},
+	)
 
 	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)
 }

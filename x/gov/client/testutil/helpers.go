@@ -45,8 +45,7 @@ func MsgVote(clientCtx client.Context, from, id, vote string, extraArgs ...strin
 
 	args = append(args, extraArgs...)
 
-	// TODO HV2: changed from NewCmdWeightedVote (disabled) to NewCmdVote. Fix tests accordingly.
-	return clitestutil.ExecTestCLICmd(clientCtx, govcli.NewCmdVote(), args)
+	return clitestutil.ExecTestCLICmd(clientCtx, govcli.NewCmdWeightedVote(), args)
 }
 
 // MsgDeposit deposits on a proposal

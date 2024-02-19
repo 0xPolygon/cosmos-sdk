@@ -165,42 +165,42 @@ func TestDepositAmount(t *testing.T) {
 	}{
 		{
 			name:            "good amount and denoms",
-			deposit:         sdk.NewCoins(sdk.NewInt64Coin("stake", 10000)),
+			deposit:         sdk.NewCoins(sdk.NewInt64Coin("matic", 10000)),
 			minDepositRatio: "0.001",
 		},
 		{
 			name:            "good amount and denoms but not enough balance for zcoin",
-			deposit:         sdk.NewCoins(sdk.NewInt64Coin("stake", 10000), sdk.NewInt64Coin("zcoin", 1)),
+			deposit:         sdk.NewCoins(sdk.NewInt64Coin("matic", 10000), sdk.NewInt64Coin("zcoin", 1)),
 			minDepositRatio: "0.001",
 			err:             "not enough balance",
 		},
 		{
 			name:            "too small amount",
-			deposit:         sdk.NewCoins(sdk.NewInt64Coin("stake", 10)),
+			deposit:         sdk.NewCoins(sdk.NewInt64Coin("matic", 10)),
 			minDepositRatio: "0.001",
-			err:             "received 10stake but need at least one of the following: 10000stake,10zcoin: minimum deposit is too small",
+			err:             "received 10matic but need at least one of the following: 10000matic,10zcoin: minimum deposit is too small",
 		},
 		{
 			name:            "too small amount with another coin",
 			deposit:         sdk.NewCoins(sdk.NewInt64Coin("zcoin", 1)),
 			minDepositRatio: "0.001",
-			err:             "received 1zcoin but need at least one of the following: 10000stake,10zcoin: minimum deposit is too small",
+			err:             "received 1zcoin but need at least one of the following: 10000matic,10zcoin: minimum deposit is too small",
 		},
 		{
 			name:            "bad denom",
 			deposit:         sdk.NewCoins(sdk.NewInt64Coin("euro", 10000)),
 			minDepositRatio: "0.001",
-			err:             "deposited 10000euro, but gov accepts only the following denom(s): [stake zcoin]: invalid deposit denom",
+			err:             "deposited 10000euro, but gov accepts only the following denom(s): [matic zcoin]: invalid deposit denom",
 		},
 		{
 			name:            "mix containing bad and good denom",
-			deposit:         sdk.NewCoins(sdk.NewInt64Coin("stake", 10000), sdk.NewInt64Coin("euro", 10000)),
+			deposit:         sdk.NewCoins(sdk.NewInt64Coin("matic", 10000), sdk.NewInt64Coin("euro", 10000)),
 			minDepositRatio: "0.001",
-			err:             "deposited 10000euro,10000stake, but gov accepts only the following denom(s): [stake zcoin]: invalid deposit denom",
+			err:             "deposited 10000euro,10000matic, but gov accepts only the following denom(s): [matic zcoin]: invalid deposit denom",
 		},
 		{
 			name:            "minDepositRatio is zero",
-			deposit:         sdk.NewCoins(sdk.NewInt64Coin("stake", 10)),
+			deposit:         sdk.NewCoins(sdk.NewInt64Coin("matic", 10)),
 			minDepositRatio: "0.0",
 		},
 	}
