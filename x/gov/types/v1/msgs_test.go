@@ -18,7 +18,7 @@ var (
 	coinsMulti = sdk.NewCoins(sdk.NewInt64Coin(sdk.DefaultBondDenom, 1000), sdk.NewInt64Coin("foo", 10000))
 	addrs      = []sdk.AccAddress{
 		sdk.AccAddress("0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff"),
-		sdk.AccAddress("0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0"),
+		sdk.AccAddress("0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0"),
 	}
 )
 
