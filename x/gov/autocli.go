@@ -101,7 +101,7 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					Use:       "deposit [proposal-id] [deposit]",
 					Short:     "Deposit tokens for an active proposal",
 					Long:      fmt.Sprintf(`Submit a deposit for an active proposal. You can find the proposal-id by running "%s query gov proposals"`, version.AppName),
-					Example:   fmt.Sprintf(`$ %s tx gov deposit 1 10stake --from mykey`, version.AppName),
+					Example:   fmt.Sprintf(`$ %s tx gov deposit 1 10matic --from mykey`, version.AppName),
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{
 						{ProtoField: "proposal_id"},
 						{ProtoField: "amount", Varargs: true},

@@ -132,7 +132,7 @@ func getTestProposal() []sdk.Msg {
 	}
 
 	return []sdk.Msg{
-		banktypes.NewMsgSend(govAcct, addr, sdk.NewCoins(sdk.NewCoin("stake", math.NewInt(1000)))),
+		banktypes.NewMsgSend(govAcct, addr, sdk.NewCoins(sdk.NewCoin("matic", math.NewInt(1000)))),
 		legacyProposalMsg,
 	}
 }

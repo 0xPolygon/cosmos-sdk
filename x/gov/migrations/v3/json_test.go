@@ -45,7 +45,7 @@ func TestMigrateJSON(t *testing.T) {
 			VotingEndTime:    propTime,
 			Status:           v1beta1.StatusDepositPeriod,
 			FinalTallyResult: v1beta1.EmptyTallyResult(),
-			TotalDeposit:     sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(123))),
+			TotalDeposit:     sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(123))),
 		},
 	}
 	govGenState.Votes = v1beta1.Votes{
@@ -81,7 +81,7 @@ func TestMigrateJSON(t *testing.T) {
 		"min_deposit": [
 			{
 				"amount": "10000000",
-				"denom": "stake"
+				"denom": "matic"
 			}
 		]
 	},
@@ -119,7 +119,7 @@ func TestMigrateJSON(t *testing.T) {
 			"total_deposit": [
 				{
 					"amount": "123",
-					"denom": "stake"
+					"denom": "matic"
 				}
 			],
 			"voting_end_time": "2001-09-09T01:46:40Z",

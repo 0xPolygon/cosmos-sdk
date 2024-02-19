@@ -45,7 +45,7 @@ func getTestProposal() []sdk.Msg {
 	}
 
 	return []sdk.Msg{
-		banktypes.NewMsgSend(govAcct, addr, sdk.NewCoins(sdk.NewCoin("stake", math.NewInt(1000)))),
+		banktypes.NewMsgSend(govAcct, addr, sdk.NewCoins(sdk.NewCoin("matic", math.NewInt(1000)))),
 		legacyProposalMsg,
 	}
 }
@@ -90,7 +90,7 @@ func setupGovKeeper(t *testing.T) (
 		return sdk.TokensFromConsensusPower(power, math.NewIntFromUint64(1000000))
 	}).AnyTimes()
 
-	stakingKeeper.EXPECT().BondDenom(ctx).Return("stake", nil).AnyTimes()
+	stakingKeeper.EXPECT().BondDenom(ctx).Return("matic", nil).AnyTimes()
 	// TODO HV2: replace with new called functions
 	//stakingKeeper.EXPECT().IterateBondedValidatorsByPower(gomock.Any(), gomock.Any()).AnyTimes()
 	//stakingKeeper.EXPECT().IterateDelegations(gomock.Any(), gomock.Any(), gomock.Any()).AnyTimes()

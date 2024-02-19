@@ -69,7 +69,7 @@ func TestGetPaginatedVotes(t *testing.T) {
 	acc1Msgs := []sdk.Msg{
 		v1.NewMsgVote(acc1, 0, v1.OptionYes, ""),
 		v1.NewMsgVote(acc1, 0, v1.OptionYes, ""),
-		v1.NewMsgDeposit(acc1, 0, sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(10)))), // should be ignored
+		v1.NewMsgDeposit(acc1, 0, sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(10)))), // should be ignored
 	}
 	acc2Msgs := []sdk.Msg{
 		v1.NewMsgVote(acc2, 0, v1.OptionYes, ""),

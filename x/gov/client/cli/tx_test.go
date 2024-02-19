@@ -67,7 +67,7 @@ func (s *CLITestSuite) SetupSuite() {
 	// create a proposal with deposit
 	_, err := govclitestutil.MsgSubmitLegacyProposal(s.clientCtx, val[0].Address.String(),
 		"Text Proposal 1", "Where is the title!?", v1beta1.ProposalTypeText,
-		fmt.Sprintf("--%s=%s", cli.FlagDeposit, sdk.NewCoin("stake", v1.DefaultMinDepositTokens).String()))
+		fmt.Sprintf("--%s=%s", cli.FlagDeposit, sdk.NewCoin("matic", v1.DefaultMinDepositTokens).String()))
 	s.Require().NoError(err)
 
 	// vote for proposal
@@ -83,7 +83,7 @@ func (s *CLITestSuite) SetupSuite() {
 	// create a proposal3 with deposit
 	_, err = govclitestutil.MsgSubmitLegacyProposal(s.clientCtx, val[0].Address.String(),
 		"Text Proposal 3", "Where is the title!?", v1beta1.ProposalTypeText,
-		fmt.Sprintf("--%s=%s", cli.FlagDeposit, sdk.NewCoin("stake", v1.DefaultMinDepositTokens).String()))
+		fmt.Sprintf("--%s=%s", cli.FlagDeposit, sdk.NewCoin("matic", v1.DefaultMinDepositTokens).String()))
 	s.Require().NoError(err)
 
 	// vote for proposal3 as val
@@ -125,7 +125,7 @@ func (s *CLITestSuite) TestNewCmdSubmitProposal() {
 		"summary": "My awesome description",
 		"metadata": "%s",
 		"deposit": "%s"
-	}`, authtypes.NewModuleAddress(types.ModuleName), base64.StdEncoding.EncodeToString(propMetadata), sdk.NewCoin("stake", sdkmath.NewInt(5431)))
+	}`, authtypes.NewModuleAddress(types.ModuleName), base64.StdEncoding.EncodeToString(propMetadata), sdk.NewCoin("matic", sdkmath.NewInt(5431)))
 	validPropFile := testutil.WriteToNewTempFile(s.T(), validProp)
 	defer validPropFile.Close()
 
@@ -139,7 +139,7 @@ func (s *CLITestSuite) TestNewCmdSubmitProposal() {
 			[]string{
 				invalidPropFile.Name(),
 				fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
-				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(10))).String()),
+				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(10))).String()),
 			},
 			"invalid decimal coin expression",
 		},
@@ -150,7 +150,7 @@ func (s *CLITestSuite) TestNewCmdSubmitProposal() {
 				fmt.Sprintf("--%s=%s", flags.FlagFrom, val[0].Address.String()),
 				fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 				fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
-				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(10))).String()),
+				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(10))).String()),
 			},
 			"",
 		},
@@ -191,7 +191,7 @@ func (s *CLITestSuite) TestNewCmdSubmitLegacyProposal() {
 		"description": "Hello, World!",
 		"type": "Text",
 	  "deposit": "%s"
-	}`, sdk.NewCoin("stake", sdkmath.NewInt(5431)))
+	}`, sdk.NewCoin("matic", sdkmath.NewInt(5431)))
 	validPropFile := testutil.WriteToNewTempFile(s.T(), validProp)
 	defer validPropFile.Close()
 
@@ -206,7 +206,7 @@ func (s *CLITestSuite) TestNewCmdSubmitLegacyProposal() {
 				fmt.Sprintf("--%s=%s", cli.FlagProposal, invalidPropFile.Name()),
 				fmt.Sprintf("--%s=%s", flags.FlagFrom, val[0].Address.String()),
 				fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
-				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(10))).String()),
+				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(10))).String()),
 			},
 			"failed to parse proposal: proposal title is required",
 		},
@@ -215,10 +215,10 @@ func (s *CLITestSuite) TestNewCmdSubmitLegacyProposal() {
 			[]string{
 				fmt.Sprintf("--%s='Where is the title!?'", cli.FlagDescription),
 				fmt.Sprintf("--%s=%s", cli.FlagProposalType, v1beta1.ProposalTypeText),
-				fmt.Sprintf("--%s=%s", cli.FlagDeposit, sdk.NewCoin("stake", sdkmath.NewInt(5431)).String()),
+				fmt.Sprintf("--%s=%s", cli.FlagDeposit, sdk.NewCoin("matic", sdkmath.NewInt(5431)).String()),
 				fmt.Sprintf("--%s=%s", flags.FlagFrom, val[0].Address.String()),
 				fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
-				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(10))).String()),
+				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(10))).String()),
 			},
 			"failed to parse proposal: proposal title is required",
 		},
@@ -230,7 +230,7 @@ func (s *CLITestSuite) TestNewCmdSubmitLegacyProposal() {
 				fmt.Sprintf("--%s=%s", flags.FlagFrom, val[0].Address.String()),
 				fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 				fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
-				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(10))).String()),
+				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(10))).String()),
 			},
 			"",
 		},
@@ -240,11 +240,11 @@ func (s *CLITestSuite) TestNewCmdSubmitLegacyProposal() {
 				fmt.Sprintf("--%s='Text Proposal'", cli.FlagTitle),
 				fmt.Sprintf("--%s='Where is the title!?'", cli.FlagDescription),
 				fmt.Sprintf("--%s=%s", cli.FlagProposalType, v1beta1.ProposalTypeText),
-				fmt.Sprintf("--%s=%s", cli.FlagDeposit, sdk.NewCoin("stake", sdkmath.NewInt(5431)).String()),
+				fmt.Sprintf("--%s=%s", cli.FlagDeposit, sdk.NewCoin("matic", sdkmath.NewInt(5431)).String()),
 				fmt.Sprintf("--%s=%s", flags.FlagFrom, val[0].Address.String()),
 				fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 				fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
-				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(10))).String()),
+				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(10))).String()),
 			},
 			"",
 		},
@@ -281,11 +281,11 @@ func (s *CLITestSuite) TestNewCmdDeposit() {
 			"invalid proposal id",
 			[]string{
 				"abc",
-				sdk.NewCoin("stake", sdkmath.NewInt(10)).String(), // 10stake
+				sdk.NewCoin("matic", sdkmath.NewInt(10)).String(), // 10matic
 				fmt.Sprintf("--%s=%s", flags.FlagFrom, val[0].Address.String()),
 				fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 				fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
-				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(10))).String()),
+				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(10))).String()),
 			},
 			"proposal-id abc not a valid uint, please input a valid proposal-id",
 		},
@@ -297,7 +297,7 @@ func (s *CLITestSuite) TestNewCmdDeposit() {
 				fmt.Sprintf("--%s=%s", flags.FlagFrom, val[0].Address.String()),
 				fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 				fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
-				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(10))).String()),
+				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(10))).String()),
 			},
 			"invalid decimal coin expression: invalidCoin",
 		},
@@ -305,11 +305,11 @@ func (s *CLITestSuite) TestNewCmdDeposit() {
 			"deposit on a proposal",
 			[]string{
 				"10",
-				sdk.NewCoin("stake", sdkmath.NewInt(10)).String(), // 10stake
+				sdk.NewCoin("matic", sdkmath.NewInt(10)).String(), // 10matic
 				fmt.Sprintf("--%s=%s", flags.FlagFrom, val[0].Address.String()),
 				fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 				fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
-				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(10))).String()),
+				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(10))).String()),
 			},
 			"",
 		},
@@ -351,7 +351,7 @@ func (s *CLITestSuite) TestNewCmdVote() {
 				fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 				fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
 				fmt.Sprintf("--metadata=%s", "AQ=="),
-				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(10))).String()),
+				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(10))).String()),
 			},
 			"proposal-id abc not a valid int, please input a valid proposal-id",
 		},
@@ -363,7 +363,7 @@ func (s *CLITestSuite) TestNewCmdVote() {
 				fmt.Sprintf("--%s=%s", flags.FlagFrom, val[0].Address.String()),
 				fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 				fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
-				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(10))).String()),
+				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(10))).String()),
 			},
 			"'AYE' is not a valid vote option",
 		},
@@ -375,7 +375,7 @@ func (s *CLITestSuite) TestNewCmdVote() {
 				fmt.Sprintf("--%s=%s", flags.FlagFrom, val[0].Address.String()),
 				fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 				fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
-				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(10))).String()),
+				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(10))).String()),
 			},
 			"",
 		},
@@ -388,7 +388,7 @@ func (s *CLITestSuite) TestNewCmdVote() {
 				fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 				fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
 				fmt.Sprintf("--metadata=%s", "AQ=="),
-				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(10))).String()),
+				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(10))).String()),
 			},
 			"",
 		},
@@ -428,7 +428,7 @@ func (s *CLITestSuite) TestNewCmdWeightedVote() {
 				fmt.Sprintf("--%s=%s", flags.FlagFrom, val[0].Address.String()),
 				fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 				fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
-				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(10))).String()),
+				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(10))).String()),
 			},
 			"weighted-vote are currently not supported in heimdall",
 		},
@@ -440,7 +440,7 @@ func (s *CLITestSuite) TestNewCmdWeightedVote() {
 				fmt.Sprintf("--%s=%s", flags.FlagFrom, val[0].Address.String()),
 				fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 				fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
-				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(10))).String()),
+				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(10))).String()),
 			},
 			"weighted-vote are currently not supported in heimdall",
 		},
@@ -452,7 +452,7 @@ func (s *CLITestSuite) TestNewCmdWeightedVote() {
 				fmt.Sprintf("--%s=%s", flags.FlagFrom, val[0].Address.String()),
 				fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 				fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
-				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(10))).String()),
+				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(10))).String()),
 			},
 			"weighted-vote are currently not supported in heimdall",
 		},
@@ -465,7 +465,7 @@ func (s *CLITestSuite) TestNewCmdWeightedVote() {
 				fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 				fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
 				fmt.Sprintf("--metadata=%s", "AQ=="),
-				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(10))).String()),
+				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(10))).String()),
 			},
 			"weighted-vote are currently not supported in heimdall",
 		},
@@ -477,7 +477,7 @@ func (s *CLITestSuite) TestNewCmdWeightedVote() {
 				fmt.Sprintf("--%s=%s", flags.FlagFrom, val[0].Address.String()),
 				fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 				fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
-				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(10))).String()),
+				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(10))).String()),
 			},
 			"weighted-vote are currently not supported in heimdall",
 		},
@@ -489,7 +489,7 @@ func (s *CLITestSuite) TestNewCmdWeightedVote() {
 				fmt.Sprintf("--%s=%s", flags.FlagFrom, val[0].Address.String()),
 				fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 				fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
-				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(10))).String()),
+				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(10))).String()),
 			},
 			"weighted-vote are currently not supported in heimdall",
 		},
