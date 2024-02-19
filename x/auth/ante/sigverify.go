@@ -261,6 +261,9 @@ func OnlyLegacyAminoSigners(sigData signing.SignatureData) bool {
 func (svd SigVerificationDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.AnteHandler) (newCtx sdk.Context, err error) {
 
 	// TODO HV2: do we need any change here to be compliant with heimdall's business logic?
+	//  See https://polygon.atlassian.net/browse/POS-2492
+	//  Specifically, check https://github.com/Raneet10/cosmos-sdk/pull/2/files
+	//  x/auth/ante.go (`processSig` method) and x/auth/types/txbuilder.go
 
 	sigTx, ok := tx.(authsigning.Tx)
 	if !ok {
@@ -315,6 +318,16 @@ func (svd SigVerificationDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simul
 		// no need to verify signatures on recheck tx
 		if !simulate && !ctx.IsReCheckTx() {
 			anyPk, _ := codectypes.NewAnyWithValue(pubKey)
+
+			// TODO HV2: do we need to add here (and modify accordingly) the following code from heimdall?
+			// in that case, we need to implement the RecoverPubkey method
+			/*
+				p, err := authTypes.RecoverPubkey(signBytes, sig.Bytes())
+				if err != nil {
+					return nil, sdk.ErrUnauthorized("signature verification failed; verify correct account sequence and chain-id").Result()
+				}
+				copy(pk[:], p[:])
+			*/
 
 			signerData := txsigning.SignerData{
 				Address:       acc.GetAddress().String(),
