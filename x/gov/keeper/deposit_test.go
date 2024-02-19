@@ -178,13 +178,13 @@ func TestDepositAmount(t *testing.T) {
 			name:            "too small amount",
 			deposit:         sdk.NewCoins(sdk.NewInt64Coin("matic", 10)),
 			minDepositRatio: "0.001",
-			err:             "received 10matic but need at least one of the following: 10000matic,10zcoin: minimum deposit is too small",
+			err:             "received 10matic but need at least one of the following: 10000000000000000matic,10zcoin: minimum deposit is too small",
 		},
 		{
 			name:            "too small amount with another coin",
 			deposit:         sdk.NewCoins(sdk.NewInt64Coin("zcoin", 1)),
 			minDepositRatio: "0.001",
-			err:             "received 1zcoin but need at least one of the following: 10000matic,10zcoin: minimum deposit is too small",
+			err:             "received 1zcoin but need at least one of the following: 10000000000000000matic,10zcoin: minimum deposit is too small",
 		},
 		{
 			name:            "bad denom",
