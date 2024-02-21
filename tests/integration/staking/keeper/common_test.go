@@ -134,7 +134,7 @@ func initFixture(t testing.TB) *fixture {
 
 	stakingKeeper := stakingkeeper.NewKeeper(cdc, runtime.NewKVStoreService(keys[types.StoreKey]), accountKeeper, bankKeeper, authority.String(), addresscodec.NewHexCodec(), addresscodec.NewHexCodec())
 	// TODO HV2: init processors with proper supply.AccountProcessor (supply module has been merged with bank module upstream)
-	authModule := auth.NewAppModule(cdc, accountKeeper, authsims.RandomGenesisAccounts, nil, []authtypes.AccountProcessor{})
+	authModule := auth.NewAppModule(cdc, accountKeeper, authsims.RandomGenesisAccounts, nil /*[]authtypes.AccountProcessor{}*/)
 	bankModule := bank.NewAppModule(cdc, bankKeeper, accountKeeper, nil)
 	stakingModule := staking.NewAppModule(cdc, stakingKeeper, accountKeeper, bankKeeper, nil)
 
