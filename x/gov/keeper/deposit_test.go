@@ -2,6 +2,7 @@ package keeper_test
 
 import (
 	"fmt"
+	"math/big"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -49,7 +50,8 @@ func TestDeposits(t *testing.T) {
 				depositMultiplier = v1.DefaultMinExpeditedDepositTokensRatio
 			}
 
-			TestAddrs := simtestutil.AddTestAddrsIncremental(bankKeeper, stakingKeeper, ctx, 2, sdkmath.NewInt(10000000*depositMultiplier))
+			accAmt := sdkmath.NewIntFromBigInt(new(big.Int).Mul(big.NewInt(10), new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil)))
+			TestAddrs := simtestutil.AddTestAddrsIncremental(bankKeeper, stakingKeeper, ctx, 2, accAmt.Mul(sdkmath.NewInt(depositMultiplier)))
 			authKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
 
 			tp := TestProposal
@@ -165,12 +167,12 @@ func TestDepositAmount(t *testing.T) {
 	}{
 		{
 			name:            "good amount and denoms",
-			deposit:         sdk.NewCoins(sdk.NewInt64Coin("matic", 10000)),
+			deposit:         sdk.NewCoins(sdk.NewInt64Coin("matic", 10000000000000000)),
 			minDepositRatio: "0.001",
 		},
 		{
 			name:            "good amount and denoms but not enough balance for zcoin",
-			deposit:         sdk.NewCoins(sdk.NewInt64Coin("matic", 10000), sdk.NewInt64Coin("zcoin", 1)),
+			deposit:         sdk.NewCoins(sdk.NewInt64Coin("matic", 10000000000000000), sdk.NewInt64Coin("zcoin", 1)),
 			minDepositRatio: "0.001",
 			err:             "not enough balance",
 		},
@@ -178,13 +180,13 @@ func TestDepositAmount(t *testing.T) {
 			name:            "too small amount",
 			deposit:         sdk.NewCoins(sdk.NewInt64Coin("matic", 10)),
 			minDepositRatio: "0.001",
-			err:             "received 10matic but need at least one of the following: 10000matic,10zcoin: minimum deposit is too small",
+			err:             "received 10matic but need at least one of the following: 10000000000000000matic,10zcoin: minimum deposit is too small",
 		},
 		{
 			name:            "too small amount with another coin",
 			deposit:         sdk.NewCoins(sdk.NewInt64Coin("zcoin", 1)),
 			minDepositRatio: "0.001",
-			err:             "received 1zcoin but need at least one of the following: 10000matic,10zcoin: minimum deposit is too small",
+			err:             "received 1zcoin but need at least one of the following: 10000000000000000matic,10zcoin: minimum deposit is too small",
 		},
 		{
 			name:            "bad denom",
@@ -210,7 +212,8 @@ func TestDepositAmount(t *testing.T) {
 			govKeeper, authKeeper, bankKeeper, stakingKeeper, distrKeeper, _, ctx := setupGovKeeper(t)
 			trackMockBalances(bankKeeper, distrKeeper)
 
-			testAddrs := simtestutil.AddTestAddrsIncremental(bankKeeper, stakingKeeper, ctx, 2, sdkmath.NewInt(1000000000000000))
+			accAmt := sdkmath.NewIntFromBigInt(new(big.Int).Mul(big.NewInt(10), new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil)))
+			testAddrs := simtestutil.AddTestAddrsIncremental(bankKeeper, stakingKeeper, ctx, 2, accAmt)
 			authKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
 
 			params, _ := govKeeper.Params.Get(ctx)
@@ -389,7 +392,9 @@ func TestChargeDeposit(t *testing.T) {
 				govKeeper, authKeeper, bankKeeper, stakingKeeper, _, _, ctx := setupGovKeeper(t)
 				params := v1.DefaultParams()
 				params.ProposalCancelRatio = tc.proposalCancelRatio
-				TestAddrs := simtestutil.AddTestAddrsIncremental(bankKeeper, stakingKeeper, ctx, 2, sdkmath.NewInt(10000000000))
+
+				accAmt := sdkmath.NewIntFromBigInt(new(big.Int).Mul(big.NewInt(10), new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil)))
+				TestAddrs := simtestutil.AddTestAddrsIncremental(bankKeeper, stakingKeeper, ctx, 2, accAmt)
 				authKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
 
 				switch i {
@@ -412,7 +417,7 @@ func TestChargeDeposit(t *testing.T) {
 				require.NoError(t, err)
 				proposalID := proposal.Id
 				// deposit to proposal
-				fiveStake := sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, stakingKeeper.TokensFromConsensusPower(ctx, 300)))
+				fiveStake := sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, stakingKeeper.TokensFromConsensusPower(ctx, 3)))
 				_, err = govKeeper.AddDeposit(ctx, proposalID, TestAddrs[0], fiveStake)
 				require.NoError(t, err)
 

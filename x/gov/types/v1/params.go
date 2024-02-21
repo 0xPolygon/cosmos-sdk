@@ -2,6 +2,7 @@ package v1
 
 import (
 	"fmt"
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"math/big"
 	"time"
 
@@ -19,9 +20,8 @@ const (
 
 // Default governance params
 var (
-	CoinDecimals = new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil) // HV2: defined in heimdall
-	//DefaultMinDepositTokens          = sdkmath.NewIntFromBigInt(new(big.Int).Mul(big.NewInt(10), CoinDecimals)) // HV2
-	DefaultMinDepositTokens          = sdkmath.NewInt(10000000) // cosmos one
+	CoinDecimals                     = new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil)                    // HV2: defined in heimdall
+	DefaultMinDepositTokens          = sdkmath.NewIntFromBigInt(new(big.Int).Mul(big.NewInt(10), CoinDecimals)) // // HV2: defined in heimdall
 	DefaultMinExpeditedDepositTokens = DefaultMinDepositTokens.Mul(sdkmath.NewInt(DefaultMinExpeditedDepositTokensRatio))
 	DefaultQuorum                    = sdkmath.LegacyNewDecWithPrec(334, 3)
 	DefaultThreshold                 = sdkmath.LegacyNewDecWithPrec(5, 1)
@@ -89,8 +89,7 @@ func NewParams(
 // DefaultParams returns the default governance params
 func DefaultParams() Params {
 	return NewParams(
-		//sdk.NewCoins(sdk.NewCoin(authtypes.FeeToken, DefaultMinDepositTokens)), // HV2: defined in heimdall
-		sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, DefaultMinDepositTokens)), // cosmos one
+		sdk.NewCoins(sdk.NewCoin(authtypes.FeeToken, DefaultMinDepositTokens)), // HV2: defined in heimdall
 		sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, DefaultMinExpeditedDepositTokens)),
 		DefaultPeriod,
 		DefaultPeriod,

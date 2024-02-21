@@ -87,7 +87,7 @@ func setupGovKeeper(t *testing.T) (
 
 	trackMockBalances(bankKeeper, distributionKeeper)
 	stakingKeeper.EXPECT().TokensFromConsensusPower(ctx, gomock.Any()).DoAndReturn(func(ctx sdk.Context, power int64) math.Int {
-		return sdk.TokensFromConsensusPower(power, math.NewIntFromUint64(1000000))
+		return sdk.TokensFromConsensusPower(power, math.NewIntFromUint64(1000000000000000000))
 	}).AnyTimes()
 
 	stakingKeeper.EXPECT().BondDenom(ctx).Return("matic", nil).AnyTimes()

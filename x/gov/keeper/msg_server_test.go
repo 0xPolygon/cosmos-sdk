@@ -1,6 +1,7 @@
 package keeper_test
 
 import (
+	"math/big"
 	"strings"
 	"time"
 
@@ -27,7 +28,7 @@ func (suite *KeeperTestSuite) TestSubmitProposalReq() {
 	addrs := suite.addrs
 	proposer := addrs[0]
 
-	coins := sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(100000)))
+	coins := sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(100000000000000000)))
 	initialDeposit := coins
 	params, _ := suite.govKeeper.Params.Get(suite.ctx)
 	minDeposit := params.MinDeposit
@@ -235,7 +236,7 @@ func (suite *KeeperTestSuite) TestSubmitProposalReq() {
 				)
 			},
 			expErr:    true,
-			expErrMsg: "deposited 100invalid,100000matic, but gov accepts only the following denom(s): [matic]: invalid deposit denom",
+			expErrMsg: "deposited 100invalid,100000000000000000matic, but gov accepts only the following denom(s): [matic]: invalid deposit denom",
 		},
 		"all good": {
 			preRun: func() (*v1.MsgSubmitProposal, error) {
@@ -288,7 +289,7 @@ func (suite *KeeperTestSuite) TestCancelProposalReq() {
 	addrs := suite.addrs
 	proposer := addrs[0]
 
-	coins := sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(100000)))
+	coins := sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(100000000000000000)))
 	bankMsg := &banktypes.MsgSend{
 		FromAddress: govAcct.String(),
 		ToAddress:   proposer.String(),
@@ -384,7 +385,7 @@ func (suite *KeeperTestSuite) TestVoteReq() {
 	addrs := suite.addrs
 	proposer := addrs[0]
 
-	coins := sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(100000)))
+	coins := sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(100000000000000000)))
 	params, _ := suite.govKeeper.Params.Get(suite.ctx)
 	minDeposit := params.MinDeposit
 	bankMsg := &banktypes.MsgSend{
@@ -525,9 +526,10 @@ func (suite *KeeperTestSuite) TestVoteWeightedReq() {
 	suite.reset()
 	govAcct := suite.govKeeper.GetGovernanceAccount(suite.ctx).GetAddress()
 
-	proposer := simtestutil.AddTestAddrsIncremental(suite.bankKeeper, suite.stakingKeeper, suite.ctx, 1, sdkmath.NewInt(50000000))[0]
+	accAmt := sdkmath.NewIntFromBigInt(new(big.Int).Mul(big.NewInt(10), new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil)))
+	proposer := simtestutil.AddTestAddrsIncremental(suite.bankKeeper, suite.stakingKeeper, suite.ctx, 1, accAmt.Mul(sdkmath.NewInt(5)))[0]
 
-	coins := sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(100000)))
+	coins := sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(100000000000000000)))
 	params, _ := suite.govKeeper.Params.Get(suite.ctx)
 	minDeposit := params.MinDeposit
 	bankMsg := &banktypes.MsgSend{
@@ -772,7 +774,7 @@ func (suite *KeeperTestSuite) TestDepositReq() {
 	addrs := suite.addrs
 	proposer := addrs[0]
 
-	coins := sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(100000)))
+	coins := sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(100000000000000000)))
 	params, _ := suite.govKeeper.Params.Get(suite.ctx)
 	minDeposit := sdk.Coins(params.MinDeposit)
 	bankMsg := &banktypes.MsgSend{
@@ -839,7 +841,7 @@ func (suite *KeeperTestSuite) TestDepositReq() {
 			depositor: proposer,
 			deposit:   minDeposit.Add(sdk.NewCoin("ibc/badcoin", sdkmath.NewInt(1000))),
 			expErr:    true,
-			expErrMsg: "deposited 1000ibc/badcoin,10000000matic, but gov accepts only the following denom(s): [matic]: invalid deposit denom",
+			expErrMsg: "deposited 1000ibc/badcoin,10000000000000000000matic, but gov accepts only the following denom(s): [matic]: invalid deposit denom",
 		},
 		"all good": {
 			preRun: func() uint64 {
@@ -868,8 +870,9 @@ func (suite *KeeperTestSuite) TestDepositReq() {
 
 // legacy msg server tests
 func (suite *KeeperTestSuite) TestLegacyMsgSubmitProposal() {
-	proposer := simtestutil.AddTestAddrsIncremental(suite.bankKeeper, suite.stakingKeeper, suite.ctx, 1, sdkmath.NewInt(50000000))[0]
-	coins := sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(100000)))
+	accAmt := sdkmath.NewIntFromBigInt(new(big.Int).Mul(big.NewInt(10), new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil)))
+	proposer := simtestutil.AddTestAddrsIncremental(suite.bankKeeper, suite.stakingKeeper, suite.ctx, 1, accAmt.Mul(sdkmath.NewInt(5)))[0]
+	coins := sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(100000000000000000)))
 	initialDeposit := coins
 	params, _ := suite.govKeeper.Params.Get(suite.ctx)
 	minDeposit := params.MinDeposit
@@ -982,7 +985,7 @@ func (suite *KeeperTestSuite) TestLegacyMsgVote() {
 	addrs := suite.addrs
 	proposer := addrs[0]
 
-	coins := sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(100000)))
+	coins := sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(100000000000000000)))
 	params, _ := suite.govKeeper.Params.Get(suite.ctx)
 	minDeposit := params.MinDeposit
 	bankMsg := &banktypes.MsgSend{
@@ -1115,7 +1118,7 @@ func (suite *KeeperTestSuite) TestLegacyVoteWeighted() {
 	addrs := suite.addrs
 	proposer := addrs[0]
 
-	coins := sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(100000)))
+	coins := sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(100000000000000000)))
 	params, _ := suite.govKeeper.Params.Get(suite.ctx)
 	minDeposit := params.MinDeposit
 	bankMsg := &banktypes.MsgSend{
@@ -1367,7 +1370,7 @@ func (suite *KeeperTestSuite) TestLegacyMsgDeposit() {
 	addrs := suite.addrs
 	proposer := addrs[0]
 
-	coins := sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(100000)))
+	coins := sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(100000000000000000)))
 	params, _ := suite.govKeeper.Params.Get(suite.ctx)
 	minDeposit := params.MinDeposit
 	bankMsg := &banktypes.MsgSend{

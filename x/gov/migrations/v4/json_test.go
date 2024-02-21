@@ -66,7 +66,7 @@ func TestMigrateJSON(t *testing.T) {
 		"burn_vote_veto": true,
 		"expedited_min_deposit": [
 			{
-				"amount": "50000000",
+				"amount": "50000000000000000000",
 				"denom": "matic"
 			}
 		],
@@ -75,7 +75,7 @@ func TestMigrateJSON(t *testing.T) {
 		"max_deposit_period": "172800s",
 		"min_deposit": [
 			{
-				"amount": "10000000",
+				"amount": "10000000000000000000",
 				"denom": "matic"
 			}
 		],
