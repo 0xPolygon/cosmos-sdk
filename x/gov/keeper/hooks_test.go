@@ -2,6 +2,7 @@ package keeper_test
 
 import (
 	"context"
+	"github.com/golang/mock/gomock"
 	"testing"
 	"time"
 
@@ -59,6 +60,7 @@ func TestHooks(t *testing.T) {
 
 	authKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
 	stakingKeeper.EXPECT().ValidatorAddressCodec().Return(address.NewHexCodec()).AnyTimes()
+	stakingKeeper.EXPECT().IterateCurrentValidatorsAndApplyFn(gomock.Any(), gomock.Any()).AnyTimes()
 
 	govHooksReceiver := MockGovHooksReceiver{}
 
