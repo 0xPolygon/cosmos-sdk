@@ -46,6 +46,12 @@ func EndBlocker(ctx sdk.Context, keeper *keeper.Keeper) error {
 			return false, err
 		}
 
+		// HV2: heimdall always refunds and deletes deposits in all cases of proposal failures, without caring about params.BurnProposalDepositPrevote
+		err = keeper.RefundAndDeleteDeposits(ctx, proposal.Id) // refund deposit if proposal got removed without getting 100% of the proposal
+		if err != nil {
+			return false, err
+		}
+
 		if err = keeper.DeleteProposal(ctx, proposal.Id); err != nil {
 			return false, err
 		}
@@ -54,6 +60,7 @@ func EndBlocker(ctx sdk.Context, keeper *keeper.Keeper) error {
 		if err != nil {
 			return false, err
 		}
+		/* HV2: not present in heimdall
 		if !params.BurnProposalDepositPrevote {
 			err = keeper.RefundAndDeleteDeposits(ctx, proposal.Id) // refund deposit if proposal got removed without getting 100% of the proposal
 		} else {
@@ -63,6 +70,7 @@ func EndBlocker(ctx sdk.Context, keeper *keeper.Keeper) error {
 		if err != nil {
 			return false, err
 		}
+		*/
 
 		// called when proposal become inactive
 		cacheCtx, writeCache := ctx.CacheContext()
@@ -123,6 +131,12 @@ func EndBlocker(ctx sdk.Context, keeper *keeper.Keeper) error {
 		var tagValue, logMsg string
 
 		passes, _, tallyResults, err := keeper.Tally(ctx, proposal)
+		if err != nil {
+			return false, err
+		}
+
+		// HV2: heimdall refunds and deletes deposits in all cases of proposal failures, without caring about burnDeposits
+		err = keeper.RefundAndDeleteDeposits(ctx, proposal.Id)
 		if err != nil {
 			return false, err
 		}

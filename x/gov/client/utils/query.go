@@ -69,7 +69,6 @@ func QueryVotesByTxQuery(clientCtx client.Context, params v1.QueryProposalVotesP
 						Options:    v1.NewNonSplitVoteOption(voteMsg.Option),
 					})
 				}
-				/* HV2: disabled in heimdall as we do not support WeighedVoteOptions
 				if voteWeightedMsg, ok := msg.(*v1beta1.MsgVoteWeighted); ok {
 					votes = append(votes, convertVote(voteWeightedMsg))
 				}
@@ -81,7 +80,6 @@ func QueryVotesByTxQuery(clientCtx client.Context, params v1.QueryProposalVotesP
 						Options:    voteWeightedMsg.Options,
 					})
 				}
-				*/
 			}
 		}
 		if len(searchResult.Txs) != defaultLimit {

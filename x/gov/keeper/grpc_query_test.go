@@ -1567,6 +1567,7 @@ func (suite *KeeperTestSuite) TestGRPCQueryTallyResult() {
 		suite.Run(fmt.Sprintf("Case %s", testCase.msg), func() {
 			testCase.malleate()
 
+			suite.stakingKeeper.EXPECT().IterateCurrentValidatorsAndApplyFn(gomock.Any(), gomock.Any()).AnyTimes()
 			tallyRes, err := queryClient.TallyResult(gocontext.Background(), req)
 
 			if testCase.expPass {

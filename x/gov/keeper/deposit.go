@@ -239,14 +239,14 @@ func (keeper Keeper) ChargeDeposit(ctx context.Context, proposalID uint64, destA
 		// get the distribution module account address
 		distributionAddress := keeper.authKeeper.GetModuleAddress(disttypes.ModuleName)
 		switch {
-		/* HV2: in heimdall we have no BurnCoins func
 		case destAddress == "":
+			/* HV2: in heimdall we have no BurnCoins func
 			// burn the cancellation charges from deposits
 			err := keeper.bankKeeper.BurnCoins(ctx, types.ModuleName, cancellationCharges)
 			if err != nil {
 				return err
 			}
-		*/
+			*/
 		case distributionAddress.String() == destAddress:
 			err := keeper.distrKeeper.FundCommunityPool(ctx, cancellationCharges, keeper.ModuleAccountAddress())
 			if err != nil {
