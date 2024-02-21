@@ -27,7 +27,7 @@ func (suite *KeeperTestSuite) TestSubmitProposalReq() {
 	addrs := suite.addrs
 	proposer := addrs[0]
 
-	coins := sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(100000000000000000)))
+	coins := sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(100000)))
 	initialDeposit := coins
 	params, _ := suite.govKeeper.Params.Get(suite.ctx)
 	minDeposit := params.MinDeposit
@@ -235,7 +235,7 @@ func (suite *KeeperTestSuite) TestSubmitProposalReq() {
 				)
 			},
 			expErr:    true,
-			expErrMsg: "deposited 100invalid,100000000000000000matic, but gov accepts only the following denom(s): [matic]: invalid deposit denom",
+			expErrMsg: "deposited 100invalid,100000matic, but gov accepts only the following denom(s): [matic]: invalid deposit denom",
 		},
 		"all good": {
 			preRun: func() (*v1.MsgSubmitProposal, error) {
@@ -288,7 +288,7 @@ func (suite *KeeperTestSuite) TestCancelProposalReq() {
 	addrs := suite.addrs
 	proposer := addrs[0]
 
-	coins := sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(100000000000000000)))
+	coins := sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(100000)))
 	bankMsg := &banktypes.MsgSend{
 		FromAddress: govAcct.String(),
 		ToAddress:   proposer.String(),
@@ -479,7 +479,7 @@ func (suite *KeeperTestSuite) TestVoteReq() {
 			voter:     sdk.AccAddress(strings.Repeat("a", 300)),
 			metadata:  "",
 			expErr:    true,
-			expErrMsg: longAddressError,
+			expErrMsg: "invalid address",
 		},
 		"all good": {
 			preRun: func() uint64 {
@@ -571,7 +571,7 @@ func (suite *KeeperTestSuite) TestVoteWeightedReq() {
 			voter:     sdk.AccAddress{},
 			metadata:  "",
 			expErr:    true,
-			expErrMsg: "invalid voter address",
+			expErrMsg: "weighted vote options not supported",
 		},
 		"weights sum > 1": {
 			preRun: func() uint64 {
@@ -584,7 +584,7 @@ func (suite *KeeperTestSuite) TestVoteWeightedReq() {
 			voter:     proposer,
 			metadata:  "",
 			expErr:    true,
-			expErrMsg: "total weight overflow 1.00: invalid vote option",
+			expErrMsg: "weighted vote options not supported",
 		},
 		"duplicate vote options": {
 			preRun: func() uint64 {
@@ -597,7 +597,7 @@ func (suite *KeeperTestSuite) TestVoteWeightedReq() {
 			voter:     proposer,
 			metadata:  "",
 			expErr:    true,
-			expErrMsg: "duplicated vote option",
+			expErrMsg: "weighted vote options not supported",
 		},
 		"zero weight": {
 			preRun: func() uint64 {
@@ -609,7 +609,7 @@ func (suite *KeeperTestSuite) TestVoteWeightedReq() {
 			voter:     proposer,
 			metadata:  "",
 			expErr:    true,
-			expErrMsg: `option:VOTE_OPTION_YES weight:"0.000000000000000000" : invalid vote option`,
+			expErrMsg: "weighted vote options not supported",
 		},
 		"negative weight": {
 			preRun: func() uint64 {
@@ -621,7 +621,7 @@ func (suite *KeeperTestSuite) TestVoteWeightedReq() {
 			voter:     proposer,
 			metadata:  "",
 			expErr:    true,
-			expErrMsg: `option:VOTE_OPTION_YES weight:"-1.000000000000000000" : invalid vote option`,
+			expErrMsg: "weighted vote options not supported",
 		},
 		"empty options": {
 			preRun: func() uint64 {
@@ -631,7 +631,7 @@ func (suite *KeeperTestSuite) TestVoteWeightedReq() {
 			voter:     proposer,
 			metadata:  "",
 			expErr:    true,
-			expErrMsg: "invalid request",
+			expErrMsg: "weighted vote options not supported",
 		},
 		"invalid vote option": {
 			preRun: func() uint64 {
@@ -641,7 +641,7 @@ func (suite *KeeperTestSuite) TestVoteWeightedReq() {
 			voter:     proposer,
 			metadata:  "",
 			expErr:    true,
-			expErrMsg: "invalid vote option",
+			expErrMsg: "weighted vote options not supported",
 		},
 		"weight sum < 1": {
 			preRun: func() uint64 {
@@ -653,7 +653,7 @@ func (suite *KeeperTestSuite) TestVoteWeightedReq() {
 			voter:     proposer,
 			metadata:  "",
 			expErr:    true,
-			expErrMsg: "total weight lower than 1.00: invalid vote option",
+			expErrMsg: "weighted vote options not supported",
 		},
 		"vote on inactive proposal": {
 			preRun: func() uint64 {
@@ -677,7 +677,7 @@ func (suite *KeeperTestSuite) TestVoteWeightedReq() {
 			voter:     proposer,
 			metadata:  "",
 			expErr:    true,
-			expErrMsg: "inactive proposal",
+			expErrMsg: "weighted vote options not supported",
 		},
 		"metadata too long": {
 			preRun: func() uint64 {
@@ -687,7 +687,7 @@ func (suite *KeeperTestSuite) TestVoteWeightedReq() {
 			voter:     proposer,
 			metadata:  strings.Repeat("a", 300),
 			expErr:    true,
-			expErrMsg: "metadata too long",
+			expErrMsg: "weighted vote options not supported",
 		},
 		"voter error": {
 			preRun: func() uint64 {
@@ -697,7 +697,7 @@ func (suite *KeeperTestSuite) TestVoteWeightedReq() {
 			voter:     sdk.AccAddress(strings.Repeat("a", 300)),
 			metadata:  "",
 			expErr:    true,
-			expErrMsg: longAddressError,
+			expErrMsg: "weighted vote options not supported",
 		},
 		"all good": {
 			preRun: func() uint64 {
@@ -717,10 +717,11 @@ func (suite *KeeperTestSuite) TestVoteWeightedReq() {
 				suite.Require().NotNil(res.ProposalId)
 				return res.ProposalId
 			},
-			option:   v1.NewNonSplitVoteOption(v1.VoteOption_VOTE_OPTION_YES),
-			voter:    proposer,
-			metadata: "",
-			expErr:   false,
+			option:    v1.NewNonSplitVoteOption(v1.VoteOption_VOTE_OPTION_YES),
+			voter:     proposer,
+			metadata:  "",
+			expErr:    true,
+			expErrMsg: "weighted vote options not supported",
 		},
 		"all good with split votes": {
 			preRun: func() uint64 {
@@ -744,9 +745,10 @@ func (suite *KeeperTestSuite) TestVoteWeightedReq() {
 				v1.NewWeightedVoteOption(v1.OptionYes, sdkmath.LegacyNewDecWithPrec(5, 1)),
 				v1.NewWeightedVoteOption(v1.OptionAbstain, sdkmath.LegacyNewDecWithPrec(5, 1)),
 			},
-			voter:    proposer,
-			metadata: "",
-			expErr:   false,
+			voter:     proposer,
+			metadata:  "",
+			expErr:    true,
+			expErrMsg: "weighted vote options not supported",
 		},
 	}
 
@@ -770,7 +772,7 @@ func (suite *KeeperTestSuite) TestDepositReq() {
 	addrs := suite.addrs
 	proposer := addrs[0]
 
-	coins := sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(100000000000000000)))
+	coins := sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(100000)))
 	params, _ := suite.govKeeper.Params.Get(suite.ctx)
 	minDeposit := sdk.Coins(params.MinDeposit)
 	bankMsg := &banktypes.MsgSend{
@@ -867,7 +869,7 @@ func (suite *KeeperTestSuite) TestDepositReq() {
 // legacy msg server tests
 func (suite *KeeperTestSuite) TestLegacyMsgSubmitProposal() {
 	proposer := simtestutil.AddTestAddrsIncremental(suite.bankKeeper, suite.stakingKeeper, suite.ctx, 1, sdkmath.NewInt(50000000))[0]
-	coins := sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(100000000000000000)))
+	coins := sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(100000)))
 	initialDeposit := coins
 	params, _ := suite.govKeeper.Params.Get(suite.ctx)
 	minDeposit := params.MinDeposit
@@ -1021,7 +1023,7 @@ func (suite *KeeperTestSuite) TestLegacyMsgVote() {
 			voter:     sdk.AccAddress{},
 			metadata:  "",
 			expErr:    true,
-			expErrMsg: "invalid voter address",
+			expErrMsg: "invalid address",
 		},
 		"wrong vote option": {
 			preRun: func() uint64 {
@@ -1065,7 +1067,7 @@ func (suite *KeeperTestSuite) TestLegacyMsgVote() {
 			voter:     sdk.AccAddress(strings.Repeat("a", 300)),
 			metadata:  "",
 			expErr:    true,
-			expErrMsg: longAddressError,
+			expErrMsg: "invalid address",
 		},
 		"all good": {
 			preRun: func() uint64 {
@@ -1160,7 +1162,7 @@ func (suite *KeeperTestSuite) TestLegacyVoteWeighted() {
 			voter:     sdk.AccAddress{},
 			metadata:  "",
 			expErr:    true,
-			expErrMsg: "invalid voter address",
+			expErrMsg: "weighted vote options not supported",
 		},
 		"weights sum > 1": {
 			preRun: func() uint64 {
@@ -1179,7 +1181,7 @@ func (suite *KeeperTestSuite) TestLegacyVoteWeighted() {
 			voter:     proposer,
 			metadata:  "",
 			expErr:    true,
-			expErrMsg: "total weight overflow 1.00: invalid vote option",
+			expErrMsg: "weighted vote options not supported",
 		},
 		"duplicate vote options": {
 			preRun: func() uint64 {
@@ -1198,7 +1200,7 @@ func (suite *KeeperTestSuite) TestLegacyVoteWeighted() {
 			voter:     proposer,
 			metadata:  "",
 			expErr:    true,
-			expErrMsg: "duplicated vote option",
+			expErrMsg: "weighted vote options not supported",
 		},
 		"zero weight": {
 			preRun: func() uint64 {
@@ -1213,7 +1215,7 @@ func (suite *KeeperTestSuite) TestLegacyVoteWeighted() {
 			voter:     proposer,
 			metadata:  "",
 			expErr:    true,
-			expErrMsg: `option:VOTE_OPTION_YES weight:"0.000000000000000000" : invalid vote option`,
+			expErrMsg: "weighted vote options not supported",
 		},
 		"negative weight": {
 			preRun: func() uint64 {
@@ -1228,7 +1230,7 @@ func (suite *KeeperTestSuite) TestLegacyVoteWeighted() {
 			voter:     proposer,
 			metadata:  "",
 			expErr:    true,
-			expErrMsg: `option:VOTE_OPTION_YES weight:"-1.000000000000000000" : invalid vote option`,
+			expErrMsg: "weighted vote options not supported",
 		},
 		"empty options": {
 			preRun: func() uint64 {
@@ -1238,7 +1240,7 @@ func (suite *KeeperTestSuite) TestLegacyVoteWeighted() {
 			voter:     proposer,
 			metadata:  "",
 			expErr:    true,
-			expErrMsg: "invalid request",
+			expErrMsg: "weighted vote options not supported",
 		},
 		"invalid vote option": {
 			preRun: func() uint64 {
@@ -1253,7 +1255,7 @@ func (suite *KeeperTestSuite) TestLegacyVoteWeighted() {
 			voter:     proposer,
 			metadata:  "",
 			expErr:    true,
-			expErrMsg: "invalid vote option",
+			expErrMsg: "weighted vote options not supported",
 		},
 		"weight sum < 1": {
 			preRun: func() uint64 {
@@ -1268,7 +1270,7 @@ func (suite *KeeperTestSuite) TestLegacyVoteWeighted() {
 			voter:     proposer,
 			metadata:  "",
 			expErr:    true,
-			expErrMsg: "total weight lower than 1.00: invalid vote option",
+			expErrMsg: "weighted vote options not supported",
 		},
 		"vote on inactive proposal": {
 			preRun: func() uint64 {
@@ -1297,7 +1299,7 @@ func (suite *KeeperTestSuite) TestLegacyVoteWeighted() {
 			voter:     proposer,
 			metadata:  "",
 			expErr:    true,
-			expErrMsg: "inactive proposal",
+			expErrMsg: "weighted vote options not supported",
 		},
 		"voter error": {
 			preRun: func() uint64 {
@@ -1312,7 +1314,7 @@ func (suite *KeeperTestSuite) TestLegacyVoteWeighted() {
 			voter:     sdk.AccAddress(strings.Repeat("a", 300)),
 			metadata:  "",
 			expErr:    true,
-			expErrMsg: longAddressError,
+			expErrMsg: "weighted vote options not supported",
 		},
 		"all good": {
 			preRun: func() uint64 {
@@ -1338,9 +1340,10 @@ func (suite *KeeperTestSuite) TestLegacyVoteWeighted() {
 					Weight: sdkmath.LegacyNewDec(1),
 				},
 			},
-			voter:    proposer,
-			metadata: "",
-			expErr:   false,
+			voter:     proposer,
+			metadata:  "",
+			expErr:    true,
+			expErrMsg: "weighted vote options not supported",
 		},
 	}
 
@@ -1364,7 +1367,7 @@ func (suite *KeeperTestSuite) TestLegacyMsgDeposit() {
 	addrs := suite.addrs
 	proposer := addrs[0]
 
-	coins := sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(100000000000000000)))
+	coins := sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(100000)))
 	params, _ := suite.govKeeper.Params.Get(suite.ctx)
 	minDeposit := params.MinDeposit
 	bankMsg := &banktypes.MsgSend{

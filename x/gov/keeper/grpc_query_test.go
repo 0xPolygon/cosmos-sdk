@@ -3,6 +3,7 @@ package keeper_test
 import (
 	gocontext "context"
 	"fmt"
+	"github.com/golang/mock/gomock"
 	"time"
 
 	"cosmossdk.io/math"
@@ -1702,6 +1703,7 @@ func (suite *KeeperTestSuite) TestLegacyGRPCQueryTallyResult() {
 		suite.Run(fmt.Sprintf("Case %s", testCase.msg), func() {
 			testCase.malleate()
 
+			suite.stakingKeeper.EXPECT().IterateCurrentValidatorsAndApplyFn(gomock.Any(), gomock.Any()).AnyTimes()
 			tallyRes, err := queryClient.TallyResult(gocontext.Background(), req)
 
 			if testCase.expPass {
