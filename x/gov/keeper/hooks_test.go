@@ -75,7 +75,9 @@ func TestHooks(t *testing.T) {
 	require.False(t, govHooksReceiver.AfterProposalVotingPeriodEndedValid)
 
 	tp := TestProposal
-	_, err := govKeeper.SubmitProposal(ctx, tp, "", "test", "summary", sdk.AccAddress("0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff"), false)
+	accAddr, err := sdk.AccAddressFromHex("0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff")
+	require.NoError(t, err)
+	_, err = govKeeper.SubmitProposal(ctx, tp, "", "test", "summary", accAddr, false)
 	require.NoError(t, err)
 	require.True(t, govHooksReceiver.AfterProposalSubmissionValid)
 
@@ -87,7 +89,9 @@ func TestHooks(t *testing.T) {
 
 	require.True(t, govHooksReceiver.AfterProposalFailedMinDepositValid)
 
-	p2, err := govKeeper.SubmitProposal(ctx, tp, "", "test", "summary", sdk.AccAddress("0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff"), false)
+	accAddr, err = sdk.AccAddressFromHex("0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff")
+	require.NoError(t, err)
+	p2, err := govKeeper.SubmitProposal(ctx, tp, "", "test", "summary", accAddr, false)
 	require.NoError(t, err)
 
 	activated, err := govKeeper.AddDeposit(ctx, p2.Id, addrs[0], minDeposit)

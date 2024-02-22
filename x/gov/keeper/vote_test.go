@@ -20,7 +20,9 @@ func TestVotes(t *testing.T) {
 	authKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
 
 	tp := TestProposal
-	proposal, err := govKeeper.SubmitProposal(ctx, tp, "", "title", "description", sdk.AccAddress("0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff"), false)
+	accAddr, err := sdk.AccAddressFromHex("0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff")
+	require.NoError(t, err)
+	proposal, err := govKeeper.SubmitProposal(ctx, tp, "", "title", "description", accAddr, false)
 	require.NoError(t, err)
 	proposalID := proposal.Id
 	metadata := "metadata"

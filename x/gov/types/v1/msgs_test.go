@@ -2,7 +2,6 @@ package v1_test
 
 import (
 	"fmt"
-	"github.com/cosmos/cosmos-sdk/codec/address"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -15,13 +14,13 @@ import (
 )
 
 var (
-	coinsPos      = sdk.NewCoins(sdk.NewInt64Coin(sdk.DefaultBondDenom, 1000))
-	coinsMulti    = sdk.NewCoins(sdk.NewInt64Coin(sdk.DefaultBondDenom, 1000), sdk.NewInt64Coin("foo", 10000))
-	addrBytes1, _ = address.HexCodec{}.StringToBytes("0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff")
-	addrBytes2, _ = address.HexCodec{}.StringToBytes("0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff")
-	addrs         = []sdk.AccAddress{
-		sdk.AccAddress(addrBytes1),
-		sdk.AccAddress(addrBytes2),
+	coinsPos    = sdk.NewCoins(sdk.NewInt64Coin(sdk.DefaultBondDenom, 1000))
+	coinsMulti  = sdk.NewCoins(sdk.NewInt64Coin(sdk.DefaultBondDenom, 1000), sdk.NewInt64Coin("foo", 10000))
+	accAddr1, _ = sdk.AccAddressFromHex("0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff")
+	accAddr2, _ = sdk.AccAddressFromHex("0x67b94473d81d0cd00849d563c94d0432ac988b49")
+	addrs       = []sdk.AccAddress{
+		accAddr1,
+		accAddr2,
 	}
 )
 
@@ -30,8 +29,8 @@ func init() {
 }
 
 func TestMsgDepositGetSignBytes(t *testing.T) {
-	addrBytes, _ := address.HexCodec{}.StringToBytes("0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff")
-	addr := sdk.AccAddress(addrBytes)
+	addr, err := sdk.AccAddressFromHex("0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff")
+	require.NoError(t, err)
 	msg := v1.NewMsgDeposit(addr, 0, coinsPos)
 	pc := codec.NewProtoCodec(types.NewInterfaceRegistry())
 	res, err := pc.MarshalAminoJSON(msg)

@@ -1039,7 +1039,6 @@ func (suite *KeeperTestSuite) TestLegacyGRPCQueryParams() {
 
 			if testCase.expPass {
 				suite.Require().NoError(err)
-				// 100000000000000000 === 10000000000000000000
 				suite.Require().Equal(expRes.GetDepositParams(), params.GetDepositParams())
 				suite.Require().Equal(expRes.GetVotingParams(), params.GetVotingParams())
 				suite.Require().Equal(expRes.GetTallyParams(), params.GetTallyParams())

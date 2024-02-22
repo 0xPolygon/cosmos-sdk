@@ -33,7 +33,7 @@ func (keeper Keeper) Tally(ctx context.Context, proposal v1.Proposal) (passes, b
 		}
 		currValidators[validator.GetOperator()] = v1.NewValidatorGovInfo(
 			valBz,
-			// HV2: using bonded tokens as staking module will return the validator's voting power for it
+			// TODO HV2: using validator.GetBondedTokens() as custom staking module will return the validator's VotingPower for it
 			validator.GetBondedTokens(),
 			math.LegacyZeroDec(),
 			math.LegacyZeroDec(),
@@ -100,7 +100,7 @@ func (keeper Keeper) Tally(ctx context.Context, proposal v1.Proposal) (passes, b
 
 	// iterate over the validators again to tally their voting power
 	for _, val := range currValidators {
-		// HV2: val.BondedTokens is heimdall's val.VotingPower
+		// TODO HV2: using val.BondedTokens as this is heimdall's val.VotingPower
 		votingPower := math.LegacyNewDec(val.BondedTokens.Int64())
 		totalBondedTokens = totalBondedTokens.Add(votingPower)
 
