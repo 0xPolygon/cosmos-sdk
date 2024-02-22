@@ -320,7 +320,8 @@ func (svd SigVerificationDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simul
 			anyPk, _ := codectypes.NewAnyWithValue(pubKey)
 
 			/* TODO HV2: do we need to add here (and modify accordingly) the following code from heimdall?
-			// in that case, we need to implement the RecoverPubkey method
+			// This should be needed, and - most probably - since the `processSig` method disappeared, it should be done in SetPubKeyDecorator
+			// If that's the case, we need to implement the RecoverPubkey method
 			// see https://github.com/0xPolygon/cosmos-sdk/pull/3/#discussion_r1497996133
 			// see https://github.com/0xPolygon/cosmos-sdk/pull/3/#discussion_r1498023925
 
