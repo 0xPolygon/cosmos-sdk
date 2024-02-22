@@ -319,14 +319,18 @@ func (svd SigVerificationDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simul
 		if !simulate && !ctx.IsReCheckTx() {
 			anyPk, _ := codectypes.NewAnyWithValue(pubKey)
 
-			// TODO HV2: do we need to add here (and modify accordingly) the following code from heimdall?
+			/* TODO HV2: do we need to add here (and modify accordingly) the following code from heimdall?
 			// in that case, we need to implement the RecoverPubkey method
-			/*
-				p, err := authTypes.RecoverPubkey(signBytes, sig.Bytes())
-				if err != nil {
-					return nil, sdk.ErrUnauthorized("signature verification failed; verify correct account sequence and chain-id").Result()
-				}
-				copy(pk[:], p[:])
+			// see https://github.com/0xPolygon/cosmos-sdk/pull/3/#discussion_r1497996133
+			// see https://github.com/0xPolygon/cosmos-sdk/pull/3/#discussion_r1498023925
+
+			var pk secp256k1.PubKeySecp256k1
+			p, err := authTypes.RecoverPubkey(signBytes, sig.Bytes())
+			if err != nil {
+				return nil, sdk.ErrUnauthorized("signature verification failed; verify correct account sequence and chain-id").Result()
+			}
+			copy(pk[:], p[:])
+
 			*/
 
 			signerData := txsigning.SignerData{
