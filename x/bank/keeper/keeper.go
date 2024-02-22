@@ -419,7 +419,7 @@ func (k BaseKeeper) BurnCoins(ctx context.Context, moduleName string, amounts sd
 
 // SubtractCoins subtracts coins from the balance of an account
 // NOTE(Heimdall-v2): required in heimdall for fee withdrawal in topup module
-func (k BaseKeeper) SubtractCoins(ctx context.Context, moduleName string, addr sdk.AccAddress, amounts sdk.Coins) error {
+func (k BaseKeeper) SubtractCoins(ctx context.Context, addr sdk.AccAddress, amounts sdk.Coins) error {
 	if !amounts.IsValid() {
 		return errorsmod.Wrap(sdkerrors.ErrInvalidCoins, amounts.String())
 	}
@@ -435,7 +435,7 @@ func (k BaseKeeper) SubtractCoins(ctx context.Context, moduleName string, addr s
 		k.setSupply(ctx, supply)
 	}
 
-	k.logger.Debug("subtracted tokens from account", "amount", amounts.String(), "from", moduleName)
+	k.logger.Debug("subtracted tokens from account", "amount", amounts.String(), "from", addr)
 
 	// emit burn event
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
