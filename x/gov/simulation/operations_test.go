@@ -274,7 +274,10 @@ func TestSimulateMsgDeposit(t *testing.T) {
 	params, _ := suite.GovKeeper.Params.Get(ctx)
 	depositPeriod := params.MaxDepositPeriod
 
-	proposal, err := v1.NewProposal([]sdk.Msg{contentMsg}, 1, submitTime, submitTime.Add(*depositPeriod), "", "text proposal", "description", sdk.AccAddress("cosmos1ghekyjucln7y67ntx7cf27m9dpuxxemn4c8g4r"), false)
+	proposer, err := sdk.AccAddressFromHex("0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff")
+	require.NoError(t, err)
+
+	proposal, err := v1.NewProposal([]sdk.Msg{contentMsg}, 1, submitTime, submitTime.Add(*depositPeriod), "", "text proposal", "description", proposer, false)
 	require.NoError(t, err)
 
 	suite.GovKeeper.SetProposal(ctx, proposal)
@@ -322,7 +325,10 @@ func TestSimulateMsgVote(t *testing.T) {
 	params, _ := suite.GovKeeper.Params.Get(ctx)
 	depositPeriod := params.MaxDepositPeriod
 
-	proposal, err := v1.NewProposal([]sdk.Msg{contentMsg}, 1, submitTime, submitTime.Add(*depositPeriod), "", "text proposal", "description", sdk.AccAddress("cosmos1ghekyjucln7y67ntx7cf27m9dpuxxemn4c8g4r"), false)
+	proposer, err := sdk.AccAddressFromHex("0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff")
+	require.NoError(t, err)
+
+	proposal, err := v1.NewProposal([]sdk.Msg{contentMsg}, 1, submitTime, submitTime.Add(*depositPeriod), "", "text proposal", "description", proposer, false)
 	require.NoError(t, err)
 
 	suite.GovKeeper.ActivateVotingPeriod(ctx, proposal)
@@ -369,7 +375,10 @@ func TestSimulateMsgVoteWeighted(t *testing.T) {
 	params, _ := suite.GovKeeper.Params.Get(ctx)
 	depositPeriod := params.MaxDepositPeriod
 
-	proposal, err := v1.NewProposal([]sdk.Msg{contentMsg}, 1, submitTime, submitTime.Add(*depositPeriod), "", "text proposal", "test", sdk.AccAddress("cosmos1ghekyjucln7y67ntx7cf27m9dpuxxemn4c8g4r"), false)
+	proposer, err := sdk.AccAddressFromHex("0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff")
+	require.NoError(t, err)
+
+	proposal, err := v1.NewProposal([]sdk.Msg{contentMsg}, 1, submitTime, submitTime.Add(*depositPeriod), "", "text proposal", "test", proposer, false)
 	require.NoError(t, err)
 
 	suite.GovKeeper.ActivateVotingPeriod(ctx, proposal)
@@ -389,7 +398,7 @@ func TestSimulateMsgVoteWeighted(t *testing.T) {
 	require.NoError(t, err)
 	require.True(t, operationMsg.OK)
 	require.Equal(t, uint64(1), msg.ProposalId)
-	require.Equal(t, "cosmos1ghekyjucln7y67ntx7cf27m9dpuxxemn4c8g4r", msg.Voter)
+	require.Equal(t, "0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff", msg.Voter)
 	require.True(t, len(msg.Options) >= 1)
 	require.Equal(t, simulation.TypeMsgVoteWeighted, sdk.MsgTypeURL(&msg))
 }

@@ -275,7 +275,8 @@ func TestAddGovPropFlagsToCmd(t *testing.T) {
 }
 
 func TestReadGovPropFlags(t *testing.T) {
-	fromAddr := sdk.AccAddress("from_addr___________")
+	fromAddr, err := sdk.AccAddressFromHex("0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff")
+	require.NoError(t, err)
 	argDeposit := "--" + FlagDeposit
 	argMetadata := "--" + FlagMetadata
 	argTitle := "--" + FlagTitle

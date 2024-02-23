@@ -103,8 +103,8 @@ Where proposal.json contains:
   "messages": [
     {
       "@type": "/cosmos.bank.v1beta1.MsgSend",
-      "from_address": "cosmos1...",
-      "to_address": "cosmos1...",
+      "from_address": "0x...",
+      "to_address": "0x...",
       "amount":[{"denom": "matic","amount": "10"}]
     }
   ],

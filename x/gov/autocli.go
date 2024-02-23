@@ -28,7 +28,7 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					RpcMethod: "Proposals",
 					Use:       "proposals",
 					Short:     "Query proposals with optional filters",
-					Example:   fmt.Sprintf("%[1]s query gov proposals --depositor cosmos1...\n%[1]s query gov proposals --voter cosmos1...\n%[1]s query gov proposals --proposal-status (PROPOSAL_STATUS_DEPOSIT_PERIOD|PROPOSAL_STATUS_VOTING_PERIOD|PROPOSAL_STATUS_PASSED|PROPOSAL_STATUS_REJECTED|PROPOSAL_STATUS_FAILED)", version.AppName),
+					Example:   fmt.Sprintf("%[1]s query gov proposals --depositor 0x...\n%[1]s query gov proposals --voter 0x...\n%[1]s query gov proposals --proposal-status (PROPOSAL_STATUS_DEPOSIT_PERIOD|PROPOSAL_STATUS_VOTING_PERIOD|PROPOSAL_STATUS_PASSED|PROPOSAL_STATUS_REJECTED|PROPOSAL_STATUS_FAILED)", version.AppName),
 				},
 				{
 					RpcMethod: "Proposal",
@@ -44,7 +44,7 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					RpcMethod: "Vote",
 					Use:       "vote [proposal-id] [voter-addr]",
 					Short:     "Query details of a single vote",
-					Example:   fmt.Sprintf("%s query gov vote 1 cosmos1...", version.AppName),
+					Example:   fmt.Sprintf("%s query gov vote 1 0x...", version.AppName),
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{
 						{ProtoField: "proposal_id"},
 						{ProtoField: "voter"},
