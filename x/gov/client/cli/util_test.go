@@ -185,7 +185,8 @@ func TestParseSubmitProposal(t *testing.T) {
 	require.NoError(t, err, "unexpected error")
 	require.Equal(t, sdk.NewCoins(sdk.NewCoin("test", sdkmath.NewInt(1000))), deposit)
 	require.Equal(t, base64.StdEncoding.EncodeToString(expectedMetadata), proposal.Metadata)
-	require.Len(t, msgs, 3)
+	require.Nil(t, msgs)
+	/* HV2: disabled all non-text proposals
 	msg1, ok := msgs[0].(*banktypes.MsgSend)
 	require.True(t, ok)
 	require.Equal(t, addr.String(), msg1.FromAddress)
@@ -203,6 +204,7 @@ func TestParseSubmitProposal(t *testing.T) {
 	require.True(t, ok)
 	require.Equal(t, "My awesome title", textProp.Title)
 	require.Equal(t, "My awesome description", textProp.Description)
+	*/
 	require.Equal(t, "My awesome title", proposal.Title)
 	require.Equal(t, "My awesome summary", proposal.Summary)
 	require.Equal(t, true, proposal.Expedited)

@@ -99,15 +99,6 @@ $ %s tx gov submit-proposal path/to/proposal.json
 Where proposal.json contains:
 
 {
-  // array of proto-JSON-encoded sdk.Msgs
-  "messages": [
-    {
-      "@type": "/cosmos.bank.v1beta1.MsgSend",
-      "from_address": "0x...",
-      "to_address": "0x...",
-      "amount":[{"denom": "matic","amount": "10"}]
-    }
-  ],
   // metadata can be any of base64 encoded, raw text, stringified json, IPFS link to json
   // see below for example metadata
   "metadata": "4pIMOgIGx1vZGU=",
@@ -204,12 +195,12 @@ Where proposal.json contains:
   "title": "Test Proposal",
   "description": "My awesome proposal",
   "type": "Text",
-  "deposit": "10test"
+  "deposit": "10matic"
 }
 
 Which is equivalent to:
 
-$ %s tx gov submit-legacy-proposal --title="Test Proposal" --description="My awesome proposal" --type="Text" --deposit="10test" --from mykey
+$ %s tx gov submit-legacy-proposal --title="Test Proposal" --description="My awesome proposal" --type="Text" --deposit="10matic" --from mykey
 `,
 				version.AppName, version.AppName,
 			),

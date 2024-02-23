@@ -14,7 +14,7 @@ var (
 
 // NewMsgSubmitProposal creates a new MsgSubmitProposal.
 func NewMsgSubmitProposal(
-	messages []sdk.Msg,
+	_ []sdk.Msg,
 	initialDeposit sdk.Coins,
 	proposer, metadata, title, summary string,
 	expedited bool,
@@ -28,12 +28,14 @@ func NewMsgSubmitProposal(
 		Expedited:      expedited,
 	}
 
+	/* HV2: disabled all non-text proposals
 	anys, err := sdktx.SetMsgs(messages)
 	if err != nil {
 		return nil, err
 	}
 
 	m.Messages = anys
+	*/
 
 	return m, nil
 }

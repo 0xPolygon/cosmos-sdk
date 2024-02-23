@@ -81,17 +81,19 @@ func parseSubmitLegacyProposal(fs *pflag.FlagSet) (*legacyProposal, error) {
 
 // proposal defines the new Msg-based proposal.
 type proposal struct {
+	/* HV2: disabled all non-text proposals
 	// Msgs defines an array of sdk.Msgs proto-JSON-encoded as Anys.
 	Messages  []json.RawMessage `json:"messages,omitempty"`
-	Metadata  string            `json:"metadata"`
-	Deposit   string            `json:"deposit"`
-	Title     string            `json:"title"`
-	Summary   string            `json:"summary"`
-	Expedited bool              `json:"expedited"`
+	*/
+	Metadata  string `json:"metadata"`
+	Deposit   string `json:"deposit"`
+	Title     string `json:"title"`
+	Summary   string `json:"summary"`
+	Expedited bool   `json:"expedited"`
 }
 
 // parseSubmitProposal reads and parses the proposal.
-func parseSubmitProposal(cdc codec.Codec, path string) (proposal, []sdk.Msg, sdk.Coins, error) {
+func parseSubmitProposal(_ codec.Codec, path string) (proposal, []sdk.Msg, sdk.Coins, error) {
 	var proposal proposal
 
 	contents, err := os.ReadFile(path)
@@ -104,6 +106,7 @@ func parseSubmitProposal(cdc codec.Codec, path string) (proposal, []sdk.Msg, sdk
 		return proposal, nil, nil, err
 	}
 
+	/* HV2: disabled all non-text proposals
 	msgs := make([]sdk.Msg, len(proposal.Messages))
 	for i, anyJSON := range proposal.Messages {
 		var msg sdk.Msg
@@ -114,13 +117,14 @@ func parseSubmitProposal(cdc codec.Codec, path string) (proposal, []sdk.Msg, sdk
 
 		msgs[i] = msg
 	}
+	*/
 
 	deposit, err := sdk.ParseCoinsNormalized(proposal.Deposit)
 	if err != nil {
 		return proposal, nil, nil, err
 	}
 
-	return proposal, msgs, deposit, nil
+	return proposal, nil, deposit, nil
 }
 
 // AddGovPropFlagsToCmd adds flags for defining MsgSubmitProposal fields.

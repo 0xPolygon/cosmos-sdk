@@ -32,6 +32,7 @@ var suggestedProposalTypes = []proposalType{
 		Name:    proposalText,
 		MsgType: "", // no message for text proposal
 	},
+	/* HV2: disabled all non-text proposals
 	{
 		Name:    "community-pool-spend",
 		MsgType: "/cosmos.distribution.v1beta1.MsgCommunityPoolSpend",
@@ -48,6 +49,7 @@ var suggestedProposalTypes = []proposalType{
 		Name:    proposalOther,
 		MsgType: "", // user will input the message type
 	},
+	*/
 }
 
 // Prompt prompts the user for all values of the given type.
@@ -147,7 +149,7 @@ type proposalType struct {
 }
 
 // Prompt the proposal type values and return the proposal and its metadata
-func (p *proposalType) Prompt(cdc codec.Codec, skipMetadata bool) (*proposal, types.ProposalMetadata, error) {
+func (p *proposalType) Prompt(_ codec.Codec, skipMetadata bool) (*proposal, types.ProposalMetadata, error) {
 	metadata, err := PromptMetadata(skipMetadata)
 	if err != nil {
 		return nil, metadata, fmt.Errorf("failed to set proposal metadata: %w", err)
@@ -173,6 +175,7 @@ func (p *proposalType) Prompt(cdc codec.Codec, skipMetadata bool) (*proposal, ty
 		return proposal, metadata, nil
 	}
 
+	/* HV2: disabled all non-text proposals
 	// set messages field
 	result, err := Prompt(p.Msg, "msg")
 	if err != nil {
@@ -184,6 +187,7 @@ func (p *proposalType) Prompt(cdc codec.Codec, skipMetadata bool) (*proposal, ty
 		return nil, metadata, fmt.Errorf("failed to marshal proposal message: %w", err)
 	}
 	proposal.Messages = append(proposal.Messages, message)
+	*/
 
 	return proposal, metadata, nil
 }
