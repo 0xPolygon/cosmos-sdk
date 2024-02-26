@@ -154,8 +154,7 @@ func (s queryServer) ModuleAccountByName(c context.Context, req *types.QueryModu
 	return &types.QueryModuleAccountByNameResponse{Account: any}, nil
 }
 
-// AddressBytesToString converts an address from bytes to string, using the
-// keeper's hex prefix.
+// AddressBytesToString converts an address from bytes to string
 func (s queryServer) AddressBytesToString(ctx context.Context, req *types.AddressBytesToStringRequest) (*types.AddressBytesToStringResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "empty request")
