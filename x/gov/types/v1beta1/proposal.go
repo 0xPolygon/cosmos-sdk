@@ -196,6 +196,9 @@ func ValidProposalStatus(status ProposalStatus) bool {
 // ValidateAbstract validates a proposal's abstract contents returning an error
 // if invalid.
 func ValidateAbstract(c Content) error {
+	switch c.(type) {
+	// TODO HV2
+	}
 	title := c.GetTitle()
 	if len(strings.TrimSpace(title)) == 0 {
 		return errorsmod.Wrap(types.ErrInvalidProposalContent, "proposal title cannot be blank")

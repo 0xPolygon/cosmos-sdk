@@ -46,9 +46,8 @@ func NormalizeProposalType(proposalType string) string {
 	case "Text", "text":
 		return v1beta1.ProposalTypeText
 
-	// HV2: in heimdall we always return the proposalType
 	default:
-		return proposalType
+		return ""
 	}
 }
 

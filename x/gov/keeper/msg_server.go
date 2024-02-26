@@ -42,9 +42,11 @@ func (k msgServer) SubmitProposal(goCtx context.Context, msg *v1.MsgSubmitPropos
 	}
 
 	// check that either metadata or Msgs length is non nil.
+	/* HV2: we don't enforce non-nil metadata or messages in heimdall
 	if len(msg.Messages) == 0 && len(msg.Metadata) == 0 {
 		return nil, errors.Wrap(govtypes.ErrNoProposalMsgs, "either metadata or Msgs length must be non-nil")
 	}
+	*/
 
 	// verify that if present, the metadata title and summary equals the proposal title and summary
 	if len(msg.Metadata) != 0 {
@@ -63,10 +65,12 @@ func (k msgServer) SubmitProposal(goCtx context.Context, msg *v1.MsgSubmitPropos
 		// nothing can be done here, and this is still a valid case, so we ignore the error
 	}
 
+	/* HV2: messages not required in heimdall proposals
 	proposalMsgs, err := msg.GetMsgs()
 	if err != nil {
 		return nil, err
 	}
+	*/
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	initialDeposit := msg.GetInitialDeposit()
@@ -84,7 +88,7 @@ func (k msgServer) SubmitProposal(goCtx context.Context, msg *v1.MsgSubmitPropos
 		return nil, err
 	}
 
-	proposal, err := k.Keeper.SubmitProposal(ctx, proposalMsgs, msg.Metadata, msg.Title, msg.Summary, proposer, msg.Expedited)
+	proposal, err := k.Keeper.SubmitProposal(ctx, nil, msg.Metadata, msg.Title, msg.Summary, proposer, msg.Expedited)
 	if err != nil {
 		return nil, err
 	}

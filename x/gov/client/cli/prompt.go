@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"reflect" // #nosec
-	"sort"
 	"strconv"
 	"strings"
 
@@ -21,8 +20,10 @@ import (
 )
 
 const (
-	proposalText          = "text"
-	proposalOther         = "other"
+	proposalText = "text"
+
+	// HV2: disabled all non-text proposals
+	// proposalOther         = "other"
 	draftProposalFileName = "draft_proposal.json"
 	draftMetadataFileName = "draft_metadata.json"
 )
@@ -269,6 +270,7 @@ func NewCmdDraftProposal() *cobra.Command {
 				}
 			}
 
+			/* HV2: disabled all non-text proposals
 			// create any proposal type
 			if proposal.Name == proposalOther {
 				// prompt proposal type
@@ -288,6 +290,7 @@ func NewCmdDraftProposal() *cobra.Command {
 
 				proposal.MsgType = result
 			}
+			*/
 
 			if proposal.MsgType != "" {
 				proposal.Msg, err = sdk.GetMsgFromTypeURL(clientCtx.Codec, proposal.MsgType)

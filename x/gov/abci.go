@@ -166,6 +166,7 @@ func EndBlocker(ctx sdk.Context, keeper *keeper.Keeper) error {
 
 		switch {
 		case passes:
+			/* HV2: disabled all non-text proposals
 			var (
 				idx    int
 				events sdk.Events
@@ -217,6 +218,7 @@ func EndBlocker(ctx sdk.Context, keeper *keeper.Keeper) error {
 				tagValue = types.AttributeValueProposalFailed
 				logMsg = fmt.Sprintf("passed, but msg %d (%s) failed on execution: %s", idx, sdk.MsgTypeURL(msg), err)
 			}
+			*/
 		case proposal.Expedited:
 			// When expedited proposal fails, it is converted
 			// to a regular proposal. As a result, the voting period is extended, and,

@@ -1,22 +1,18 @@
 package keeper
 
 import (
-	"bytes"
 	"context"
-	"errors"
 	"fmt"
 	"time"
 
 	"cosmossdk.io/collections"
-	errorsmod "cosmossdk.io/errors"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/gov/types"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 )
 
 // SubmitProposal creates a new proposal given an array of messages
-func (keeper Keeper) SubmitProposal(ctx context.Context, messages []sdk.Msg, metadata, title, summary string, proposer sdk.AccAddress, expedited bool) (v1.Proposal, error) {
+func (keeper Keeper) SubmitProposal(ctx context.Context, _ []sdk.Msg, metadata, title, summary string, proposer sdk.AccAddress, expedited bool) (v1.Proposal, error) {
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	err := keeper.assertMetadataLength(metadata)
 	if err != nil {
@@ -38,6 +34,7 @@ func (keeper Keeper) SubmitProposal(ctx context.Context, messages []sdk.Msg, met
 	// Will hold a comma-separated string of all Msg type URLs.
 	msgsStr := ""
 
+	/* HV2: disabled messages based proposals in heimdall
 	// Loop through all messages and confirm that each has a handler and the gov module account
 	// as the only signer
 	for _, msg := range messages {
@@ -85,6 +82,7 @@ func (keeper Keeper) SubmitProposal(ctx context.Context, messages []sdk.Msg, met
 		}
 
 	}
+	*/
 
 	proposalID, err := keeper.ProposalID.Next(ctx)
 	if err != nil {
@@ -99,7 +97,7 @@ func (keeper Keeper) SubmitProposal(ctx context.Context, messages []sdk.Msg, met
 	submitTime := sdkCtx.BlockHeader().Time
 	depositPeriod := params.MaxDepositPeriod
 
-	proposal, err := v1.NewProposal(messages, proposalID, submitTime, submitTime.Add(*depositPeriod), metadata, title, summary, proposer, expedited)
+	proposal, err := v1.NewProposal(nil, proposalID, submitTime, submitTime.Add(*depositPeriod), metadata, title, summary, proposer, expedited)
 	if err != nil {
 		return v1.Proposal{}, err
 	}

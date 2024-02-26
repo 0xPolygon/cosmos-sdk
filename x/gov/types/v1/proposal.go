@@ -23,17 +23,19 @@ const (
 )
 
 // NewProposal creates a new Proposal instance
-func NewProposal(messages []sdk.Msg, id uint64, submitTime, depositEndTime time.Time, metadata, title, summary string, proposer sdk.AccAddress, expedited bool) (Proposal, error) {
+func NewProposal(_ []sdk.Msg, id uint64, submitTime, depositEndTime time.Time, metadata, title, summary string, proposer sdk.AccAddress, expedited bool) (Proposal, error) {
+	/* HV2: disabled messages based proposals in heimdall
 	msgs, err := sdktx.SetMsgs(messages)
 	if err != nil {
 		return Proposal{}, err
 	}
+	*/
 
 	tally := EmptyTallyResult()
 
 	p := Proposal{
 		Id:               id,
-		Messages:         msgs,
+		Messages:         nil,
 		Metadata:         metadata,
 		Status:           StatusDepositPeriod,
 		FinalTallyResult: &tally,
