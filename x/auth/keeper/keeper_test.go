@@ -96,8 +96,7 @@ func (suite *KeeperTestSuite) TestSupply_ValidatePermissions() {
 func (suite *KeeperTestSuite) TestInitGenesis() {
 	suite.SetupTest() // reset
 
-	txFees1, txFees2 := big.NewInt(0), big.NewInt(0)
-	txFeesSum := (big.NewInt(0).Add(txFees1, txFees2)).String()
+	txFeesSum := big.NewInt(0).String()
 
 	// Check if params are set
 	genState := types.GenesisState{
