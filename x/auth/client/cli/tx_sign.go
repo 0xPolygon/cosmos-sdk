@@ -42,16 +42,14 @@ transaction that is signed.
 
 If --account-number or --sequence flag is used when offline=false, they are ignored and 
 overwritten by the default flag values.
-
-The --multisig=<multisig_key> flag generates a signature on behalf of a multisig
-account key. It implies --signature-only.
 `,
 		PreRun: preSignCmd,
 		RunE:   makeSignBatchCmd(),
 		Args:   cobra.MinimumNArgs(1),
 	}
 
-	cmd.Flags().String(flagMultisig, "", "Address or key name of the multisig account on behalf of which the transaction shall be signed")
+	// HV2: multisig disabled in Heimdall
+	// cmd.Flags().String(flagMultisig, "", "Address or key name of the multisig account on behalf of which the transaction shall be signed")
 	cmd.Flags().String(flags.FlagOutputDocument, "", "The document will be written to the given file instead of STDOUT")
 	cmd.Flags().Bool(flagSigOnly, false, "Print only the generated signature, then exit")
 	cmd.Flags().Bool(flagAppend, false, "Combine all message and generate single signed transaction for broadcast.")
@@ -94,6 +92,9 @@ func makeSignBatchCmd() func(cmd *cobra.Command, args []string) error {
 		if err != nil {
 			return err
 		}
+
+		// HV2: multisig disabled in Heimdall: enforcing `ms = ""` to reduce differences with upstream
+		ms = ""
 
 		if !clientCtx.Offline {
 			if ms == "" {
@@ -278,17 +279,15 @@ The --offline flag makes sure that the client will not reach out to full node.
 As a result, the account and sequence number queries will not be performed and
 it is required to set such parameters manually. Note, invalid values will cause
 the transaction to fail.
-
-The --multisig=<multisig_key> flag generates a signature on behalf of a multisig account
-key. It implies --signature-only. Full multisig signed transactions may eventually
-be generated via the 'multisign' command.
 `,
 		PreRun: preSignCmd,
 		RunE:   makeSignCmd(),
 		Args:   cobra.ExactArgs(1),
 	}
 
+	/* HV2: multisig disabled in Heimdall
 	cmd.Flags().String(flagMultisig, "", "Address or key name of the multisig account on behalf of which the transaction shall be signed")
+	*/
 	cmd.Flags().Bool(flagOverwrite, false, "Overwrite existing signatures with a new one. If disabled, new signature will be appended")
 	cmd.Flags().Bool(flagSigOnly, false, "Print only the signatures")
 	cmd.Flags().String(flags.FlagOutputDocument, "", "The document will be written to the given file instead of STDOUT")
@@ -358,6 +357,9 @@ func signTx(cmd *cobra.Command, clientCtx client.Context, txF tx.Factory, newTx 
 	if err != nil {
 		return err
 	}
+
+	// HV2: multisig disabled in Heimdall: enforcing `multisig = ""` to reduce differences with upstream
+	multisig = ""
 
 	if multisig != "" {
 		// hex decode error, maybe it's a name, we try to fetch from keyring
