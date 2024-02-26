@@ -172,8 +172,7 @@ func (s queryServer) AddressBytesToString(ctx context.Context, req *types.Addres
 	return &types.AddressBytesToStringResponse{AddressString: text}, nil
 }
 
-// AddressStringToBytes converts an address from string to bytes, using the
-// keeper's hex prefix.
+// AddressStringToBytes converts an address from string to bytes
 func (s queryServer) AddressStringToBytes(ctx context.Context, req *types.AddressStringToBytesRequest) (*types.AddressStringToBytesResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "empty request")
