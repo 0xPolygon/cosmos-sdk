@@ -46,9 +46,9 @@ func NormalizeProposalType(proposalType string) string {
 	case "Text", "text":
 		return v1beta1.ProposalTypeText
 
-	// HV2: in heimdall we always return the proposalType
+	// TODO HV2: in heimdall we always return the proposalType. Need to do the same if we remove the TextProposal support?
 	default:
-		return proposalType
+		return ""
 	}
 }
 
