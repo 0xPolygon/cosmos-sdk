@@ -72,6 +72,16 @@ func TestEquivocationValidateBasic(t *testing.T) {
 	}
 }
 
+func TestEvidenceAddressConversion(t *testing.T) {
+	tmEvidence := NewCometMisbehavior(1, 100, time.Now(), comet.DuplicateVote,
+		validator{address: []byte{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, power: 100})
+
+	evidence := types.FromABCIEvidence(tmEvidence, address.NewHexCodec())
+	consAddr := evidence.GetConsensusAddress(address.NewHexCodec())
+	// Check the address is the same after conversion
+	require.Equal(t, tmEvidence.Validator().Address(), consAddr.Bytes())
+}
+
 type Misbehavior struct {
 	height           int64
 	time             time.Time
