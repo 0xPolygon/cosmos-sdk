@@ -118,9 +118,11 @@ func (s *addressTestSuite) TestRandHexAccAddrConsistency() {
 	s.Require().Equal(types.ErrEmptyHexAddress, err)
 }
 
-// Test that the account address cache ignores the hex prefix setting, retrieving hex addresses from the cache.
-// This will cause the AccAddress.String() to print out unexpected prefixes if the config was changed between hex lookups.
+// This test is inherited from cosmos-sdk upstream
+// It used to test that the account address cache ignores the bech32 prefix setting, retrieving addresses from the cache.
 // See https://github.com/cosmos/cosmos-sdk/issues/15317.
+// In heimdall, the test just checks that two addresses generated from the same key are equal.
+// Kept the test to reduce the diff with upstream.
 func (s *addressTestSuite) TestAddrCache() {
 	// Use a random key
 	pubBz := make([]byte, ed25519.PubKeySize)
