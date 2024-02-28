@@ -52,8 +52,7 @@ func TestPromptIntegerOverflow(t *testing.T) {
 			v, err := cli.Prompt(st{}, "")
 			assert.Equal(t, st{}, v, "expected a value of zero")
 			require.NotNil(t, err, "expected a report of an overflow")
-			// TODO HV2: this fails due to changes in suggestedProposalTypes (prompt.go). Fix it?
-			//require.Contains(t, err.Error(), "range")
+			require.Contains(t, err.Error(), "range")
 		})
 	}
 }
