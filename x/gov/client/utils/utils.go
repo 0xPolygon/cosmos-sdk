@@ -43,12 +43,12 @@ func NormalizeWeightedVoteOptions(options string) string {
 // NormalizeProposalType - normalize user specified proposal type.
 func NormalizeProposalType(proposalType string) string {
 	switch proposalType {
+	/* HV2: TextProposals are disabled in heimdall
 	case "Text", "text":
 		return v1beta1.ProposalTypeText
-
-	// TODO HV2: in heimdall we always return the proposalType. Need to do the same if we remove the TextProposal support?
+	*/
 	default:
-		return ""
+		return proposalType
 	}
 }
 

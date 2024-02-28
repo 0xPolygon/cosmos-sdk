@@ -28,6 +28,7 @@ const (
 )
 
 var suggestedProposalTypes = []proposalType{
+	/* HV2: TextProposals, CommunityPoolSpend and SoftwareUpgrade/Cancel are disabled in heimdall
 	{
 		Name:    proposalText,
 		MsgType: "", // no message for text proposal
@@ -44,6 +45,7 @@ var suggestedProposalTypes = []proposalType{
 		Name:    "cancel-software-upgrade",
 		MsgType: "/cosmos.upgrade.v1beta1.MsgCancelUpgrade",
 	},
+	*/
 	{
 		Name:    proposalOther,
 		MsgType: "", // user will input the message type

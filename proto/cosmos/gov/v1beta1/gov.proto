@@ -45,8 +45,6 @@ message WeightedVoteOption {
   ];
 }
 
-// TODO HV2: heimdall removed TextProposal. Why shouldn't we keep it?
-
 // TextProposal defines a standard text proposal whose changes need to be manually updated in case of approval.
 message TextProposal {
   option (cosmos_proto.implements_interface) = "cosmos.gov.v1beta1.Content";

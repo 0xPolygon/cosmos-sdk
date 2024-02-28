@@ -45,6 +45,7 @@ message Plan {
 
 // TODO HV2: this was deleted from heimdall's gov/types/proposal.go.
 // Did not remove it as it's only used in tests. Also it's marked as deprecated.
+// Furthermore it's part of upgrade module heimdall won't use
 
 // SoftwareUpgradeProposal is a gov Content type for initiating a software
 // upgrade.

@@ -149,14 +149,16 @@ func (status ProposalStatus) Format(s fmt.State, verb rune) {
 
 // Proposal types
 const (
-	// TODO HV2: ProposalTypeText was removed from heimdall's gov/types/proposal.go. Why should we?
+	// HV2: TextProposals are removed in heimdall
 
-	ProposalTypeText string = "Text"
+	// ProposalTypeText string = "Text"
 
 	// Constants pertaining to a Content object
 	MaxDescriptionLength int = 10000
 	MaxTitleLength       int = 140
 )
+
+/* HV2: TextProposals are removed in heimdall
 
 // Implements Content Interface
 var _ Content = &TextProposal{}
@@ -180,6 +182,8 @@ func (tp *TextProposal) ProposalType() string { return ProposalTypeText }
 
 // ValidateBasic validates the content's title and description of the proposal
 func (tp *TextProposal) ValidateBasic() error { return ValidateAbstract(tp) }
+
+*/
 
 // ValidProposalStatus checks if the proposal status is valid
 func ValidProposalStatus(status ProposalStatus) bool {
@@ -216,7 +220,8 @@ func ValidateAbstract(c Content) error {
 }
 
 var validProposalTypes = map[string]struct{}{
-	ProposalTypeText: {},
+	// HV2: TextProposals are removed in heimdall
+	// ProposalTypeText: {},
 }
 
 // RegisterProposalType registers a proposal type. It will panic if the type is
@@ -231,9 +236,11 @@ func RegisterProposalType(ty string) {
 
 // ContentFromProposalType returns a Content object based on the proposal type.
 func ContentFromProposalType(title, desc, ty string) (Content, bool) {
+	/* HV2: TextProposals are removed in heimdall
 	if strings.EqualFold(ty, ProposalTypeText) {
 		return NewTextProposal(title, desc), true
 	}
+	*/
 
 	return nil, false
 }
@@ -253,10 +260,11 @@ func IsValidProposalType(ty string) bool {
 // performs a no-op.
 func ProposalHandler(_ sdk.Context, c Content) error {
 	switch c.ProposalType() {
-	// TODO HV2: this case was removed in heimdall's gov/types/proposal.go. Why should we remove it too?
+	/* HV2: TextProposals are removed in heimdall
 	case ProposalTypeText:
 		// both proposal types do not change state so this performs a no-op
 		return nil
+	*/
 
 	default:
 		return errorsmod.Wrapf(sdkerrors.ErrUnknownRequest, "unrecognized gov proposal type: %s", c.ProposalType())
