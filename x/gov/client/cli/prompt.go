@@ -28,11 +28,12 @@ const (
 )
 
 var suggestedProposalTypes = []proposalType{
-	/* HV2: TextProposals, CommunityPoolSpend and SoftwareUpgrade/Cancel are disabled in heimdall
+	// TODO HV2: TextProposals are disabled in heimdall. Remove it and re-implement all tests?
 	{
 		Name:    proposalText,
 		MsgType: "", // no message for text proposal
 	},
+	/* HV2: CommunityPoolSpend and SoftwareUpgrade/Cancel are disabled in heimdall
 	{
 		Name:    "community-pool-spend",
 		MsgType: "/cosmos.distribution.v1beta1.MsgCommunityPoolSpend",

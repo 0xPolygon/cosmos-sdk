@@ -16,8 +16,8 @@ func RegisterLegacyAminoCodec(cdc *codec.LegacyAmino) {
 	legacy.RegisterAminoMsg(cdc, &MsgDeposit{}, "cosmos-sdk/MsgDeposit")
 	legacy.RegisterAminoMsg(cdc, &MsgVote{}, "cosmos-sdk/MsgVote")
 	legacy.RegisterAminoMsg(cdc, &MsgVoteWeighted{}, "cosmos-sdk/MsgVoteWeighted")
-	// HV2: TextProposals are disabled in heimdall
-	// cdc.RegisterConcrete(&TextProposal{}, "cosmos-sdk/TextProposal", nil)
+	// TODO HV2: TextProposals are disabled in heimdall. Remove it and re-implement all tests?
+	cdc.RegisterConcrete(&TextProposal{}, "cosmos-sdk/TextProposal", nil)
 }
 
 // RegisterInterfaces registers the interfaces types with the Interface Registry.
@@ -31,8 +31,8 @@ func RegisterInterfaces(registry codectypes.InterfaceRegistry) {
 	registry.RegisterInterface(
 		"cosmos.gov.v1beta1.Content",
 		(*Content)(nil),
-		// HV2: TextProposals are disabled in heimdall
-		// &TextProposal{},
+		// TODO HV2: TextProposals are disabled in heimdall. Remove it and re-implement all tests?
+		&TextProposal{},
 	)
 
 	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)
