@@ -21,3 +21,6 @@ func (cmt CometLoggerWrapper) With(keyVals ...interface{}) cmtlog.Logger {
 	logger := cmt.Logger.With(keyVals...)
 	return CometLoggerWrapper{logger}
 }
+
+// TODO HV2: No-op Warn logger added to satisfy the cmtlog.Logger interface.
+func (cmt CometLoggerWrapper) Warn(msg string, keyvals ...interface{}) {}

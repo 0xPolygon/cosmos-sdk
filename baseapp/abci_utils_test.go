@@ -40,8 +40,8 @@ func newTestValidator() testValidator {
 	privkey := secp256k1.GenPrivKey()
 	pubkey := privkey.PubKey()
 	tmPk := cmtprotocrypto.PublicKey{
-		Sum: &cmtprotocrypto.PublicKey_Secp256K1{
-			Secp256K1: pubkey.Bytes(),
+		Sum: &cmtprotocrypto.PublicKey_Secp256K1Uncompressed{
+			Secp256K1Uncompressed: pubkey.Bytes(),
 		},
 	}
 
