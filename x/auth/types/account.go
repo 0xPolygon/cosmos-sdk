@@ -156,6 +156,8 @@ func NewModuleAddressOrHexAddress(input string) sdk.AccAddress {
 	return NewModuleAddress(input)
 }
 
+// TODO HV2: Informal to clarify about modules having addresses/accounts and how keys management is done
+
 // NewModuleAddress creates an AccAddress from the hash of the module's name
 func NewModuleAddress(name string) sdk.AccAddress {
 	return address.Module(name)
