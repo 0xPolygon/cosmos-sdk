@@ -27,4 +27,6 @@ var (
 	ErrInvalidDepositDenom             = errors.Register(ModuleName, 23, "invalid deposit denom")
 	ErrTooManyVoteOptions              = errors.Register(ModuleName, 24, "too many vote options")
 	ErrWeightedVoteOptionsNotSupported = errors.Register(ModuleName, 25, "weighted vote options not supported")
+	ErrInvalidProposalMsgType          = errors.Register(ModuleName, 26, "invalid proposal message type")
+	ErrInvalidProposalContentType      = errors.Register(ModuleName, 27, "invalid proposal content type")
 )
