@@ -107,8 +107,8 @@ func (keeper Keeper) SubmitProposal(ctx context.Context, messages []sdk.Msg, met
 			// HV2: filter out the content types that are not supported by the gov module
 			// only accept `TextProposal` and params change for the heimdall-v2 enabled modules
 			switch msg.Content.TypeUrl {
-			case "cosmos.gov.v1beta1.TextProposal",
-				"cosmos.params.v1beta1.ParameterChangeProposal", "cosmos.params.v1beta1.ParamChange":
+			case "/cosmos.gov.v1beta1.TextProposal",
+				"/cosmos.params.v1beta1.ParameterChangeProposal", "/cosmos.params.v1beta1.ParamChange":
 				keeper.Logger(ctx).Info("valid content type received for MsgExecLegacyContent")
 			default:
 				keeper.Logger(ctx).Info("type not supported, proposal is considered not valid")
