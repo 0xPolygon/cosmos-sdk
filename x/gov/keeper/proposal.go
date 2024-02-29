@@ -43,8 +43,11 @@ func (keeper Keeper) SubmitProposal(ctx context.Context, messages []sdk.Msg, met
 	for _, msg := range messages {
 		msgsStr += fmt.Sprintf(",%s", sdk.MsgTypeURL(msg))
 
-		// TODO HV2: sdk.Msg has 40k+ implementations that theoretically can pass the proposal
-		//  out of those, only 272 have `HasValidateBasic` function that could fail the proposal at `ValidateBasic`
+		// TODO HV2: sdk.Msg has thousands of implementations that theoretically can pass the proposal
+		//  out of those, only some hundreds have `HasValidateBasic` function that could fail the proposal at `ValidateBasic`
+		//  We need to exclude here all the sdk.Msg implementations that we won't accept in gov module.
+		//  Search for RegisterImplementations((*sdk.Msg) for all modules and only include the ones that are relevant for heimdall v2
+		//  Is it only ParamsUpdate?
 
 		// perform a basic validation of the message
 		if m, ok := msg.(sdk.HasValidateBasic); ok {
@@ -61,13 +64,11 @@ func (keeper Keeper) SubmitProposal(ctx context.Context, messages []sdk.Msg, met
 			return v1.Proposal{}, types.ErrInvalidSigner
 		}
 
+		// TODO HV2: Informal to check when gov module account signs these messages
 		// assert that the governance module account is the only signer of the messages
 		if !bytes.Equal(signers[0], keeper.GetGovernanceAccount(ctx).GetAddress()) {
 			return v1.Proposal{}, errorsmod.Wrapf(types.ErrInvalidSigner, sdk.AccAddress(signers[0]).String())
 		}
-
-		// TODO HV2: all other valid sdk.Msg will end up here
-		//  and will fail at the execution since we won't have a proper handler for them. Is this assumption correct?
 
 		// use the msg service router to see that there is a valid route for that message.
 		handler := keeper.router.Handler(msg)

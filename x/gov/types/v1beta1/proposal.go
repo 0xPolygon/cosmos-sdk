@@ -159,6 +159,8 @@ const (
 )
 
 // TODO HV2: TextProposals are disabled in heimdall. Remove it and re-implement all tests?
+//  Or, we could "hide" TextProposals behind a go-build tag so that they don't run in prod but can still be used for testing
+//  See https://github.com/cosmos/gaia/blob/main/app/upgrades/v7/upgrades.go#L1	and https://github.com/cometbft/cometbft/pull/2454/commits/d228d300f2dc247deaaea56a2a44f0a206472aa9
 
 // Implements Content Interface
 var _ Content = &TextProposal{}
