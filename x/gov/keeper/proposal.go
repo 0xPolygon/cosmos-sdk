@@ -52,21 +52,21 @@ func (keeper Keeper) SubmitProposal(ctx context.Context, messages []sdk.Msg, met
 	for _, msg := range messages {
 		msgsStr += fmt.Sprintf(",%s", sdk.MsgTypeURL(msg))
 
-		// TODO HV2: double check this
 		// HV2: filter out the message types that are not supported by the gov module
-		// only accept `MsgUpdateParams` for the heimdall-v2 enabled modules
+		// TODO HV2: list to be eventually extended
 		switch msg.(type) {
 		case *v1.MsgUpdateParams, *govv1.MsgUpdateParams,
 			*authtypes.MsgUpdateParams, *authv1beta1.MsgUpdateParams,
 			*banktypes.MsgUpdateParams, *bankv1beta1.MsgUpdateParams,
 			*consensustypes.MsgUpdateParams, *consensusv1.MsgUpdateParams,
-			*stakingtypes.MsgUpdateParams, *stakingv1beta1.MsgUpdateParams:
+			*stakingtypes.MsgUpdateParams, *stakingv1beta1.MsgUpdateParams,
+			*v1.MsgExecLegacyContent:
 
 			keeper.Logger(ctx).Info("valid msg type received")
 
 		default:
 			keeper.Logger(ctx).Info("type not supported, proposal is considered not valid")
-			return v1.Proposal{}, errorsmod.Wrap(types.ErrInvalidProposalMsgType, err.Error())
+			return v1.Proposal{}, errorsmod.Wrap(types.ErrInvalidProposalMsgType, fmt.Sprintf("type not supported: %T", msg))
 		}
 
 		// perform a basic validation of the message
@@ -103,16 +103,16 @@ func (keeper Keeper) SubmitProposal(ctx context.Context, messages []sdk.Msg, met
 		// ref: https://github.com/cosmos/cosmos-sdk/pull/10868#discussion_r784872842
 		if msg, ok := msg.(*v1.MsgExecLegacyContent); ok {
 
-			// TODO HV2: double check this
 			// HV2: filter out the content types that are not supported by the gov module
-			// only accept `TextProposal` and params change for the heimdall-v2 enabled modules
+			// only accept `TextProposal` and params change for the heimdall-v2 enabled modules.
+			// TODO HV2: list to be eventually extended
 			switch msg.Content.TypeUrl {
 			case "/cosmos.gov.v1beta1.TextProposal",
 				"/cosmos.params.v1beta1.ParameterChangeProposal", "/cosmos.params.v1beta1.ParamChange":
 				keeper.Logger(ctx).Info("valid content type received for MsgExecLegacyContent")
 			default:
 				keeper.Logger(ctx).Info("type not supported, proposal is considered not valid")
-				return v1.Proposal{}, errorsmod.Wrap(types.ErrInvalidProposalContentType, err.Error())
+				return v1.Proposal{}, errorsmod.Wrap(types.ErrInvalidProposalContentType, fmt.Sprintf("type not supported: %T", msg.Content))
 			}
 
 			cacheCtx, _ := sdkCtx.CacheContext()

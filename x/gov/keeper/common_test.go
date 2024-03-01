@@ -39,14 +39,18 @@ var (
 
 // getTestProposal creates and returns a test proposal message.
 func getTestProposal() []sdk.Msg {
-	legacyProposalMsg, err := v1.NewLegacyContent(v1beta1.NewTextProposal("Title", "description"), authtypes.NewModuleAddress(types.ModuleName).String())
+	legacyProposalMsg1, err := v1.NewLegacyContent(v1beta1.NewTextProposal("Title1", "description1"), authtypes.NewModuleAddress(types.ModuleName).String())
+	if err != nil {
+		panic(err)
+	}
+	legacyProposalMsg2, err := v1.NewLegacyContent(v1beta1.NewTextProposal("Title2", "description2"), authtypes.NewModuleAddress(types.ModuleName).String())
 	if err != nil {
 		panic(err)
 	}
 
 	return []sdk.Msg{
-		banktypes.NewMsgSend(govAcct, addr, sdk.NewCoins(sdk.NewCoin("matic", math.NewInt(1000)))),
-		legacyProposalMsg,
+		legacyProposalMsg1,
+		legacyProposalMsg2,
 	}
 }
 

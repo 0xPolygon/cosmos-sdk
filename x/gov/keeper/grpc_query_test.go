@@ -12,7 +12,9 @@ import (
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	v3 "github.com/cosmos/cosmos-sdk/x/gov/migrations/v3"
+	"github.com/cosmos/cosmos-sdk/x/gov/types"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 	"github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 )
@@ -213,10 +215,8 @@ func (suite *KeeperTestSuite) TestGRPCQueryProposals() {
 			func() {
 				// create 5 test proposals
 				for i := 0; i < 5; i++ {
-					govAddress := suite.govKeeper.GetGovernanceAccount(suite.ctx).GetAddress()
-					testProposal := []sdk.Msg{
-						v1.NewMsgVote(govAddress, uint64(i), v1.OptionYes, ""),
-					}
+					msg, err := v1.NewLegacyContent(v1beta1.NewTextProposal("Title1", "description1"), authtypes.NewModuleAddress(types.ModuleName).String())
+					testProposal := []sdk.Msg{msg}
 					proposal, err := suite.govKeeper.SubmitProposal(ctx, testProposal, "", "title", "summary", addrs[0], false)
 					suite.Require().NotEmpty(proposal)
 					suite.Require().NoError(err)

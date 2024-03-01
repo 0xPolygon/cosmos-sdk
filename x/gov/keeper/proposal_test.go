@@ -162,7 +162,8 @@ func (suite *KeeperTestSuite) TestSubmitProposal() {
 		// error when signer is not gov acct
 		{&tp, randomAddr.String(), "", false, types.ErrInvalidSigner},
 		// error only when invalid route
-		{&invalidProposalRoute{}, govAcct, "", false, types.ErrNoProposalHandlerExists},
+		// HV2: this would fail even before in heimdall, as the content type is not supported
+		{&invalidProposalRoute{}, govAcct, "", false, types.ErrInvalidProposalContentType},
 	}
 
 	for i, tc := range testCases {
