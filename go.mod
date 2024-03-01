@@ -191,7 +191,7 @@ replace (
 )
 
 // HV2 related packages
-replace github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.0.0-20240214052558-d81a33c23a8b
+replace github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.0-beta
 
 retract (
 	// false start by tagging the wrong branch
