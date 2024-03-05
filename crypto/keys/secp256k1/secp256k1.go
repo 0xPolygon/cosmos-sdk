@@ -39,7 +39,13 @@ func (privKey *PrivKeyOld) Bytes() []byte {
 	return privKey.Key
 }
 func (privKey *PrivKeyOld) PubKey() cryptotypes.PubKey {
-	return privKey.PubKey()
+	privateObject, err := ethCrypto.ToECDSA(privKey.Key)
+	if err != nil {
+		panic(err)
+	}
+
+	pk := ethCrypto.FromECDSAPub(&privateObject.PublicKey)
+	return &PubKey{Key: pk}
 }
 func (privKey *PrivKeyOld) Equals(other cryptotypes.LedgerPrivKey) bool {
 	return privKey.Equals(other)
