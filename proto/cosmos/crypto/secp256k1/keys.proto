@@ -6,11 +6,8 @@ import "gogoproto/gogo.proto";
 
 option go_package = "github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1";
 
-// PubKeyOld defines a tendermint secp256k1 public key
-// Key is the compressed form of the pubkey. The first byte depends is a 0x02 byte
-// if the y-coordinate is the lexicographically largest of the two associated with
-// the x-coordinate. Otherwise the first byte is a 0x03.
-// This prefix is followed with the x-coordinate.
+// PubKeyOld defines a tendermint uncompressed secp256k1 public key
+// Key is the uncompressed form of the pubkey.
 message PubKeyOld {
   option (amino.name) = "tendermint/PubKeySecp256k1";
   // The Amino encoding is simply the inner bytes field, and not the Amino
@@ -57,7 +54,7 @@ message PrivKeyOld {
   bytes key = 1;
 }
 
-// PrivKey defines a comet uncompressed secp256k1 private key.
+// PrivKey defines a comet secp256k1 private key.
 message PrivKey {
   option (amino.name)             = "comet/PrivKeySecp256k1Uncompressed";
   option (amino.message_encoding) = "key_field";

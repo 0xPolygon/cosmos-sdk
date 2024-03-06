@@ -48,13 +48,18 @@ func (privKey *PrivKeyOld) PubKey() cryptotypes.PubKey {
 	return &PubKey{Key: pk}
 }
 func (privKey *PrivKeyOld) Equals(other cryptotypes.LedgerPrivKey) bool {
-	return privKey.Equals(other)
+	return privKey.Type() == other.Type() && subtle.ConstantTimeCompare(privKey.Bytes(), other.Bytes()) == 1
 }
 func (privKey *PrivKeyOld) Type() string {
-	return privKey.Type()
+	return keyType
 }
 func (privKey *PrivKeyOld) Sign(msg []byte) ([]byte, error) {
-	return privKey.Sign(msg)
+	privateObject, err := ethCrypto.ToECDSA(privKey.Key)
+	if err != nil {
+		return nil, err
+	}
+
+	return ethCrypto.Sign(ethCrypto.Keccak256(msg), privateObject)
 }
 
 // MarshalAmino overrides Amino binary marshaling.
