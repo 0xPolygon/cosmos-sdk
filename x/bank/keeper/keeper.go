@@ -123,47 +123,48 @@ func (k BaseKeeper) WithMintCoinsRestriction(check types.MintingRestrictionFn) B
 // address to a ModuleAccount address. If any of the delegation amounts are negative,
 // an error is returned.
 func (k BaseKeeper) DelegateCoins(ctx context.Context, delegatorAddr, moduleAccAddr sdk.AccAddress, amt sdk.Coins) error {
-	moduleAcc := k.ak.GetAccount(ctx, moduleAccAddr)
-	if moduleAcc == nil {
-		return errorsmod.Wrapf(sdkerrors.ErrUnknownAddress, "module account %s does not exist", moduleAccAddr)
-	}
+	return fmt.Errorf("DelegateCoins not supported in Heimdall since vesting is disabled")
+	// moduleAcc := k.ak.GetAccount(ctx, moduleAccAddr)
+	// if moduleAcc == nil {
+	// 	return errorsmod.Wrapf(sdkerrors.ErrUnknownAddress, "module account %s does not exist", moduleAccAddr)
+	// }
 
-	if !amt.IsValid() {
-		return errorsmod.Wrap(sdkerrors.ErrInvalidCoins, amt.String())
-	}
+	// if !amt.IsValid() {
+	// 	return errorsmod.Wrap(sdkerrors.ErrInvalidCoins, amt.String())
+	// }
 
-	balances := sdk.NewCoins()
+	// balances := sdk.NewCoins()
 
-	for _, coin := range amt {
-		balance := k.GetBalance(ctx, delegatorAddr, coin.GetDenom())
-		if balance.IsLT(coin) {
-			return errorsmod.Wrapf(
-				sdkerrors.ErrInsufficientFunds, "failed to delegate; %s is smaller than %s", balance, amt,
-			)
-		}
+	// for _, coin := range amt {
+	// 	balance := k.GetBalance(ctx, delegatorAddr, coin.GetDenom())
+	// 	if balance.IsLT(coin) {
+	// 		return errorsmod.Wrapf(
+	// 			sdkerrors.ErrInsufficientFunds, "failed to delegate; %s is smaller than %s", balance, amt,
+	// 		)
+	// 	}
 
-		balances = balances.Add(balance)
-		err := k.setBalance(ctx, delegatorAddr, balance.Sub(coin))
-		if err != nil {
-			return err
-		}
-	}
+	// 	balances = balances.Add(balance)
+	// 	err := k.setBalance(ctx, delegatorAddr, balance.Sub(coin))
+	// 	if err != nil {
+	// 		return err
+	// 	}
+	// }
 
-	if err := k.trackDelegation(ctx, delegatorAddr, balances, amt); err != nil {
-		return errorsmod.Wrap(err, "failed to track delegation")
-	}
-	// emit coin spent event
-	sdkCtx := sdk.UnwrapSDKContext(ctx)
-	sdkCtx.EventManager().EmitEvent(
-		types.NewCoinSpentEvent(delegatorAddr, amt),
-	)
+	// if err := k.trackDelegation(ctx, delegatorAddr, balances, amt); err != nil {
+	// 	return errorsmod.Wrap(err, "failed to track delegation")
+	// }
+	// // emit coin spent event
+	// sdkCtx := sdk.UnwrapSDKContext(ctx)
+	// sdkCtx.EventManager().EmitEvent(
+	// 	types.NewCoinSpentEvent(delegatorAddr, amt),
+	// )
 
-	err := k.addCoins(ctx, moduleAccAddr, amt)
-	if err != nil {
-		return err
-	}
+	// err := k.addCoins(ctx, moduleAccAddr, amt)
+	// if err != nil {
+	// 	return err
+	// }
 
-	return nil
+	// return nil
 }
 
 // NOTE(Heimdall-v2): vesting accounts are not used in heimdall
@@ -173,30 +174,31 @@ func (k BaseKeeper) DelegateCoins(ctx context.Context, delegatorAddr, moduleAccA
 // address to the delegator address. If any of the undelegation amounts are
 // negative, an error is returned.
 func (k BaseKeeper) UndelegateCoins(ctx context.Context, moduleAccAddr, delegatorAddr sdk.AccAddress, amt sdk.Coins) error {
-	moduleAcc := k.ak.GetAccount(ctx, moduleAccAddr)
-	if moduleAcc == nil {
-		return errorsmod.Wrapf(sdkerrors.ErrUnknownAddress, "module account %s does not exist", moduleAccAddr)
-	}
+	return fmt.Errorf("UndelegateCoins not supported in Heimdall since vesting is disabled")
+	// moduleAcc := k.ak.GetAccount(ctx, moduleAccAddr)
+	// if moduleAcc == nil {
+	// 	return errorsmod.Wrapf(sdkerrors.ErrUnknownAddress, "module account %s does not exist", moduleAccAddr)
+	// }
 
-	if !amt.IsValid() {
-		return errorsmod.Wrap(sdkerrors.ErrInvalidCoins, amt.String())
-	}
+	// if !amt.IsValid() {
+	// 	return errorsmod.Wrap(sdkerrors.ErrInvalidCoins, amt.String())
+	// }
 
-	err := k.subUnlockedCoins(ctx, moduleAccAddr, amt)
-	if err != nil {
-		return err
-	}
+	// err := k.subUnlockedCoins(ctx, moduleAccAddr, amt)
+	// if err != nil {
+	// 	return err
+	// }
 
-	if err := k.trackUndelegation(ctx, delegatorAddr, amt); err != nil {
-		return errorsmod.Wrap(err, "failed to track undelegation")
-	}
+	// if err := k.trackUndelegation(ctx, delegatorAddr, amt); err != nil {
+	// 	return errorsmod.Wrap(err, "failed to track undelegation")
+	// }
 
-	err = k.addCoins(ctx, delegatorAddr, amt)
-	if err != nil {
-		return err
-	}
+	// err = k.addCoins(ctx, delegatorAddr, amt)
+	// if err != nil {
+	// 	return err
+	// }
 
-	return nil
+	// return nil
 }
 
 // GetSupply retrieves the Supply from store
@@ -311,16 +313,17 @@ func (k BaseKeeper) SendCoinsFromAccountToModule(
 func (k BaseKeeper) DelegateCoinsFromAccountToModule(
 	ctx context.Context, senderAddr sdk.AccAddress, recipientModule string, amt sdk.Coins,
 ) error {
-	recipientAcc := k.ak.GetModuleAccount(ctx, recipientModule)
-	if recipientAcc == nil {
-		panic(errorsmod.Wrapf(sdkerrors.ErrUnknownAddress, "module account %s does not exist", recipientModule))
-	}
+	return fmt.Errorf("DelegateCoinsFromAccountToModule not supported in Heimdall since vesting is disabled")
+	// recipientAcc := k.ak.GetModuleAccount(ctx, recipientModule)
+	// if recipientAcc == nil {
+	// 	panic(errorsmod.Wrapf(sdkerrors.ErrUnknownAddress, "module account %s does not exist", recipientModule))
+	// }
 
-	if !recipientAcc.HasPermission(authtypes.Staking) {
-		panic(errorsmod.Wrapf(sdkerrors.ErrUnauthorized, "module account %s does not have permissions to receive delegated coins", recipientModule))
-	}
+	// if !recipientAcc.HasPermission(authtypes.Staking) {
+	// 	panic(errorsmod.Wrapf(sdkerrors.ErrUnauthorized, "module account %s does not have permissions to receive delegated coins", recipientModule))
+	// }
 
-	return k.DelegateCoins(ctx, senderAddr, recipientAcc.GetAddress(), amt)
+	// return k.DelegateCoins(ctx, senderAddr, recipientAcc.GetAddress(), amt)
 }
 
 // NOTE(Heimdall-v2): vesting accounts are not used in heimdall
@@ -330,16 +333,17 @@ func (k BaseKeeper) DelegateCoinsFromAccountToModule(
 func (k BaseKeeper) UndelegateCoinsFromModuleToAccount(
 	ctx context.Context, senderModule string, recipientAddr sdk.AccAddress, amt sdk.Coins,
 ) error {
-	acc := k.ak.GetModuleAccount(ctx, senderModule)
-	if acc == nil {
-		panic(errorsmod.Wrapf(sdkerrors.ErrUnknownAddress, "module account %s does not exist", senderModule))
-	}
+	return fmt.Errorf("UndelegateCoinsFromModuleToAccount not supported in Heimdall since vesting is disabled")
+	// acc := k.ak.GetModuleAccount(ctx, senderModule)
+	// if acc == nil {
+	// 	panic(errorsmod.Wrapf(sdkerrors.ErrUnknownAddress, "module account %s does not exist", senderModule))
+	// }
 
-	if !acc.HasPermission(authtypes.Staking) {
-		panic(errorsmod.Wrapf(sdkerrors.ErrUnauthorized, "module account %s does not have permissions to undelegate coins", senderModule))
-	}
+	// if !acc.HasPermission(authtypes.Staking) {
+	// 	panic(errorsmod.Wrapf(sdkerrors.ErrUnauthorized, "module account %s does not have permissions to undelegate coins", senderModule))
+	// }
 
-	return k.UndelegateCoins(ctx, acc.GetAddress(), recipientAddr, amt)
+	// return k.UndelegateCoins(ctx, acc.GetAddress(), recipientAddr, amt)
 }
 
 // MintCoins creates new coins from thin air and adds it to the module account.
@@ -412,35 +416,6 @@ func (k BaseKeeper) BurnCoins(ctx context.Context, moduleName string, amounts sd
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	sdkCtx.EventManager().EmitEvent(
 		types.NewCoinBurnEvent(acc.GetAddress(), amounts),
-	)
-
-	return nil
-}
-
-// SubtractCoins subtracts coins from the balance of an account
-// NOTE(Heimdall-v2): required in heimdall for fee withdrawal in topup module
-func (k BaseKeeper) SubtractCoins(ctx context.Context, addr sdk.AccAddress, amounts sdk.Coins) error {
-	if !amounts.IsValid() {
-		return errorsmod.Wrap(sdkerrors.ErrInvalidCoins, amounts.String())
-	}
-
-	err := k.subUnlockedCoins(ctx, addr, amounts)
-	if err != nil {
-		return err
-	}
-
-	for _, amount := range amounts {
-		supply := k.GetSupply(ctx, amount.GetDenom())
-		supply = supply.Sub(amount)
-		k.setSupply(ctx, supply)
-	}
-
-	k.logger.Debug("subtracted tokens from account", "amount", amounts.String(), "from", addr)
-
-	// emit burn event
-	sdkCtx := sdk.UnwrapSDKContext(ctx)
-	sdkCtx.EventManager().EmitEvent(
-		types.NewCoinBurnEvent(addr, amounts),
 	)
 
 	return nil
