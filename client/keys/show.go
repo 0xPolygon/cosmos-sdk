@@ -197,5 +197,5 @@ func getHexKeyOut(bechPrefix string) (hexKeyOutFn, error) {
 		return MkAccKeyOutput, nil
 	}
 
-	return nil, fmt.Errorf("invalid Bech32 prefix encoding provided: %s", bechPrefix)
+	return nil, fmt.Errorf("hex encoding doesn't have bech32 prefix, yet provided: %s", bechPrefix)
 }

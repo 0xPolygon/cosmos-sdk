@@ -23,6 +23,7 @@ const (
 	// You can use the specific values for your project.
 	// Add the follow lines to the `main()` of your server.
 
+	// config := sdk.GetConfig()
 	//  config.SetPurpose(yourPurpose)
 	//	config.SetCoinType(yourCoinType)
 	//	config.Seal()
@@ -123,8 +124,7 @@ func VerifyAddressFormat(bz []byte) error {
 		return errorsmod.Wrap(sdkerrors.ErrUnknownAddress, "addresses cannot be empty")
 	}
 
-	// TODO HV2: should there be an additional check for the length of the address ?
-	if !common.IsHexAddress(common.BytesToAddress(bz).String()) {
+	if !common.IsHexAddress(common.Bytes2Hex(bz)) {
 		return errorsmod.Wrapf(sdkerrors.ErrUnknownAddress, "invalid address")
 	}
 

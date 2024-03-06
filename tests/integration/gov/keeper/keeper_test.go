@@ -123,7 +123,7 @@ func initFixture(t testing.TB) *fixture {
 	err = govKeeper.Params.Set(newCtx, v1.DefaultParams())
 	assert.NilError(t, err)
 	// TODO HV2: init processors with proper supply.AccountProcessor (supply module has been merged with bank module upstream)
-	authModule := auth.NewAppModule(cdc, accountKeeper, authsims.RandomGenesisAccounts, nil, []authtypes.AccountProcessor{})
+	authModule := auth.NewAppModule(cdc, accountKeeper, authsims.RandomGenesisAccounts, nil /*, []authtypes.AccountProcessor{}*/)
 	bankModule := bank.NewAppModule(cdc, bankKeeper, accountKeeper, nil)
 	stakingModule := staking.NewAppModule(cdc, stakingKeeper, accountKeeper, bankKeeper, nil)
 	distrModule := distribution.NewAppModule(cdc, distrKeeper, accountKeeper, bankKeeper, stakingKeeper, nil)

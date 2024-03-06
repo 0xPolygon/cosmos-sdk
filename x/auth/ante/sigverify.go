@@ -5,9 +5,6 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
-	"math/big"
-
-	"cosmossdk.io/math"
 
 	"google.golang.org/protobuf/types/known/anypb"
 
@@ -34,14 +31,6 @@ var (
 	key                = make([]byte, secp256k1.PubKeySize)
 	simSecp256k1Pubkey = &secp256k1.PubKey{Key: key}
 	simSecp256k1Sig    [64]byte
-
-	// DefaultFeeInMatic represents default fee in matic
-	DefaultFeeInMatic = big.NewInt(10).Exp(big.NewInt(10), big.NewInt(15), nil)
-
-	// TODO HV2: no usage of DefaultFeeWantedPerTx so far. This is used in heimdall topup module's `side_handler.go`
-
-	// DefaultFeeWantedPerTx fee wanted per tx
-	DefaultFeeWantedPerTx = sdk.Coins{sdk.Coin{Denom: types.FeeToken, Amount: math.NewIntFromBigInt(DefaultFeeInMatic)}}
 )
 
 func init() {
@@ -273,6 +262,9 @@ func OnlyLegacyAminoSigners(sigData signing.SignatureData) bool {
 func (svd SigVerificationDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.AnteHandler) (newCtx sdk.Context, err error) {
 
 	// TODO HV2: do we need any change here to be compliant with heimdall's business logic?
+	//  See https://polygon.atlassian.net/browse/POS-2492
+	//  Specifically, check https://github.com/Raneet10/cosmos-sdk/pull/2/files
+	//  x/auth/ante.go (`processSig` method) and x/auth/types/txbuilder.go
 
 	sigTx, ok := tx.(authsigning.Tx)
 	if !ok {
@@ -327,6 +319,21 @@ func (svd SigVerificationDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simul
 		// no need to verify signatures on recheck tx
 		if !simulate && !ctx.IsReCheckTx() {
 			anyPk, _ := codectypes.NewAnyWithValue(pubKey)
+
+			/* TODO HV2: do we need to add here (and modify accordingly) the following code from heimdall?
+			// This should be needed, and - most probably - since the `processSig` method disappeared, it should be done in SetPubKeyDecorator
+			// If that's the case, we need to implement the RecoverPubkey method
+			// see https://github.com/0xPolygon/cosmos-sdk/pull/3/#discussion_r1497996133
+			// see https://github.com/0xPolygon/cosmos-sdk/pull/3/#discussion_r1498023925
+
+			var pk secp256k1.PubKeySecp256k1
+			p, err := authTypes.RecoverPubkey(signBytes, sig.Bytes())
+			if err != nil {
+				return nil, sdk.ErrUnauthorized("signature verification failed; verify correct account sequence and chain-id").Result()
+			}
+			copy(pk[:], p[:])
+
+			*/
 
 			signerData := txsigning.SignerData{
 				Address:       acc.GetAddress().String(),

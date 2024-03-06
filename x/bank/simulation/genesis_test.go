@@ -47,9 +47,9 @@ func TestRandomizedGenState(t *testing.T) {
 	assert.Len(t, bankGenesis.Params.GetSendEnabled(), 0, "Params.GetSendEnabled") //nolint:staticcheck // we're testing deprecated code here
 	if assert.Len(t, bankGenesis.Balances, 3) {
 		assert.Equal(t, "0x45f3624b98fcfc4d7a6b37b0957b656878636773", bankGenesis.Balances[2].Address, "Balances[2] address")
-		assert.Equal(t, "1000stake", bankGenesis.Balances[2].GetCoins().String(), "Balances[2] coins")
+		assert.Equal(t, "1000matic", bankGenesis.Balances[2].GetCoins().String(), "Balances[2] coins")
 	}
-	assert.Equal(t, "6000stake", bankGenesis.Supply.String(), "Supply")
+	assert.Equal(t, "6000matic", bankGenesis.Supply.String(), "Supply")
 	if assert.Len(t, bankGenesis.SendEnabled, 1, "SendEnabled") {
 		assert.Equal(t, true, bankGenesis.SendEnabled[0].Enabled, "SendEnabled[0] value")
 	}

@@ -11,7 +11,6 @@ import (
 )
 
 func TestAccountRetriever(t *testing.T) {
-	t.Skip("skipping test as not relevant to Heimdall (no depinject)") // TODO HV2: setup app without depinject and enable it?
 	cfg, err := network.DefaultConfigWithAppConfig(testutil.AppConfig)
 	require.NoError(t, err)
 	cfg.NumValidators = 1

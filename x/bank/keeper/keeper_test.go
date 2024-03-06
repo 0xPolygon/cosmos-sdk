@@ -325,7 +325,7 @@ func (suite *KeeperTestSuite) TestGetAuthority() {
 	}
 
 	tests := map[string]string{
-		"some random account":    "cosmos139f7kncmglres2nf3h4hc4tade85ekfr8sulz5",
+		"some random account":    "0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef",
 		"gov module account":     authtypes.NewModuleAddress(govtypes.ModuleName).String(),
 		"another module account": authtypes.NewModuleAddress(minttypes.ModuleName).String(),
 	}

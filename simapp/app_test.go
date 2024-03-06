@@ -307,7 +307,7 @@ var _ address.Codec = (*customAddressCodec)(nil)
 type customAddressCodec struct{}
 
 func (c customAddressCodec) StringToBytes(text string) ([]byte, error) {
-	return []byte(text), nil
+	return common.FromHex(text), nil
 }
 
 func (c customAddressCodec) BytesToString(bz []byte) (string, error) {
