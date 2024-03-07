@@ -402,6 +402,7 @@ func TestAminoMarshalJSON(t *testing.T) {
 }
 
 func TestAminoUnmarshalJSON(t *testing.T) {
+	t.Skip("skipping test as not relevant to Heimdall (no multisign, hence *kmultisig.LegacyAminoPubKey not edited)")
 	// This is a real multisig from the Akash chain. It has been exported from
 	// v0.39, hence the `threshold` field as a string.
 	// We are testing that when unmarshaling this JSON into a LegacyAminoPubKey

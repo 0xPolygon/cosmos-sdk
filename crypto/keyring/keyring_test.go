@@ -223,7 +223,7 @@ func TestNewKey(t *testing.T) {
 			_, err = kb.KeyByAddress(addr)
 			require.NoError(t, err)
 
-			addr, err = sdk.AccAddressFromHex("cosmos1yq8lgssgxlx9smjhes6ryjasmqmd3ts2559g0t")
+			addr, err = sdk.AccAddressFromHex("0x8186b214a917fb4922eb984fb80cfafa30ee8810")
 			require.NoError(t, err)
 			_, err = kb.KeyByAddress(addr)
 			require.NotNil(t, err)

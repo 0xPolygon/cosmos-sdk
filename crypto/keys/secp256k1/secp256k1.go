@@ -215,7 +215,7 @@ var (
 // and a prefix byte (0x04) to indicate that it is uncompressed.
 const PubKeySize = 65
 
-// Address returns a Bitcoin style addresses: RIPEMD160(SHA256(pubkey))
+// Address returns an Ethereum style addresses
 func (pubKey *PubKey) Address() crypto.Address {
 	if len(pubKey.Key) != PubKeySize {
 		panic("length of pubkey is incorrect")
@@ -268,7 +268,7 @@ func (pubKey *PubKey) UnmarshalAminoJSON(bz []byte) error {
 	return pubKey.UnmarshalAmino(bz)
 }
 
-// Address returns a Bitcoin style addresses: RIPEMD160(SHA256(pubkey))
+// Address returns an ethereum style addresses
 func (pubKey *PubKeyOld) Address() crypto.Address {
 	return pubKey.Address()
 }
