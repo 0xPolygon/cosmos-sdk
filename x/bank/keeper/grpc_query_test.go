@@ -49,7 +49,7 @@ func (suite *KeeperTestSuite) TestQueryBalance() {
 		},
 		{
 			"invalid address",
-			&types.QueryBalanceRequest{Address: "zab", Denom: barDenom},
+			&types.QueryBalanceRequest{Address: "foo", Denom: barDenom},
 			"invalid address",
 			nil,
 		},

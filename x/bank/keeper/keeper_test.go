@@ -13,7 +13,6 @@ import (
 	abci "github.com/cometbft/cometbft/abci/types"
 	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	cmttime "github.com/cometbft/cometbft/types/time"
-	"github.com/ethereum/go-ethereum/common"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/suite"
 
@@ -59,7 +58,8 @@ var (
 	mintAcc      = authtypes.NewEmptyModuleAccount(minttypes.ModuleName, authtypes.Minter)
 	multiPermAcc = authtypes.NewEmptyModuleAccount(multiPerm, authtypes.Burner, authtypes.Minter, authtypes.Staking)
 
-	baseAcc = authtypes.NewBaseAccountWithAddress(sdk.AccAddress(common.Hex2Bytes("deadbeefdeadbeefdeadbeefdeadbeefdeadbeef")))
+	addr, _ = address.HexCodec{}.StringToBytes("0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef")
+	baseAcc = authtypes.NewBaseAccountWithAddress(addr)
 
 	accAddrs = []sdk.AccAddress{
 		sdk.AccAddress([]byte("addr1_______________")),
@@ -389,7 +389,7 @@ func (suite *KeeperTestSuite) TestSendCoinsFromModuleToAccount_Blocklist() {
 }
 
 func (suite *KeeperTestSuite) TestSupply_DelegateUndelegateCoins() {
-	suite.T().Skip("skipping test as not relevant to Heimdall ((un)delegation is not used in heimdall)")
+	suite.T().Skip("skipping test as not relevant to Heimdall ((un)delegation is not enabled)")
 	ctx := suite.ctx
 	require := suite.Require()
 	authKeeper, keeper := suite.authKeeper, suite.bankKeeper
@@ -1649,7 +1649,7 @@ func (suite *KeeperTestSuite) TestPeriodicVestingAccountReceive() {
 }
 
 func (suite *KeeperTestSuite) TestDelegateCoins() {
-	suite.T().Skip("skipping test as not relevant to Heimdall (delegation is not used in heimdall)")
+	suite.T().Skip("skipping test as not relevant to Heimdall (delegation is not enabled)")
 	ctx := sdk.UnwrapSDKContext(suite.ctx)
 	require := suite.Require()
 	now := cmttime.Now()
@@ -1687,7 +1687,7 @@ func (suite *KeeperTestSuite) TestDelegateCoins() {
 }
 
 func (suite *KeeperTestSuite) TestDelegateCoins_Invalid() {
-	suite.T().Skip("skipping test as not relevant to Heimdall (delegation is not used in heimdall)")
+	suite.T().Skip("skipping test as not relevant to Heimdall (delegation is not enabled)")
 	ctx := suite.ctx
 	require := suite.Require()
 
@@ -1709,7 +1709,7 @@ func (suite *KeeperTestSuite) TestDelegateCoins_Invalid() {
 }
 
 func (suite *KeeperTestSuite) TestUndelegateCoins() {
-	suite.T().Skip("skipping test as not relevant to Heimdall (undelegation is not used in heimdall)")
+	suite.T().Skip("skipping test as not relevant to Heimdall (undelegation is not enabled)")
 	ctx := sdk.UnwrapSDKContext(suite.ctx)
 	require := suite.Require()
 	now := cmttime.Now()
@@ -1764,7 +1764,7 @@ func (suite *KeeperTestSuite) TestUndelegateCoins() {
 }
 
 func (suite *KeeperTestSuite) TestUndelegateCoins_Invalid() {
-	suite.T().Skip("skipping test as not relevant to Heimdall (undelegation is not used in heimdall)")
+	suite.T().Skip("skipping test as not relevant to Heimdall (undelegation is not enabled)")
 	ctx := suite.ctx
 	require := suite.Require()
 

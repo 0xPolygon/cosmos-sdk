@@ -43,7 +43,7 @@ func NewSendTxCmd(ac address.Codec) *cobra.Command {
 		Short: "Send funds from one account to another.",
 		Long: `Send funds from one account to another.
 Note, the '--from' flag is ignored as it is implied from [from_key_or_address].
-When using '--dry-run' a key name cannot be used, only an address.
+When using '--dry-run' a key name cannot be used, only a hex address.
 `,
 		Args: cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -52,7 +52,7 @@ When using '--dry-run' a key name cannot be used, only an address.
 			if err != nil {
 				return err
 			}
-			to, err := ac.StringToBytes(args[1])
+			toAddr, err := ac.StringToBytes(args[1])
 			if err != nil {
 				return err
 			}
@@ -68,7 +68,7 @@ When using '--dry-run' a key name cannot be used, only an address.
 
 			fromAddr := clientCtx.GetFromAddress()
 
-			msg := types.NewMsgSend(fromAddr, to, coins)
+			msg := types.NewMsgSend(fromAddr, toAddr, coins)
 
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
@@ -92,7 +92,7 @@ Using the '--split' flag, the [amount] is split equally between the addresses.
 Note, the '--from' flag is ignored as it is implied from [from_key_or_address] and 
 separate addresses with space.
 When using '--dry-run' a key name cannot be used, only a hex address.`,
-		Example: fmt.Sprintf("%s tx bank multi-send 0xabc... 0xdef... 0xghi... 0xjkl... 10matic", version.AppName),
+		Example: fmt.Sprintf("%s tx bank multi-send 0xabc... 0xcab... 0xded... 0xbef... 10matic", version.AppName),
 		Args:    cobra.MinimumNArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.Flags().Set(flags.FlagFrom, args[0])

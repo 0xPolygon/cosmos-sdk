@@ -241,6 +241,6 @@ func (suite *SimTestSuite) getTestingAccounts(r *rand.Rand, n int) []simtypes.Ac
 }
 
 func TestSimTestSuite(t *testing.T) {
-	t.Skip("skipping test as not relevant to Heimdall (simulation is not used in heimdall)")
+	t.Skip("skipping test as not relevant to Heimdall (simulation is not enabled)")
 	suite.Run(t, new(SimTestSuite))
 }

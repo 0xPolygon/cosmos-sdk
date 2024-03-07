@@ -3,18 +3,18 @@ package types
 import (
 	"testing"
 
-	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
 	"github.com/cosmos/cosmos-sdk/codec"
+	"github.com/cosmos/cosmos-sdk/codec/address"
 	"github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 func TestMsgSendGetSignBytes(t *testing.T) {
-	addr1 := sdk.AccAddress(common.Hex2Bytes("deadbeefdeadbeefdeadbeefdeadbeefdeadbeef"))
-	addr2 := sdk.AccAddress(common.Hex2Bytes("d00df00dd00df00dd00df00dd00df00dd00df00d"))
+	addr1 := sdk.AccAddress(addrStrToBytes(t, "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef"))
+	addr2 := sdk.AccAddress(addrStrToBytes(t, "d00df00dd00df00dd00df00dd00df00dd00df00d"))
 	coins := sdk.NewCoins(sdk.NewInt64Coin("atom", 10))
 	msg := NewMsgSend(addr1, addr2, coins)
 	res, err := codec.NewProtoCodec(types.NewInterfaceRegistry()).MarshalAminoJSON(msg)
@@ -25,9 +25,9 @@ func TestMsgSendGetSignBytes(t *testing.T) {
 }
 
 func TestInputValidation(t *testing.T) {
-	addr1 := sdk.AccAddress(common.Hex2Bytes("deadbeefdeadbeefdeadbeefdeadbeefdeadbeef"))
-	addr2 := sdk.AccAddress(common.Hex2Bytes("d00df00dd00df00dd00df00dd00df00dd00df00d"))
-	addr3 := sdk.AccAddress(common.Hex2Bytes("d00df00dd00df00dd00df00dd00df00dd00df00e"))
+	addr1 := sdk.AccAddress(addrStrToBytes(t, "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef"))
+	addr2 := sdk.AccAddress(addrStrToBytes(t, "d00df00dd00df00dd00df00dd00df00dd00df00d"))
+	addr3 := sdk.AccAddress(addrStrToBytes(t, "d00df00dd00df00dd00df00dd00df00dd00df00e"))
 	addrEmpty := sdk.AccAddress([]byte(""))
 
 	someCoins := sdk.NewCoins(sdk.NewInt64Coin("atom", 123))
@@ -66,9 +66,9 @@ func TestInputValidation(t *testing.T) {
 }
 
 func TestOutputValidation(t *testing.T) {
-	addr1 := sdk.AccAddress(common.Hex2Bytes("deadbeefdeadbeefdeadbeefdeadbeefdeadbeef"))
-	addr2 := sdk.AccAddress(common.Hex2Bytes("d00df00dd00df00dd00df00dd00df00dd00df00d"))
-	addr3 := sdk.AccAddress(common.Hex2Bytes("d00df00dd00df00dd00df00dd00df00dd00df00e"))
+	addr1 := sdk.AccAddress(addrStrToBytes(t, "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef"))
+	addr2 := sdk.AccAddress(addrStrToBytes(t, "d00df00dd00df00dd00df00dd00df00dd00df00d"))
+	addr3 := sdk.AccAddress(addrStrToBytes(t, "d00df00dd00df00dd00df00dd00df00dd00df00e"))
 	addrEmpty := sdk.AccAddress([]byte(""))
 
 	someCoins := sdk.NewCoins(sdk.NewInt64Coin("atom", 123))
@@ -107,8 +107,8 @@ func TestOutputValidation(t *testing.T) {
 }
 
 func TestMsgMultiSendGetSignBytes(t *testing.T) {
-	addr1 := sdk.AccAddress(common.Hex2Bytes("deadbeefdeadbeefdeadbeefdeadbeefdeadbeef"))
-	addr2 := sdk.AccAddress(common.Hex2Bytes("d00df00dd00df00dd00df00dd00df00dd00df00d"))
+	addr1 := sdk.AccAddress(addrStrToBytes(t, "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef"))
+	addr2 := sdk.AccAddress(addrStrToBytes(t, "d00df00dd00df00dd00df00dd00df00dd00df00d"))
 	coins := sdk.NewCoins(sdk.NewInt64Coin("atom", 10))
 	msg := &MsgMultiSend{
 		Inputs:  []Input{NewInput(addr1, coins)},
@@ -141,4 +141,11 @@ func TestMsgSetSendEnabledGetSignBytes(t *testing.T) {
 	require.NoError(t, err)
 	actual := string(actualBz)
 	assert.Equal(t, expected, actual)
+}
+
+func addrStrToBytes(t *testing.T, addrStr string) []byte {
+	t.Helper()
+	addrBytes, err := address.HexCodec{}.StringToBytes(addrStr)
+	require.NoError(t, err)
+	return addrBytes
 }
