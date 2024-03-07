@@ -115,6 +115,15 @@ func (cgts ConsumeTxSizeGasDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, sim
 			return sdk.Context{}, err
 		}
 
+		// HV2: multisig disabled in Heimdall
+		if len(signers) == 0 {
+			return ctx, sdkerrors.ErrNoSignatures
+		}
+
+		if len(signers) > 1 {
+			return ctx, sdkerrors.ErrTooManySignatures
+		}
+
 		for i, signer := range signers {
 			// if signature is already filled in, no need to simulate gas cost
 			if i < n && !isIncompleteSignature(sigs[i].Data) {

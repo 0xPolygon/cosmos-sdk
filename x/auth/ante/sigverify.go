@@ -180,13 +180,13 @@ func (sgcd SigGasConsumeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simula
 		return ctx, err
 	}
 
-	// HV2: following checks have been enforced due to heimdall business logic (we don't support multisig yet)
+	// HV2: multisig disabled in Heimdall
 	if len(signers) == 0 {
 		return ctx, sdkerrors.ErrNoSignatures
 	}
 
 	if len(signers) > 1 {
-		return newCtx, sdkerrors.ErrTooManySignatures
+		return ctx, sdkerrors.ErrTooManySignatures
 	}
 
 	for i, sig := range sigs {
