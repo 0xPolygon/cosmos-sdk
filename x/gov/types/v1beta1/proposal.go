@@ -149,18 +149,12 @@ func (status ProposalStatus) Format(s fmt.State, verb rune) {
 
 // Proposal types
 const (
-	// TODO HV2: TextProposals are disabled in heimdall. Remove it and re-implement all tests?
-
 	ProposalTypeText string = "Text"
 
 	// Constants pertaining to a Content object
 	MaxDescriptionLength int = 10000
 	MaxTitleLength       int = 140
 )
-
-// TODO HV2: TextProposals are disabled in heimdall. Remove it and re-implement all tests?
-//  Or, we could "hide" TextProposals behind a go-build tag so that they don't run in prod but can still be used for testing
-//  See https://github.com/cosmos/gaia/blob/main/app/upgrades/v7/upgrades.go#L1	and https://github.com/cometbft/cometbft/pull/2454/commits/d228d300f2dc247deaaea56a2a44f0a206472aa9
 
 // Implements Content Interface
 var _ Content = &TextProposal{}
@@ -220,7 +214,6 @@ func ValidateAbstract(c Content) error {
 }
 
 var validProposalTypes = map[string]struct{}{
-	// TODO HV2: TextProposals are disabled in heimdall. Remove it and re-implement all tests?
 	ProposalTypeText: {},
 }
 
@@ -236,7 +229,6 @@ func RegisterProposalType(ty string) {
 
 // ContentFromProposalType returns a Content object based on the proposal type.
 func ContentFromProposalType(title, desc, ty string) (Content, bool) {
-	// TODO HV2: TextProposals are disabled in heimdall. Remove it and re-implement all tests?
 	if strings.EqualFold(ty, ProposalTypeText) {
 		return NewTextProposal(title, desc), true
 	}
@@ -259,7 +251,6 @@ func IsValidProposalType(ty string) bool {
 // performs a no-op.
 func ProposalHandler(_ sdk.Context, c Content) error {
 	switch c.ProposalType() {
-	// TODO HV2: TextProposals are disabled in heimdall. Remove it and re-implement all tests?
 	case ProposalTypeText:
 		// both proposal types do not change state so this performs a no-op
 		return nil

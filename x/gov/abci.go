@@ -47,6 +47,7 @@ func EndBlocker(ctx sdk.Context, keeper *keeper.Keeper) error {
 		}
 
 		// HV2: heimdall always refunds and deletes deposits in all cases of proposal failures, without caring about params.BurnProposalDepositPrevote
+		// TODO HV2: enable some anti-spam mechanism (e.g. burn deposits or send them to the feeCollector)?
 		err = keeper.RefundAndDeleteDeposits(ctx, proposal.Id) // refund deposit if proposal got removed without getting 100% of the proposal
 		if err != nil {
 			return false, err

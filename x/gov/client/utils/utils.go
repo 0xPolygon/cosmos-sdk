@@ -43,7 +43,6 @@ func NormalizeWeightedVoteOptions(options string) string {
 // NormalizeProposalType - normalize user specified proposal type.
 func NormalizeProposalType(proposalType string) string {
 	switch proposalType {
-	// TODO HV2: TextProposals are disabled in heimdall. Remove it and re-implement all tests?
 	case "Text", "text":
 		return v1beta1.ProposalTypeText
 	default:

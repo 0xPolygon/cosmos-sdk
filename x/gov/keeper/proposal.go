@@ -7,21 +7,12 @@ import (
 	"fmt"
 	"time"
 
-	authv1beta1 "cosmossdk.io/api/cosmos/auth/v1beta1"
-	bankv1beta1 "cosmossdk.io/api/cosmos/bank/v1beta1"
-	consensusv1 "cosmossdk.io/api/cosmos/consensus/v1"
-	govv1 "cosmossdk.io/api/cosmos/gov/v1"
-	stakingv1beta1 "cosmossdk.io/api/cosmos/staking/v1beta1"
 	"cosmossdk.io/collections"
 	errorsmod "cosmossdk.io/errors"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
-	consensustypes "github.com/cosmos/cosmos-sdk/x/consensus/types"
 	"github.com/cosmos/cosmos-sdk/x/gov/types"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
-	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 )
 
 // SubmitProposal creates a new proposal given an array of messages
@@ -53,20 +44,10 @@ func (keeper Keeper) SubmitProposal(ctx context.Context, messages []sdk.Msg, met
 		msgsStr += fmt.Sprintf(",%s", sdk.MsgTypeURL(msg))
 
 		// HV2: filter out the message types that are not supported by the gov module
-		// TODO HV2: list to be eventually extended
-		switch msg.(type) {
-		case *v1.MsgUpdateParams, *govv1.MsgUpdateParams,
-			*authtypes.MsgUpdateParams, *authv1beta1.MsgUpdateParams,
-			*banktypes.MsgUpdateParams, *bankv1beta1.MsgUpdateParams,
-			*consensustypes.MsgUpdateParams, *consensusv1.MsgUpdateParams,
-			*stakingtypes.MsgUpdateParams, *stakingv1beta1.MsgUpdateParams,
-			*v1.MsgExecLegacyContent:
-
-			keeper.Logger(ctx).Info("valid msg type received")
-
-		default:
+		err = ValidateGovMsgType(msg)
+		if err != nil {
 			keeper.Logger(ctx).Info("type not supported, proposal is considered not valid")
-			return v1.Proposal{}, errorsmod.Wrap(types.ErrInvalidProposalMsgType, fmt.Sprintf("type not supported: %T", msg))
+			return v1.Proposal{}, err
 		}
 
 		// perform a basic validation of the message
@@ -104,15 +85,10 @@ func (keeper Keeper) SubmitProposal(ctx context.Context, messages []sdk.Msg, met
 		if msg, ok := msg.(*v1.MsgExecLegacyContent); ok {
 
 			// HV2: filter out the content types that are not supported by the gov module
-			// only accept `TextProposal` and params change for the heimdall-v2 enabled modules.
-			// TODO HV2: list to be eventually extended
-			switch msg.Content.TypeUrl {
-			case "/cosmos.gov.v1beta1.TextProposal",
-				"/cosmos.params.v1beta1.ParameterChangeProposal", "/cosmos.params.v1beta1.ParamChange":
-				keeper.Logger(ctx).Info("valid content type received for MsgExecLegacyContent")
-			default:
+			err = ValidateGovMsgContentType(msg)
+			if err != nil {
 				keeper.Logger(ctx).Info("type not supported, proposal is considered not valid")
-				return v1.Proposal{}, errorsmod.Wrap(types.ErrInvalidProposalContentType, fmt.Sprintf("type not supported: %T", msg.Content))
+				return v1.Proposal{}, err
 			}
 
 			cacheCtx, _ := sdkCtx.CacheContext()

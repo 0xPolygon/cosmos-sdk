@@ -1,6 +1,14 @@
 package keeper_test
 
 import (
+	authv1beta1 "cosmossdk.io/api/cosmos/auth/v1beta1"
+	bankv1beta1 "cosmossdk.io/api/cosmos/bank/v1beta1"
+	consensusv1 "cosmossdk.io/api/cosmos/consensus/v1"
+	govv1 "cosmossdk.io/api/cosmos/gov/v1"
+	stakingv1beta1 "cosmossdk.io/api/cosmos/staking/v1beta1"
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
+	consensustypes "github.com/cosmos/cosmos-sdk/x/consensus/types"
+	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"math/big"
 	"strings"
 	"time"
@@ -10,6 +18,7 @@ import (
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	"github.com/cosmos/cosmos-sdk/testutil/testdata"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 	"github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 )
@@ -205,6 +214,21 @@ func (suite *KeeperTestSuite) TestSubmitProposalReq() {
 			expErr:    true,
 			expErrMsg: "invalid proposal message type",
 		},
+		"msg send not supported": {
+			preRun: func() (*v1.MsgSubmitProposal, error) {
+				return v1.NewMsgSubmitProposal(
+					[]sdk.Msg{banktypes.NewMsgSend(govAcct, addr, sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(1000))))},
+					initialDeposit,
+					proposer.String(),
+					"",
+					"Proposal",
+					"description of proposal",
+					false,
+				)
+			},
+			expErr:    true,
+			expErrMsg: "invalid proposal message type",
+		},
 		"invalid deposited coin": {
 			preRun: func() (*v1.MsgSubmitProposal, error) {
 				return v1.NewMsgSubmitProposal(
@@ -262,6 +286,152 @@ func (suite *KeeperTestSuite) TestSubmitProposalReq() {
 				)
 			},
 			expErr: false,
+		},
+		"all good with v1.MsgUpdateParams": {
+			preRun: func() (*v1.MsgSubmitProposal, error) {
+				return v1.NewMsgSubmitProposal(
+					[]sdk.Msg{&v1.MsgUpdateParams{Authority: govAcct.String()}},
+					initialDeposit,
+					proposer.String(),
+					"",
+					"Proposal",
+					"description of proposal",
+					false,
+				)
+			},
+			expErr: false,
+		},
+		"all good with govv1.MsgUpdateParams": {
+			preRun: func() (*v1.MsgSubmitProposal, error) {
+				return v1.NewMsgSubmitProposal(
+					[]sdk.Msg{&govv1.MsgUpdateParams{Authority: govAcct.String()}},
+					initialDeposit,
+					proposer.String(),
+					"",
+					"Proposal",
+					"description of proposal",
+					false,
+				)
+			},
+			expErr: false,
+		},
+		"all good with banktypes.MsgUpdateParams": {
+			preRun: func() (*v1.MsgSubmitProposal, error) {
+				return v1.NewMsgSubmitProposal(
+					[]sdk.Msg{&banktypes.MsgUpdateParams{Authority: govAcct.String()}},
+					initialDeposit,
+					proposer.String(),
+					"",
+					"Proposal",
+					"description of proposal",
+					false,
+				)
+			},
+			expErr: false,
+		},
+		"all good with bankv1beta1.MsgUpdateParams": {
+			preRun: func() (*v1.MsgSubmitProposal, error) {
+				return v1.NewMsgSubmitProposal(
+					[]sdk.Msg{&bankv1beta1.MsgUpdateParams{Authority: govAcct.String()}},
+					initialDeposit,
+					proposer.String(),
+					"",
+					"Proposal",
+					"description of proposal",
+					false,
+				)
+			},
+			expErr: false,
+		},
+		"no router with authtypes.MsgUpdateParams": {
+			preRun: func() (*v1.MsgSubmitProposal, error) {
+				return v1.NewMsgSubmitProposal(
+					[]sdk.Msg{&authtypes.MsgUpdateParams{Authority: govAcct.String()}},
+					initialDeposit,
+					proposer.String(),
+					"",
+					"Proposal",
+					"description of proposal",
+					false,
+				)
+			},
+			expErr:    true,
+			expErrMsg: "MsgUpdateParams: proposal message not recognized by router",
+		},
+		"no router with authv1beta1.MsgUpdateParams": {
+			preRun: func() (*v1.MsgSubmitProposal, error) {
+				return v1.NewMsgSubmitProposal(
+					[]sdk.Msg{&authv1beta1.MsgUpdateParams{Authority: govAcct.String()}},
+					initialDeposit,
+					proposer.String(),
+					"",
+					"Proposal",
+					"description of proposal",
+					false,
+				)
+			},
+			expErr:    true,
+			expErrMsg: "MsgUpdateParams: proposal message not recognized by router",
+		},
+		"no router with consensustypes.MsgUpdateParams": {
+			preRun: func() (*v1.MsgSubmitProposal, error) {
+				return v1.NewMsgSubmitProposal(
+					[]sdk.Msg{&consensustypes.MsgUpdateParams{Authority: govAcct.String()}},
+					initialDeposit,
+					proposer.String(),
+					"",
+					"Proposal",
+					"description of proposal",
+					false,
+				)
+			},
+			expErr:    true,
+			expErrMsg: "MsgUpdateParams: proposal message not recognized by router",
+		},
+		"no router with consensusv1.MsgUpdateParams": {
+			preRun: func() (*v1.MsgSubmitProposal, error) {
+				return v1.NewMsgSubmitProposal(
+					[]sdk.Msg{&consensusv1.MsgUpdateParams{Authority: govAcct.String()}},
+					initialDeposit,
+					proposer.String(),
+					"",
+					"Proposal",
+					"description of proposal",
+					false,
+				)
+			},
+			expErr:    true,
+			expErrMsg: "MsgUpdateParams: proposal message not recognized by router",
+		},
+		"no router with stakingtypes.MsgUpdateParams": {
+			preRun: func() (*v1.MsgSubmitProposal, error) {
+				return v1.NewMsgSubmitProposal(
+					[]sdk.Msg{&stakingtypes.MsgUpdateParams{Authority: govAcct.String()}},
+					initialDeposit,
+					proposer.String(),
+					"",
+					"Proposal",
+					"description of proposal",
+					false,
+				)
+			},
+			expErr:    true,
+			expErrMsg: "MsgUpdateParams: proposal message not recognized by router",
+		},
+		"no router with stakingv1beta1.MsgUpdateParams": {
+			preRun: func() (*v1.MsgSubmitProposal, error) {
+				return v1.NewMsgSubmitProposal(
+					[]sdk.Msg{&stakingv1beta1.MsgUpdateParams{Authority: govAcct.String()}},
+					initialDeposit,
+					proposer.String(),
+					"",
+					"Proposal",
+					"description of proposal",
+					false,
+				)
+			},
+			expErr:    true,
+			expErrMsg: "MsgUpdateParams: proposal message not recognized by router",
 		},
 	}
 

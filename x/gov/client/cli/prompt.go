@@ -28,7 +28,6 @@ const (
 )
 
 var suggestedProposalTypes = []proposalType{
-	// TODO HV2: TextProposals are disabled in heimdall. Remove it and re-implement all tests?
 	{
 		Name:    proposalText,
 		MsgType: "", // no message for text proposal
