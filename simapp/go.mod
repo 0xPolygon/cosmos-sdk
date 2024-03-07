@@ -121,7 +121,6 @@ require (
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/hashicorp/yamux v0.1.1 // indirect
 	github.com/hdevalence/ed25519consensus v0.1.0 // indirect
-	github.com/holiman/uint256 v1.2.3 // indirect
 	github.com/huandu/skiplist v1.2.0 // indirect
 	github.com/iancoleman/strcase v0.3.0 // indirect
 	github.com/improbable-eng/grpc-web v0.15.0 // indirect
@@ -205,6 +204,11 @@ require (
 
 // Below are the long-lived replace of the SimApp
 replace (
+
+	// TODO HV2: this fixes the app build temporarily > to remove once we have our version of the cosmos-sdk fork
+	cosmossdk.io/x/circuit => ../x/circuit
+	cosmossdk.io/x/evidence => ../x/evidence
+	cosmossdk.io/x/upgrade => ../x/upgrade
 	// use cosmos fork of keyring
 	github.com/99designs/keyring => github.com/cosmos/keyring v1.2.0
 	// Simapp always use the latest version of the cosmos-sdk
@@ -214,9 +218,4 @@ replace (
 	github.com/gin-gonic/gin => github.com/gin-gonic/gin v1.9.1
 	// replace broken goleveldb
 	github.com/syndtr/goleveldb => github.com/syndtr/goleveldb v1.0.1-0.20210819022825-2ae1ddf74ef7
-
-	// TODO HV2: this fixes the app build temporarily > to remove once we have our version of the cosmos-sdk fork
-	cosmossdk.io/x/circuit => ../x/circuit
-	cosmossdk.io/x/evidence => ../x/evidence
-	cosmossdk.io/x/upgrade => ../x/upgrade
 )
