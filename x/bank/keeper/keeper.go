@@ -116,7 +116,7 @@ func (k BaseKeeper) WithMintCoinsRestriction(check types.MintingRestrictionFn) B
 	return k
 }
 
-// NOTE(Heimdall-v2): vesting accounts are not used in heimdall
+// HV2: vesting accounts are not used in heimdall
 
 // DelegateCoins performs delegation by deducting amt coins from an account with
 // address addr. For vesting accounts, delegations amounts are tracked for both
@@ -170,7 +170,7 @@ func (k BaseKeeper) DelegateCoins(ctx context.Context, delegatorAddr, moduleAccA
 	*/
 }
 
-// NOTE(Heimdall-v2): vesting accounts are not used in heimdall
+// HV2: vesting accounts are not used in heimdall
 
 // UndelegateCoins performs undelegation by crediting amt coins to an account with
 // address addr. For vesting accounts, undelegation amounts are tracked for both
@@ -312,7 +312,7 @@ func (k BaseKeeper) SendCoinsFromAccountToModule(
 	return k.SendCoins(ctx, senderAddr, recipientAcc.GetAddress(), amt)
 }
 
-// NOTE(Heimdall-v2): vesting accounts are not used in heimdall
+// HV2: vesting accounts are not used in heimdall
 
 // DelegateCoinsFromAccountToModule delegates coins and transfers them from a
 // delegator account to a module account. It will panic if the module account
@@ -335,7 +335,7 @@ func (k BaseKeeper) DelegateCoinsFromAccountToModule(
 	*/
 }
 
-// NOTE(Heimdall-v2): vesting accounts are not used in heimdall
+// HV2: vesting accounts are not used in heimdall
 
 // UndelegateCoinsFromModuleToAccount undelegates the unbonding coins and transfers
 // them from a module account to the delegator account. It will panic if the
@@ -398,7 +398,7 @@ func (k BaseKeeper) MintCoins(ctx context.Context, moduleName string, amounts sd
 	return nil
 }
 
-// NOTE(Heimdall-v2): not used in heimdall
+// HV2: not used in heimdall
 
 // BurnCoins burns coins deletes coins from the balance of the module account.
 // It will panic if the module account does not exist or is unauthorized.
@@ -434,7 +434,7 @@ func (k BaseKeeper) BurnCoins(ctx context.Context, moduleName string, amounts sd
 	return nil
 }
 
-// NOTE(Heimdall-v2): could be needed
+// HV2: could be needed
 
 // SetCoins sets the balance of an account to a given amount
 func (k BaseKeeper) SetCoins(ctx context.Context, addr sdk.AccAddress, amounts sdk.Coins) error {

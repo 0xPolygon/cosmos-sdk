@@ -308,7 +308,7 @@ var xxx_messageInfo_MsgUpdateParamsResponse proto.InternalMessageInfo
 // message are left unchanged.
 //
 // Since: cosmos-sdk 0.47
-// Note(Heimdall-v2): Not used in Heimdall since multiple denoms are not supported
+// HV2: Not used in Heimdall since multiple denoms are not supported
 type MsgSetSendEnabled struct {
 	// authority is the address that controls the module.
 	Authority string `protobuf:"bytes,1,opt,name=authority,proto3" json:"authority,omitempty"`
