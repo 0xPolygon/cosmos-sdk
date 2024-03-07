@@ -62,10 +62,10 @@ var (
 	priv3 = secp256k1.GenPrivKey()
 	addr3 = sdk.AccAddress(priv3.PubKey().Address())
 
-	feeAmount = big.NewInt(10).Exp(big.NewInt(10), big.NewInt(15), nil).Int64()
+	defaultFeeAmount = big.NewInt(10).Exp(big.NewInt(10), big.NewInt(15), nil).Int64()
 
-	coins     = sdk.Coins{sdk.NewInt64Coin("matic", 10*feeAmount)}
-	halfCoins = sdk.Coins{sdk.NewInt64Coin("matic", 5*feeAmount)}
+	coins     = sdk.Coins{sdk.NewInt64Coin("matic", 10*defaultFeeAmount)}
+	halfCoins = sdk.Coins{sdk.NewInt64Coin("matic", 5*defaultFeeAmount)}
 
 	sendMsg1 = types.NewMsgSend(addr1, addr2, coins)
 
@@ -148,8 +148,8 @@ func TestSendNotEnoughBalance(t *testing.T) {
 	baseApp := s.App.BaseApp
 	ctx := baseApp.NewContext(false)
 
-	require.NoError(t, testutil.FundAccount(ctx, s.BankKeeper, addr1, sdk.NewCoins(sdk.NewInt64Coin("matic", 67*feeAmount))))
-	require.NoError(t, testutil.FundAccount(ctx, s.BankKeeper, addr3, sdk.NewCoins(sdk.NewInt64Coin("matic", feeAmount-1))))
+	require.NoError(t, testutil.FundAccount(ctx, s.BankKeeper, addr1, sdk.NewCoins(sdk.NewInt64Coin("matic", 67*defaultFeeAmount))))
+	require.NoError(t, testutil.FundAccount(ctx, s.BankKeeper, addr3, sdk.NewCoins(sdk.NewInt64Coin("matic", defaultFeeAmount-1))))
 	_, err := baseApp.FinalizeBlock(&abci.RequestFinalizeBlock{Height: baseApp.LastBlockHeight() + 1})
 	require.NoError(t, err)
 	_, err = baseApp.Commit()
@@ -168,7 +168,7 @@ func TestSendNotEnoughBalance(t *testing.T) {
 			addr1,
 			priv1,
 			acc1,
-			sdk.Coins{sdk.NewInt64Coin("matic", 67*feeAmount)},
+			sdk.Coins{sdk.NewInt64Coin("matic", 67*defaultFeeAmount)},
 			true,
 		},
 		{
@@ -176,7 +176,7 @@ func TestSendNotEnoughBalance(t *testing.T) {
 			addr3,
 			priv3,
 			acc3,
-			sdk.Coins{sdk.NewInt64Coin("matic", feeAmount-1)},
+			sdk.Coins{sdk.NewInt64Coin("matic", defaultFeeAmount-1)},
 			false,
 		},
 	}
@@ -191,14 +191,14 @@ func TestSendNotEnoughBalance(t *testing.T) {
 			origAccNum := res1.GetAccountNumber()
 			origSeq := res1.GetSequence()
 
-			sendMsg := types.NewMsgSend(tc.sender, addr2, sdk.Coins{sdk.NewInt64Coin("matic", 100*feeAmount)})
+			sendMsg := types.NewMsgSend(tc.sender, addr2, sdk.Coins{sdk.NewInt64Coin("matic", 100*defaultFeeAmount)})
 			header := cmtproto.Header{Height: baseApp.LastBlockHeight() + 1}
 			txConfig := moduletestutil.MakeTestTxConfig()
 			_, _, err := simtestutil.SignCheckDeliver(t, txConfig, baseApp, header, []sdk.Msg{sendMsg}, "", []uint64{origAccNum}, []uint64{origSeq}, false, false, tc.privKey)
 			require.Error(t, err)
 
 			if tc.shouldSeqIncrease {
-				checkBalance(t, baseApp, tc.sender, tc.balance.Sub(sdk.NewInt64Coin("matic", feeAmount)), s.BankKeeper)
+				checkBalance(t, baseApp, tc.sender, tc.balance.Sub(sdk.NewInt64Coin("matic", defaultFeeAmount)), s.BankKeeper)
 			} else {
 				checkBalance(t, baseApp, tc.sender, tc.balance, s.BankKeeper)
 			}
@@ -229,7 +229,7 @@ func TestMsgMultiSendWithAccounts(t *testing.T) {
 	baseApp := s.App.BaseApp
 	ctx := baseApp.NewContext(false)
 
-	require.NoError(t, testutil.FundAccount(ctx, s.BankKeeper, addr1, sdk.NewCoins(sdk.NewInt64Coin("matic", 68*feeAmount))))
+	require.NoError(t, testutil.FundAccount(ctx, s.BankKeeper, addr1, sdk.NewCoins(sdk.NewInt64Coin("matic", 68*defaultFeeAmount))))
 	_, err := baseApp.FinalizeBlock(&abci.RequestFinalizeBlock{Height: baseApp.LastBlockHeight() + 1})
 	require.NoError(t, err)
 	_, err = baseApp.Commit()
@@ -249,8 +249,8 @@ func TestMsgMultiSendWithAccounts(t *testing.T) {
 			expPass:    true,
 			privKeys:   []cryptotypes.PrivKey{priv1},
 			expectedBalances: []expectedBalance{
-				{addr1, sdk.Coins{sdk.NewInt64Coin("matic", 57*feeAmount)}},
-				{addr2, sdk.Coins{sdk.NewInt64Coin("matic", 10*feeAmount)}},
+				{addr1, sdk.Coins{sdk.NewInt64Coin("matic", 57*defaultFeeAmount)}},
+				{addr2, sdk.Coins{sdk.NewInt64Coin("matic", 10*defaultFeeAmount)}},
 			},
 		},
 		{
@@ -312,8 +312,8 @@ func TestMsgMultiSendMultipleOut(t *testing.T) {
 	baseApp := s.App.BaseApp
 	ctx := baseApp.NewContext(false)
 
-	require.NoError(t, testutil.FundAccount(ctx, s.BankKeeper, addr1, sdk.NewCoins(sdk.NewInt64Coin("matic", 43*feeAmount))))
-	require.NoError(t, testutil.FundAccount(ctx, s.BankKeeper, addr2, sdk.NewCoins(sdk.NewInt64Coin("matic", 42*feeAmount))))
+	require.NoError(t, testutil.FundAccount(ctx, s.BankKeeper, addr1, sdk.NewCoins(sdk.NewInt64Coin("matic", 43*defaultFeeAmount))))
+	require.NoError(t, testutil.FundAccount(ctx, s.BankKeeper, addr2, sdk.NewCoins(sdk.NewInt64Coin("matic", 42*defaultFeeAmount))))
 	_, err := baseApp.FinalizeBlock(&abci.RequestFinalizeBlock{Height: baseApp.LastBlockHeight() + 1})
 	require.NoError(t, err)
 	_, err = baseApp.Commit()
@@ -328,9 +328,9 @@ func TestMsgMultiSendMultipleOut(t *testing.T) {
 			expPass:    true,
 			privKeys:   []cryptotypes.PrivKey{priv1},
 			expectedBalances: []expectedBalance{
-				{addr1, sdk.Coins{sdk.NewInt64Coin("matic", 32*feeAmount)}},
-				{addr2, sdk.Coins{sdk.NewInt64Coin("matic", 47*feeAmount)}},
-				{addr3, sdk.Coins{sdk.NewInt64Coin("matic", 5*feeAmount)}},
+				{addr1, sdk.Coins{sdk.NewInt64Coin("matic", 32*defaultFeeAmount)}},
+				{addr2, sdk.Coins{sdk.NewInt64Coin("matic", 47*defaultFeeAmount)}},
+				{addr3, sdk.Coins{sdk.NewInt64Coin("matic", 5*defaultFeeAmount)}},
 			},
 		},
 	}
@@ -358,8 +358,8 @@ func TestMsgMultiSendDependent(t *testing.T) {
 	baseApp := s.App.BaseApp
 	ctx := baseApp.NewContext(false)
 
-	require.NoError(t, testutil.FundAccount(ctx, s.BankKeeper, addr1, sdk.NewCoins(sdk.NewInt64Coin("matic", 43*feeAmount))))
-	require.NoError(t, testutil.FundAccount(ctx, s.BankKeeper, addr2, sdk.NewCoins(sdk.NewInt64Coin("matic", feeAmount))))
+	require.NoError(t, testutil.FundAccount(ctx, s.BankKeeper, addr1, sdk.NewCoins(sdk.NewInt64Coin("matic", 43*defaultFeeAmount))))
+	require.NoError(t, testutil.FundAccount(ctx, s.BankKeeper, addr2, sdk.NewCoins(sdk.NewInt64Coin("matic", defaultFeeAmount))))
 	_, err = baseApp.FinalizeBlock(&abci.RequestFinalizeBlock{Height: baseApp.LastBlockHeight() + 1})
 	require.NoError(t, err)
 	_, err = baseApp.Commit()
@@ -374,8 +374,8 @@ func TestMsgMultiSendDependent(t *testing.T) {
 			expPass:    true,
 			privKeys:   []cryptotypes.PrivKey{priv1},
 			expectedBalances: []expectedBalance{
-				{addr1, sdk.Coins{sdk.NewInt64Coin("matic", 32*feeAmount)}},
-				{addr2, sdk.Coins{sdk.NewInt64Coin("matic", 11*feeAmount)}},
+				{addr1, sdk.Coins{sdk.NewInt64Coin("matic", 32*defaultFeeAmount)}},
+				{addr2, sdk.Coins{sdk.NewInt64Coin("matic", 11*defaultFeeAmount)}},
 			},
 		},
 		{
@@ -386,7 +386,7 @@ func TestMsgMultiSendDependent(t *testing.T) {
 			expPass:    true,
 			privKeys:   []cryptotypes.PrivKey{priv2},
 			expectedBalances: []expectedBalance{
-				{addr1, sdk.Coins{sdk.NewInt64Coin("matic", 42*feeAmount)}},
+				{addr1, sdk.Coins{sdk.NewInt64Coin("matic", 42*defaultFeeAmount)}},
 			},
 		},
 	}
