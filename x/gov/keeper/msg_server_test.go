@@ -344,6 +344,7 @@ func (suite *KeeperTestSuite) TestSubmitProposalReq() {
 			},
 			expErr: false,
 		},
+		// TODO HV2: Informal to come back on the `no router with *` tests (see https://0xpolygon.slack.com/archives/C05F2JJEQF5/p1709828194607209)
 		"no router with authtypes.MsgUpdateParams": {
 			preRun: func() (*v1.MsgSubmitProposal, error) {
 				return v1.NewMsgSubmitProposal(

@@ -65,7 +65,7 @@ func (keeper Keeper) SubmitProposal(ctx context.Context, messages []sdk.Msg, met
 			return v1.Proposal{}, types.ErrInvalidSigner
 		}
 
-		// TODO HV2: Informal to check when gov module account signs these messages
+		// TODO HV2: Informal to check when gov module account signs these messages (see https://0xpolygon.slack.com/archives/C05F2JJEQF5/p1709238272417039)
 		// assert that the governance module account is the only signer of the messages
 		if !bytes.Equal(signers[0], keeper.GetGovernanceAccount(ctx).GetAddress()) {
 			return v1.Proposal{}, errorsmod.Wrapf(types.ErrInvalidSigner, sdk.AccAddress(signers[0]).String())

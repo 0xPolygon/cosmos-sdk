@@ -74,6 +74,7 @@ func setupGovKeeper(t *testing.T) (
 	v1.RegisterInterfaces(encCfg.InterfaceRegistry)
 	v1beta1.RegisterInterfaces(encCfg.InterfaceRegistry)
 	banktypes.RegisterInterfaces(encCfg.InterfaceRegistry)
+	// TODO HV2: Informal to come back on this (see https://0xpolygon.slack.com/archives/C05F2JJEQF5/p1709828194607209)
 	stakingtypes.RegisterInterfaces(encCfg.InterfaceRegistry)
 	authtypes.RegisterInterfaces(encCfg.InterfaceRegistry)
 	consensustypes.RegisterInterfaces(encCfg.InterfaceRegistry)
