@@ -168,7 +168,7 @@ func (suite *KeeperTestSuite) TestSubmitProposalReq() {
 			expErr:    true,
 			expErrMsg: "summary too long",
 		},
-		// HV2 *testdata.TestMsg is not a valid proposal message type
+		// HV2: testdata.TestMsg is not a valid proposal message type
 		"invalid proposal message type": {
 			preRun: func() (*v1.MsgSubmitProposal, error) {
 				return v1.NewMsgSubmitProposal(
@@ -214,6 +214,7 @@ func (suite *KeeperTestSuite) TestSubmitProposalReq() {
 			expErr:    true,
 			expErrMsg: "invalid proposal message type",
 		},
+		// HV2: banktypes.NewMsgSend is not a valid proposal message type
 		"msg send not supported": {
 			preRun: func() (*v1.MsgSubmitProposal, error) {
 				return v1.NewMsgSubmitProposal(

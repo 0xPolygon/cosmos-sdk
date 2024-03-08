@@ -2,6 +2,8 @@ package keeper_test
 
 import (
 	"fmt"
+	consensustypes "github.com/cosmos/cosmos-sdk/x/consensus/types"
+	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"testing"
 
 	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
@@ -72,6 +74,9 @@ func setupGovKeeper(t *testing.T) (
 	v1.RegisterInterfaces(encCfg.InterfaceRegistry)
 	v1beta1.RegisterInterfaces(encCfg.InterfaceRegistry)
 	banktypes.RegisterInterfaces(encCfg.InterfaceRegistry)
+	stakingtypes.RegisterInterfaces(encCfg.InterfaceRegistry)
+	authtypes.RegisterInterfaces(encCfg.InterfaceRegistry)
+	consensustypes.RegisterInterfaces(encCfg.InterfaceRegistry)
 
 	// Create MsgServiceRouter, but don't populate it before creating the gov
 	// keeper.
@@ -95,11 +100,9 @@ func setupGovKeeper(t *testing.T) (
 	}).AnyTimes()
 
 	stakingKeeper.EXPECT().BondDenom(ctx).Return("matic", nil).AnyTimes()
-	/* HV2: not invoked in heimdall
-	stakingKeeper.EXPECT().IterateBondedValidatorsByPower(gomock.Any(), gomock.Any()).AnyTimes()
-	stakingKeeper.EXPECT().IterateDelegations(gomock.Any(), gomock.Any(), gomock.Any()).AnyTimes()
-	stakingKeeper.EXPECT().TotalBondedTokens(gomock.Any()).Return(math.NewInt(10000000), nil).AnyTimes()
-	*/
+	stakingKeeper.EXPECT().IterateCurrentValidatorsAndApplyFn(gomock.Any(), gomock.Any()).AnyTimes()
+	stakingKeeper.EXPECT().TokensFromConsensusPower(gomock.Any(), gomock.Any()).AnyTimes()
+	stakingKeeper.EXPECT().ValidatorAddressCodec().Return(address.NewHexCodec()).AnyTimes()
 	distributionKeeper.EXPECT().FundCommunityPool(gomock.Any(), gomock.Any(), gomock.Any()).Return(nil).AnyTimes()
 
 	// Gov keeper initializations
