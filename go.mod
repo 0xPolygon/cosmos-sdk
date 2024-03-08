@@ -178,7 +178,7 @@ replace (
 	// use cosmos fork of keyring
 	github.com/99designs/keyring => github.com/cosmos/keyring v1.2.0
 	// TODO HV2: Point to 0xPolygon comet fork once the PR is merged: https://github.com/0xPolygon/cometbft/pull/2
-	github.com/cometbft/cometbft => /Users/raneet/Desktop/forks/cometbft
+	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.0-beta
 	// dgrijalva/jwt-go is deprecated and doesn't receive security updates.
 	// TODO: remove it: https://github.com/cosmos/cosmos-sdk/issues/13134
 	github.com/dgrijalva/jwt-go => github.com/golang-jwt/jwt/v4 v4.4.2

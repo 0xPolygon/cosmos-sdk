@@ -211,7 +211,7 @@ replace (
 	// TODO Remove it: https://github.com/cosmos/cosmos-sdk/issues/10409
 
 	// TODO HV2: Point to 0xPolygon comet fork once the PR is merged: https://github.com/0xPolygon/cometbft/pull/2
-	github.com/cometbft/cometbft => /Users/raneet/Desktop/forks/cometbft
+	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.0-beta
 	// Simapp always use the latest version of the cosmos-sdk
 	github.com/cosmos/cosmos-sdk => ../.
 	github.com/gin-gonic/gin => github.com/gin-gonic/gin v1.9.1
