@@ -204,7 +204,6 @@ require (
 
 // Below are the long-lived replace of the SimApp
 replace (
-
 	// TODO HV2: this fixes the app build temporarily > to remove once we have our version of the cosmos-sdk fork
 	cosmossdk.io/x/circuit => ../x/circuit
 	cosmossdk.io/x/evidence => ../x/evidence
