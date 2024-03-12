@@ -344,8 +344,7 @@ func (suite *KeeperTestSuite) TestSubmitProposalReq() {
 			},
 			expErr: false,
 		},
-		// TODO HV2: Informal to come back on the `no router with *` tests (see https://0xpolygon.slack.com/archives/C05F2JJEQF5/p1709828194607209)
-		"no router with authtypes.MsgUpdateParams": {
+		"all good with authtypes.MsgUpdateParams": {
 			preRun: func() (*v1.MsgSubmitProposal, error) {
 				return v1.NewMsgSubmitProposal(
 					[]sdk.Msg{&authtypes.MsgUpdateParams{Authority: govAcct.String()}},
@@ -357,10 +356,9 @@ func (suite *KeeperTestSuite) TestSubmitProposalReq() {
 					false,
 				)
 			},
-			expErr:    true,
-			expErrMsg: "MsgUpdateParams: proposal message not recognized by router",
+			expErr: false,
 		},
-		"no router with authv1beta1.MsgUpdateParams": {
+		"all good with authv1beta1.MsgUpdateParams": {
 			preRun: func() (*v1.MsgSubmitProposal, error) {
 				return v1.NewMsgSubmitProposal(
 					[]sdk.Msg{&authv1beta1.MsgUpdateParams{Authority: govAcct.String()}},
@@ -372,10 +370,9 @@ func (suite *KeeperTestSuite) TestSubmitProposalReq() {
 					false,
 				)
 			},
-			expErr:    true,
-			expErrMsg: "MsgUpdateParams: proposal message not recognized by router",
+			expErr: false,
 		},
-		"no router with consensustypes.MsgUpdateParams": {
+		"all good with consensustypes.MsgUpdateParams": {
 			preRun: func() (*v1.MsgSubmitProposal, error) {
 				return v1.NewMsgSubmitProposal(
 					[]sdk.Msg{&consensustypes.MsgUpdateParams{Authority: govAcct.String()}},
@@ -387,10 +384,9 @@ func (suite *KeeperTestSuite) TestSubmitProposalReq() {
 					false,
 				)
 			},
-			expErr:    true,
-			expErrMsg: "MsgUpdateParams: proposal message not recognized by router",
+			expErr: false,
 		},
-		"no router with consensusv1.MsgUpdateParams": {
+		"all good with with consensusv1.MsgUpdateParams": {
 			preRun: func() (*v1.MsgSubmitProposal, error) {
 				return v1.NewMsgSubmitProposal(
 					[]sdk.Msg{&consensusv1.MsgUpdateParams{Authority: govAcct.String()}},
@@ -402,10 +398,9 @@ func (suite *KeeperTestSuite) TestSubmitProposalReq() {
 					false,
 				)
 			},
-			expErr:    true,
-			expErrMsg: "MsgUpdateParams: proposal message not recognized by router",
+			expErr: false,
 		},
-		"no router with stakingtypes.MsgUpdateParams": {
+		"all good with stakingtypes.MsgUpdateParams": {
 			preRun: func() (*v1.MsgSubmitProposal, error) {
 				return v1.NewMsgSubmitProposal(
 					[]sdk.Msg{&stakingtypes.MsgUpdateParams{Authority: govAcct.String()}},
@@ -417,10 +412,9 @@ func (suite *KeeperTestSuite) TestSubmitProposalReq() {
 					false,
 				)
 			},
-			expErr:    true,
-			expErrMsg: "MsgUpdateParams: proposal message not recognized by router",
+			expErr: false,
 		},
-		"no router with stakingv1beta1.MsgUpdateParams": {
+		"all good with stakingv1beta1.MsgUpdateParams": {
 			preRun: func() (*v1.MsgSubmitProposal, error) {
 				return v1.NewMsgSubmitProposal(
 					[]sdk.Msg{&stakingv1beta1.MsgUpdateParams{Authority: govAcct.String()}},
@@ -432,8 +426,7 @@ func (suite *KeeperTestSuite) TestSubmitProposalReq() {
 					false,
 				)
 			},
-			expErr:    true,
-			expErrMsg: "MsgUpdateParams: proposal message not recognized by router",
+			expErr: false,
 		},
 	}
 

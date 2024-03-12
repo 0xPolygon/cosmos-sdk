@@ -74,9 +74,9 @@ func setupGovKeeper(t *testing.T) (
 	v1.RegisterInterfaces(encCfg.InterfaceRegistry)
 	v1beta1.RegisterInterfaces(encCfg.InterfaceRegistry)
 	banktypes.RegisterInterfaces(encCfg.InterfaceRegistry)
-	// TODO HV2: Informal to come back on this (see https://0xpolygon.slack.com/archives/C05F2JJEQF5/p1709828194607209)
-	stakingtypes.RegisterInterfaces(encCfg.InterfaceRegistry)
+	// HV2: register additional interfaces for MsgUpdateParams
 	authtypes.RegisterInterfaces(encCfg.InterfaceRegistry)
+	stakingtypes.RegisterInterfaces(encCfg.InterfaceRegistry)
 	consensustypes.RegisterInterfaces(encCfg.InterfaceRegistry)
 
 	// Create MsgServiceRouter, but don't populate it before creating the gov
@@ -122,6 +122,10 @@ func setupGovKeeper(t *testing.T) (
 	msr.SetInterfaceRegistry(encCfg.InterfaceRegistry)
 	v1.RegisterMsgServer(msr, keeper.NewMsgServerImpl(govKeeper))
 	banktypes.RegisterMsgServer(msr, nil) // Nil is fine here as long as we never execute the proposal's Msgs.
+	// HV2: register additional MsgServer for MsgUpdateParams
+	authtypes.RegisterMsgServer(msr, nil)
+	stakingtypes.RegisterMsgServer(msr, nil)
+	consensustypes.RegisterMsgServer(msr, nil)
 
 	return govKeeper, acctKeeper, bankKeeper, stakingKeeper, distributionKeeper, encCfg, ctx
 }
