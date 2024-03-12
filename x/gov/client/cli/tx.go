@@ -102,10 +102,9 @@ Where proposal.json contains:
   // array of proto-JSON-encoded sdk.Msgs
   "messages": [
     {
-      "@type": "/cosmos.bank.v1beta1.MsgSend",
-      "from_address": "0x...",
-      "to_address": "0x...",
-      "amount":[{"denom": "matic","amount": "10"}]
+      "@type": "/cosmos-sdk/x/gov/v1/MsgUpdateParams",
+      "authority": "0x...",
+      "params": {...}
     }
   ],
   // metadata can be any of base64 encoded, raw text, stringified json, IPFS link to json
