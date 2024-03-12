@@ -2521,11 +2521,13 @@ Location: on-chain as json within 255 character limit (mirrors [group vote](../g
 
 ## Future Improvements
 
+These improvements are being discussed in the upstream cosmos-sdk, hence not really part of any heimdall future plan.  
+
 The current documentation only describes the minimum viable product for the
 governance module. Future improvements may include:
 
 * **`BountyProposals`:** If accepted, a `BountyProposal` creates an open
-  bounty. The `BountyProposal` specifies how many MATIC will be given upon
+  bounty. The `BountyProposal` specifies how many tokens will be given upon
   completion. These MATIC will be taken from the `reserve pool`. After a
   `BountyProposal` is accepted by governance, anybody can submit a
   `SoftwareUpgradeProposal` with the code to claim the bounty. Note that once a
