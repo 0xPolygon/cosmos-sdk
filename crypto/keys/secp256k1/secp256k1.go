@@ -270,7 +270,11 @@ func (pubKey *PubKey) UnmarshalAminoJSON(bz []byte) error {
 
 // Address returns an ethereum style addresses
 func (pubKey *PubKeyOld) Address() crypto.Address {
-	return pubKey.Address()
+	if len(pubKey.Key) != PubKeySize {
+		panic(fmt.Sprintf("length of pubkey is incorrect %d != %d", len(pubKey.Key), PubKeySize))
+	}
+
+	return crypto.Address(ethCrypto.Keccak256(pubKey.Key[1:])[12:])
 }
 
 // Bytes returns the pubkey byte format.
@@ -291,7 +295,12 @@ func (pubKey *PubKeyOld) Equals(other cryptotypes.PubKey) bool {
 }
 
 func (pubKey *PubKeyOld) VerifySignature(msg []byte, sigStr []byte) bool {
-	return pubKey.VerifySignature(msg, sigStr)
+	if len(sigStr) != SigSize {
+		return false
+	}
+
+	hash := ethCrypto.Keccak256(msg)
+	return ethCrypto.VerifySignature(pubKey.Key, hash, sigStr[:64])
 }
 
 // MarshalAmino overrides Amino binary marshaling.
