@@ -218,7 +218,7 @@ const PubKeySize = 65
 // Address returns an Ethereum style addresses
 func (pubKey *PubKey) Address() crypto.Address {
 	if len(pubKey.Key) != PubKeySize {
-		panic("length of pubkey is incorrect")
+		panic(fmt.Sprintf("length of pubkey is incorrect %d != %d", len(pubKey.Key), PubKeySize))
 	}
 
 	return crypto.Address(ethCrypto.Keccak256(pubKey.Key[1:])[12:])
