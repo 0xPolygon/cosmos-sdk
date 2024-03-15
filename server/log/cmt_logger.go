@@ -21,3 +21,8 @@ func (cmt CometLoggerWrapper) With(keyVals ...interface{}) cmtlog.Logger {
 	logger := cmt.Logger.With(keyVals...)
 	return CometLoggerWrapper{logger}
 }
+
+func (cmt CometLoggerWrapper) Warn(msg string, keyvals ...interface{}) {
+	var logger cmtlog.Logger = cmt
+	logger.With(keyvals).Warn(msg, keyvals...)
+}

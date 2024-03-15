@@ -137,7 +137,7 @@ func (suite *DeterministicTestSuite) TestGRPCQueryAccount() {
 // pubkeyGenerator creates and returns a random pubkey generator using rapid.
 func pubkeyGenerator(t *rapid.T) *rapid.Generator[secp256k1.PubKey] {
 	return rapid.Custom(func(t *rapid.T) secp256k1.PubKey {
-		pkBz := rapid.SliceOfNDistinct(rapid.Byte(), 33, 33, func(i byte) byte {
+		pkBz := rapid.SliceOfNDistinct(rapid.Byte(), 65, 65, func(i byte) byte {
 			return i
 		}).Draw(t, "hex")
 		return secp256k1.PubKey{Key: pkBz}

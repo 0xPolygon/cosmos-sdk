@@ -70,6 +70,8 @@ Because the market value for tokens will fluctuate, validators are expected to
 dynamically adjust their minimum gas prices to a level that would encourage the
 use of the network.		
 
+In Heimdall, a default fee of 10^15 matic (`DefaultFeeInMatic`) is deducted from the tx sender for every tx.
+
 ## State
 
 ### Accounts
