@@ -157,7 +157,7 @@ func TestSimulateMsgSubmitProposal(t *testing.T) {
 	err = proto.Unmarshal(operationMsg.Msg, &msg)
 	require.NoError(t, err)
 	require.True(t, operationMsg.OK)
-	require.Equal(t, "0x45f3624b98fcfc4d7a6b37b0957b656878636773", msg.Proposer)
+	require.Equal(t, "0xd4bfb1cb895840ca474b0d15abb11cf0f26bc88a", msg.Proposer)
 	require.NotEqual(t, len(msg.InitialDeposit), 0)
 	require.Equal(t, "33455752203714492814matic", msg.InitialDeposit[0].String())
 	require.Equal(t, simulation.TypeMsgSubmitProposal, sdk.MsgTypeURL(&msg))
@@ -195,7 +195,7 @@ func TestSimulateMsgSubmitLegacyProposal(t *testing.T) {
 	require.NoError(t, err)
 
 	require.True(t, operationMsg.OK)
-	require.Equal(t, "0x09dd840e43a8652e15e646b85c2014a34ce01e5e", msg.Proposer)
+	require.Equal(t, "0x6b11ea2af9b83c6e0bbce6254d776f82bb6b6c13", msg.Proposer)
 	require.NotEqual(t, len(msg.InitialDeposit), 0)
 	require.Equal(t, "32909372842221502896matic", msg.InitialDeposit[0].String())
 	require.Equal(t, "title-3: ZBSpYuLyYggwexjxusrBqDOTtGTOWeLrQKjLxzIivHSlcxgdXhhuTSkuxKGLwQvuyNhYFmBZHeAerqyNEUzXPFGkqEGqiQWIXnku",
@@ -297,7 +297,7 @@ func TestSimulateMsgDeposit(t *testing.T) {
 	require.NoError(t, err)
 	require.True(t, operationMsg.OK)
 	require.Equal(t, uint64(1), msg.ProposalId)
-	require.Equal(t, "0x45f3624b98fcfc4d7a6b37b0957b656878636773", msg.Depositor)
+	require.Equal(t, "0xd4bfb1cb895840ca474b0d15abb11cf0f26bc88a", msg.Depositor)
 	require.NotEqual(t, len(msg.Amount), 0)
 	require.Equal(t, "9503995498936700745matic", msg.Amount[0].String())
 	require.Equal(t, simulation.TypeMsgDeposit, sdk.MsgTypeURL(&msg))
@@ -348,7 +348,7 @@ func TestSimulateMsgVote(t *testing.T) {
 	require.NoError(t, err)
 	require.True(t, operationMsg.OK)
 	require.Equal(t, uint64(1), msg.ProposalId)
-	require.Equal(t, "0x45f3624b98fcfc4d7a6b37b0957b656878636773", msg.Voter)
+	require.Equal(t, "0xd4bfb1cb895840ca474b0d15abb11cf0f26bc88a", msg.Voter)
 	require.Equal(t, v1.OptionYes, msg.Option)
 	require.Equal(t, simulation.TypeMsgVote, sdk.MsgTypeURL(&msg))
 }
