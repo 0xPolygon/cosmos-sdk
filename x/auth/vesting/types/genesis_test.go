@@ -1,18 +1,18 @@
 package types
 
 import (
+	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	"testing"
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 )
 
 var (
-	pk1   = ed25519.GenPrivKey().PubKey()
-	pk2   = ed25519.GenPrivKey().PubKey()
+	pk1   = secp256k1.GenPrivKey().PubKey()
+	pk2   = secp256k1.GenPrivKey().PubKey()
 	addr1 = sdk.ValAddress(pk1.Address())
 	addr2 = sdk.ValAddress(pk2.Address())
 )

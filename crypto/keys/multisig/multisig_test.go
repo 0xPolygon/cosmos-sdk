@@ -413,23 +413,19 @@ func TestAminoUnmarshalJSON(t *testing.T) {
 		"pubkeys": [
 			{
 			"type": "tendermint/PubKeySecp256k1",
-			"value": "AzYxq2VNeD10TyABwOgV36OVWDIMn8AtI4OFA0uQX2MK"
+			"value": "BOVCAqoxXlxxoARtnWGWAUPCtN9AeU6xGjDydfEs4PPSCs1dMWL4J3+eMftp1uEgtjh8WHsRgKZb9laXA978tBQ="
 			},
 			{
 			"type": "tendermint/PubKeySecp256k1",
-			"value": "A39cdsrm00bTeQ3RVZVqjkH8MvIViO9o99c8iLiNO35h"
+			"value": "BKlZ6iMNfxSJhVcQ3+8vuSNnk9IJ4LiFDqMDwdPc7Cc8zXkkql3SyA6AnRflaVExvE3ur1yT1gHFqXtT/FkMr/Y="
 			},
 			{
 			"type": "tendermint/PubKeySecp256k1",
-			"value": "A/uLLCZph8MkFg2tCxqSMGwFfPHdt1kkObmmrqy9aiYD"
+			"value": "BJMmbeFKsSszVGYamR2Y+Fi9nXRoVPaSUVEhW5uuF0JGDfZWDFHqr5aiU5O+szuNteFv6pAUh94X+IFqHNM7H80="
 			},
 			{
 			"type": "tendermint/PubKeySecp256k1",
-			"value": "A4mOMhM5gPDtBAkAophjRs6uDGZm4tD4Dbok3ai4qJi8"
-			},
-			{
-			"type": "tendermint/PubKeySecp256k1",
-			"value": "A90icFucrjNNz2SAdJWMApfSQcARIqt+M2x++t6w5fFs"
+			"value": "BGn4aTU58Ak1R79qIqA73bRIcYWBCw53TWso6smYQHnR8n+MSPpKcPDFdMogbzJrYW4JWvIPAKsdqM61D8iq7wk="
 			}
 		],
 		"threshold": "3"
@@ -444,7 +440,7 @@ func TestAminoUnmarshalJSON(t *testing.T) {
 	require.NoError(t, err)
 	lpk := pk.(*kmultisig.LegacyAminoPubKey)
 	require.Equal(t, uint32(3), lpk.Threshold)
-	require.Equal(t, 5, len(pk.(*kmultisig.LegacyAminoPubKey).PubKeys))
+	require.Equal(t, 4, len(pk.(*kmultisig.LegacyAminoPubKey).PubKeys))
 
 	for _, key := range pk.(*kmultisig.LegacyAminoPubKey).PubKeys {
 		require.NotNil(t, key)

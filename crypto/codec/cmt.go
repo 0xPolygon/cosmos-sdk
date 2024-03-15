@@ -20,7 +20,6 @@ func FromCmtProtoPublicKey(protoPk cmtprotocrypto.PublicKey) (cryptotypes.PubKey
 		return &ed25519.PubKey{
 			Key: protoPk.Ed25519,
 		}, nil
-	// NOTE(Heimdall-v2): heimdall needs uncompressed secp256k1 public key for ECDSA
 	case *cmtprotocrypto.PublicKey_Secp256K1Uncompressed:
 		return &secp256k1.PubKey{
 			Key: protoPk.Secp256K1Uncompressed,
@@ -41,7 +40,12 @@ func ToCmtProtoPublicKey(pk cryptotypes.PubKey) (cmtprotocrypto.PublicKey, error
 		}, nil
 	case *secp256k1.PubKey:
 		return cmtprotocrypto.PublicKey{
-			// NOTE(Heimdall-v2): heimdall needs uncompressed secp256k1 public key for ECDSA
+			Sum: &cmtprotocrypto.PublicKey_Secp256K1Uncompressed{
+				Secp256K1Uncompressed: pk.Key,
+			},
+		}, nil
+	case *secp256k1.PubKeyOld:
+		return cmtprotocrypto.PublicKey{
 			Sum: &cmtprotocrypto.PublicKey_Secp256K1Uncompressed{
 				Secp256K1Uncompressed: pk.Key,
 			},

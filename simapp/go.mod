@@ -223,3 +223,6 @@ replace (
 	// replace broken goleveldb
 	github.com/syndtr/goleveldb => github.com/syndtr/goleveldb v1.0.1-0.20210819022825-2ae1ddf74ef7
 )
+
+// HV2 related packages
+replace github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.0-beta

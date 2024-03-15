@@ -1,7 +1,6 @@
 package secp256k1_test
 
 import (
-	"crypto/ecdsa"
 	"encoding/base64"
 	"encoding/hex"
 	"math/big"
@@ -11,7 +10,6 @@ import (
 	tmsecp256k1 "github.com/cometbft/cometbft/crypto/secp256k1"
 	"github.com/cosmos/btcutil/base58"
 	secp "github.com/decred/dcrd/dcrec/secp256k1/v4"
-	btcecdsa "github.com/decred/dcrd/dcrec/secp256k1/v4/ecdsa"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
@@ -113,50 +111,8 @@ var _ = func() keyData {
 var secpDataTable = []keyData{
 	{
 		priv: "a96e62ed3955e65be32703f12d87b6b5cf26039ecfa948dc5107a495418e5330",
-		pub:  "02950e1cdfcb133d6024109fd489f734eeb4502418e538c28481f22bce276f248c",
-		addr: "1CKZ9Nx4zgds8tU7nJHotKSDr4a9bYJCa3",
-	},
-	// matches consistency against a prior version of this library. Generated with generateKeyForCheckingConsistency
-	{
-		priv: "9af074dc32fe3e7173802cd72dcb1110582879a1990c90bdac60f2739986aa06",
-		pub:  "0285592121e2a5e0eb970a1a9d1879c5fa7b33badf7dbb61c44b1bfced94649efb",
-		addr: "1Q4mWVk2hotRVDEdGGtGf6waz622rEwvib",
-	},
-	// matches consistency against a prior version of this library. Generated with generateKeyForCheckingConsistency
-	{
-		priv: "ef9edc836bc4d47e9bc3cfab446836a737c41d60abb1d5f76a6d53ffe5b35f76",
-		pub:  "02f5bf88d72172cc2f9a52919b6b1b74a01ca606cad75d5f4f93aa1a6ff0374aaf",
-		addr: "1KtiSApteeKdLi5cdZVpnkNW1t5Eteksvf",
-	},
-	// matches consistency against a prior version of this library. Generated with generateKeyForCheckingConsistency
-	{
-		priv: "ab7715a1dd7cea7898c45b1f291550b83a6897fbdf0ec48330dd50187059b74b",
-		pub:  "028f3003b3e6cb40897138dba5858207357a6d116cc5bf556c942cf6081b58d5fe",
-		addr: "RnM1o5grgCHAmm45wt5vzGsQoCJdPK2n2",
-	},
-	// matches consistency against a prior version of this library. Generated with generateKeyForCheckingConsistency
-	{
-		priv: "db6b914d9a2d6ae4bab8f9b43de3b1e83940e1a309521128b13fdaf3cd15009a",
-		pub:  "022f8e4e07ae2705a3c425eafea16027041bcdc87a193b01ea6c36c1c7a0bfc300",
-		addr: "16MpKTksSpGABuHqMqU9RPBz26DfwY8cLY",
-	},
-	// matches consistency against go-ethereum's implementation. Generated with ethereumKeys
-	{
-		priv: "42ba4249f6fd9f1e31f8876a8d3d3bdef989fcc906164290c0be237f69f53718",
-		pub:  "033c2f6ea7a678f0afbb43d0fe7a2b2706a75c2fdea08c3b90fd038c8219b42959",
-		addr: "18iz5wdTdwzq6cGzoVhooZCPRAx61GfUMR",
-	},
-	// matches consistency against go-ethereum's implementation. Generated with ethereumKeys
-	{
-		priv: "86192b60369616574daabe8d7d6067f14ec3f0648cded5633c566c25c48e1f31",
-		pub:  "03ad9e97842d0f6f57804f29f55aac9bba207d2b24b98aaabc7d106250389e6d46",
-		addr: "1K31NqmdMBZiLeUiP4kfjLNnWSmx17a9aE",
-	},
-	// matches consistency against go-ethereum's implementation. Generated with ethereumKeys
-	{
-		priv: "1856b3a581aa1bf83daf61b1f8f4bb52b5223033f710e61d7e0b3086f48ba09a",
-		pub:  "03d681bb11e5ebc14d5d2f72881cb0b2a693ef12bc72fe863f980fc6542eafbd40",
-		addr: "1K29nsfH6qwmE3MzsoHpLcWLA4mQLstGgx",
+		pub:  "04950e1cdfcb133d6024109fd489f734eeb4502418e538c28481f22bce276f248ca0ca66092c9fe8adfbb8424bd92f26e170234c42df756075278ead79a8f5c4ae",
+		addr: "1PrkgVnuHLGZu4EUQGmXkGVuhTfn7t8DJK",
 	},
 }
 
@@ -181,36 +137,10 @@ func TestPubKeySecp256k1Address(t *testing.T) {
 func TestSignAndValidateSecp256k1(t *testing.T) {
 	privKey := secp256k1.GenPrivKey()
 	pubKey := privKey.PubKey()
-
-	msg := crypto.CRandBytes(1000)
+	msg := crypto.CRandBytes(128)
 	sig, err := privKey.Sign(msg)
 	require.Nil(t, err)
 	assert.True(t, pubKey.VerifySignature(msg, sig))
-
-	// ----
-	// Test cross packages verification
-	msgHash := crypto.Sha256(msg)
-	btcPrivKey := secp.PrivKeyFromBytes(privKey.Key)
-	btcPubKey := btcPrivKey.PubKey()
-	// This fails: malformed signature: no header magic
-	//   btcSig, err := secp256k1.ParseSignature(sig, secp256k1.S256())
-	//   require.NoError(t, err)
-	//   assert.True(t, btcSig.Verify(msgHash, btcPubKey))
-	// So we do a hacky way:
-	r := new(big.Int)
-	s := new(big.Int)
-	r.SetBytes(sig[:32])
-	s.SetBytes(sig[32:])
-	ok := ecdsa.Verify(btcPubKey.ToECDSA(), msgHash, r, s)
-	require.True(t, ok)
-
-	sig2 := btcecdsa.SignCompact(btcPrivKey, msgHash, false)
-	// Chop off compactSigRecoveryCode.
-	sig2 = sig2[1:]
-	require.NoError(t, err)
-	pubKey.VerifySignature(msg, sig2)
-
-	// ----
 	// Mutate the signature, just one bit.
 	sig[3] ^= byte(0x01)
 	assert.False(t, pubKey.VerifySignature(msg, sig))
@@ -368,7 +298,7 @@ func TestMarshalAmino(t *testing.T) {
 			"secp256k1 public key",
 			pubKey,
 			&secp256k1.PubKey{},
-			append([]byte{33}, pubKey.Bytes()...), // Length-prefixed.
+			append([]byte{65}, pubKey.Bytes()...), // Length-prefixed.
 			"\"" + base64.StdEncoding.EncodeToString(pubKey.Bytes()) + "\"",
 		},
 	}

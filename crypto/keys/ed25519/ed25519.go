@@ -164,7 +164,7 @@ var (
 // in SDK except in a tendermint validator context.
 func (pubKey *PubKey) Address() crypto.Address {
 	if len(pubKey.Key) != PubKeySize {
-		panic("pubkey is incorrect size")
+		panic(fmt.Sprintf("length of pubkey is incorrect %d != %d", len(pubKey.Key), PubKeySize))
 	}
 	// For ADR-28 compatible address we would need to
 	// return address.Hash(proto.MessageName(pubKey), pubKey.Key)
