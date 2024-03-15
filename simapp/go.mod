@@ -215,8 +215,6 @@ replace (
 	cosmossdk.io/x/upgrade => ../x/upgrade
 	// use cosmos fork of keyring
 	github.com/99designs/keyring => github.com/cosmos/keyring v1.2.0
-	// TODO HV2: Point to 0xPolygon comet fork once the PR is merged: https://github.com/0xPolygon/cometbft/pull/2
-	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.0-beta
 	// Simapp always use the latest version of the cosmos-sdk
 	github.com/cosmos/cosmos-sdk => ../.
 	github.com/gin-gonic/gin => github.com/gin-gonic/gin v1.9.1
