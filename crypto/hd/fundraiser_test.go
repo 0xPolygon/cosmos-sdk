@@ -46,6 +46,7 @@ func initFundraiserTestVectors(t *testing.T) []addrData {
 }
 
 func TestFundraiserCompatibility(t *testing.T) {
+	t.Skip("skipping test as not relevant to Heimdall (fundraiser not enabled/supported and testdata/test.json is not compatible)")
 	hdToAddrTable := initFundraiserTestVectors(t)
 
 	for i, d := range hdToAddrTable {

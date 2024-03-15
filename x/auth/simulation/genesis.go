@@ -6,11 +6,9 @@ import (
 	"math/big"
 	"math/rand"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
-	vestingtypes "github.com/cosmos/cosmos-sdk/x/auth/vesting/types"
 )
 
 // Simulation parameter constants
@@ -38,6 +36,8 @@ func RandomGenesisAccounts(simState *module.SimulationState) types.GenesisAccoun
 			continue
 		}
 
+		/* HV2: vesting disabled in heimdall, Removing this code otherwise heimdall-v2/app/sim_bench_test.go fails
+
 		initialVesting := sdk.NewCoins(sdk.NewInt64Coin(simState.BondDenom, simState.Rand.Int63n(simState.InitialStake.Int64())))
 		var endTime int64
 
@@ -60,6 +60,7 @@ func RandomGenesisAccounts(simState *module.SimulationState) types.GenesisAccoun
 		} else {
 			genesisAccs[i] = vestingtypes.NewDelayedVestingAccountRaw(bva)
 		}
+		*/
 	}
 
 	return genesisAccs

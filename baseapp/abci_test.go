@@ -1779,8 +1779,8 @@ func TestABCI_PrepareProposal_VoteExtensions(t *testing.T) {
 	pubkey := privkey.PubKey()
 	addr := sdk.AccAddress(pubkey.Address())
 	tmPk := cmtprotocrypto.PublicKey{
-		Sum: &cmtprotocrypto.PublicKey_Secp256K1{
-			Secp256K1: pubkey.Bytes(),
+		Sum: &cmtprotocrypto.PublicKey_Secp256K1Uncompressed{
+			Secp256K1Uncompressed: pubkey.Bytes(),
 		},
 	}
 
@@ -2059,8 +2059,8 @@ func TestBaseApp_VoteExtensions(t *testing.T) {
 	privKey := secp256k1.GenPrivKey()
 	pubKey := privKey.PubKey()
 	tmPk := cmtprotocrypto.PublicKey{
-		Sum: &cmtprotocrypto.PublicKey_Secp256K1{
-			Secp256K1: pubKey.Bytes(),
+		Sum: &cmtprotocrypto.PublicKey_Secp256K1Uncompressed{
+			Secp256K1Uncompressed: pubKey.Bytes(),
 		},
 	}
 	valStore.EXPECT().GetPubKeyByConsAddr(gomock.Any(), gomock.Any()).Return(tmPk, nil).AnyTimes()
