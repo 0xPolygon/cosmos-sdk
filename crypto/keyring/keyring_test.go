@@ -897,7 +897,7 @@ func TestImportPubKey(t *testing.T) {
 			name:        "correct import",
 			uid:         "correctTest",
 			backend:     BackendTest,
-			armor:       "-----BEGIN TENDERMINT PUBLIC KEY-----\nversion: 0.0.1\ntype: secp256k1\n\nCh8vY29zbW9zLmNyeXB0by5zZWNwMjU2azEuUHViS2V5EiMKIQOlcgxiZM4cR0LA\nwum483+L6zRnXC6zEKtQ4FEa6z0VrA==\n=CqBG\n-----END TENDERMINT PUBLIC KEY-----",
+			armor:       "-----BEGIN TENDERMINT PUBLIC KEY-----\ntype: secp256k1\nversion: 0.0.1\n\nCh8vY29zbW9zLmNyeXB0by5zZWNwMjU2azEuUHViS2V5EkMKQQSjZ5UCpEilBtAI\ne+Y9m8i/8mOjJSclAJAvHfU9JeZNZ7oueeSEvBSyh2aagBJcF3nuncKC7xUYpo08\n9Xjgf+AE\n=59BA\n-----END TENDERMINT PUBLIC KEY-----",
 			expectedErr: nil,
 		},
 		{
@@ -918,7 +918,7 @@ func TestImportPubKey(t *testing.T) {
 			name:        "correct in memory import",
 			uid:         "inMemory",
 			backend:     BackendMemory,
-			armor:       "-----BEGIN TENDERMINT PUBLIC KEY-----\nversion: 0.0.1\ntype: secp256k1\n\nCh8vY29zbW9zLmNyeXB0by5zZWNwMjU2azEuUHViS2V5EiMKIQOlcgxiZM4cR0LA\nwum483+L6zRnXC6zEKtQ4FEa6z0VrA==\n=CqBG\n-----END TENDERMINT PUBLIC KEY-----",
+			armor:       "-----BEGIN TENDERMINT PUBLIC KEY-----\nversion: 0.0.1\ntype: secp256k1\n\nCh8vY29zbW9zLmNyeXB0by5zZWNwMjU2azEuUHViS2V5EkMKQQSXujrv5c2ymZnb\nBq/xxEfOHQJ/peZdFmpxGtBtgWz5aEME2uuIHN3uEheVy38Xk5AsWPUIhegh+n0N\n15IldMUb\n=T9DZ\n-----END TENDERMINT PUBLIC KEY-----",
 			expectedErr: nil,
 		},
 	}
