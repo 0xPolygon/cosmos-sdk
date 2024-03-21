@@ -434,30 +434,6 @@ func (k BaseKeeper) BurnCoins(ctx context.Context, moduleName string, amounts sd
 	return nil
 }
 
-// HV2: could be needed
-
-// SetCoins sets the balance of an account to a given amount
-func (k BaseKeeper) SetCoins(ctx context.Context, addr sdk.AccAddress, amounts sdk.Coins) error {
-	if !amounts.IsValid() && !amounts.IsZero() {
-		return errorsmod.Wrap(sdkerrors.ErrInvalidCoins, amounts.String())
-	}
-
-	for _, coin := range amounts {
-		err := k.setBalance(ctx, addr, coin)
-		if err != nil {
-			return err
-		}
-	}
-
-	// emit coin received event
-	sdkCtx := sdk.UnwrapSDKContext(ctx)
-	sdkCtx.EventManager().EmitEvent(
-		types.NewCoinReceivedEvent(addr, amounts),
-	)
-
-	return nil
-}
-
 // setSupply sets the supply for the given coin
 func (k BaseKeeper) setSupply(ctx context.Context, coin sdk.Coin) {
 	// Bank invariants and IBC requires to remove zero coins.
