@@ -155,7 +155,7 @@ func TestSendNotEnoughBalance(t *testing.T) {
 		sender            sdk.AccAddress
 		privKey           *secp256k1.PrivKey
 		account           *authtypes.BaseAccount
-		balance           sdk.Coins
+		expectedBalances  []expectedBalance
 		shouldSeqIncrease bool
 	}{
 		{
@@ -163,7 +163,10 @@ func TestSendNotEnoughBalance(t *testing.T) {
 			addr1,
 			priv1,
 			acc1,
-			sdk.Coins{sdk.NewInt64Coin("matic", 67*defaultFeeAmount)},
+			[]expectedBalance{
+				{addr1, sdk.Coins{sdk.NewInt64Coin("matic", 66*defaultFeeAmount)}},
+				{s.AccountKeeper.GetModuleAddress(authtypes.FeeCollectorName), sdk.Coins{sdk.NewInt64Coin("matic", defaultFeeAmount)}},
+			},
 			true,
 		},
 		{
@@ -171,7 +174,16 @@ func TestSendNotEnoughBalance(t *testing.T) {
 			addr3,
 			priv3,
 			acc3,
-			sdk.Coins{sdk.NewInt64Coin("matic", defaultFeeAmount-1)},
+			[]expectedBalance{
+				{addr3, sdk.Coins{sdk.NewInt64Coin("matic", defaultFeeAmount-1)}},
+
+				// TODO HV2: fee_collector's balance should be 2*defaultFeeAmount but since distribution module
+				// flushes the fees to the its module account at beginning of the block,
+				// the fee_collector's balance is 0.
+				// We should replace the native simapp with a modified version that imitates heimdall as much as possible
+				// to avoid such discrepancies.
+				{s.AccountKeeper.GetModuleAddress(authtypes.FeeCollectorName), sdk.Coins{}},
+			},
 			false,
 		},
 	}
@@ -192,12 +204,6 @@ func TestSendNotEnoughBalance(t *testing.T) {
 			_, _, err := simtestutil.SignCheckDeliver(t, txConfig, baseApp, header, []sdk.Msg{sendMsg}, "", []uint64{origAccNum}, []uint64{origSeq}, false, false, tc.privKey)
 			require.Error(t, err)
 
-			if tc.shouldSeqIncrease {
-				checkBalance(t, baseApp, tc.sender, tc.balance.Sub(sdk.NewInt64Coin("matic", defaultFeeAmount)), s.BankKeeper)
-			} else {
-				checkBalance(t, baseApp, tc.sender, tc.balance, s.BankKeeper)
-			}
-
 			ctx2 := baseApp.NewContext(true)
 			res2 := s.AccountKeeper.GetAccount(ctx2, tc.sender)
 			require.NotNil(t, res2)
@@ -209,6 +215,9 @@ func TestSendNotEnoughBalance(t *testing.T) {
 				require.Equal(t, origSeq, res2.GetSequence())
 			}
 
+			for _, eb := range tc.expectedBalances {
+				checkBalance(t, baseApp, eb.addr, eb.coins, s.BankKeeper)
+			}
 		})
 	}
 
@@ -246,6 +255,7 @@ func TestMsgMultiSendWithAccounts(t *testing.T) {
 			expectedBalances: []expectedBalance{
 				{addr1, sdk.Coins{sdk.NewInt64Coin("matic", 57*defaultFeeAmount)}},
 				{addr2, sdk.Coins{sdk.NewInt64Coin("matic", 10*defaultFeeAmount)}},
+				{s.AccountKeeper.GetModuleAddress(authtypes.FeeCollectorName), sdk.Coins{sdk.NewInt64Coin("matic", defaultFeeAmount)}},
 			},
 		},
 		{
@@ -256,6 +266,18 @@ func TestMsgMultiSendWithAccounts(t *testing.T) {
 			expSimPass: true, // doesn't check signature
 			expPass:    false,
 			privKeys:   []cryptotypes.PrivKey{priv1},
+			expectedBalances: []expectedBalance{
+				{addr1, sdk.Coins{sdk.NewInt64Coin("matic", 57*defaultFeeAmount)}},
+				{addr2, sdk.Coins{sdk.NewInt64Coin("matic", 10*defaultFeeAmount)}},
+				{addr3, sdk.Coins{}},
+
+				// TODO HV2: fee_collector's balance should be defaultFeeAmount but since distribution module
+				// flushes the fees to the its module account at beginning of the block,
+				// the fee_collector's balance is 0.
+				// We should replace the native simapp with a modified version that imitates heimdall as much as possible
+				// to avoid such discrepancies.
+				{s.AccountKeeper.GetModuleAddress(authtypes.FeeCollectorName), sdk.Coins{}},
+			},
 		},
 		{
 			desc:       "wrong accSeq should not pass Simulate",
@@ -265,6 +287,15 @@ func TestMsgMultiSendWithAccounts(t *testing.T) {
 			expSimPass: false,
 			expPass:    false,
 			privKeys:   []cryptotypes.PrivKey{priv1},
+			expectedBalances: []expectedBalance{
+				{addr1, sdk.Coins{sdk.NewInt64Coin("matic", 57*defaultFeeAmount)}},
+				// TODO HV2: fee_collector's balance should be defaultFeeAmount but since distribution module
+				// flushes the fees to the distribution module account at beginning of the block,
+				// the fee_collector's balance is 0.
+				// We should replace the native simapp with a modified version that imitates heimdall as much as possible
+				// to avoid such discrepancies.
+				{s.AccountKeeper.GetModuleAddress(authtypes.FeeCollectorName), sdk.Coins{}},
+			},
 		},
 		{
 			desc:       "multiple inputs not allowed",
@@ -274,6 +305,17 @@ func TestMsgMultiSendWithAccounts(t *testing.T) {
 			expSimPass: false,
 			expPass:    false,
 			privKeys:   []cryptotypes.PrivKey{priv1},
+			expectedBalances: []expectedBalance{
+				{addr1, sdk.Coins{sdk.NewInt64Coin("matic", 57*defaultFeeAmount)}},
+				{addr2, sdk.Coins{sdk.NewInt64Coin("matic", 10*defaultFeeAmount)}},
+
+				// TODO HV2: fee_collector's balance should be defaultFeeAmount but since distribution module
+				// flushes the fees to the distribution module account at beginning of the block,
+				// the fee_collector's balance is 0.
+				// We should replace the native simapp with a modified version that imitates heimdall as much as possible
+				// to avoid such discrepancies.
+				{s.AccountKeeper.GetModuleAddress(authtypes.FeeCollectorName), sdk.Coins{}},
+			},
 		},
 	}
 
@@ -326,6 +368,7 @@ func TestMsgMultiSendMultipleOut(t *testing.T) {
 				{addr1, sdk.Coins{sdk.NewInt64Coin("matic", 32*defaultFeeAmount)}},
 				{addr2, sdk.Coins{sdk.NewInt64Coin("matic", 47*defaultFeeAmount)}},
 				{addr3, sdk.Coins{sdk.NewInt64Coin("matic", 5*defaultFeeAmount)}},
+				{s.AccountKeeper.GetModuleAddress(authtypes.FeeCollectorName), sdk.Coins{sdk.NewInt64Coin("matic", defaultFeeAmount)}},
 			},
 		},
 	}
@@ -371,6 +414,7 @@ func TestMsgMultiSendDependent(t *testing.T) {
 			expectedBalances: []expectedBalance{
 				{addr1, sdk.Coins{sdk.NewInt64Coin("matic", 32*defaultFeeAmount)}},
 				{addr2, sdk.Coins{sdk.NewInt64Coin("matic", 11*defaultFeeAmount)}},
+				{s.AccountKeeper.GetModuleAddress(authtypes.FeeCollectorName), sdk.Coins{sdk.NewInt64Coin("matic", defaultFeeAmount)}},
 			},
 		},
 		{
@@ -382,6 +426,14 @@ func TestMsgMultiSendDependent(t *testing.T) {
 			privKeys:   []cryptotypes.PrivKey{priv2},
 			expectedBalances: []expectedBalance{
 				{addr1, sdk.Coins{sdk.NewInt64Coin("matic", 42*defaultFeeAmount)}},
+				{addr2, sdk.Coins{}},
+
+				// TODO HV2: fee_collector's balance should be 2*defaultFeeAmount but since distribution module
+				// flushes the fees to the distribution module account at beginning of the block,
+				// the fee_collector's balance is 0.
+				// We should replace the native simapp with a modified version that imitates heimdall as much as possible
+				// to avoid such discrepancies.
+				{s.AccountKeeper.GetModuleAddress(authtypes.FeeCollectorName), sdk.Coins{sdk.NewInt64Coin("matic", defaultFeeAmount)}},
 			},
 		},
 	}
