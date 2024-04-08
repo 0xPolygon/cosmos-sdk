@@ -66,9 +66,7 @@ When using '--dry-run' a key name cannot be used, only a hex address.
 				return fmt.Errorf("invalid coins")
 			}
 
-			fromAddr := clientCtx.GetFromAddress()
-
-			msg := types.NewMsgSend(fromAddr, toAddr, coins)
+			msg := types.NewMsgSend(clientCtx.GetFromAddress(), toAddr, coins)
 
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
@@ -77,7 +75,6 @@ When using '--dry-run' a key name cannot be used, only a hex address.
 	flags.AddTxFlagsToCmd(cmd)
 
 	return cmd
-
 }
 
 // NewMultiSendTxCmd returns a CLI command handler for creating a MsgMultiSend transaction.
