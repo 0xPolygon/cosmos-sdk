@@ -139,6 +139,8 @@ according to the final tally of the proposal. In Heimdall, burn is not enabled, 
 Polygon PoS network, participants are validators. Other holders and users do not get the right to participate in governance. 
 However, they can submit and deposit on proposals.
 
+// TODO HV2: if we don't want non-validators to submit/deposit on proposals, we would need to add an additional check then on gov proposal submission, to validate the proposer is in the active set
+
 Note that for *participants*, their voting power is calculated from their L1 MATIC stakes only.
 
 #### Voting period
