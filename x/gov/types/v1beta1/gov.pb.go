@@ -166,8 +166,7 @@ func (m *WeightedVoteOption) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_WeightedVoteOption proto.InternalMessageInfo
 
-// TextProposal defines a standard text proposal whose changes need to be
-// manually updated in case of approval.
+// TextProposal defines a standard text proposal whose changes need to be manually updated in case of approval.
 type TextProposal struct {
 	// title of the proposal.
 	Title string `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`

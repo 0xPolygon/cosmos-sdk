@@ -13,11 +13,11 @@ import (
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/cosmos/cosmos-sdk/x/gov"
 	"github.com/cosmos/cosmos-sdk/x/gov/keeper"
 	"github.com/cosmos/cosmos-sdk/x/gov/types"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
+	"github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 )
@@ -98,7 +98,7 @@ func TestTickExpiredDepositPeriod(t *testing.T) {
 
 	newProposalMsg, err := v1.NewMsgSubmitProposal(
 		[]sdk.Msg{mkTestLegacyContent(t)},
-		sdk.Coins{sdk.NewInt64Coin(sdk.DefaultBondDenom, 100000)},
+		sdk.Coins{sdk.NewInt64Coin(sdk.DefaultBondDenom, 100000000000000000)},
 		addrs[0].String(),
 		"",
 		"Proposal",
@@ -149,7 +149,7 @@ func TestTickMultipleExpiredDepositPeriod(t *testing.T) {
 
 	newProposalMsg, err := v1.NewMsgSubmitProposal(
 		[]sdk.Msg{mkTestLegacyContent(t)},
-		sdk.Coins{sdk.NewInt64Coin(sdk.DefaultBondDenom, 100000)},
+		sdk.Coins{sdk.NewInt64Coin(sdk.DefaultBondDenom, 100000000000000000)},
 		addrs[0].String(),
 		"",
 		"Proposal",
@@ -172,7 +172,7 @@ func TestTickMultipleExpiredDepositPeriod(t *testing.T) {
 
 	newProposalMsg2, err := v1.NewMsgSubmitProposal(
 		[]sdk.Msg{mkTestLegacyContent(t)},
-		sdk.Coins{sdk.NewInt64Coin(sdk.DefaultBondDenom, 100000)},
+		sdk.Coins{sdk.NewInt64Coin(sdk.DefaultBondDenom, 100000000000000000)},
 		addrs[0].String(),
 		"",
 		"Proposal",
@@ -218,7 +218,7 @@ func TestTickPassedDepositPeriod(t *testing.T) {
 
 	newProposalMsg, err := v1.NewMsgSubmitProposal(
 		[]sdk.Msg{mkTestLegacyContent(t)},
-		sdk.Coins{sdk.NewInt64Coin(sdk.DefaultBondDenom, 100000)},
+		sdk.Coins{sdk.NewInt64Coin(sdk.DefaultBondDenom, 100000000000000000)},
 		addrs[0].String(),
 		"",
 		"Proposal",
@@ -241,7 +241,7 @@ func TestTickPassedDepositPeriod(t *testing.T) {
 
 	checkInactiveProposalsQueue(t, ctx, suite.GovKeeper)
 
-	newDepositMsg := v1.NewMsgDeposit(addrs[1], proposalID, sdk.Coins{sdk.NewInt64Coin(sdk.DefaultBondDenom, 100000)})
+	newDepositMsg := v1.NewMsgDeposit(addrs[1], proposalID, sdk.Coins{sdk.NewInt64Coin(sdk.DefaultBondDenom, 100000000000000000)})
 
 	res1, err := govMsgSvr.Deposit(ctx, newDepositMsg)
 	require.NoError(t, err)
@@ -438,8 +438,10 @@ func TestEndBlockerProposalHandlerFailed(t *testing.T) {
 	createValidators(t, stakingMsgSvr, ctx, []sdk.ValAddress{valAddr}, []int64{10})
 	suite.StakingKeeper.EndBlocker(ctx)
 
-	msg := banktypes.NewMsgSend(authtypes.NewModuleAddress(types.ModuleName), addrs[0], sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, math.NewInt(100000))))
-	proposal, err := suite.GovKeeper.SubmitProposal(ctx, []sdk.Msg{msg}, "", "title", "summary", proposer, false)
+	legacyProposalMsg1, err := v1.NewLegacyContent(v1beta1.NewTextProposal("Title1", "description1"), authtypes.NewModuleAddress(types.ModuleName).String())
+	require.NoError(t, err)
+	msg := []sdk.Msg{legacyProposalMsg1}
+	proposal, err := suite.GovKeeper.SubmitProposal(ctx, msg, "", "title", "summary", proposer, false)
 	require.NoError(t, err)
 
 	proposalCoins := sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, suite.StakingKeeper.TokensFromConsensusPower(ctx, 10)))
@@ -465,14 +467,19 @@ func TestEndBlockerProposalHandlerFailed(t *testing.T) {
 	events := ctx.EventManager().Events()
 	attr, eventOk := events.GetAttributes(types.AttributeKeyProposalLog)
 	require.True(t, eventOk)
-	require.Contains(t, attr[0].Value, "failed on execution")
+	// HV2: rejected because of missing implementation of `IterateCurrentValidatorsAndApplyFn`.
+	// That function will be implemented in heimdall's staking module.
+	require.Contains(t, attr[0].Value, "rejected")
 
 	proposal, err = suite.GovKeeper.Proposals.Get(ctx, proposal.Id)
 	require.Nil(t, err)
-	require.Equal(t, v1.StatusFailed, proposal.Status)
+	require.Equal(t, v1.StatusRejected, proposal.Status)
 }
 
 func TestExpeditedProposal_PassAndConversionToRegular(t *testing.T) {
+	// HV2: to enable this test we would need `IterateCurrentValidatorsAndApplyFn`.
+	// That function will be implemented in heimdall's staking module, hence gov.EndBlocker is incomplete here.
+	t.Skip("skipping test as not relevant to Heimdall (can't reproduce)")
 	testcases := []struct {
 		name string
 		// indicates whether the expedited proposal passes.

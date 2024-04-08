@@ -45,7 +45,9 @@ func (keeper Keeper) DeleteAndBurnDeposits(ctx context.Context, proposalID uint6
 		return err
 	}
 
-	return keeper.bankKeeper.BurnCoins(ctx, types.ModuleName, coinsToBurn)
+	// HV2: in heimdall we have no BurnCoins func, returning nil
+	// return keeper.bankKeeper.BurnCoins(ctx, types.ModuleName, coinsToBurn)
+	return nil
 }
 
 // IterateDeposits iterates over all the proposals deposits and performs a callback function
@@ -238,11 +240,13 @@ func (keeper Keeper) ChargeDeposit(ctx context.Context, proposalID uint64, destA
 		distributionAddress := keeper.authKeeper.GetModuleAddress(disttypes.ModuleName)
 		switch {
 		case destAddress == "":
+			/* HV2: in heimdall we have no BurnCoins func
 			// burn the cancellation charges from deposits
 			err := keeper.bankKeeper.BurnCoins(ctx, types.ModuleName, cancellationCharges)
 			if err != nil {
 				return err
 			}
+			*/
 		case distributionAddress.String() == destAddress:
 			err := keeper.distrKeeper.FundCommunityPool(ctx, cancellationCharges, keeper.ModuleAccountAddress())
 			if err != nil {

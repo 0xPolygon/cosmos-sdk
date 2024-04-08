@@ -172,3 +172,18 @@ func (k Keeper) GetValidatorUpdates(ctx context.Context) ([]abci.ValidatorUpdate
 
 	return valUpdates.Updates, nil
 }
+
+// TODO HV2: next two methods to be implemented in heimdall's staking module.
+//  They are present here just to be able to build cosmos-sdk (simapp/app.go uses the staking keeper) and run some tests
+
+// GetValIdFromAddress returns a validator's id given its address string
+func (k Keeper) GetValIdFromAddress(context context.Context, address string) (uint64, error) {
+	// HV2: returning zero value and nil error
+	return 0, nil
+}
+
+// IterateCurrentValidatorsAndApplyFn iterate through current validators
+func (k Keeper) IterateCurrentValidatorsAndApplyFn(ctx context.Context, f func(validator types.ValidatorI) bool) error {
+	// HV2: returning nil error
+	return nil
+}

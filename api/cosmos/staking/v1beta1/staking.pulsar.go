@@ -13037,7 +13037,7 @@ type Validator struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// operator_address defines the address of the validator's operator; bech encoded in JSON.
+	// operator_address defines the address of the validator's operator; hex encoded in JSON.
 	OperatorAddress string `protobuf:"bytes,1,opt,name=operator_address,json=operatorAddress,proto3" json:"operator_address,omitempty"`
 	// consensus_pubkey is the consensus public key of the validator, as a Protobuf Any.
 	ConsensusPubkey *anypb.Any `protobuf:"bytes,2,opt,name=consensus_pubkey,json=consensusPubkey,proto3" json:"consensus_pubkey,omitempty"`

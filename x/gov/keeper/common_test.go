@@ -2,6 +2,8 @@ package keeper_test
 
 import (
 	"fmt"
+	consensustypes "github.com/cosmos/cosmos-sdk/x/consensus/types"
+	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"testing"
 
 	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
@@ -39,14 +41,18 @@ var (
 
 // getTestProposal creates and returns a test proposal message.
 func getTestProposal() []sdk.Msg {
-	legacyProposalMsg, err := v1.NewLegacyContent(v1beta1.NewTextProposal("Title", "description"), authtypes.NewModuleAddress(types.ModuleName).String())
+	legacyProposalMsg1, err := v1.NewLegacyContent(v1beta1.NewTextProposal("Title1", "description1"), authtypes.NewModuleAddress(types.ModuleName).String())
+	if err != nil {
+		panic(err)
+	}
+	legacyProposalMsg2, err := v1.NewLegacyContent(v1beta1.NewTextProposal("Title2", "description2"), authtypes.NewModuleAddress(types.ModuleName).String())
 	if err != nil {
 		panic(err)
 	}
 
 	return []sdk.Msg{
-		banktypes.NewMsgSend(govAcct, addr, sdk.NewCoins(sdk.NewCoin("stake", math.NewInt(1000)))),
-		legacyProposalMsg,
+		legacyProposalMsg1,
+		legacyProposalMsg2,
 	}
 }
 
@@ -68,6 +74,10 @@ func setupGovKeeper(t *testing.T) (
 	v1.RegisterInterfaces(encCfg.InterfaceRegistry)
 	v1beta1.RegisterInterfaces(encCfg.InterfaceRegistry)
 	banktypes.RegisterInterfaces(encCfg.InterfaceRegistry)
+	// HV2: register additional interfaces for MsgUpdateParams
+	authtypes.RegisterInterfaces(encCfg.InterfaceRegistry)
+	stakingtypes.RegisterInterfaces(encCfg.InterfaceRegistry)
+	consensustypes.RegisterInterfaces(encCfg.InterfaceRegistry)
 
 	// Create MsgServiceRouter, but don't populate it before creating the gov
 	// keeper.
@@ -87,13 +97,13 @@ func setupGovKeeper(t *testing.T) (
 
 	trackMockBalances(bankKeeper, distributionKeeper)
 	stakingKeeper.EXPECT().TokensFromConsensusPower(ctx, gomock.Any()).DoAndReturn(func(ctx sdk.Context, power int64) math.Int {
-		return sdk.TokensFromConsensusPower(power, math.NewIntFromUint64(1000000))
+		return sdk.TokensFromConsensusPower(power, math.NewIntFromUint64(1000000000000000000))
 	}).AnyTimes()
 
-	stakingKeeper.EXPECT().BondDenom(ctx).Return("stake", nil).AnyTimes()
-	stakingKeeper.EXPECT().IterateBondedValidatorsByPower(gomock.Any(), gomock.Any()).AnyTimes()
-	stakingKeeper.EXPECT().IterateDelegations(gomock.Any(), gomock.Any(), gomock.Any()).AnyTimes()
-	stakingKeeper.EXPECT().TotalBondedTokens(gomock.Any()).Return(math.NewInt(10000000), nil).AnyTimes()
+	stakingKeeper.EXPECT().BondDenom(ctx).Return("matic", nil).AnyTimes()
+	stakingKeeper.EXPECT().IterateCurrentValidatorsAndApplyFn(gomock.Any(), gomock.Any()).AnyTimes()
+	stakingKeeper.EXPECT().TokensFromConsensusPower(gomock.Any(), gomock.Any()).AnyTimes()
+	stakingKeeper.EXPECT().ValidatorAddressCodec().Return(address.NewHexCodec()).AnyTimes()
 	distributionKeeper.EXPECT().FundCommunityPool(gomock.Any(), gomock.Any(), gomock.Any()).Return(nil).AnyTimes()
 
 	// Gov keeper initializations
@@ -112,6 +122,10 @@ func setupGovKeeper(t *testing.T) (
 	msr.SetInterfaceRegistry(encCfg.InterfaceRegistry)
 	v1.RegisterMsgServer(msr, keeper.NewMsgServerImpl(govKeeper))
 	banktypes.RegisterMsgServer(msr, nil) // Nil is fine here as long as we never execute the proposal's Msgs.
+	// HV2: register additional MsgServer for MsgUpdateParams
+	authtypes.RegisterMsgServer(msr, nil)
+	stakingtypes.RegisterMsgServer(msr, nil)
+	consensustypes.RegisterMsgServer(msr, nil)
 
 	return govKeeper, acctKeeper, bankKeeper, stakingKeeper, distributionKeeper, encCfg, ctx
 }
