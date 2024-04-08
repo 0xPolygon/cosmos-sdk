@@ -1,8 +1,9 @@
 package ante
 
 import (
-	"github.com/cosmos/cosmos-sdk/x/auth/types"
 	"math"
+
+	"github.com/cosmos/cosmos-sdk/x/auth/types"
 
 	errorsmod "cosmossdk.io/errors"
 	sdkmath "cosmossdk.io/math"

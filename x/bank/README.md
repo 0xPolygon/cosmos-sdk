@@ -17,7 +17,9 @@ interaction with other modules which must alter user balances.
 In addition, the bank module tracks and provides query support for the total
 supply of all assets used in the application.
 
-This module is used in the Cosmos Hub.
+This module is used in the Cosmos Hub and [Heimdall-v2](https://github.com/0xPolygon/heimdall-v2).
+
+**NOTE**: For heimdall-v2, minimal changes have been done in the fork listed [here](#conceptschanges-specific-to-heimdall-v2)
 
 ## Contents
 
@@ -40,6 +42,7 @@ This module is used in the Cosmos Hub.
     * [Query](#query)
     * [Transactions](#transactions)
 * [gRPC](#grpc)
+* [concepts/changes specific to heimdall-v2](#conceptschanges-specific-to-heimdall-v2)
 
 ## Supply
 
@@ -407,6 +410,7 @@ The message handling can fail if:
 
 ### MsgSetSendEnabled
 
+**NOTE**: Heimdall only supports denom (matic) and hence this msg type is not supported.
 Used with the x/gov module to set create/edit SendEnabled entries.
 
 ```protobuf reference
@@ -1032,3 +1036,13 @@ Example Output:
   }
 }
 ```
+
+## concepts/changes specific to heimdall-v2
+
+Since heimdall is a unique component of the PoS architecture and not a traditional Cosmos SDK app, some changes had to be made in order to ensure correct functionality, some of which are :
+
+* MsgSetSendEnabled is not supported since matic is the only denom used. 
+
+* (Un)delegation is not supported since staking related logic is handled by PoS [core contracts](https://github.com/0xPolygon/core-contracts/tree/main/contracts) deployed on Ethereum.
+
+* A default fee of 10^15 matic (`DefaultFeeInMatic`) is deducted from the tx sender.

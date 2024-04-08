@@ -188,6 +188,9 @@ require (
 )
 
 replace (
+	// TODO HV2: this fixes the app build temporarily > to remove once we have our version of the cosmos-sdk fork
+	cosmossdk.io/simapp => ./simapp
+
 	github.com/cosmos/cosmos-sdk => ../../
 
 	// Fix upstream GHSA-h395-qcrw-5vmq and GHSA-3vp4-m3rf-835h vulnerabilities.

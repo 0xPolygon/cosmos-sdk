@@ -2,9 +2,10 @@ package ante
 
 import (
 	"bytes"
-	"cosmossdk.io/math"
 	"fmt"
 	"math/big"
+
+	"cosmossdk.io/math"
 
 	errorsmod "cosmossdk.io/errors"
 

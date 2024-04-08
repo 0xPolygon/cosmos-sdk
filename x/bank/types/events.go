@@ -10,6 +10,8 @@ const (
 
 	AttributeKeyRecipient = "recipient"
 	AttributeKeySender    = sdk.AttributeKeySender
+	// TODO HV2: clarify if this is needed
+	AttributeValueCategory = ModuleName
 
 	// supply and balance tracking events name and attributes
 	EventTypeCoinSpent    = "coin_spent"
