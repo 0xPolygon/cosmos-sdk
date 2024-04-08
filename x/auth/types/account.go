@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/types/address"
 	"strings"
 
 	"github.com/cometbft/cometbft/crypto"
@@ -12,7 +13,6 @@ import (
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/types/address"
 )
 
 var (
@@ -54,7 +54,10 @@ func NewBaseAccountWithAddress(addr sdk.AccAddress) *BaseAccount {
 
 // GetAddress - Implements sdk.AccountI.
 func (acc BaseAccount) GetAddress() sdk.AccAddress {
-	addr, _ := sdk.AccAddressFromBech32(acc.Address)
+	addr, err := sdk.AccAddressFromHex(acc.Address)
+	if err != nil {
+		return sdk.AccAddress{}
+	}
 	return addr
 }
 
@@ -121,7 +124,7 @@ func (acc BaseAccount) Validate() error {
 		return nil
 	}
 
-	accAddr, err := sdk.AccAddressFromBech32(acc.Address)
+	accAddr, err := sdk.AccAddressFromHex(acc.Address)
 	if err != nil {
 		return err
 	}
@@ -142,16 +145,18 @@ func (acc BaseAccount) UnpackInterfaces(unpacker codectypes.AnyUnpacker) error {
 	return unpacker.UnpackAny(acc.PubKey, &pubKey)
 }
 
-// NewModuleAddressOrAddress gets an input string and returns an AccAddress.
+// NewModuleAddressOrHexAddress gets an input string and returns a AccAddress.
 // If the input is a valid address, it returns the address.
 // If the input is a module name, it returns the module address.
-func NewModuleAddressOrBech32Address(input string) sdk.AccAddress {
-	if addr, err := sdk.AccAddressFromBech32(input); err == nil {
+func NewModuleAddressOrHexAddress(input string) sdk.AccAddress {
+	if addr, err := sdk.AccAddressFromHex(input); err == nil {
 		return addr
 	}
 
 	return NewModuleAddress(input)
 }
+
+// TODO HV2: Informal to clarify about modules having addresses/accounts and how keys management is done
 
 // NewModuleAddress creates an AccAddress from the hash of the module's name
 func NewModuleAddress(name string) sdk.AccAddress {
@@ -240,7 +245,7 @@ type moduleAccountPretty struct {
 
 // MarshalJSON returns the JSON representation of a ModuleAccount.
 func (ma ModuleAccount) MarshalJSON() ([]byte, error) {
-	accAddr, err := sdk.AccAddressFromBech32(ma.Address)
+	accAddr, err := sdk.AccAddressFromHex(ma.Address)
 	if err != nil {
 		return nil, err
 	}
@@ -310,3 +315,6 @@ type GenesisAccount interface {
 
 	Validate() error
 }
+
+// AccountProcessor is an interface to process account as per module
+type AccountProcessor func(*GenesisAccount, *BaseAccount) sdk.AccountI

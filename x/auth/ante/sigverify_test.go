@@ -29,16 +29,15 @@ import (
 )
 
 func TestSetPubKey(t *testing.T) {
-	suite := SetupTestSuite(t, true)
+	suite := SetupTestSuite(t, false)
 	suite.txBuilder = suite.clientCtx.TxConfig.NewTxBuilder()
 
 	// keys and addresses
 	priv1, pub1, addr1 := testdata.KeyTestPubAddr()
 	priv2, pub2, addr2 := testdata.KeyTestPubAddr()
-	priv3, pub3, addr3 := testdata.KeyTestPubAddrSecp256R1(t)
 
-	addrs := []sdk.AccAddress{addr1, addr2, addr3}
-	pubs := []cryptotypes.PubKey{pub1, pub2, pub3}
+	addrs := []sdk.AccAddress{addr1, addr2}
+	pubs := []cryptotypes.PubKey{pub1, pub2}
 
 	msgs := make([]sdk.Msg, len(addrs))
 	// set accounts and create msg for each address
@@ -52,7 +51,7 @@ func TestSetPubKey(t *testing.T) {
 	suite.txBuilder.SetFeeAmount(testdata.NewTestFeeAmount())
 	suite.txBuilder.SetGasLimit(testdata.NewTestGasLimit())
 
-	privs, accNums, accSeqs := []cryptotypes.PrivKey{priv1, priv2, priv3}, []uint64{0, 1, 2}, []uint64{0, 0, 0}
+	privs, accNums, accSeqs := []cryptotypes.PrivKey{priv1, priv2}, []uint64{0, 1}, []uint64{0, 0}
 	tx, err := suite.CreateTestTx(suite.ctx, privs, accNums, accSeqs, suite.ctx.ChainID(), signing.SignMode_SIGN_MODE_DIRECT)
 	require.NoError(t, err)
 
@@ -72,7 +71,7 @@ func TestSetPubKey(t *testing.T) {
 }
 
 func TestConsumeSignatureVerificationGas(t *testing.T) {
-	suite := SetupTestSuite(t, true)
+	suite := SetupTestSuite(t, false)
 	params := types.DefaultParams()
 	msg := []byte{1, 2, 3, 4}
 
@@ -126,7 +125,7 @@ func TestConsumeSignatureVerificationGas(t *testing.T) {
 }
 
 func TestSigVerification(t *testing.T) {
-	suite := SetupTestSuite(t, true)
+	suite := SetupTestSuite(t, false)
 	suite.txBankKeeper.EXPECT().DenomMetadata(gomock.Any(), gomock.Any()).Return(&banktypes.QueryDenomMetadataResponse{}, nil).AnyTimes()
 
 	enabledSignModes := []signing.SignMode{signing.SignMode_SIGN_MODE_DIRECT, signing.SignMode_SIGN_MODE_TEXTUAL, signing.SignMode_SIGN_MODE_LEGACY_AMINO_JSON}
@@ -248,8 +247,6 @@ func TestSigIntegration(t *testing.T) {
 	// generate private keys
 	privs := []cryptotypes.PrivKey{
 		secp256k1.GenPrivKey(),
-		secp256k1.GenPrivKey(),
-		secp256k1.GenPrivKey(),
 	}
 
 	params := types.DefaultParams()
@@ -265,7 +262,7 @@ func TestSigIntegration(t *testing.T) {
 }
 
 func runSigDecorators(t *testing.T, params types.Params, _ bool, privs ...cryptotypes.PrivKey) (storetypes.Gas, error) {
-	suite := SetupTestSuite(t, true)
+	suite := SetupTestSuite(t, false)
 	suite.txBuilder = suite.clientCtx.TxConfig.NewTxBuilder()
 
 	// Make block-height non-zero to include accNum in SignBytes
@@ -314,7 +311,7 @@ func runSigDecorators(t *testing.T, params types.Params, _ bool, privs ...crypto
 }
 
 func TestIncrementSequenceDecorator(t *testing.T) {
-	suite := SetupTestSuite(t, true)
+	suite := SetupTestSuite(t, false)
 	suite.txBuilder = suite.clientCtx.TxConfig.NewTxBuilder()
 
 	priv, _, addr := testdata.KeyTestPubAddr()

@@ -48,8 +48,8 @@ func (s *KeeperTestSuite) SetupTest() {
 	// gomock initializations
 	ctrl := gomock.NewController(s.T())
 	s.stakingKeeper = slashingtestutil.NewMockStakingKeeper(ctrl)
-	s.stakingKeeper.EXPECT().ValidatorAddressCodec().Return(address.NewBech32Codec("cosmosvaloper")).AnyTimes()
-	s.stakingKeeper.EXPECT().ConsensusAddressCodec().Return(address.NewBech32Codec("cosmosvalcons")).AnyTimes()
+	s.stakingKeeper.EXPECT().ValidatorAddressCodec().Return(address.NewHexCodec()).AnyTimes()
+	s.stakingKeeper.EXPECT().ConsensusAddressCodec().Return(address.NewHexCodec()).AnyTimes()
 
 	s.ctx = ctx
 	s.slashingKeeper = slashingkeeper.NewKeeper(

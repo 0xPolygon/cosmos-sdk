@@ -18,6 +18,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 )
 
+// HV2: heimdall uses validator-id to identify the validator (voter, depositors, proposer...)
+// This is redundant (hence removed) as cosmos-sdk uses the address as a unique validator's identifier
+
 // Proposal flags
 const (
 	FlagTitle     = "title"
@@ -99,16 +102,15 @@ Where proposal.json contains:
   // array of proto-JSON-encoded sdk.Msgs
   "messages": [
     {
-      "@type": "/cosmos.bank.v1beta1.MsgSend",
-      "from_address": "cosmos1...",
-      "to_address": "cosmos1...",
-      "amount":[{"denom": "stake","amount": "10"}]
+      "@type": "/cosmos-sdk/x/gov/v1/MsgUpdateParams",
+      "authority": "0x...",
+      "params": {...}
     }
   ],
   // metadata can be any of base64 encoded, raw text, stringified json, IPFS link to json
   // see below for example metadata
   "metadata": "4pIMOgIGx1vZGU=",
-  "deposit": "10stake",
+  "deposit": "10matic",
   "title": "My proposal",
   "summary": "A short summary of my proposal",
   "expedited": false
@@ -262,7 +264,7 @@ func NewCmdDeposit() *cobra.Command {
 find the proposal-id by running "%s query gov proposals".
 
 Example:
-$ %s tx gov deposit 1 10stake --from mykey
+$ %s tx gov deposit 1 10matic --from mykey
 `,
 				version.AppName, version.AppName,
 			),
@@ -370,6 +372,10 @@ $ %s tx gov weighted-vote 1 yes=0.6,no=0.3,abstain=0.05,no_with_veto=0.05 --from
 			),
 		),
 		RunE: func(cmd *cobra.Command, args []string) error {
+
+			// HV2: disabled in heimdall as we do not support WeighedVoteOptions
+			return fmt.Errorf("weighted-vote are currently not supported in heimdall")
+
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err

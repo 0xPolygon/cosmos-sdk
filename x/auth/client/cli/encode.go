@@ -10,6 +10,9 @@ import (
 	authclient "github.com/cosmos/cosmos-sdk/x/auth/client"
 )
 
+// TODO HV2: GetEncodeCommand is slightly different in heimdall.
+//  We need import the `helper` and apply the changes from heimdall's `client/tx/broadcast.go`
+
 // GetEncodeCommand returns the encode command to take a JSONified transaction and turn it into
 // Amino-serialized bytes
 func GetEncodeCommand() *cobra.Command {

@@ -150,14 +150,15 @@ func DefaultConfig(factory TestFixtureFactory) Config {
 		NumValidators:     4,
 		BondDenom:         sdk.DefaultBondDenom,
 		MinGasPrices:      fmt.Sprintf("0.000006%s", sdk.DefaultBondDenom),
-		AccountTokens:     sdk.TokensFromConsensusPower(1000, sdk.DefaultPowerReduction),
-		StakingTokens:     sdk.TokensFromConsensusPower(500, sdk.DefaultPowerReduction),
-		BondedTokens:      sdk.TokensFromConsensusPower(100, sdk.DefaultPowerReduction),
-		PruningStrategy:   pruningtypes.PruningOptionNothing,
-		CleanupDir:        true,
-		SigningAlgo:       string(hd.Secp256k1Type),
-		KeyringOptions:    []keyring.Option{},
-		PrintMnemonic:     false,
+		// HV2: increasing tokens for tests to be able to pay the `DefaultTxFees` defined in heimdall
+		AccountTokens:   sdk.TokensFromConsensusPower(1000000000000000000, sdk.DefaultPowerReduction),
+		StakingTokens:   sdk.TokensFromConsensusPower(500000000000000000, sdk.DefaultPowerReduction),
+		BondedTokens:    sdk.TokensFromConsensusPower(100000000, sdk.DefaultPowerReduction),
+		PruningStrategy: pruningtypes.PruningOptionNothing,
+		CleanupDir:      true,
+		SigningAlgo:     string(hd.Secp256k1Type),
+		KeyringOptions:  []keyring.Option{},
+		PrintMnemonic:   false,
 	}
 }
 

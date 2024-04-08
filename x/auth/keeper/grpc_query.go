@@ -154,22 +154,7 @@ func (s queryServer) ModuleAccountByName(c context.Context, req *types.QueryModu
 	return &types.QueryModuleAccountByNameResponse{Account: any}, nil
 }
 
-// Bech32Prefix returns the keeper internally stored bech32 prefix.
-func (s queryServer) Bech32Prefix(ctx context.Context, req *types.Bech32PrefixRequest) (*types.Bech32PrefixResponse, error) {
-	bech32Prefix, err := s.k.getBech32Prefix()
-	if err != nil {
-		return nil, err
-	}
-
-	if bech32Prefix == "" {
-		return &types.Bech32PrefixResponse{Bech32Prefix: "bech32 is not used on this chain"}, nil
-	}
-
-	return &types.Bech32PrefixResponse{Bech32Prefix: bech32Prefix}, nil
-}
-
-// AddressBytesToString converts an address from bytes to string, using the
-// keeper's bech32 prefix.
+// AddressBytesToString converts an address from bytes to string
 func (s queryServer) AddressBytesToString(ctx context.Context, req *types.AddressBytesToStringRequest) (*types.AddressBytesToStringResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "empty request")
@@ -187,8 +172,7 @@ func (s queryServer) AddressBytesToString(ctx context.Context, req *types.Addres
 	return &types.AddressBytesToStringResponse{AddressString: text}, nil
 }
 
-// AddressStringToBytes converts an address from string to bytes, using the
-// keeper's bech32 prefix.
+// AddressStringToBytes converts an address from string to bytes
 func (s queryServer) AddressStringToBytes(ctx context.Context, req *types.AddressStringToBytesRequest) (*types.AddressStringToBytesResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "empty request")

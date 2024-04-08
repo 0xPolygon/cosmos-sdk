@@ -22,7 +22,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 )
 
-var voter = sdk.MustAccAddressFromBech32("cosmos1fl48vsnmsdzcv85q5d2q4z5ajdha8yu34mf0eh")
+var voter = sdk.MustAccAddressFromHex("0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff")
 
 func TestMigrateJSON(t *testing.T) {
 	encodingConfig := moduletestutil.MakeTestEncodingConfig(gov.AppModuleBasic{})
@@ -45,7 +45,7 @@ func TestMigrateJSON(t *testing.T) {
 			VotingEndTime:    propTime,
 			Status:           v1beta1.StatusDepositPeriod,
 			FinalTallyResult: v1beta1.EmptyTallyResult(),
-			TotalDeposit:     sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(123))),
+			TotalDeposit:     sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(123))),
 		},
 	}
 	govGenState.Votes = v1beta1.Votes{
@@ -80,8 +80,8 @@ func TestMigrateJSON(t *testing.T) {
 		"max_deposit_period": "172800s",
 		"min_deposit": [
 			{
-				"amount": "10000000",
-				"denom": "stake"
+				"amount": "10000000000000000000",
+				"denom": "matic"
 			}
 		]
 	},
@@ -102,7 +102,7 @@ func TestMigrateJSON(t *testing.T) {
 			"messages": [
 				{
 					"@type": "/cosmos.gov.v1.MsgExecLegacyContent",
-					"authority": "cosmos10d07y265gmmuvt4z0w9aw880jnsr700j6zn9kn",
+					"authority": "0x7b5fe22b5446f7c62ea27b8bd71cef94e03f3df2",
 					"content": {
 						"@type": "/cosmos.gov.v1beta1.TextProposal",
 						"description": "my desc",
@@ -119,7 +119,7 @@ func TestMigrateJSON(t *testing.T) {
 			"total_deposit": [
 				{
 					"amount": "123",
-					"denom": "stake"
+					"denom": "matic"
 				}
 			],
 			"voting_end_time": "2001-09-09T01:46:40Z",
@@ -142,7 +142,7 @@ func TestMigrateJSON(t *testing.T) {
 				}
 			],
 			"proposal_id": "1",
-			"voter": "cosmos1fl48vsnmsdzcv85q5d2q4z5ajdha8yu34mf0eh"
+			"voter": "0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff"
 		},
 		{
 			"metadata": "",
@@ -153,7 +153,7 @@ func TestMigrateJSON(t *testing.T) {
 				}
 			],
 			"proposal_id": "2",
-			"voter": "cosmos1fl48vsnmsdzcv85q5d2q4z5ajdha8yu34mf0eh"
+			"voter": "0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff"
 		}
 	],
 	"voting_params": {

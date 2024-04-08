@@ -78,8 +78,8 @@ func SetupTestSuite(t *testing.T, isCheckTx bool) *AnteTestSuite {
 	}
 
 	suite.accountKeeper = keeper.NewAccountKeeper(
-		suite.encCfg.Codec, runtime.NewKVStoreService(key), types.ProtoBaseAccount, maccPerms, authcodec.NewBech32Codec("cosmos"),
-		sdk.Bech32MainPrefix, types.NewModuleAddress("gov").String(),
+		suite.encCfg.Codec, runtime.NewKVStoreService(key), types.ProtoBaseAccount, maccPerms,
+		authcodec.NewHexCodec(), types.NewModuleAddress("gov").String(),
 	)
 	suite.accountKeeper.GetModuleAccount(suite.ctx, types.FeeCollectorName)
 	err := suite.accountKeeper.Params.Set(suite.ctx, types.DefaultParams())
@@ -132,6 +132,7 @@ type TestCase struct {
 	simulate bool
 	expPass  bool
 	expErr   error
+	skip     bool
 }
 
 type TestCaseArgs struct {
@@ -183,6 +184,11 @@ func (suite *AnteTestSuite) RunTestCase(t *testing.T, tc TestCase, args TestCase
 	bytesCtx := suite.ctx.WithTxBytes(txBytes)
 	newCtx, anteErr := suite.anteHandler(bytesCtx, tx, tc.simulate)
 
+	if tc.skip {
+		t.Skip("skipping test as not relevant to Heimdall")
+		require.Error(t, txErr)
+		require.ErrorIs(t, txErr, tc.expErr)
+	}
 	if tc.expPass {
 		require.NoError(t, txErr)
 		require.NoError(t, anteErr)

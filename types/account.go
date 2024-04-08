@@ -29,6 +29,8 @@ type AccountI interface {
 
 	// Ensure that account implements stringer
 	String() string
+
+	Validate() error
 }
 
 // ModuleAccountI defines an account interface for modules that hold tokens in

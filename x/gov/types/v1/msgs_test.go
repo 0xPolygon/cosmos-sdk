@@ -14,11 +14,13 @@ import (
 )
 
 var (
-	coinsPos   = sdk.NewCoins(sdk.NewInt64Coin(sdk.DefaultBondDenom, 1000))
-	coinsMulti = sdk.NewCoins(sdk.NewInt64Coin(sdk.DefaultBondDenom, 1000), sdk.NewInt64Coin("foo", 10000))
-	addrs      = []sdk.AccAddress{
-		sdk.AccAddress("test1"),
-		sdk.AccAddress("test2"),
+	coinsPos    = sdk.NewCoins(sdk.NewInt64Coin(sdk.DefaultBondDenom, 1000))
+	coinsMulti  = sdk.NewCoins(sdk.NewInt64Coin(sdk.DefaultBondDenom, 1000), sdk.NewInt64Coin("foo", 10000))
+	accAddr1, _ = sdk.AccAddressFromHex("0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff")
+	accAddr2, _ = sdk.AccAddressFromHex("0x67b94473d81d0cd00849d563c94d0432ac988b49")
+	addrs       = []sdk.AccAddress{
+		accAddr1,
+		accAddr2,
 	}
 )
 
@@ -27,12 +29,13 @@ func init() {
 }
 
 func TestMsgDepositGetSignBytes(t *testing.T) {
-	addr := sdk.AccAddress("addr1")
+	addr, err := sdk.AccAddressFromHex("0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff")
+	require.NoError(t, err)
 	msg := v1.NewMsgDeposit(addr, 0, coinsPos)
 	pc := codec.NewProtoCodec(types.NewInterfaceRegistry())
 	res, err := pc.MarshalAminoJSON(msg)
 	require.NoError(t, err)
-	expected := `{"type":"cosmos-sdk/v1/MsgDeposit","value":{"amount":[{"amount":"1000","denom":"stake"}],"depositor":"cosmos1v9jxgu33kfsgr5","proposal_id":"0"}}`
+	expected := `{"type":"cosmos-sdk/v1/MsgDeposit","value":{"amount":[{"amount":"1000","denom":"matic"}],"depositor":"0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff","proposal_id":"0"}}`
 	require.Equal(t, expected, string(res))
 }
 
@@ -53,7 +56,7 @@ func TestMsgSubmitProposal_GetSignBytes(t *testing.T) {
 			"gov/MsgVote",
 			"Proposal for a governance vote msg",
 			false,
-			`{"type":"cosmos-sdk/v1/MsgSubmitProposal","value":{"initial_deposit":[],"messages":[{"type":"cosmos-sdk/v1/MsgVote","value":{"option":1,"proposal_id":"1","voter":"cosmos1w3jhxap3gempvr"}}],"summary":"Proposal for a governance vote msg","title":"gov/MsgVote"}}`,
+			`{"type":"cosmos-sdk/v1/MsgSubmitProposal","value":{"initial_deposit":[],"messages":[{"type":"cosmos-sdk/v1/MsgVote","value":{"option":1,"proposal_id":"1","voter":"0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff"}}],"summary":"Proposal for a governance vote msg","title":"gov/MsgVote"}}`,
 		},
 		{
 			"MsgSend",

@@ -34,7 +34,7 @@ func TestRandomizedGenState(t *testing.T) {
 		GenState:     make(map[string]json.RawMessage),
 	}
 
-	simulation.RandomizedGenState(&simState, addresscodec.NewBech32Codec("cosmos"))
+	simulation.RandomizedGenState(&simState, addresscodec.NewHexCodec())
 	var nftGenesis nft.GenesisState
 	simState.Cdc.MustUnmarshalJSON(simState.GenState[nft.ModuleName], &nftGenesis)
 

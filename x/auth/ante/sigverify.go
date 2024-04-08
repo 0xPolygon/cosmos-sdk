@@ -180,6 +180,15 @@ func (sgcd SigGasConsumeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simula
 		return ctx, err
 	}
 
+	// HV2: multisig disabled in Heimdall
+	if len(signers) == 0 {
+		return ctx, sdkerrors.ErrNoSignatures
+	}
+
+	if len(signers) > 1 {
+		return ctx, sdkerrors.ErrTooManySignatures
+	}
+
 	for i, sig := range sigs {
 		signerAcc, err := GetSignerAcc(ctx, sgcd.ak, signers[i])
 		if err != nil {
@@ -251,6 +260,12 @@ func OnlyLegacyAminoSigners(sigData signing.SignatureData) bool {
 }
 
 func (svd SigVerificationDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.AnteHandler) (newCtx sdk.Context, err error) {
+
+	// TODO HV2: do we need any change here to be compliant with heimdall's business logic?
+	//  See https://polygon.atlassian.net/browse/POS-2492
+	//  Specifically, check https://github.com/Raneet10/cosmos-sdk/pull/2/files
+	//  x/auth/ante.go (`processSig` method) and x/auth/types/txbuilder.go
+
 	sigTx, ok := tx.(authsigning.Tx)
 	if !ok {
 		return ctx, errorsmod.Wrap(sdkerrors.ErrTxDecode, "invalid transaction type")
@@ -304,6 +319,21 @@ func (svd SigVerificationDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simul
 		// no need to verify signatures on recheck tx
 		if !simulate && !ctx.IsReCheckTx() {
 			anyPk, _ := codectypes.NewAnyWithValue(pubKey)
+
+			/* TODO HV2: do we need to add here (and modify accordingly) the following code from heimdall?
+			// This should be needed, and - most probably - since the `processSig` method disappeared, it should be done in SetPubKeyDecorator
+			// If that's the case, we need to implement the RecoverPubkey method
+			// see https://github.com/0xPolygon/cosmos-sdk/pull/3/#discussion_r1497996133
+			// see https://github.com/0xPolygon/cosmos-sdk/pull/3/#discussion_r1498023925
+
+			var pk secp256k1.PubKeySecp256k1
+			p, err := authTypes.RecoverPubkey(signBytes, sig.Bytes())
+			if err != nil {
+				return nil, sdk.ErrUnauthorized("signature verification failed; verify correct account sequence and chain-id").Result()
+			}
+			copy(pk[:], p[:])
+
+			*/
 
 			signerData := txsigning.SignerData{
 				Address:       acc.GetAddress().String(),

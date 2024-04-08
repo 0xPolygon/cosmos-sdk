@@ -9,6 +9,7 @@ import (
 	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	dbm "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/gogoproto/proto"
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 
@@ -56,7 +57,7 @@ func TestSimAppExportAndBlockedAddrs(t *testing.T) {
 	// BlockedAddresses returns a map of addresses in app v1 and a map of modules name in app v2.
 	for acc := range BlockedAddresses() {
 		var addr sdk.AccAddress
-		if modAddr, err := sdk.AccAddressFromBech32(acc); err == nil {
+		if modAddr, err := sdk.AccAddressFromHex(acc); err == nil {
 			addr = modAddr
 		} else {
 			addr = app.AccountKeeper.GetModuleAddress(acc)
@@ -306,11 +307,11 @@ var _ address.Codec = (*customAddressCodec)(nil)
 type customAddressCodec struct{}
 
 func (c customAddressCodec) StringToBytes(text string) ([]byte, error) {
-	return []byte(text), nil
+	return common.FromHex(text), nil
 }
 
 func (c customAddressCodec) BytesToString(bz []byte) (string, error) {
-	return string(bz), nil
+	return common.Bytes2Hex(bz), nil
 }
 
 func TestAddressCodecFactory(t *testing.T) {

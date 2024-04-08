@@ -47,7 +47,7 @@ func NewMsgCreateValidator(
 
 // Validate validates the MsgCreateValidator sdk msg.
 func (msg MsgCreateValidator) Validate(ac address.Codec) error {
-	// note that unmarshaling from bech32 ensures both non-empty and valid
+	// note that unmarshaling from hex ensures both non-empty and valid
 	_, err := ac.StringToBytes(msg.ValidatorAddress)
 	if err != nil {
 		return sdkerrors.ErrInvalidAddress.Wrapf("invalid validator address: %s", err)

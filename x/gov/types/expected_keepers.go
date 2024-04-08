@@ -2,10 +2,7 @@ package types
 
 import (
 	"context"
-
 	addresscodec "cosmossdk.io/core/address"
-	"cosmossdk.io/math"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 )
@@ -19,16 +16,22 @@ type ParamSubspace interface {
 // StakingKeeper expected staking keeper (Validator and Delegator sets) (noalias)
 type StakingKeeper interface {
 	ValidatorAddressCodec() addresscodec.Codec
-	// iterate through bonded validators by operator address, execute func for each validator
-	IterateBondedValidatorsByPower(
-		context.Context, func(index int64, validator stakingtypes.ValidatorI) (stop bool),
-	) error
+	/*
+		// iterate through bonded validators by operator address, execute func for each validator
+		IterateBondedValidatorsByPower(
+			context.Context, func(index int64, validator stakingtypes.ValidatorI) (stop bool),
+		) error
 
-	TotalBondedTokens(context.Context) (math.Int, error) // total bonded tokens within the validator set
-	IterateDelegations(
-		ctx context.Context, delegator sdk.AccAddress,
-		fn func(index int64, delegation stakingtypes.DelegationI) (stop bool),
-	) error
+		TotalBondedTokens(context.Context) (math.Int, error) // total bonded tokens within the validator set
+		IterateDelegations(
+			ctx context.Context, delegator sdk.AccAddress,
+			fn func(index int64, delegation stakingtypes.DelegationI) (stop bool),
+		) error
+	*/
+
+	// HV2: added for heimdall business logic
+	IterateCurrentValidatorsAndApplyFn(context.Context, func(stakingtypes.ValidatorI) bool) error
+	GetValIdFromAddress(ctx context.Context, address string) (uint64, error)
 }
 
 // DistributionKeeper defines the expected distribution keeper (noalias)
@@ -58,7 +61,9 @@ type BankKeeper interface {
 
 	SendCoinsFromModuleToAccount(ctx context.Context, senderModule string, recipientAddr sdk.AccAddress, amt sdk.Coins) error
 	SendCoinsFromAccountToModule(ctx context.Context, senderAddr sdk.AccAddress, recipientModule string, amt sdk.Coins) error
-	BurnCoins(ctx context.Context, name string, amt sdk.Coins) error
+
+	// HV2: this function was removed in heimdall's gox/expected_keepers.go (from SupplyKeeper, merged now with BankKeeper)
+	// BurnCoins(ctx context.Context, name string, amt sdk.Coins) error
 }
 
 // Event Hooks

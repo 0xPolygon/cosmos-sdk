@@ -3,6 +3,7 @@ package keeper_test
 import (
 	gocontext "context"
 	"fmt"
+	"github.com/golang/mock/gomock"
 	"time"
 
 	"cosmossdk.io/math"
@@ -11,7 +12,9 @@ import (
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	v3 "github.com/cosmos/cosmos-sdk/x/gov/migrations/v3"
+	"github.com/cosmos/cosmos-sdk/x/gov/types"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 	"github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 )
@@ -212,10 +215,8 @@ func (suite *KeeperTestSuite) TestGRPCQueryProposals() {
 			func() {
 				// create 5 test proposals
 				for i := 0; i < 5; i++ {
-					govAddress := suite.govKeeper.GetGovernanceAccount(suite.ctx).GetAddress()
-					testProposal := []sdk.Msg{
-						v1.NewMsgVote(govAddress, uint64(i), v1.OptionYes, ""),
-					}
+					msg, err := v1.NewLegacyContent(v1beta1.NewTextProposal("Title1", "description1"), authtypes.NewModuleAddress(types.ModuleName).String())
+					testProposal := []sdk.Msg{msg}
 					proposal, err := suite.govKeeper.SubmitProposal(ctx, testProposal, "", "title", "summary", addrs[0], false)
 					suite.Require().NotEmpty(proposal)
 					suite.Require().NoError(err)
@@ -734,7 +735,7 @@ func (suite *KeeperTestSuite) TestGRPCQueryVotes() {
 					{ProposalId: proposal.Id, Voter: addrs[1].String(), Options: v1.NewNonSplitVoteOption(v1.OptionYes)},
 				}
 
-				codec := address.NewBech32Codec("cosmos")
+				codec := address.NewHexCodec()
 				accAddr1, err1 := codec.StringToBytes(votes[0].Voter)
 				accAddr2, err2 := codec.StringToBytes(votes[1].Voter)
 				suite.Require().NoError(err1)
@@ -837,7 +838,7 @@ func (suite *KeeperTestSuite) TestLegacyGRPCQueryVotes() {
 					{ProposalId: proposal.Id, Voter: addrs[0].String(), Options: v1beta1.NewNonSplitVoteOption(v1beta1.OptionAbstain)},
 					{ProposalId: proposal.Id, Voter: addrs[1].String(), Options: v1beta1.NewNonSplitVoteOption(v1beta1.OptionYes)},
 				}
-				codec := address.NewBech32Codec("cosmos")
+				codec := address.NewHexCodec()
 
 				accAddr1, err1 := codec.StringToBytes(votes[0].Voter)
 				accAddr2, err2 := codec.StringToBytes(votes[1].Voter)
@@ -1566,6 +1567,7 @@ func (suite *KeeperTestSuite) TestGRPCQueryTallyResult() {
 		suite.Run(fmt.Sprintf("Case %s", testCase.msg), func() {
 			testCase.malleate()
 
+			suite.stakingKeeper.EXPECT().IterateCurrentValidatorsAndApplyFn(gomock.Any(), gomock.Any()).AnyTimes()
 			tallyRes, err := queryClient.TallyResult(gocontext.Background(), req)
 
 			if testCase.expPass {
@@ -1702,6 +1704,7 @@ func (suite *KeeperTestSuite) TestLegacyGRPCQueryTallyResult() {
 		suite.Run(fmt.Sprintf("Case %s", testCase.msg), func() {
 			testCase.malleate()
 
+			suite.stakingKeeper.EXPECT().IterateCurrentValidatorsAndApplyFn(gomock.Any(), gomock.Any()).AnyTimes()
 			tallyRes, err := queryClient.TallyResult(gocontext.Background(), req)
 
 			if testCase.expPass {

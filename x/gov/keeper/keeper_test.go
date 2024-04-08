@@ -1,6 +1,7 @@
 package keeper_test
 
 import (
+	"math/big"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -22,7 +23,7 @@ import (
 	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
 )
 
-var address1 = "cosmos1ghekyjucln7y67ntx7cf27m9dpuxxemn4c8g4r"
+var address1 = "0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff"
 
 type KeeperTestSuite struct {
 	suite.Suite
@@ -50,7 +51,7 @@ func (suite *KeeperTestSuite) reset() {
 
 	// Populate the gov account with some coins, as the TestProposal we have
 	// is a MsgSend from the gov account.
-	coins := sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(100000)))
+	coins := sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(100000000000000000)))
 	err := bankKeeper.MintCoins(suite.ctx, minttypes.ModuleName, coins)
 	suite.NoError(err)
 	err = bankKeeper.SendCoinsFromModuleToModule(ctx, minttypes.ModuleName, types.ModuleName, coins)
@@ -75,17 +76,19 @@ func (suite *KeeperTestSuite) reset() {
 	suite.msgSrvr = keeper.NewMsgServerImpl(suite.govKeeper)
 
 	suite.legacyMsgSrvr = keeper.NewLegacyMsgServerImpl(govAcct.String(), suite.msgSrvr)
-	suite.addrs = simtestutil.AddTestAddrsIncremental(bankKeeper, stakingKeeper, ctx, 3, sdkmath.NewInt(30000000))
 
-	suite.acctKeeper.EXPECT().AddressCodec().Return(address.NewBech32Codec("cosmos")).AnyTimes()
+	accAmt := sdkmath.NewIntFromBigInt(new(big.Int).Mul(big.NewInt(10), new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil))).Mul(sdkmath.NewInt(3))
+	suite.addrs = simtestutil.AddTestAddrsIncremental(bankKeeper, stakingKeeper, ctx, 3, accAmt)
+
+	suite.acctKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
 }
 
 func TestIncrementProposalNumber(t *testing.T) {
 	govKeeper, authKeeper, _, _, _, _, ctx := setupGovKeeper(t)
 
-	authKeeper.EXPECT().AddressCodec().Return(address.NewBech32Codec("cosmos")).AnyTimes()
+	authKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
 
-	ac := address.NewBech32Codec("cosmos")
+	ac := address.NewHexCodec()
 	addrBz, err := ac.StringToBytes(address1)
 	require.NoError(t, err)
 
@@ -109,10 +112,10 @@ func TestIncrementProposalNumber(t *testing.T) {
 func TestProposalQueues(t *testing.T) {
 	govKeeper, authKeeper, _, _, _, _, ctx := setupGovKeeper(t)
 
-	ac := address.NewBech32Codec("cosmos")
+	ac := address.NewHexCodec()
 	addrBz, err := ac.StringToBytes(address1)
 	require.NoError(t, err)
-	authKeeper.EXPECT().AddressCodec().Return(address.NewBech32Codec("cosmos")).AnyTimes()
+	authKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
 
 	// create test proposals
 	tp := TestProposal

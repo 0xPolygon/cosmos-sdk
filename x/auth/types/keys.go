@@ -13,6 +13,9 @@ const (
 
 	// FeeCollectorName the root string for the fee collector account address
 	FeeCollectorName = "fee_collector"
+
+	// FeeToken fee token name
+	FeeToken = "matic"
 )
 
 var (
@@ -28,4 +31,12 @@ var (
 
 	// AccountNumberStoreKeyPrefix prefix for account-by-id store
 	AccountNumberStoreKeyPrefix = collections.NewPrefix("accountNumber")
+
+	// ProposerKeyPrefix prefix for proposer
+	ProposerKeyPrefix = collections.NewPrefix("proposer")
 )
+
+// ProposerKey returns proposer key
+func ProposerKey() []byte {
+	return ProposerKeyPrefix
+}

@@ -81,8 +81,7 @@ func initFixture(t testing.TB) *fixture {
 		runtime.NewKVStoreService(keys[authtypes.StoreKey]),
 		authtypes.ProtoBaseAccount,
 		maccPerms,
-		addresscodec.NewBech32Codec(sdk.Bech32MainPrefix),
-		sdk.Bech32MainPrefix,
+		addresscodec.NewHexCodec(),
 		authority.String(),
 	)
 
@@ -98,13 +97,13 @@ func initFixture(t testing.TB) *fixture {
 		log.NewNopLogger(),
 	)
 
-	stakingKeeper := stakingkeeper.NewKeeper(cdc, runtime.NewKVStoreService(keys[stakingtypes.StoreKey]), accountKeeper, bankKeeper, authority.String(), addresscodec.NewBech32Codec(sdk.Bech32PrefixValAddr), addresscodec.NewBech32Codec(sdk.Bech32PrefixConsAddr))
+	stakingKeeper := stakingkeeper.NewKeeper(cdc, runtime.NewKVStoreService(keys[stakingtypes.StoreKey]), accountKeeper, bankKeeper, authority.String(), addresscodec.NewHexCodec(), addresscodec.NewHexCodec())
 
 	distrKeeper := distrkeeper.NewKeeper(
 		cdc, runtime.NewKVStoreService(keys[distrtypes.StoreKey]), accountKeeper, bankKeeper, stakingKeeper, distrtypes.ModuleName, authority.String(),
 	)
-
-	authModule := auth.NewAppModule(cdc, accountKeeper, authsims.RandomGenesisAccounts, nil)
+	// TODO HV2: init processors with proper supply.AccountProcessor (supply module has been merged with bank module upstream)
+	authModule := auth.NewAppModule(cdc, accountKeeper, authsims.RandomGenesisAccounts, nil /*, []authtypes.AccountProcessor{}*/)
 	bankModule := bank.NewAppModule(cdc, bankKeeper, accountKeeper, nil)
 	stakingModule := staking.NewAppModule(cdc, stakingKeeper, accountKeeper, bankKeeper, nil)
 	distrModule := distribution.NewAppModule(cdc, distrKeeper, accountKeeper, bankKeeper, stakingKeeper, nil)
@@ -968,7 +967,7 @@ func TestMsgDepositValidatorRewardsPool(t *testing.T) {
 				err = f.cdc.Unmarshal(res.Value, &result)
 				assert.NilError(t, err)
 
-				val, err := sdk.ValAddressFromBech32(tc.msg.ValidatorAddress)
+				val, err := sdk.ValAddressFromHex(tc.msg.ValidatorAddress)
 				assert.NilError(t, err)
 
 				// check validator outstanding rewards

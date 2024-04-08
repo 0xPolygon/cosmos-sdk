@@ -47,11 +47,13 @@ func TestRandomizedGenState(t *testing.T) {
 	require.Equal(t, uint64(0x1ff), authGenesis.Params.GetSigVerifyCostSecp256k1())
 	require.Equal(t, uint64(9), authGenesis.Params.GetTxSigLimit())
 	require.Equal(t, uint64(5), authGenesis.Params.GetTxSizeCostPerByte())
+	require.Equal(t, uint64(8028162), authGenesis.Params.GetMaxTxGas())
+	require.Equal(t, "589000000000000000", authGenesis.Params.GetTxFees())
 
 	genAccounts, err := types.UnpackAccounts(authGenesis.Accounts)
 	require.NoError(t, err)
 	require.Len(t, genAccounts, 3)
-	require.Equal(t, "cosmos1ghekyjucln7y67ntx7cf27m9dpuxxemn4c8g4r", genAccounts[2].GetAddress().String())
+	require.Equal(t, "0xd4bfb1cb895840ca474b0d15abb11cf0f26bc88a", genAccounts[2].GetAddress().String())
 	require.Equal(t, uint64(0), genAccounts[2].GetAccountNumber())
 	require.Equal(t, uint64(0), genAccounts[2].GetSequence())
 }

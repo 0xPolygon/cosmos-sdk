@@ -5,38 +5,35 @@ package secp256k1
 
 import (
 	"errors"
+	ethCrypto "github.com/ethereum/go-ethereum/crypto"
 
-	"github.com/cometbft/cometbft/crypto"
 	secp256k1 "github.com/decred/dcrd/dcrec/secp256k1/v4"
 	"github.com/decred/dcrd/dcrec/secp256k1/v4/ecdsa"
 )
 
+// SigSize is the size of the ECDSA signature.
+const SigSize = 65
+
 // Sign creates an ECDSA signature on curve Secp256k1, using SHA256 on the msg.
 // The returned signature will be of the form R || S (in lower-S form).
 func (privKey *PrivKey) Sign(msg []byte) ([]byte, error) {
-	priv := secp256k1.PrivKeyFromBytes(privKey.Key)
-	sig := ecdsa.SignCompact(priv, crypto.Sha256(msg), false)
+	privateObject, err := ethCrypto.ToECDSA(privKey.Key)
+	if err != nil {
+		return nil, err
+	}
 
-	// remove the first byte which is compactSigRecoveryCode
-	return sig[1:], nil
+	return ethCrypto.Sign(ethCrypto.Keccak256(msg), privateObject)
 }
 
-// VerifyBytes verifies a signature of the form R || S.
+// VerifySignature verifies a signature of the form R || S || V.
 // It rejects signatures which are not in lower-S form.
-func (pubKey *PubKey) VerifySignature(msg, sigStr []byte) bool {
-	if len(sigStr) != 64 {
+func (pubKey *PubKey) VerifySignature(msg []byte, sigStr []byte) bool {
+	if len(sigStr) != SigSize {
 		return false
 	}
-	pub, err := secp256k1.ParsePubKey(pubKey.Key)
-	if err != nil {
-		return false
-	}
-	// parse the signature, will return error if it is not in lower-S form
-	signature, err := signatureFromBytes(sigStr)
-	if err != nil {
-		return false
-	}
-	return signature.Verify(crypto.Sha256(msg), pub)
+
+	hash := ethCrypto.Keccak256(msg)
+	return ethCrypto.VerifySignature(pubKey.Key, hash, sigStr[:64])
 }
 
 // Read Signature struct from R || S. Caller needs to ensure

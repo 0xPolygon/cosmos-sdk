@@ -45,7 +45,6 @@ func NormalizeProposalType(proposalType string) string {
 	switch proposalType {
 	case "Text", "text":
 		return v1beta1.ProposalTypeText
-
 	default:
 		return ""
 	}

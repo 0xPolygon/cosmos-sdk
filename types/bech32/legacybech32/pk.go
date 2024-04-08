@@ -41,26 +41,13 @@ func MustMarshalPubKey(pkt Bech32PubKeyType, pubkey cryptotypes.PubKey) string {
 }
 
 func getPrefix(pkt Bech32PubKeyType) string {
-	cfg := sdk.GetConfig()
-	switch pkt {
-	case AccPK:
-		return cfg.GetBech32AccountPubPrefix()
-
-	case ValPK:
-		return cfg.GetBech32ValidatorPubPrefix()
-	case ConsPK:
-		return cfg.GetBech32ConsensusPubPrefix()
-	}
-
 	return ""
 }
 
 // Deprecated: UnmarshalPubKey returns a PublicKey from a bech32-encoded PublicKey with
 // a given key type.
 func UnmarshalPubKey(pkt Bech32PubKeyType, pubkeyStr string) (cryptotypes.PubKey, error) {
-	bech32Prefix := getPrefix(pkt)
-
-	bz, err := sdk.GetFromBech32(pubkeyStr, bech32Prefix)
+	bz, err := sdk.GetFromHex(pubkeyStr)
 	if err != nil {
 		return nil, err
 	}

@@ -45,13 +45,13 @@ func Example() {
 		runtime.NewKVStoreService(keys[authtypes.StoreKey]),
 		authtypes.ProtoBaseAccount,
 		map[string][]string{minttypes.ModuleName: {authtypes.Minter}},
-		addresscodec.NewBech32Codec("cosmos"),
-		"cosmos",
+		addresscodec.NewHexCodec(),
 		authority,
 	)
 
 	// subspace is nil because we don't test params (which is legacy anyway)
-	authModule := auth.NewAppModule(encodingCfg.Codec, accountKeeper, authsims.RandomGenesisAccounts, nil)
+	// TODO HV2: init processors with proper supply.AccountProcessor (supply module has been merged with bank module upstream)
+	authModule := auth.NewAppModule(encodingCfg.Codec, accountKeeper, authsims.RandomGenesisAccounts, nil /*, []authtypes.AccountProcessor{}*/)
 
 	// here bankkeeper and staking keeper is nil because we are not testing them
 	// subspace is nil because we don't test params (which is legacy anyway)
@@ -134,13 +134,13 @@ func Example_oneModule() {
 		runtime.NewKVStoreService(keys[authtypes.StoreKey]),
 		authtypes.ProtoBaseAccount,
 		map[string][]string{minttypes.ModuleName: {authtypes.Minter}},
-		addresscodec.NewBech32Codec("cosmos"),
-		"cosmos",
+		addresscodec.NewHexCodec(),
 		authority,
 	)
 
 	// subspace is nil because we don't test params (which is legacy anyway)
-	authModule := auth.NewAppModule(encodingCfg.Codec, accountKeeper, authsims.RandomGenesisAccounts, nil)
+	// TODO HV2: init processors with proper supply.AccountProcessor (supply module has been merged with bank module upstream)
+	authModule := auth.NewAppModule(encodingCfg.Codec, accountKeeper, authsims.RandomGenesisAccounts, nil /*, []authtypes.AccountProcessor{}*/)
 
 	// create the application and register all the modules from the previous step
 	integrationApp := integration.NewIntegrationApp(

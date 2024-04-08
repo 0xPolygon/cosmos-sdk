@@ -1,6 +1,8 @@
 package keeper_test
 
 import (
+	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"math/big"
 	"testing"
 
 	"github.com/stretchr/testify/suite"
@@ -10,7 +12,6 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
-	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -19,6 +20,7 @@ import (
 	authcodec "github.com/cosmos/cosmos-sdk/x/auth/codec"
 	"github.com/cosmos/cosmos-sdk/x/auth/keeper"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 )
 
 const (
@@ -65,8 +67,7 @@ func (suite *KeeperTestSuite) SetupTest() {
 		storeService,
 		types.ProtoBaseAccount,
 		maccPerms,
-		authcodec.NewBech32Codec("cosmos"),
-		"cosmos",
+		authcodec.NewHexCodec(),
 		types.NewModuleAddress("gov").String(),
 	)
 	suite.msgServer = keeper.NewMsgServerImpl(suite.accountKeeper)
@@ -95,6 +96,8 @@ func (suite *KeeperTestSuite) TestSupply_ValidatePermissions() {
 func (suite *KeeperTestSuite) TestInitGenesis() {
 	suite.SetupTest() // reset
 
+	txFeesSum := big.NewInt(0).String()
+
 	// Check if params are set
 	genState := types.GenesisState{
 		Params: types.Params{
@@ -103,11 +106,14 @@ func (suite *KeeperTestSuite) TestInitGenesis() {
 			TxSizeCostPerByte:      types.DefaultTxSizeCostPerByte + 1,
 			SigVerifyCostED25519:   types.DefaultSigVerifyCostED25519 + 1,
 			SigVerifyCostSecp256k1: types.DefaultSigVerifyCostSecp256k1 + 1,
+			MaxTxGas:               types.DefaultMaxTxGas + 1,
+			TxFees:                 txFeesSum,
 		},
 	}
 
 	ctx := suite.ctx
-	suite.accountKeeper.InitGenesis(ctx, genState)
+	// TODO HV2: init processors with proper supply.AccountProcessor (supply module has been merged with bank module upstream)
+	suite.accountKeeper.InitGenesis(ctx, genState, []authtypes.AccountProcessor{})
 
 	params := suite.accountKeeper.GetParams(ctx)
 	suite.Require().Equal(genState.Params.MaxMemoCharacters, params.MaxMemoCharacters, "MaxMemoCharacters")
@@ -115,12 +121,14 @@ func (suite *KeeperTestSuite) TestInitGenesis() {
 	suite.Require().Equal(genState.Params.TxSizeCostPerByte, params.TxSizeCostPerByte, "TxSizeCostPerByte")
 	suite.Require().Equal(genState.Params.SigVerifyCostED25519, params.SigVerifyCostED25519, "SigVerifyCostED25519")
 	suite.Require().Equal(genState.Params.SigVerifyCostSecp256k1, params.SigVerifyCostSecp256k1, "SigVerifyCostSecp256k1")
+	suite.Require().Equal(genState.Params.MaxTxGas, params.MaxTxGas, "MaxTxGas")
+	suite.Require().Equal(genState.Params.TxFees, params.TxFees, "TxFees")
 
 	suite.SetupTest() // reset
 	ctx = suite.ctx
 	// Fix duplicate account numbers
-	pubKey1 := ed25519.GenPrivKey().PubKey()
-	pubKey2 := ed25519.GenPrivKey().PubKey()
+	pubKey1 := secp256k1.GenPrivKey().PubKey()
+	pubKey2 := secp256k1.GenPrivKey().PubKey()
 	accts := []sdk.AccountI{
 		&types.BaseAccount{
 			Address:       sdk.AccAddress(pubKey1.Address()).String(),
@@ -152,8 +160,8 @@ func (suite *KeeperTestSuite) TestInitGenesis() {
 	for _, acct := range accts {
 		genState.Accounts = append(genState.Accounts, codectypes.UnsafePackAny(acct))
 	}
-
-	suite.accountKeeper.InitGenesis(ctx, genState)
+	// TODO HV2: init processors with proper supply.AccountProcessor (supply module has been merged with bank module upstream)
+	suite.accountKeeper.InitGenesis(ctx, genState, []authtypes.AccountProcessor{})
 
 	keeperAccts := suite.accountKeeper.GetAllAccounts(ctx)
 	// len(accts)+1 because we initialize fee_collector account after the genState accounts
@@ -200,7 +208,8 @@ func (suite *KeeperTestSuite) TestInitGenesis() {
 		},
 	}
 
-	suite.accountKeeper.InitGenesis(ctx, genState)
+	// TODO HV2: init processors with proper supply.AccountProcessor (supply module has been merged with bank module upstream)
+	suite.accountKeeper.InitGenesis(ctx, genState, []authtypes.AccountProcessor{})
 
 	keeperAccts = suite.accountKeeper.GetAllAccounts(ctx)
 	// len(genState.Accounts)+1 because we initialize fee_collector as account number 1 (last)
@@ -214,4 +223,35 @@ func (suite *KeeperTestSuite) TestInitGenesis() {
 	nextNum = suite.accountKeeper.NextAccountNumber(ctx)
 	// we expect nextNum to be 2 because we initialize fee_collector as account number 1
 	suite.Require().Equal(2, int(nextNum))
+}
+
+func (suite *KeeperTestSuite) TestProposer() {
+	suite.SetupTest()
+
+	proposer, ok := suite.accountKeeper.GetBlockProposer(suite.ctx)
+	suite.Require().False(ok)
+	suite.Require().Equal(sdk.AccAddress{}.Bytes(), proposer.Bytes())
+
+	testAddress, err := sdk.GetFromHex("0x9f86D081884C7d659A2fEaA0C55AD015A3bf4F1B")
+	suite.Require().NoError(err)
+
+	// set addr as proposer
+	address, err := sdk.HexifyAddressBytes(testAddress)
+	suite.Require().NoError(err)
+	proposer, err = sdk.AccAddressFromHex(address)
+	suite.Require().NoError(err)
+	err = suite.accountKeeper.SetBlockProposer(suite.ctx, proposer)
+	suite.Require().NoError(err)
+
+	proposer, ok = suite.accountKeeper.GetBlockProposer(suite.ctx)
+	suite.Require().True(ok)
+	suite.Require().Equal(testAddress, proposer.Bytes())
+
+	// remove block proposer
+	err = suite.accountKeeper.RemoveBlockProposer(suite.ctx)
+	suite.Require().NoError(err)
+
+	proposer, ok = suite.accountKeeper.GetBlockProposer(suite.ctx)
+	suite.Require().False(ok)
+	suite.Require().Equal(sdk.AccAddress{}.Bytes(), proposer.Bytes())
 }

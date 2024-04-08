@@ -21,7 +21,7 @@ type bankSendWrapper struct {
 }
 
 func (msg bankSendWrapper) GetSigners() []sdk.AccAddress {
-	fromAddress, _ := sdk.AccAddressFromBech32(msg.FromAddress)
+	fromAddress, _ := sdk.AccAddressFromHex(msg.FromAddress)
 	return []sdk.AccAddress{fromAddress}
 }
 

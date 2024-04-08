@@ -98,7 +98,8 @@ func (cgts ConsumeTxSizeGasDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, sim
 	}
 	params := cgts.ak.GetParams(ctx)
 
-	ctx.GasMeter().ConsumeGas(params.TxSizeCostPerByte*storetypes.Gas(len(ctx.TxBytes())), "txSize")
+	// HV2: removed `ConsumeGas` in it as done in heimdall's `auth/ante.go` (original ancestor's method `newCtx.GasMeter().ConsumeGas`)
+	// ctx.GasMeter().ConsumeGas(params.TxSizeCostPerByte*storetypes.Gas(len(ctx.TxBytes())), "txSize")
 
 	// simulate gas cost for signatures in simulate mode
 	if simulate {
@@ -112,6 +113,15 @@ func (cgts ConsumeTxSizeGasDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, sim
 		signers, err := sigTx.GetSigners()
 		if err != nil {
 			return sdk.Context{}, err
+		}
+
+		// HV2: multisig disabled in Heimdall
+		if len(signers) == 0 {
+			return ctx, sdkerrors.ErrNoSignatures
+		}
+
+		if len(signers) > 1 {
+			return ctx, sdkerrors.ErrTooManySignatures
 		}
 
 		for i, signer := range signers {
@@ -146,7 +156,8 @@ func (cgts ConsumeTxSizeGasDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, sim
 				cost *= params.TxSigLimit
 			}
 
-			ctx.GasMeter().ConsumeGas(params.TxSizeCostPerByte*cost, "txSize")
+			// HV2: removed `ConsumeGas` in it as done in heimdall's `auth/ante.go` (original ancestor's method `newCtx.GasMeter().ConsumeGas`)
+			// ctx.GasMeter().ConsumeGas(params.TxSizeCostPerByte*cost, "txSize")
 		}
 	}
 

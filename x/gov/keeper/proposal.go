@@ -43,6 +43,13 @@ func (keeper Keeper) SubmitProposal(ctx context.Context, messages []sdk.Msg, met
 	for _, msg := range messages {
 		msgsStr += fmt.Sprintf(",%s", sdk.MsgTypeURL(msg))
 
+		// HV2: filter out the message types that are not supported by the gov module
+		err = ValidateGovMsgType(msg)
+		if err != nil {
+			keeper.Logger(ctx).Info("type not supported, proposal is considered not valid")
+			return v1.Proposal{}, err
+		}
+
 		// perform a basic validation of the message
 		if m, ok := msg.(sdk.HasValidateBasic); ok {
 			if err := m.ValidateBasic(); err != nil {
@@ -58,6 +65,7 @@ func (keeper Keeper) SubmitProposal(ctx context.Context, messages []sdk.Msg, met
 			return v1.Proposal{}, types.ErrInvalidSigner
 		}
 
+		// TODO HV2: Informal to check when gov module account signs these messages (see https://0xpolygon.slack.com/archives/C05F2JJEQF5/p1709238272417039)
 		// assert that the governance module account is the only signer of the messages
 		if !bytes.Equal(signers[0], keeper.GetGovernanceAccount(ctx).GetAddress()) {
 			return v1.Proposal{}, errorsmod.Wrapf(types.ErrInvalidSigner, sdk.AccAddress(signers[0]).String())
@@ -75,6 +83,14 @@ func (keeper Keeper) SubmitProposal(ctx context.Context, messages []sdk.Msg, met
 		// They may fail upon execution.
 		// ref: https://github.com/cosmos/cosmos-sdk/pull/10868#discussion_r784872842
 		if msg, ok := msg.(*v1.MsgExecLegacyContent); ok {
+
+			// HV2: filter out the content types that are not supported by the gov module
+			err = ValidateGovMsgContentType(msg)
+			if err != nil {
+				keeper.Logger(ctx).Info("type not supported, proposal is considered not valid")
+				return v1.Proposal{}, err
+			}
+
 			cacheCtx, _ := sdkCtx.CacheContext()
 			if _, err := handler(cacheCtx, msg); err != nil {
 				if errors.Is(types.ErrNoProposalHandlerExists, err) {

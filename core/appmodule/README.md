@@ -11,7 +11,7 @@ The first step in creating a module that works with `appconfig`, is to create a 
 * The module configuration message is usually called simply `Module`, ex. `cosmos.bank.module.v1.Module`.
 * Create a new protobuf package and configuration message for each state machine breaking version of the module, ex. `cosmos.bank.module.v2.Module`, etc.
 
-The module configuration message should include any parameters which should be initialized at application startup. For example, the auth module needs to know the bech32 prefix of the app and the permissions of module accounts.
+The module configuration message should include any parameters which should be initialized at application startup.
 
 In the future, it may be possible to update the app config through a governance proposal at runtime.
 

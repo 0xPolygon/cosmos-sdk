@@ -6,6 +6,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
+// HV2: VestingAccount is not used in heimdall
+
 // VestingAccount defines an interface used for account vesting.
 type VestingAccount interface {
 	// LockedCoins returns the set of coins that are not spendable (i.e. locked),

@@ -1050,32 +1050,33 @@ func (mr *MockStakingKeeperMockRecorder) BondDenom(ctx interface{}) *gomock.Call
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BondDenom", reflect.TypeOf((*MockStakingKeeper)(nil).BondDenom), ctx)
 }
 
-// IterateBondedValidatorsByPower mocks base method.
-func (m *MockStakingKeeper) IterateBondedValidatorsByPower(arg0 context.Context, arg1 func(int64, types1.ValidatorI) bool) error {
+// GetValIdFromAddress mocks base method.
+func (m *MockStakingKeeper) GetValIdFromAddress(ctx context.Context, address string) (uint64, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "IterateBondedValidatorsByPower", arg0, arg1)
+	ret := m.ctrl.Call(m, "GetValIdFromAddress", ctx, address)
+	ret0, _ := ret[0].(uint64)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetValIdFromAddress indicates an expected call of GetValIdFromAddress.
+func (mr *MockStakingKeeperMockRecorder) GetValIdFromAddress(ctx, address interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetValIdFromAddress", reflect.TypeOf((*MockStakingKeeper)(nil).GetValIdFromAddress), ctx, address)
+}
+
+// IterateCurrentValidatorsAndApplyFn mocks base method.
+func (m *MockStakingKeeper) IterateCurrentValidatorsAndApplyFn(arg0 context.Context, arg1 func(types1.ValidatorI) bool) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "IterateCurrentValidatorsAndApplyFn", arg0, arg1)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// IterateBondedValidatorsByPower indicates an expected call of IterateBondedValidatorsByPower.
-func (mr *MockStakingKeeperMockRecorder) IterateBondedValidatorsByPower(arg0, arg1 interface{}) *gomock.Call {
+// IterateCurrentValidatorsAndApplyFn indicates an expected call of IterateCurrentValidatorsAndApplyFn.
+func (mr *MockStakingKeeperMockRecorder) IterateCurrentValidatorsAndApplyFn(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IterateBondedValidatorsByPower", reflect.TypeOf((*MockStakingKeeper)(nil).IterateBondedValidatorsByPower), arg0, arg1)
-}
-
-// IterateDelegations mocks base method.
-func (m *MockStakingKeeper) IterateDelegations(ctx context.Context, delegator types.AccAddress, fn func(int64, types1.DelegationI) bool) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "IterateDelegations", ctx, delegator, fn)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// IterateDelegations indicates an expected call of IterateDelegations.
-func (mr *MockStakingKeeperMockRecorder) IterateDelegations(ctx, delegator, fn interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IterateDelegations", reflect.TypeOf((*MockStakingKeeper)(nil).IterateDelegations), ctx, delegator, fn)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IterateCurrentValidatorsAndApplyFn", reflect.TypeOf((*MockStakingKeeper)(nil).IterateCurrentValidatorsAndApplyFn), arg0, arg1)
 }
 
 // TokensFromConsensusPower mocks base method.
@@ -1090,21 +1091,6 @@ func (m *MockStakingKeeper) TokensFromConsensusPower(ctx context.Context, power 
 func (mr *MockStakingKeeperMockRecorder) TokensFromConsensusPower(ctx, power interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "TokensFromConsensusPower", reflect.TypeOf((*MockStakingKeeper)(nil).TokensFromConsensusPower), ctx, power)
-}
-
-// TotalBondedTokens mocks base method.
-func (m *MockStakingKeeper) TotalBondedTokens(arg0 context.Context) (math.Int, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "TotalBondedTokens", arg0)
-	ret0, _ := ret[0].(math.Int)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// TotalBondedTokens indicates an expected call of TotalBondedTokens.
-func (mr *MockStakingKeeperMockRecorder) TotalBondedTokens(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "TotalBondedTokens", reflect.TypeOf((*MockStakingKeeper)(nil).TotalBondedTokens), arg0)
 }
 
 // ValidatorAddressCodec mocks base method.

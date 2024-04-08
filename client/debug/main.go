@@ -255,15 +255,15 @@ $ %s debug addr cosmos1e0jnq2sun3dzjh8p2xq95kk0expwmd7shwjpfg
 			addrString := args[0]
 			var addr []byte
 
-			// try hex, then bech32
+			// try hex, then bech32 (in heimdall case will always try hex; kept the other code for compatibility)
 			var err error
 			addr, err = hex.DecodeString(addrString)
 			if err != nil {
 				var err2 error
-				addr, err2 = sdk.AccAddressFromBech32(addrString)
+				addr, err2 = sdk.AccAddressFromHex(addrString)
 				if err2 != nil {
 					var err3 error
-					addr, err3 = sdk.ValAddressFromBech32(addrString)
+					addr, err3 = sdk.ValAddressFromHex(addrString)
 
 					if err3 != nil {
 						return fmt.Errorf("expected hex or bech32. Got errors: hex: %v, bech32 acc: %v, bech32 val: %v", err, err2, err3)
@@ -313,13 +313,13 @@ $ %s debug raw-bytes [72 101 108 108 111 44 32 112 108 97 121 103 114 111 117 11
 func PrefixesCmd() *cobra.Command {
 	return &cobra.Command{
 		Use:     "prefixes",
-		Short:   "List prefixes used for Human-Readable Part (HRP) in Bech32",
+		Short:   "List prefixes used for Human-Readable Part (HRP) in hex",
 		Long:    "List prefixes used in Bech32 addresses.",
 		Example: fmt.Sprintf("$ %s debug prefixes", version.AppName),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			cmd.Printf("Bech32 Acc: %s\n", sdk.GetConfig().GetBech32AccountAddrPrefix())
-			cmd.Printf("Bech32 Val: %s\n", sdk.GetConfig().GetBech32ValidatorAddrPrefix())
-			cmd.Printf("Bech32 Con: %s\n", sdk.GetConfig().GetBech32ConsensusAddrPrefix())
+			cmd.Printf("Hex Acc: %s\n", "")
+			cmd.Printf("Hex Val: %s\n", "")
+			cmd.Printf("Hex Con: %s\n", "")
 			return nil
 		},
 	}

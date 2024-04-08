@@ -42,7 +42,7 @@ func (s *GenesisTestSuite) SetupTest() {
 	s.ctx = sdkCtx
 	s.cdc = codec.NewProtoCodec(encCfg.InterfaceRegistry)
 	authority := authtypes.NewModuleAddress("gov")
-	ac := addresscodec.NewBech32Codec("cosmos")
+	ac := addresscodec.NewHexCodec()
 
 	bz, err := ac.StringToBytes(authority.String())
 	s.Require().NoError(err)

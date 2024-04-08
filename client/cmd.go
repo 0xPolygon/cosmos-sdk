@@ -252,7 +252,7 @@ func readTxCommandFlags(clientCtx Context, flagSet *pflag.FlagSet) (Context, err
 		payer, _ := flagSet.GetString(flags.FlagFeePayer)
 
 		if payer != "" {
-			payerAcc, err := sdk.AccAddressFromBech32(payer)
+			payerAcc, err := sdk.AccAddressFromHex(payer)
 			if err != nil {
 				return clientCtx, err
 			}
@@ -265,7 +265,7 @@ func readTxCommandFlags(clientCtx Context, flagSet *pflag.FlagSet) (Context, err
 		granter, _ := flagSet.GetString(flags.FlagFeeGranter)
 
 		if granter != "" {
-			granterAcc, err := sdk.AccAddressFromBech32(granter)
+			granterAcc, err := sdk.AccAddressFromHex(granter)
 			if err != nil {
 				return clientCtx, err
 			}

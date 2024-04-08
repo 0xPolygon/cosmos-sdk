@@ -12,4 +12,6 @@ var (
 	ErrInvalidKey            = errors.Register(ModuleName, 7, "invalid key")
 	ErrDuplicateEntry        = errors.Register(ModuleName, 8, "duplicate entry")
 	ErrMultipleSenders       = errors.Register(ModuleName, 9, "multiple senders not allowed")
+	ErrNoValidatorTopup      = errors.Register(ModuleName, 10, "no validator topup")
+	ErrNoBalanceToWithdraw   = errors.Register(ModuleName, 11, "no balance to withdraw")
 )

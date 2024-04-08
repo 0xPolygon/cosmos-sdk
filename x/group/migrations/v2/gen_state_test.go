@@ -1,7 +1,7 @@
 package v2_test
 
 import (
-	"encoding/binary"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -52,8 +52,7 @@ func TestMigrateGenState(t *testing.T) {
 						AccountNumber: 8,
 					}
 
-					k := make([]byte, 8)
-					binary.BigEndian.PutUint64(k, 0)
+					k := secp256k1.GenPrivKey().PubKey().Address()
 					c, err := authtypes.NewModuleCredential(group.ModuleName, []byte{v2.GroupPolicyTablePrefix}, k)
 					if err != nil {
 						panic(err)

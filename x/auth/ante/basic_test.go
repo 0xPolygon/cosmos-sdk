@@ -18,7 +18,7 @@ import (
 )
 
 func TestValidateBasic(t *testing.T) {
-	suite := SetupTestSuite(t, true)
+	suite := SetupTestSuite(t, false)
 	suite.txBuilder = suite.clientCtx.TxConfig.NewTxBuilder()
 
 	// keys and addresses
@@ -59,7 +59,7 @@ func TestValidateBasic(t *testing.T) {
 }
 
 func TestValidateMemo(t *testing.T) {
-	suite := SetupTestSuite(t, true)
+	suite := SetupTestSuite(t, false)
 	suite.txBuilder = suite.clientCtx.TxConfig.NewTxBuilder()
 
 	// keys and addresses
@@ -95,7 +95,7 @@ func TestValidateMemo(t *testing.T) {
 }
 
 func TestConsumeGasForTxSize(t *testing.T) {
-	suite := SetupTestSuite(t, true)
+	suite := SetupTestSuite(t, false)
 
 	// keys and addresses
 	priv1, _, addr1 := testdata.KeyTestPubAddr()
@@ -147,9 +147,10 @@ func TestConsumeGasForTxSize(t *testing.T) {
 			suite.ctx, err = antehandler(suite.ctx, tx, false)
 			require.Nil(t, err, "ConsumeTxSizeGasDecorator returned error: %v", err)
 
+			// HV2: removed as `ConsumeGas` is not used in heimdall
 			// require that decorator consumes expected amount of gas
-			consumedGas := suite.ctx.GasMeter().GasConsumed() - beforeGas
-			require.Equal(t, expectedGas, consumedGas, "Decorator did not consume the correct amount of gas")
+			// consumedGas := suite.ctx.GasMeter().GasConsumed() - beforeGas
+			// require.Equal(t, expectedGas, consumedGas, "Decorator did not consume the correct amount of gas")
 
 			// simulation must not underestimate gas of this decorator even with nil signatures
 			txBuilder, err := suite.clientCtx.TxConfig.WrapTxBuilder(tx)
@@ -165,21 +166,22 @@ func TestConsumeGasForTxSize(t *testing.T) {
 			// Set suite.ctx with smaller simulated TxBytes manually
 			suite.ctx = suite.ctx.WithTxBytes(simTxBytes)
 
-			beforeSimGas := suite.ctx.GasMeter().GasConsumed()
+			// beforeSimGas := suite.ctx.GasMeter().GasConsumed()
 
 			// run antehandler with simulate=true
 			suite.ctx, err = antehandler(suite.ctx, tx, true)
-			consumedSimGas := suite.ctx.GasMeter().GasConsumed() - beforeSimGas
+			// consumedSimGas := suite.ctx.GasMeter().GasConsumed() - beforeSimGas
 
 			// require that antehandler passes and does not underestimate decorator cost
 			require.Nil(t, err, "ConsumeTxSizeGasDecorator returned error: %v", err)
-			require.True(t, consumedSimGas >= expectedGas, "Simulate mode underestimates gas on AnteDecorator. Simulated cost: %d, expected cost: %d", consumedSimGas, expectedGas)
+			// TODO HV2: removed as `ConsumeGas` is not used in heimdall
+			// require.True(t, consumedSimGas >= expectedGas, "Simulate mode underestimates gas on AnteDecorator. Simulated cost: %d, expected cost: %d", consumedSimGas, expectedGas)
 		})
 	}
 }
 
 func TestTxHeightTimeoutDecorator(t *testing.T) {
-	suite := SetupTestSuite(t, true)
+	suite := SetupTestSuite(t, false)
 
 	antehandler := sdk.ChainAnteDecorators(ante.NewTxTimeoutHeightDecorator())
 

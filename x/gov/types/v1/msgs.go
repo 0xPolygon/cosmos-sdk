@@ -85,7 +85,7 @@ func NewMsgExecLegacyContent(content *codectypes.Any, authority string) *MsgExec
 
 // ValidateBasic implements the sdk.Msg interface.
 func (c MsgExecLegacyContent) ValidateBasic() error {
-	_, err := sdk.AccAddressFromBech32(c.Authority)
+	_, err := sdk.AccAddressFromHex(c.Authority)
 	if err != nil {
 		return err
 	}

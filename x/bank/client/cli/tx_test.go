@@ -50,7 +50,7 @@ func (s *CLITestSuite) SetupSuite() {
 
 func (s *CLITestSuite) TestSendTxCmd() {
 	accounts := testutil.CreateKeyringAccounts(s.T(), s.kr, 1)
-	cmd := cli.NewSendTxCmd(address.NewBech32Codec("cosmos"))
+	cmd := cli.NewSendTxCmd(address.NewHexCodec())
 	cmd.SetOutput(io.Discard)
 
 	extraArgs := []string{
@@ -136,7 +136,7 @@ func (s *CLITestSuite) TestSendTxCmd() {
 func (s *CLITestSuite) TestMultiSendTxCmd() {
 	accounts := testutil.CreateKeyringAccounts(s.T(), s.kr, 3)
 
-	cmd := cli.NewMultiSendTxCmd(address.NewBech32Codec("cosmos"))
+	cmd := cli.NewMultiSendTxCmd(address.NewHexCodec())
 	cmd.SetOutput(io.Discard)
 
 	extraArgs := []string{
@@ -198,14 +198,14 @@ func (s *CLITestSuite) TestMultiSendTxCmd() {
 			accounts[0].Address.String(),
 			[]string{
 				accounts[1].Address.String(),
-				"bar",
+				"bvzx",
 			},
 			sdk.NewCoins(
 				sdk.NewCoin("stake", sdkmath.NewInt(10)),
 				sdk.NewCoin("photon", sdkmath.NewInt(40)),
 			),
 			extraArgs,
-			"invalid bech32 string",
+			"addresses cannot be empty: unknown address",
 		},
 		{
 			"invalid amount",

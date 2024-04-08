@@ -135,7 +135,7 @@ import (
 )
 
 func queryState() error {
-    myAddress, err := sdk.AccAddressFromBech32("cosmos1...") // the my_validator or recipient address.
+    myAddress, err := sdk.AccAddressFromHex("0x...") // the my_validator or recipient address.
     if err != nil {
         return err
     }
@@ -198,7 +198,7 @@ import (
 )
 
 func queryState() error {
-	myAddress, err := sdk.AccAddressFromBech32("cosmos1yerherx4d43gj5wa3zl5vflj9d4pln42n7kuzu") // the my_validator or recipient address.
+	myAddress, err := sdk.AccAddressFromHex("0x...") // the my_validator or recipient address.
 	if err != nil {
 		return err
 	}

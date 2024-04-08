@@ -249,11 +249,9 @@ func TestBuilderValidateBasic(t *testing.T) {
 func TestBuilderFeePayer(t *testing.T) {
 	// keys and addresses
 	_, _, addr1 := testdata.KeyTestPubAddr()
-	_, _, addr2 := testdata.KeyTestPubAddr()
-	_, _, addr3 := testdata.KeyTestPubAddr()
 
 	// msg and signatures
-	msg1 := testdata.NewTestMsg(addr1, addr2)
+	msg1 := testdata.NewTestMsg(addr1)
 	feeAmount := testdata.NewTestFeeAmount()
 	msgs := []sdk.Msg{msg1}
 
@@ -263,18 +261,8 @@ func TestBuilderFeePayer(t *testing.T) {
 		expectedPayer   []byte
 	}{
 		"no fee payer specified": {
-			expectedSigners: [][]byte{addr1, addr2},
+			expectedSigners: [][]byte{addr1},
 			expectedPayer:   addr1,
-		},
-		"secondary signer set as fee payer": {
-			txFeePayer:      addr2,
-			expectedSigners: [][]byte{addr1, addr2},
-			expectedPayer:   addr2,
-		},
-		"outside signer set as fee payer": {
-			txFeePayer:      addr3,
-			expectedSigners: [][]byte{addr1, addr2, addr3},
-			expectedPayer:   addr3,
 		},
 	}
 

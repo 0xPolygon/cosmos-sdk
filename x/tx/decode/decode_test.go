@@ -1,8 +1,8 @@
 package decode_test
 
 import (
-	"encoding/hex"
 	"fmt"
+	"github.com/ethereum/go-ethereum/common"
 	"testing"
 
 	"github.com/cosmos/cosmos-proto/anyutil"
@@ -112,9 +112,9 @@ func TestDecode(t *testing.T) {
 type dummyAddressCodec struct{}
 
 func (d dummyAddressCodec) StringToBytes(text string) ([]byte, error) {
-	return hex.DecodeString(text)
+	return common.FromHex(text), nil
 }
 
 func (d dummyAddressCodec) BytesToString(bz []byte) (string, error) {
-	return hex.EncodeToString(bz), nil
+	return common.Bytes2Hex(bz), nil
 }

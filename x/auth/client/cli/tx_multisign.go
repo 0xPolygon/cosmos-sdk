@@ -68,6 +68,10 @@ The SIGN_MODE_DIRECT sign mode is not supported.'
 
 func makeMultiSignCmd() func(cmd *cobra.Command, args []string) (err error) {
 	return func(cmd *cobra.Command, args []string) (err error) {
+
+		// HV2: multisig disabled in Heimdall
+		return fmt.Errorf("multi-sign is currently not supported in heimdall")
+
 		clientCtx, err := client.GetClientTxContext(cmd)
 		if err != nil {
 			return err
@@ -152,7 +156,7 @@ func makeMultiSignCmd() func(cmd *cobra.Command, args []string) (err error) {
 				err = signing.VerifySignature(cmd.Context(), sig.PubKey, txSignerData, sig.Data,
 					txCfg.SignModeHandler(), txData)
 				if err != nil {
-					addr, _ := sdk.AccAddressFromHexUnsafe(sig.PubKey.Address().String())
+					addr, _ := sdk.AccAddressFromHex(sig.PubKey.Address().String())
 					return fmt.Errorf("couldn't verify signature for address %s", addr)
 				}
 
@@ -218,10 +222,12 @@ The SIGN_MODE_DIRECT sign mode is not supported.'
 	}
 
 	cmd.Flags().Bool(flagNoAutoIncrement, false, "disable sequence auto increment")
+	/* HV2: multisig disabled in Heimdall
 	cmd.Flags().String(
 		flagMultisig, "",
 		"Address of the multisig account that the transaction signs on behalf of",
 	)
+	*/
 	cmd.Flags().String(flags.FlagOutputDocument, "", "The document is written to the given file instead of STDOUT")
 	flags.AddTxFlagsToCmd(cmd)
 	_ = cmd.Flags().MarkHidden(flags.FlagOutput) // signing makes sense to output only json
@@ -231,6 +237,10 @@ The SIGN_MODE_DIRECT sign mode is not supported.'
 
 func makeBatchMultisignCmd() func(cmd *cobra.Command, args []string) error {
 	return func(cmd *cobra.Command, args []string) (err error) {
+
+		// HV2: multisig disabled in Heimdall
+		return fmt.Errorf("multi-sign is currently not supported in heimdall")
+
 		var clientCtx client.Context
 
 		clientCtx, err = client.GetClientTxContext(cmd)

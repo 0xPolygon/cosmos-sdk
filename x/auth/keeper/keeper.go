@@ -88,7 +88,6 @@ type AccountKeeper struct {
 	storeService store.KVStoreService
 	cdc          codec.BinaryCodec
 	permAddrs    map[string]types.PermissionsForAddress
-	bech32Prefix string
 
 	// The prototypical AccountI constructor.
 	proto func() sdk.AccountI
@@ -114,7 +113,7 @@ var _ AccountKeeperI = &AccountKeeper{}
 // may use auth.Keeper to access the accounts permissions map.
 func NewAccountKeeper(
 	cdc codec.BinaryCodec, storeService store.KVStoreService, proto func() sdk.AccountI,
-	maccPerms map[string][]string, ac address.Codec, bech32Prefix, authority string,
+	maccPerms map[string][]string, ac address.Codec, authority string,
 ) AccountKeeper {
 	permAddrs := make(map[string]types.PermissionsForAddress)
 	for name, perms := range maccPerms {
@@ -125,7 +124,6 @@ func NewAccountKeeper(
 
 	ak := AccountKeeper{
 		addressCodec:  ac,
-		bech32Prefix:  bech32Prefix,
 		storeService:  storeService,
 		proto:         proto,
 		cdc:           cdc,
@@ -149,7 +147,7 @@ func (ak AccountKeeper) GetAuthority() string {
 }
 
 // AddressCodec returns the x/auth account address codec.
-// x/auth is tied to bech32 encoded user accounts
+// x/auth is tied to hex encoded user accounts
 func (ak AccountKeeper) AddressCodec() address.Codec {
 	return ak.addressCodec
 }
@@ -213,7 +211,6 @@ func (ak AccountKeeper) GetModuleAddress(moduleName string) sdk.AccAddress {
 	if !ok {
 		return nil
 	}
-
 	return permAddr.GetAddress()
 }
 
@@ -264,11 +261,6 @@ func (ak AccountKeeper) SetModuleAccount(ctx context.Context, macc sdk.ModuleAcc
 	ak.SetAccount(ctx, macc)
 }
 
-// add getter for bech32Prefix
-func (ak AccountKeeper) getBech32Prefix() (string, error) {
-	return ak.bech32Prefix, nil
-}
-
 // GetParams gets the auth module's parameters.
 func (ak AccountKeeper) GetParams(ctx context.Context) (params types.Params) {
 	params, err := ak.Params.Get(ctx)
@@ -276,4 +268,38 @@ func (ak AccountKeeper) GetParams(ctx context.Context) (params types.Params) {
 		panic(err)
 	}
 	return params
+}
+
+// GetBlockProposer returns block proposer
+func (ak AccountKeeper) GetBlockProposer(ctx sdk.Context) (sdk.AccAddress, bool) {
+	kvStore := ak.storeService.OpenKVStore(ctx)
+	isProposerPresent, _ := kvStore.Has(types.ProposerKey())
+	if !isProposerPresent {
+		return sdk.AccAddress{}, false
+	}
+	blockProposerBytes, err := kvStore.Get(types.ProposerKey())
+	if err != nil {
+		return sdk.AccAddress{}, false
+	}
+	return blockProposerBytes, true
+}
+
+// SetBlockProposer sets block proposer
+func (ak AccountKeeper) SetBlockProposer(ctx sdk.Context, addr sdk.AccAddress) error {
+	kvStore := ak.storeService.OpenKVStore(ctx)
+	err := kvStore.Set(types.ProposerKey(), addr.Bytes())
+	if err != nil {
+		return errorsmod.Wrapf(sdkerrors.ErrSetBlockProposer, "account %s could not be set as block proposer", addr.String())
+	}
+	return nil
+}
+
+// RemoveBlockProposer removes block proposer from store
+func (ak AccountKeeper) RemoveBlockProposer(ctx sdk.Context) error {
+	kvStore := ak.storeService.OpenKVStore(ctx)
+	err := kvStore.Delete(types.ProposerKey())
+	if err != nil {
+		return errorsmod.Wrapf(sdkerrors.ErrRemoveBlockProposer, "block proposer could not be removed")
+	}
+	return nil
 }

@@ -109,7 +109,7 @@ func AddProposerAddressToProposal(ctx sdk.Context, storeService corestoretypes.K
 			return fmt.Errorf("found missing proposer for proposal ID: %d", proposalID)
 		}
 
-		if _, err := sdk.AccAddressFromBech32(proposals[proposalID]); err != nil {
+		if _, err := sdk.AccAddressFromHex(proposals[proposalID]); err != nil {
 			return fmt.Errorf("invalid proposer address : %s", proposals[proposalID])
 		}
 

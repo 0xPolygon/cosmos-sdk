@@ -5,6 +5,7 @@ import (
 
 	"github.com/cosmos/cosmos-proto/rapidproto"
 	gogoproto "github.com/cosmos/gogoproto/proto"
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/proto"
 	"pgregory.net/rapid"
@@ -156,9 +157,9 @@ func TestDecode(t *testing.T) {
 type dummyAddressCodec struct{}
 
 func (d dummyAddressCodec) StringToBytes(text string) ([]byte, error) {
-	return []byte(text), nil
+	return common.FromHex(text), nil
 }
 
 func (d dummyAddressCodec) BytesToString(bz []byte) (string, error) {
-	return string(bz), nil
+	return common.Bytes2Hex(bz), nil
 }

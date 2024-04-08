@@ -92,6 +92,8 @@ type AppModule struct {
 
 	// legacySubspace is used solely for migration of x/params managed parameters
 	legacySubspace exported.Subspace
+
+	processors []types.AccountProcessor
 }
 
 // IsOnePerModuleType implements the depinject.OnePerModuleType interface.
@@ -100,13 +102,17 @@ func (am AppModule) IsOnePerModuleType() {}
 // IsAppModule implements the appmodule.AppModule interface.
 func (am AppModule) IsAppModule() {}
 
+// TODO HV2: check processors if/when enabled
+
 // NewAppModule creates a new AppModule object
-func NewAppModule(cdc codec.Codec, accountKeeper keeper.AccountKeeper, randGenAccountsFn types.RandomGenesisAccountsFn, ss exported.Subspace) AppModule {
+func NewAppModule(cdc codec.Codec, accountKeeper keeper.AccountKeeper, randGenAccountsFn types.RandomGenesisAccountsFn, ss exported.Subspace /* processors []types.AccountProcessor */) AppModule {
 	return AppModule{
 		AppModuleBasic:    AppModuleBasic{ac: accountKeeper.AddressCodec()},
 		accountKeeper:     accountKeeper,
 		randGenAccountsFn: randGenAccountsFn,
 		legacySubspace:    ss,
+		// TODO HV2: check processors if/when enabled
+		// processors:        processors,
 	}
 }
 
@@ -139,7 +145,7 @@ func (am AppModule) RegisterServices(cfg module.Configurator) {
 func (am AppModule) InitGenesis(ctx sdk.Context, cdc codec.JSONCodec, data json.RawMessage) {
 	var genesisState types.GenesisState
 	cdc.MustUnmarshalJSON(data, &genesisState)
-	am.accountKeeper.InitGenesis(ctx, genesisState)
+	am.accountKeeper.InitGenesis(ctx, genesisState, am.processors)
 }
 
 // ExportGenesis returns the exported genesis state as raw bytes for the auth
@@ -197,6 +203,9 @@ type ModuleInputs struct {
 
 	// LegacySubspace is used solely for migration of x/params managed parameters
 	LegacySubspace exported.Subspace `optional:"true"`
+
+	// TODO HV2: check processors if/when enabled
+	// Processors []types.AccountProcessor
 }
 
 type ModuleOutputs struct {
@@ -215,7 +224,7 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 	// default to governance authority if not provided
 	authority := types.NewModuleAddress(GovModuleName)
 	if in.Config.Authority != "" {
-		authority = types.NewModuleAddressOrBech32Address(in.Config.Authority)
+		authority = types.NewModuleAddressOrHexAddress(in.Config.Authority)
 	}
 
 	if in.RandomGenesisAccountsFn == nil {
@@ -226,8 +235,9 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 		in.AccountI = types.ProtoBaseAccount
 	}
 
-	k := keeper.NewAccountKeeper(in.Cdc, in.StoreService, in.AccountI, maccPerms, in.AddressCodec, in.Config.Bech32Prefix, authority.String())
-	m := NewAppModule(in.Cdc, k, in.RandomGenesisAccountsFn, in.LegacySubspace)
+	k := keeper.NewAccountKeeper(in.Cdc, in.StoreService, in.AccountI, maccPerms, in.AddressCodec, authority.String())
+	// TODO HV2: check processors if/when enabled
+	m := NewAppModule(in.Cdc, k, in.RandomGenesisAccountsFn, in.LegacySubspace /* , in.Processors */)
 
 	return ModuleOutputs{AccountKeeper: k, Module: m}
 }

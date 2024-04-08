@@ -54,7 +54,7 @@ func KeyTestPubAddrSecp256R1(t *testing.T) (cryptotypes.PrivKey, cryptotypes.Pub
 
 // NewTestFeeAmount is a test fee amount.
 func NewTestFeeAmount() sdk.Coins {
-	return sdk.NewCoins(sdk.NewInt64Coin("atom", 150))
+	return sdk.NewCoins(sdk.NewInt64Coin("matic", 1000000000000000))
 }
 
 // NewTestGasLimit is a test fee gas limit.
@@ -80,7 +80,7 @@ var _ sdk.Msg = (*TestMsg)(nil)
 func (msg *TestMsg) GetSigners() []sdk.AccAddress {
 	signers := make([]sdk.AccAddress, 0, len(msg.Signers))
 	for _, addr := range msg.Signers {
-		a, _ := sdk.AccAddressFromBech32(addr)
+		a, _ := sdk.AccAddressFromHex(addr)
 		signers = append(signers, a)
 	}
 	return signers
@@ -88,7 +88,7 @@ func (msg *TestMsg) GetSigners() []sdk.AccAddress {
 
 func (msg *TestMsg) ValidateBasic() error {
 	for _, addr := range msg.Signers {
-		if _, err := sdk.AccAddressFromBech32(addr); err != nil {
+		if _, err := sdk.AccAddressFromHex(addr); err != nil {
 			return sdkerrors.ErrInvalidAddress.Wrapf("invalid signer address: %s", err)
 		}
 	}

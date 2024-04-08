@@ -232,7 +232,7 @@ func (k BaseSendKeeper) SendCoins(ctx context.Context, fromAddr, toAddr sdk.AccA
 		k.ak.SetAccount(ctx, k.ak.NewAccountWithAddress(ctx, toAddr))
 	}
 
-	// bech32 encoding is expensive! Only do it once for fromAddr
+	// hex encoding is expensive! Only do it once for fromAddr
 	fromAddrString := fromAddr.String()
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	sdkCtx.EventManager().EmitEvents(sdk.Events{

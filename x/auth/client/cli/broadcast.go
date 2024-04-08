@@ -11,6 +11,9 @@ import (
 	authclient "github.com/cosmos/cosmos-sdk/x/auth/client"
 )
 
+// TODO HV2: GetBroadcastCommand is slightly different in heimdall.
+//  We need import the `helper` and apply the changes from heimdall's `client/tx/broadcast.go`
+
 // GetBroadcastCommand returns the tx broadcast command.
 func GetBroadcastCommand() *cobra.Command {
 	cmd := &cobra.Command{

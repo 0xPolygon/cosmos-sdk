@@ -69,7 +69,6 @@ func QueryVotesByTxQuery(clientCtx client.Context, params v1.QueryProposalVotesP
 						Options:    v1.NewNonSplitVoteOption(voteMsg.Option),
 					})
 				}
-
 				if voteWeightedMsg, ok := msg.(*v1beta1.MsgVoteWeighted); ok {
 					votes = append(votes, convertVote(voteWeightedMsg))
 				}
@@ -133,7 +132,6 @@ func QueryVoteByTxQuery(clientCtx client.Context, params v1.QueryVoteParams) ([]
 					Options:    v1.NewNonSplitVoteOption(voteMsg.Option),
 				}
 			}
-
 			if voteWeightedMsg, ok := msg.(*v1beta1.MsgVoteWeighted); ok {
 				vote = convertVote(voteWeightedMsg)
 			}

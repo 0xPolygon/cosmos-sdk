@@ -11,10 +11,10 @@ import (
 	cryptokeyring "github.com/cosmos/cosmos-sdk/crypto/keyring"
 )
 
-type bechKeyOutFn func(k *cryptokeyring.Record) (KeyOutput, error)
+type hexKeyOutFn func(k *cryptokeyring.Record) (KeyOutput, error)
 
-func printKeyringRecord(w io.Writer, k *cryptokeyring.Record, bechKeyOut bechKeyOutFn, output string) error {
-	ko, err := bechKeyOut(k)
+func printKeyringRecord(w io.Writer, k *cryptokeyring.Record, hexKeyOut hexKeyOutFn, output string) error {
+	ko, err := hexKeyOut(k)
 	if err != nil {
 		return err
 	}

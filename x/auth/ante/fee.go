@@ -3,6 +3,9 @@ package ante
 import (
 	"bytes"
 	"fmt"
+	"math/big"
+
+	"cosmossdk.io/math"
 
 	errorsmod "cosmossdk.io/errors"
 
@@ -11,9 +14,19 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
 )
 
+var (
+	// DefaultFeeInMatic represents default fee in matic
+	DefaultFeeInMatic = big.NewInt(10).Exp(big.NewInt(10), big.NewInt(15), nil)
+
+	// TODO HV2: no usage of DefaultFeeWantedPerTx so far. This is used in heimdall topup module's `side_handler.go`
+
+	// DefaultFeeWantedPerTx fee wanted per tx
+	DefaultFeeWantedPerTx = sdk.Coins{sdk.Coin{Denom: types.FeeToken, Amount: math.NewIntFromBigInt(DefaultFeeInMatic)}}
+)
+
 // TxFeeChecker check if the provided fee is enough and returns the effective fee and tx priority,
 // the effective fee should be deducted later, and the priority should be returned in abci response.
-type TxFeeChecker func(ctx sdk.Context, tx sdk.Tx) (sdk.Coins, int64, error)
+type TxFeeChecker func(ctx sdk.Context, tx sdk.Tx, params types.Params) (sdk.Coins, int64, error)
 
 // DeductFeeDecorator deducts fees from the fee payer. The fee payer is the fee granter (if specified) or first signer of the tx.
 // If the fee payer does not have the funds to pay for the fees, return an InsufficientFunds error.
@@ -54,9 +67,11 @@ func (dfd DeductFeeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bo
 		err      error
 	)
 
+	params := dfd.accountKeeper.GetParams(ctx)
+
 	fee := feeTx.GetFee()
 	if !simulate {
-		fee, priority, err = dfd.txFeeChecker(ctx, tx)
+		fee, priority, err = dfd.txFeeChecker(ctx, tx, params)
 		if err != nil {
 			return ctx, err
 		}
@@ -81,8 +96,10 @@ func (dfd DeductFeeDecorator) checkDeductFee(ctx sdk.Context, sdkTx sdk.Tx, fee 
 	}
 
 	feePayer := feeTx.FeePayer()
-	feeGranter := feeTx.FeeGranter()
 	deductFeesFrom := feePayer
+
+	// HV2: feeGranter set to nil as not used in heimdall
+	feeGranter := []byte(nil) // feeGranter := feeTx.FeeGranter()
 
 	// if feegranter set deduct fee from feegranter account.
 	// this works with only when feegrant enabled.

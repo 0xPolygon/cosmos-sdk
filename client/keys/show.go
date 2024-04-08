@@ -23,8 +23,6 @@ const (
 	FlagAddress = "address"
 	// FlagPublicKey represents the user's public key on the command line.
 	FlagPublicKey = "pubkey"
-	// FlagBechPrefix defines a desired Bech32 prefix encoding for a key.
-	FlagBechPrefix = "bech"
 	// FlagDevice indicates that the information should be shown in the device
 	FlagDevice = "device"
 
@@ -43,7 +41,6 @@ consisting of all the keys provided by name and multisig threshold.`,
 		RunE: runShowCmd,
 	}
 	f := cmd.Flags()
-	f.String(FlagBechPrefix, sdk.PrefixAccount, "The Bech32 prefix encoding for a key (acc|val|cons)")
 	f.BoolP(FlagAddress, "a", false, "Output the address only (overrides --output)")
 	f.BoolP(FlagPublicKey, "p", false, "Output the public key only (overrides --output)")
 	f.BoolP(FlagDevice, "d", false, "Output the address in a ledger device")
@@ -110,8 +107,7 @@ func runShowCmd(cmd *cobra.Command, args []string) (err error) {
 		return errors.New("cannot use --output with --address or --pubkey")
 	}
 
-	bechPrefix, _ := cmd.Flags().GetString(FlagBechPrefix)
-	bechKeyOut, err := getBechKeyOut(bechPrefix)
+	hexKeyOut, err := getHexKeyOut("")
 	if err != nil {
 		return err
 	}
@@ -122,7 +118,7 @@ func runShowCmd(cmd *cobra.Command, args []string) (err error) {
 
 	switch {
 	case isShowAddr, isShowPubKey:
-		ko, err := bechKeyOut(k)
+		ko, err := hexKeyOut(k)
 		if err != nil {
 			return err
 		}
@@ -135,7 +131,7 @@ func runShowCmd(cmd *cobra.Command, args []string) (err error) {
 			return err
 		}
 	default:
-		if err := printKeyringRecord(cmd.OutOrStdout(), k, bechKeyOut, outputFormat); err != nil {
+		if err := printKeyringRecord(cmd.OutOrStdout(), k, hexKeyOut, outputFormat); err != nil {
 			return err
 		}
 	}
@@ -143,9 +139,6 @@ func runShowCmd(cmd *cobra.Command, args []string) (err error) {
 	if isShowDevice {
 		if isShowPubKey {
 			return fmt.Errorf("the device flag (-d) can only be used for addresses not pubkeys")
-		}
-		if bechPrefix != "acc" {
-			return fmt.Errorf("the device flag (-d) can only be used for accounts")
 		}
 
 		// Override and show in the device
@@ -163,7 +156,7 @@ func runShowCmd(cmd *cobra.Command, args []string) (err error) {
 			return err
 		}
 
-		return ledger.ShowAddress(*ledgerItem.Path, pk, sdk.GetConfig().GetBech32AccountAddrPrefix())
+		return ledger.ShowAddress(*ledgerItem.Path, pk, "")
 	}
 
 	return nil
@@ -179,7 +172,7 @@ func fetchKey(kb keyring.Keyring, keyref string) (*keyring.Record, error) {
 		return k, err
 	}
 
-	accAddr, err := sdk.AccAddressFromBech32(keyref)
+	accAddr, err := sdk.AccAddressFromHex(keyref)
 	if err != nil {
 		return k, err
 	}
@@ -199,15 +192,10 @@ func validateMultisigThreshold(k, nKeys int) error {
 	return nil
 }
 
-func getBechKeyOut(bechPrefix string) (bechKeyOutFn, error) {
-	switch bechPrefix {
-	case sdk.PrefixAccount:
+func getHexKeyOut(bechPrefix string) (hexKeyOutFn, error) {
+	if bechPrefix == "" {
 		return MkAccKeyOutput, nil
-	case sdk.PrefixValidator:
-		return MkValKeyOutput, nil
-	case sdk.PrefixConsensus:
-		return MkConsKeyOutput, nil
 	}
 
-	return nil, fmt.Errorf("invalid Bech32 prefix encoding provided: %s", bechPrefix)
+	return nil, fmt.Errorf("hex encoding doesn't have bech32 prefix, yet provided: %s", bechPrefix)
 }

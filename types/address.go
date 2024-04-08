@@ -2,23 +2,19 @@ package types
 
 import (
 	"bytes"
-	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
-	"strings"
 	"sync"
 	"sync/atomic"
 
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/hashicorp/golang-lru/simplelru"
 	"sigs.k8s.io/yaml"
 
 	errorsmod "cosmossdk.io/errors"
 
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
-	"github.com/cosmos/cosmos-sdk/internal/conv"
-	"github.com/cosmos/cosmos-sdk/types/address"
-	"github.com/cosmos/cosmos-sdk/types/bech32"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
@@ -26,17 +22,11 @@ const (
 	// Constants defined here are the defaults value for address.
 	// You can use the specific values for your project.
 	// Add the follow lines to the `main()` of your server.
-	//
-	//	config := sdk.GetConfig()
-	//	config.SetBech32PrefixForAccount(yourBech32PrefixAccAddr, yourBech32PrefixAccPub)
-	//	config.SetBech32PrefixForValidator(yourBech32PrefixValAddr, yourBech32PrefixValPub)
-	//	config.SetBech32PrefixForConsensusNode(yourBech32PrefixConsAddr, yourBech32PrefixConsPub)
-	//	config.SetPurpose(yourPurpose)
+
+	// config := sdk.GetConfig()
+	//  config.SetPurpose(yourPurpose)
 	//	config.SetCoinType(yourCoinType)
 	//	config.Seal()
-
-	// Bech32MainPrefix defines the main SDK Bech32 prefix of an account's address
-	Bech32MainPrefix = "cosmos"
 
 	// Purpose is the ATOM purpose as defined in SLIP44 (https://github.com/satoshilabs/slips/blob/master/slip-0044.md)
 	Purpose = 44
@@ -47,33 +37,6 @@ const (
 	// FullFundraiserPath is the parts of the BIP44 HD path that are fixed by
 	// what we used during the ATOM fundraiser.
 	FullFundraiserPath = "m/44'/118'/0'/0/0"
-
-	// PrefixAccount is the prefix for account keys
-	PrefixAccount = "acc"
-	// PrefixValidator is the prefix for validator keys
-	PrefixValidator = "val"
-	// PrefixConsensus is the prefix for consensus keys
-	PrefixConsensus = "cons"
-	// PrefixPublic is the prefix for public keys
-	PrefixPublic = "pub"
-	// PrefixOperator is the prefix for operator keys
-	PrefixOperator = "oper"
-
-	// PrefixAddress is the prefix for addresses
-	PrefixAddress = "addr"
-
-	// Bech32PrefixAccAddr defines the Bech32 prefix of an account's address
-	Bech32PrefixAccAddr = Bech32MainPrefix
-	// Bech32PrefixAccPub defines the Bech32 prefix of an account's public key
-	Bech32PrefixAccPub = Bech32MainPrefix + PrefixPublic
-	// Bech32PrefixValAddr defines the Bech32 prefix of a validator's operator address
-	Bech32PrefixValAddr = Bech32MainPrefix + PrefixValidator + PrefixOperator
-	// Bech32PrefixValPub defines the Bech32 prefix of a validator's operator public key
-	Bech32PrefixValPub = Bech32MainPrefix + PrefixValidator + PrefixOperator + PrefixPublic
-	// Bech32PrefixConsAddr defines the Bech32 prefix of a consensus node address
-	Bech32PrefixConsAddr = Bech32MainPrefix + PrefixValidator + PrefixConsensus
-	// Bech32PrefixConsPub defines the Bech32 prefix of a consensus node public key
-	Bech32PrefixConsPub = Bech32MainPrefix + PrefixValidator + PrefixConsensus + PrefixPublic
 )
 
 // cache variables
@@ -93,6 +56,7 @@ var (
 // sentinel errors
 var (
 	ErrEmptyHexAddress = errors.New("decoding address from hex string failed: empty address")
+	ErrNotHexAddress   = errors.New("decoding address from hex string failed: not valid address")
 )
 
 func init() {
@@ -145,44 +109,31 @@ var (
 // ----------------------------------------------------------------------------
 
 // AccAddress a wrapper around bytes meant to represent an account address.
-// When marshaled to a string or JSON, it uses Bech32.
+// When marshaled to a string or JSON, it uses hex.
 type AccAddress []byte
 
-// AccAddressFromHexUnsafe creates an AccAddress from a HEX-encoded string.
-//
-// Note, this function is considered unsafe as it may produce an AccAddress from
-// otherwise invalid input, such as a transaction hash. Please use
-// AccAddressFromBech32.
-func AccAddressFromHexUnsafe(address string) (addr AccAddress, err error) {
+// AccAddressFromHex creates an AccAddress from a HEX-encoded string.
+func AccAddressFromHex(address string) (addr AccAddress, err error) {
 	bz, err := addressBytesFromHexString(address)
 	return AccAddress(bz), err
 }
 
 // VerifyAddressFormat verifies that the provided bytes form a valid address
-// according to the default address rules or a custom address verifier set by
-// GetConfig().SetAddressVerifier().
-// TODO make an issue to get rid of global Config
-// ref: https://github.com/cosmos/cosmos-sdk/issues/9690
 func VerifyAddressFormat(bz []byte) error {
-	verifier := GetConfig().GetAddressVerifier()
-	if verifier != nil {
-		return verifier(bz)
-	}
-
 	if len(bz) == 0 {
 		return errorsmod.Wrap(sdkerrors.ErrUnknownAddress, "addresses cannot be empty")
 	}
 
-	if len(bz) > address.MaxAddrLen {
-		return errorsmod.Wrapf(sdkerrors.ErrUnknownAddress, "address max length is %d, got %d", address.MaxAddrLen, len(bz))
+	if !common.IsHexAddress(common.Bytes2Hex(bz)) {
+		return errorsmod.Wrapf(sdkerrors.ErrUnknownAddress, "invalid address")
 	}
 
 	return nil
 }
 
-// MustAccAddressFromBech32 calls AccAddressFromBech32 and panics on error.
-func MustAccAddressFromBech32(address string) AccAddress {
-	addr, err := AccAddressFromBech32(address)
+// MustAccAddressFromHex calls AccAddressFromHex and panics on error.
+func MustAccAddressFromHex(address string) AccAddress {
+	addr, err := AccAddressFromHex(address)
 	if err != nil {
 		panic(err)
 	}
@@ -190,28 +141,7 @@ func MustAccAddressFromBech32(address string) AccAddress {
 	return addr
 }
 
-// AccAddressFromBech32 creates an AccAddress from a Bech32 string.
-func AccAddressFromBech32(address string) (addr AccAddress, err error) {
-	if len(strings.TrimSpace(address)) == 0 {
-		return AccAddress{}, errors.New("empty address string is not allowed")
-	}
-
-	bech32PrefixAccAddr := GetConfig().GetBech32AccountAddrPrefix()
-
-	bz, err := GetFromBech32(address, bech32PrefixAccAddr)
-	if err != nil {
-		return nil, err
-	}
-
-	err = VerifyAddressFormat(bz)
-	if err != nil {
-		return nil, err
-	}
-
-	return AccAddress(bz), nil
-}
-
-// Returns boolean for whether two AccAddresses are Equal
+// Equals Returns boolean for whether two AccAddresses are Equal
 func (aa AccAddress) Equals(aa2 Address) bool {
 	if aa.Empty() && aa2.Empty() {
 		return true
@@ -220,7 +150,7 @@ func (aa AccAddress) Equals(aa2 Address) bool {
 	return bytes.Equal(aa.Bytes(), aa2.Bytes())
 }
 
-// Returns boolean for whether an AccAddress is empty
+// Empty Returns boolean for whether an AccAddress is empty
 func (aa AccAddress) Empty() bool {
 	return len(aa) == 0
 }
@@ -238,55 +168,39 @@ func (aa *AccAddress) Unmarshal(data []byte) error {
 	return nil
 }
 
-// MarshalJSON marshals to JSON using Bech32.
+// MarshalJSON marshals to JSON using hex.
 func (aa AccAddress) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aa.String())
 }
 
-// MarshalYAML marshals to YAML using Bech32.
+// MarshalYAML marshals to YAML using hex.
 func (aa AccAddress) MarshalYAML() (interface{}, error) {
 	return aa.String(), nil
 }
 
-// UnmarshalJSON unmarshals from JSON assuming Bech32 encoding.
+// UnmarshalJSON unmarshals from JSON assuming hex encoding.
 func (aa *AccAddress) UnmarshalJSON(data []byte) error {
 	var s string
-	err := json.Unmarshal(data, &s)
-	if err != nil {
+	if err := json.Unmarshal(data, &s); err != nil {
 		return err
 	}
 	if s == "" {
 		*aa = AccAddress{}
 		return nil
 	}
-
-	aa2, err := AccAddressFromBech32(s)
-	if err != nil {
-		return err
-	}
-
-	*aa = aa2
+	*aa = common.HexToAddress(s).Bytes()
 	return nil
 }
 
-// UnmarshalYAML unmarshals from JSON assuming Bech32 encoding.
+// UnmarshalYAML unmarshals from JSON assuming hex encoding.
 func (aa *AccAddress) UnmarshalYAML(data []byte) error {
 	var s string
-	err := yaml.Unmarshal(data, &s)
-	if err != nil {
-		return err
-	}
-	if s == "" {
-		*aa = AccAddress{}
-		return nil
-	}
-
-	aa2, err := AccAddressFromBech32(s)
-	if err != nil {
+	if err := yaml.Unmarshal(data, &s); err != nil {
 		return err
 	}
 
-	*aa = aa2
+	*aa = common.HexToAddress(s).Bytes()
+
 	return nil
 }
 
@@ -300,19 +214,7 @@ func (aa AccAddress) String() string {
 	if aa.Empty() {
 		return ""
 	}
-
-	key := conv.UnsafeBytesToStr(aa)
-
-	if IsAddrCacheEnabled() {
-		accAddrMu.Lock()
-		defer accAddrMu.Unlock()
-
-		addr, ok := accAddrCache.Get(key)
-		if ok {
-			return addr.(string)
-		}
-	}
-	return cacheBech32Addr(GetConfig().GetBech32AccountAddrPrefix(), aa, accAddrCache, key)
+	return "0x" + common.Bytes2Hex(aa.Bytes())
 }
 
 // Format implements the fmt.Formatter interface.
@@ -333,7 +235,7 @@ func (aa AccAddress) Format(s fmt.State, verb rune) {
 // ----------------------------------------------------------------------------
 
 // ValAddress defines a wrapper around bytes meant to present a validator's
-// operator. When marshaled to a string or JSON, it uses Bech32.
+// operator. When marshaled to a string or JSON, it uses hex.
 type ValAddress []byte
 
 // ValAddressFromHex creates a ValAddress from a hex string.
@@ -342,28 +244,7 @@ func ValAddressFromHex(address string) (addr ValAddress, err error) {
 	return ValAddress(bz), err
 }
 
-// ValAddressFromBech32 creates a ValAddress from a Bech32 string.
-func ValAddressFromBech32(address string) (addr ValAddress, err error) {
-	if len(strings.TrimSpace(address)) == 0 {
-		return ValAddress{}, errors.New("empty address string is not allowed")
-	}
-
-	bech32PrefixValAddr := GetConfig().GetBech32ValidatorAddrPrefix()
-
-	bz, err := GetFromBech32(address, bech32PrefixValAddr)
-	if err != nil {
-		return nil, err
-	}
-
-	err = VerifyAddressFormat(bz)
-	if err != nil {
-		return nil, err
-	}
-
-	return ValAddress(bz), nil
-}
-
-// Returns boolean for whether two ValAddresses are Equal
+// Equals Returns boolean for whether two ValAddresses are Equal
 func (va ValAddress) Equals(va2 Address) bool {
 	if va.Empty() && va2.Empty() {
 		return true
@@ -372,7 +253,7 @@ func (va ValAddress) Equals(va2 Address) bool {
 	return bytes.Equal(va.Bytes(), va2.Bytes())
 }
 
-// Returns boolean for whether an ValAddress is empty
+// Empty Returns boolean for whether an ValAddress is empty
 func (va ValAddress) Empty() bool {
 	return len(va) == 0
 }
@@ -390,57 +271,40 @@ func (va *ValAddress) Unmarshal(data []byte) error {
 	return nil
 }
 
-// MarshalJSON marshals to JSON using Bech32.
+// MarshalJSON marshals to JSON using hex.
 func (va ValAddress) MarshalJSON() ([]byte, error) {
 	return json.Marshal(va.String())
 }
 
-// MarshalYAML marshals to YAML using Bech32.
+// MarshalYAML marshals to YAML using hex.
 func (va ValAddress) MarshalYAML() (interface{}, error) {
 	return va.String(), nil
 }
 
-// UnmarshalJSON unmarshals from JSON assuming Bech32 encoding.
+// UnmarshalJSON unmarshals from JSON assuming hex encoding.
 func (va *ValAddress) UnmarshalJSON(data []byte) error {
 	var s string
-
-	err := json.Unmarshal(data, &s)
-	if err != nil {
+	if err := json.Unmarshal(data, &s); err != nil {
 		return err
 	}
 	if s == "" {
 		*va = ValAddress{}
 		return nil
 	}
+	*va = common.HexToAddress(s).Bytes()
 
-	va2, err := ValAddressFromBech32(s)
-	if err != nil {
-		return err
-	}
-
-	*va = va2
 	return nil
 }
 
-// UnmarshalYAML unmarshals from YAML assuming Bech32 encoding.
+// UnmarshalYAML unmarshals from YAML assuming hex encoding.
 func (va *ValAddress) UnmarshalYAML(data []byte) error {
 	var s string
-
-	err := yaml.Unmarshal(data, &s)
-	if err != nil {
-		return err
-	}
-	if s == "" {
-		*va = ValAddress{}
-		return nil
-	}
-
-	va2, err := ValAddressFromBech32(s)
-	if err != nil {
+	if err := yaml.Unmarshal(data, &s); err != nil {
 		return err
 	}
 
-	*va = va2
+	*va = common.HexToAddress(s).Bytes()
+
 	return nil
 }
 
@@ -454,23 +318,10 @@ func (va ValAddress) String() string {
 	if va.Empty() {
 		return ""
 	}
-
-	key := conv.UnsafeBytesToStr(va)
-
-	if IsAddrCacheEnabled() {
-		valAddrMu.Lock()
-		defer valAddrMu.Unlock()
-
-		addr, ok := valAddrCache.Get(key)
-		if ok {
-			return addr.(string)
-		}
-	}
-	return cacheBech32Addr(GetConfig().GetBech32ValidatorAddrPrefix(), va, valAddrCache, key)
+	return "0x" + common.Bytes2Hex(va.Bytes())
 }
 
 // Format implements the fmt.Formatter interface.
-
 func (va ValAddress) Format(s fmt.State, verb rune) {
 	switch verb {
 	case 's':
@@ -487,43 +338,21 @@ func (va ValAddress) Format(s fmt.State, verb rune) {
 // ----------------------------------------------------------------------------
 
 // ConsAddress defines a wrapper around bytes meant to present a consensus node.
-// When marshaled to a string or JSON, it uses Bech32.
+// When marshaled to a string or JSON, it uses hex.
 type ConsAddress []byte
 
 // ConsAddressFromHex creates a ConsAddress from a hex string.
-// Deprecated: use ConsensusAddressCodec from Staking keeper
 func ConsAddressFromHex(address string) (addr ConsAddress, err error) {
 	bz, err := addressBytesFromHexString(address)
 	return ConsAddress(bz), err
 }
 
-// ConsAddressFromBech32 creates a ConsAddress from a Bech32 string.
-func ConsAddressFromBech32(address string) (addr ConsAddress, err error) {
-	if len(strings.TrimSpace(address)) == 0 {
-		return ConsAddress{}, errors.New("empty address string is not allowed")
-	}
-
-	bech32PrefixConsAddr := GetConfig().GetBech32ConsensusAddrPrefix()
-
-	bz, err := GetFromBech32(address, bech32PrefixConsAddr)
-	if err != nil {
-		return nil, err
-	}
-
-	err = VerifyAddressFormat(bz)
-	if err != nil {
-		return nil, err
-	}
-
-	return ConsAddress(bz), nil
-}
-
-// get ConsAddress from pubkey
+// GetConsAddress get ConsAddress from pubkey
 func GetConsAddress(pubkey cryptotypes.PubKey) ConsAddress {
 	return ConsAddress(pubkey.Address())
 }
 
-// Returns boolean for whether two ConsAddress are Equal
+// Equals Returns boolean for whether two ConsAddress are Equal
 func (ca ConsAddress) Equals(ca2 Address) bool {
 	if ca.Empty() && ca2.Empty() {
 		return true
@@ -532,7 +361,7 @@ func (ca ConsAddress) Equals(ca2 Address) bool {
 	return bytes.Equal(ca.Bytes(), ca2.Bytes())
 }
 
-// Returns boolean for whether an ConsAddress is empty
+// Empty Returns boolean for whether an ConsAddress is empty
 func (ca ConsAddress) Empty() bool {
 	return len(ca) == 0
 }
@@ -550,57 +379,40 @@ func (ca *ConsAddress) Unmarshal(data []byte) error {
 	return nil
 }
 
-// MarshalJSON marshals to JSON using Bech32.
+// MarshalJSON marshals to JSON using hex.
 func (ca ConsAddress) MarshalJSON() ([]byte, error) {
 	return json.Marshal(ca.String())
 }
 
-// MarshalYAML marshals to YAML using Bech32.
+// MarshalYAML marshals to YAML using hex.
 func (ca ConsAddress) MarshalYAML() (interface{}, error) {
 	return ca.String(), nil
 }
 
-// UnmarshalJSON unmarshals from JSON assuming Bech32 encoding.
+// UnmarshalJSON unmarshals from JSON assuming hex encoding.
 func (ca *ConsAddress) UnmarshalJSON(data []byte) error {
 	var s string
-
-	err := json.Unmarshal(data, &s)
-	if err != nil {
+	if err := json.Unmarshal(data, &s); err != nil {
 		return err
 	}
 	if s == "" {
 		*ca = ConsAddress{}
 		return nil
 	}
+	*ca = common.HexToAddress(s).Bytes()
 
-	ca2, err := ConsAddressFromBech32(s)
-	if err != nil {
-		return err
-	}
-
-	*ca = ca2
 	return nil
 }
 
-// UnmarshalYAML unmarshals from YAML assuming Bech32 encoding.
+// UnmarshalYAML unmarshals from YAML assuming hex encoding.
 func (ca *ConsAddress) UnmarshalYAML(data []byte) error {
 	var s string
-
-	err := yaml.Unmarshal(data, &s)
-	if err != nil {
-		return err
-	}
-	if s == "" {
-		*ca = ConsAddress{}
-		return nil
-	}
-
-	ca2, err := ConsAddressFromBech32(s)
-	if err != nil {
+	if err := yaml.Unmarshal(data, &s); err != nil {
 		return err
 	}
 
-	*ca = ca2
+	*ca = common.HexToAddress(s).Bytes()
+
 	return nil
 }
 
@@ -614,39 +426,24 @@ func (ca ConsAddress) String() string {
 	if ca.Empty() {
 		return ""
 	}
-
-	key := conv.UnsafeBytesToStr(ca)
-
-	if IsAddrCacheEnabled() {
-		consAddrMu.Lock()
-		defer consAddrMu.Unlock()
-
-		addr, ok := consAddrCache.Get(key)
-		if ok {
-			return addr.(string)
-		}
-	}
-	return cacheBech32Addr(GetConfig().GetBech32ConsensusAddrPrefix(), ca, consAddrCache, key)
+	return "0x" + common.Bytes2Hex(ca.Bytes())
 }
 
-// Bech32ifyAddressBytes returns a bech32 representation of address bytes.
-// Returns an empty sting if the byte slice is 0-length. Returns an error if the bech32 conversion
+// HexifyAddressBytes returns a hex representation of address bytes.
+// Returns an empty string if the byte slice is 0-length. Returns an error if the hex conversion
 // fails or the prefix is empty.
-func Bech32ifyAddressBytes(prefix string, bs []byte) (string, error) {
+func HexifyAddressBytes(bs []byte) (string, error) {
 	if len(bs) == 0 {
 		return "", nil
 	}
-	if len(prefix) == 0 {
-		return "", errors.New("prefix cannot be empty")
-	}
-	return bech32.ConvertAndEncode(prefix, bs)
+	return common.Bytes2Hex(bs), nil
 }
 
-// MustBech32ifyAddressBytes returns a bech32 representation of address bytes.
-// Returns an empty sting if the byte slice is 0-length. It panics if the bech32 conversion
+// MustHexifyAddressBytes returns a hex representation of address bytes.
+// Returns an empty sting if the byte slice is 0-length. It panics if the hex conversion
 // fails or the prefix is empty.
-func MustBech32ifyAddressBytes(prefix string, bs []byte) string {
-	s, err := Bech32ifyAddressBytes(prefix, bs)
+func MustHexifyAddressBytes(bs []byte) string {
+	s, err := HexifyAddressBytes(bs)
 	if err != nil {
 		panic(err)
 	}
@@ -670,42 +467,18 @@ func (ca ConsAddress) Format(s fmt.State, verb rune) {
 // auxiliary
 // ----------------------------------------------------------------------------
 
-var errBech32EmptyAddress = errors.New("decoding Bech32 address failed: must provide a non empty address")
-
-// GetFromBech32 decodes a bytestring from a Bech32 encoded string.
-func GetFromBech32(bech32str, prefix string) ([]byte, error) {
-	if len(bech32str) == 0 {
-		return nil, errBech32EmptyAddress
-	}
-
-	hrp, bz, err := bech32.DecodeAndConvert(bech32str)
-	if err != nil {
-		return nil, err
-	}
-
-	if hrp != prefix {
-		return nil, fmt.Errorf("invalid Bech32 prefix; expected %s, got %s", prefix, hrp)
-	}
-
-	return bz, nil
+// GetFromHex decodes a bytestring from a hex encoded string.
+func GetFromHex(hexStr string) ([]byte, error) {
+	return addressBytesFromHexString(hexStr)
 }
 
 func addressBytesFromHexString(address string) ([]byte, error) {
 	if len(address) == 0 {
 		return nil, ErrEmptyHexAddress
 	}
-
-	return hex.DecodeString(address)
-}
-
-// cacheBech32Addr is not concurrency safe. Concurrent access to cache causes race condition.
-func cacheBech32Addr(prefix string, addr []byte, cache *simplelru.LRU, cacheKey string) string {
-	bech32Addr, err := bech32.ConvertAndEncode(prefix, addr)
-	if err != nil {
-		panic(err)
+	if !common.IsHexAddress(address) {
+		return nil, ErrNotHexAddress
 	}
-	if IsAddrCacheEnabled() {
-		cache.Add(cacheKey, bech32Addr)
-	}
-	return bech32Addr
+
+	return common.FromHex(address), nil
 }

@@ -45,8 +45,9 @@ message WeightedVoteOption {
   ];
 }
 
-// TextProposal defines a standard text proposal whose changes need to be
-// manually updated in case of approval.
+// TODO HV2: TextProposals are disabled in heimdall. Remove it and re-implement all tests?
+
+// TextProposal defines a standard text proposal whose changes need to be manually updated in case of approval.
 message TextProposal {
   option (cosmos_proto.implements_interface) = "cosmos.gov.v1beta1.Content";
   option (amino.name)                        = "cosmos-sdk/TextProposal";
