@@ -12,7 +12,7 @@ require (
 	cosmossdk.io/errors v1.0.0
 	cosmossdk.io/log v1.2.1
 	cosmossdk.io/math v1.2.0
-	cosmossdk.io/simapp v0.0.0-00010101000000-000000000000
+	cosmossdk.io/simapp v0.0.0-20230620040119-e078f1a49e8b
 	cosmossdk.io/store v1.0.1
 	cosmossdk.io/x/tx v0.12.0
 	github.com/99designs/keyring v1.2.1
