@@ -223,7 +223,7 @@ replace (
 replace (
 	cosmossdk.io/simapp => ./simapp
 	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.0-beta
-	github.com/cosmos/cosmos-sdk => github.com/0xPolygon/cosmos-sdk v0.50.3-0.20240409075343-72b26f184822
+	github.com/cosmos/cosmos-sdk => github.com/0xPolygon/cosmos-sdk v0.50.3-0.20240409090657-2e910ae577a9
 )
 
 retract (
