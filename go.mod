@@ -207,8 +207,6 @@ require (
 
 // Below are the long-lived replace of the Cosmos SDK
 replace (
-	// TODO HV2: this fixes the app build temporarily > to remove once we have our version of the cosmos-sdk fork
-	cosmossdk.io/simapp => ./simapp
 	// use cosmos fork of keyring
 	github.com/99designs/keyring => github.com/cosmos/keyring v1.2.0
 	// dgrijalva/jwt-go is deprecated and doesn't receive security updates.
