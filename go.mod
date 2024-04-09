@@ -220,7 +220,10 @@ replace (
 )
 
 // HV2 related packages
-replace github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.0-beta
+replace (
+	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.0-beta
+	github.com/cosmos/cosmos-sdk => github.com/0xPolygon/cosmos-sdk v0.50.3-0.20240409075343-72b26f184822
+)
 
 retract (
 	// false start by tagging the wrong branch
