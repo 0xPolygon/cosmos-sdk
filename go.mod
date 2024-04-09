@@ -207,8 +207,6 @@ require (
 
 // Below are the long-lived replace of the Cosmos SDK
 replace (
-	// TODO HV2: this fixes the app build temporarily > to remove once we have our version of the cosmos-sdk fork
-	cosmossdk.io/simapp => ./simapp
 	// use cosmos fork of keyring
 	github.com/99designs/keyring => github.com/cosmos/keyring v1.2.0
 	// dgrijalva/jwt-go is deprecated and doesn't receive security updates.
@@ -222,7 +220,10 @@ replace (
 )
 
 // HV2 related packages
-replace github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.0-beta
+replace (
+	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.0-beta
+	github.com/cosmos/cosmos-sdk => github.com/0xPolygon/cosmos-sdk v0.50.3-0.20240409075343-72b26f184822
+)
 
 retract (
 	// false start by tagging the wrong branch
