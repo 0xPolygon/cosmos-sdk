@@ -114,17 +114,17 @@ func (keeper Keeper) Tally(ctx context.Context, proposal v1.Proposal) (passes, b
 		*/
 
 		// HV2: check on the length of the options.
-		// This should never fail as all votes must have only 1 option
+		// This should never fail as all votes must have only 1 option, hence we panic if something goes wrong
 		err := keeper.assertOptionsLength(val.Vote)
 		if err != nil {
-			return false, false, tallyResults, err
+			panic(err)
 		}
 
 		for _, option := range val.Vote {
 			// HV2: check on the weight of the option.
-			// This should never fail as the only option should have weight=1
+			// This should never fail as the only option should have weight=1, hence we panic if something goes wrong
 			if !v1.ValidWeightedVoteOption(*option) {
-				return false, false, tallyResults, err
+				panic(err)
 			}
 			weight, _ := math.LegacyNewDecFromStr(option.Weight)
 			subPower := votingPower.Mul(weight)

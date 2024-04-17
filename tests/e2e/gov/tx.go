@@ -545,8 +545,7 @@ func (s *E2ETestSuite) TestNewCmdWeightedVote() {
 	for _, tc := range testCases {
 		tc := tc
 		s.Run(tc.name, func() {
-			// TODO HV2: changed from NewCmdWeightedVote to NewCmdVote. Fix tests accordingly.
-			cmd := cli.NewCmdVote()
+			cmd := cli.NewCmdWeightedVote()
 			clientCtx := val.ClientCtx
 			var txResp sdk.TxResponse
 

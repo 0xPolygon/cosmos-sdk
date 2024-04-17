@@ -694,8 +694,7 @@ func (s *CLITestSuite) msgVote(clientCtx client.Context, from, id, vote string, 
 	}, commonArgs...)
 
 	args = append(args, extraArgs...)
-	// TODO HV2: changed from NewCmdWeightedVote to NewCmdVote. Fix tests accordingly.
-	cmd := govcli.NewCmdVote()
+	cmd := govcli.NewCmdWeightedVote()
 
 	out, err := clitestutil.ExecTestCLICmd(clientCtx, cmd, args)
 

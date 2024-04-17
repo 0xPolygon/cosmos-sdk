@@ -36,6 +36,8 @@ func (keeper Keeper) GetDeposits(ctx context.Context, proposalID uint64) (deposi
 
 // DeleteAndBurnDeposits deletes and burns all the deposits on a specific proposal.
 func (keeper Keeper) DeleteAndBurnDeposits(ctx context.Context, proposalID uint64) error {
+	// HV2: no support in heimdall for burn deposits
+	panic(errors.ErrPanic)
 	coinsToBurn := sdk.NewCoins()
 	err := keeper.IterateDeposits(ctx, proposalID, func(key collections.Pair[uint64, sdk.AccAddress], deposit v1.Deposit) (stop bool, err error) {
 		coinsToBurn = coinsToBurn.Add(deposit.Amount...)
