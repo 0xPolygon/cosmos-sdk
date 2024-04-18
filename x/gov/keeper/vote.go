@@ -32,7 +32,7 @@ func (keeper Keeper) AddVote(ctx context.Context, proposalID uint64, voterAddr s
 	// HV2: check on the length of the options. This should never fail as it is only used by `MsgServer.Vote`.
 	// There, `v1.NewNonSplitVoteOption` is used to enforce the constraints (only 1 option with weight=1)
 	// Hence, we panic if something goes wrong
-	err = keeper.assertOptionsLength(options)
+	err = keeper.assertVoteOptionsLength(options)
 	if err != nil {
 		panic(err)
 	}

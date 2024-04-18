@@ -90,9 +90,9 @@ func NewKeeper(
 		config.MaxMetadataLen = types.DefaultConfig().MaxMetadataLen
 	}
 
-	// Enforce MaxOptionsLen to be 1.
-	if config.MaxOptionsLen != 1 {
-		config.MaxOptionsLen = types.DefaultConfig().MaxOptionsLen
+	// Enforce MaxVoteOptionsLen to be 1.
+	if config.MaxVoteOptionsLen != 1 {
+		config.MaxVoteOptionsLen = types.DefaultConfig().MaxVoteOptionsLen
 	}
 
 	sb := collections.NewSchemaBuilder(storeService)
@@ -189,11 +189,11 @@ func (k Keeper) assertMetadataLength(metadata string) error {
 	return nil
 }
 
-// assertOptionsLength returns an error if given options length
-// is greater than a pre-defined MaxOptionsLen.
-func (k Keeper) assertOptionsLength(options v1.WeightedVoteOptions) error {
-	if uint64(len(options)) > k.config.MaxOptionsLen {
-		return types.ErrTooManyVoteOptions.Wrapf("got %d options, maximum allowed is %d", len(options), k.config.MaxOptionsLen)
+// assertVoteOptionsLength returns an error if given vote options length
+// is greater than a pre-defined MaxVoteOptionsLen.
+func (k Keeper) assertVoteOptionsLength(options v1.WeightedVoteOptions) error {
+	if uint64(len(options)) > k.config.MaxVoteOptionsLen {
+		return types.ErrTooManyVoteOptions.Wrapf("got %d options, maximum allowed is %d", len(options), k.config.MaxVoteOptionsLen)
 	}
 	return nil
 }

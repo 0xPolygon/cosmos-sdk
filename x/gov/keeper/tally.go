@@ -115,7 +115,7 @@ func (keeper Keeper) Tally(ctx context.Context, proposal v1.Proposal) (passes, b
 
 		// HV2: check on the length of the options.
 		// This should never fail as all votes must have only 1 option, hence we panic if something goes wrong
-		err := keeper.assertOptionsLength(val.Vote)
+		err := keeper.assertVoteOptionsLength(val.Vote)
 		if err != nil {
 			panic(err)
 		}
