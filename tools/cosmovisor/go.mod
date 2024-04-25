@@ -47,7 +47,7 @@ require (
 	github.com/cometbft/cometbft-db v0.9.1 // indirect
 	github.com/cosmos/cosmos-db v1.0.0 // indirect
 	github.com/cosmos/cosmos-proto v1.0.0-beta.3 // indirect
-	github.com/cosmos/cosmos-sdk v0.46.0-beta2.0.20230614103911-b3da8bb4e801 // indirect
+	github.com/cosmos/cosmos-sdk v0.50.1 // indirect
 	github.com/cosmos/go-bip39 v1.0.0 // indirect
 	github.com/cosmos/gogogateway v1.2.0 // indirect
 	github.com/cosmos/gogoproto v1.4.11 // indirect
@@ -197,7 +197,7 @@ replace (
 	cosmossdk.io/math => github.com/0xPolygon/cosmos-sdk/math v1.2.0
 	cosmossdk.io/store => github.com/0xPolygon/cosmos-sdk/store v1.0.0
 	cosmossdk.io/x/tx => github.com/0xPolygon/cosmos-sdk/x/tx v0.12.0
-	cosmossdk.io/x/upgrade => github.com/0xPolygon/cosmos-sdk/x/upgrade v0.0.0-20230614103911-b3da8bb4e801
+	cosmossdk.io/x/upgrade => github.com/0xPolygon/cosmos-sdk/x/upgrade v0.1.2-0.20240409091007-84d9b34a8681
 	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.0-beta
 	github.com/cosmos/cosmos-sdk => github.com/0xPolygon/cosmos-sdk v0.1.0-beta-polygon
 )
