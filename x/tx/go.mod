@@ -36,3 +36,11 @@ require (
 	google.golang.org/grpc v1.58.3 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+// HV2 related packages
+replace (
+	cosmossdk.io/api => github.com/0xPolygon/cosmos-sdk/api v0.7.2
+	cosmossdk.io/core => github.com/0xPolygon/cosmos-sdk/core v0.11.0
+	cosmossdk.io/errors => github.com/0xPolygon/cosmos-sdk/errors v1.0.0-beta.7
+	cosmossdk.io/math => github.com/0xPolygon/cosmos-sdk/math v1.2.0
+)

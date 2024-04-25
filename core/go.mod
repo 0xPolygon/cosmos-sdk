@@ -55,3 +55,10 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+// HV2 related packages
+replace (
+	cosmossdk.io/api => github.com/0xPolygon/cosmos-sdk/api v0.7.2
+	cosmossdk.io/depinject => github.com/0xPolygon/cosmos-sdk/depinject v1.0.0-alpha.4
+	cosmossdk.io/math => github.com/0xPolygon/cosmos-sdk/math v1.2.0
+)

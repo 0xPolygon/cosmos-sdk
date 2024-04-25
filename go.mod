@@ -221,16 +221,27 @@ replace (
 
 // HV2 related packages
 replace (
-	cosmossdk.io/client/v2 => github.com/0xPolygon/cosmos-sdk/client/v2 v2.0.0-beta.1.0.20240409091007-84d9b34a8681
-	cosmossdk.io/errors => github.com/0xPolygon/cosmos-sdk/errors v1.0.0-beta.7.0.20240409091007-84d9b34a8681
+	// same versions tagged on our fork
+	cosmossdk.io/api => github.com/0xPolygon/cosmos-sdk/api v0.7.2
+	cosmossdk.io/client/v2 => github.com/0xPolygon/cosmos-sdk/client/v2 v2.0.0-beta.1
+	cosmossdk.io/collections => github.com/0xPolygon/cosmos-sdk/collections v0.4.0
+	cosmossdk.io/core => github.com/0xPolygon/cosmos-sdk/core v0.11.0
+	cosmossdk.io/depinject => github.com/0xPolygon/cosmos-sdk/depinject v1.0.0-alpha.4
+	cosmossdk.io/errors => github.com/0xPolygon/cosmos-sdk/errors v1.0.0
+	cosmossdk.io/log => github.com/0xPolygon/cosmos-sdk/log v1.2.1
+	cosmossdk.io/math => github.com/0xPolygon/cosmos-sdk/math v1.2.0
 	cosmossdk.io/simapp => github.com/0xPolygon/cosmos-sdk/simapp v0.0.0-20240409091007-84d9b34a8681
-	cosmossdk.io/store => github.com/0xPolygon/cosmos-sdk/store v1.0.2-0.20240409091007-84d9b34a8681
+	cosmossdk.io/store => github.com/0xPolygon/cosmos-sdk/store v1.0.1
+
+	// latest versions on our fork
 	cosmossdk.io/x/circuit => github.com/0xPolygon/cosmos-sdk/x/circuit v0.1.1-0.20240409091007-84d9b34a8681
 	cosmossdk.io/x/evidence => github.com/0xPolygon/cosmos-sdk/x/evidence v0.1.1-0.20240409091007-84d9b34a8681
 	cosmossdk.io/x/feegrant => github.com/0xPolygon/cosmos-sdk/x/feegrant v0.1.1-0.20240409091007-84d9b34a8681
 	cosmossdk.io/x/nft => github.com/0xPolygon/cosmos-sdk/x/nft v0.1.1-0.20240409091007-84d9b34a8681
-	cosmossdk.io/x/tx => github.com/0xPolygon/cosmos-sdk/x/tx v0.8.1-0.20240409091007-84d9b34a8681
+	cosmossdk.io/x/tx => github.com/0xPolygon/cosmos-sdk/x/tx v0.12.0
 	cosmossdk.io/x/upgrade => github.com/0xPolygon/cosmos-sdk/x/upgrade v0.1.2-0.20240409091007-84d9b34a8681
+
+	// our tagged forks
 	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.0-beta
 	github.com/cosmos/cosmos-sdk => github.com/0xPolygon/cosmos-sdk v0.1.0-beta-polygon
 )
