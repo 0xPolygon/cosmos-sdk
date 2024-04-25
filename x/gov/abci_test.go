@@ -348,7 +348,7 @@ func TestProposalPassedEndblocker(t *testing.T) {
 	   The failure happens since the introduction of custom implementation of bank module
 	   because of the following error:
 	   `DelegateCoinsFromAccountToModule not supported in Heimdall since vesting and delegation are disabled`
-		Validators creating will happen in custom staking module, maybe we can fix this when merged
+		Validators creation will happen in custom staking module, maybe we can fix this when merged
 	*/
 	testcases := []struct {
 		name      string
@@ -432,7 +432,7 @@ func TestEndBlockerProposalHandlerFailed(t *testing.T) {
 	   The failure happens since the introduction of custom implementation of bank module
 	   because of the following error:
 	   `DelegateCoinsFromAccountToModule not supported in Heimdall since vesting and delegation are disabled`
-		Validators creating will happen in custom staking module, maybe we can fix this when merged
+		Validators creation will happen in custom staking module, maybe we can fix this when merged
 	*/
 	suite := createTestSuite(t)
 	app := suite.App
