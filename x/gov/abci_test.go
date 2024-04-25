@@ -342,7 +342,7 @@ func TestTickPassedVotingPeriod(t *testing.T) {
 }
 
 func TestProposalPassedEndblocker(t *testing.T) {
-	t.Skip("skipping because as not relevant to Heimdall (no delegation)")
+	t.Skip("skipping test as not relevant to Heimdall (no delegation)")
 	/* TODO HV2: check and (in case) enable this test.
 	   It fails on step `network, err := network.New(t, t.TempDir(), cfg)` while creating the validators
 	   The failure happens since the introduction of custom implementation of bank module
@@ -426,7 +426,7 @@ func TestProposalPassedEndblocker(t *testing.T) {
 }
 
 func TestEndBlockerProposalHandlerFailed(t *testing.T) {
-	t.Skip("skipping because as not relevant to Heimdall (no delegation)")
+	t.Skip("skipping test as not relevant to Heimdall (no delegation)")
 	/* TODO HV2: check and (in case) enable this test.
 	   It fails on step `network, err := network.New(t, t.TempDir(), cfg)` while creating the validators
 	   The failure happens since the introduction of custom implementation of bank module

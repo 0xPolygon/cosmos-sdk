@@ -205,8 +205,6 @@ github.com/0xPolygon/cosmos-sdk/log v1.2.1 h1:Pn8+wMsvhifKmtzJzo92mbfbzFDSRnWCdN
 github.com/0xPolygon/cosmos-sdk/log v1.2.1/go.mod h1:GNSCc/6+DhFIj1aLn/j7Id7PaO8DzNylUZoOYBL9+I4=
 github.com/0xPolygon/cosmos-sdk/math v1.2.0 h1:jyGCyEKSyvXGwqZsctx+zw6JZRYzMhr5v3kVjnPjPvA=
 github.com/0xPolygon/cosmos-sdk/math v1.2.0/go.mod h1:l2Gnda87F0su8a/7FEKJfFdJrM0JZRXQaohlgJeyQh0=
-github.com/0xPolygon/cosmos-sdk/simapp v0.0.0-20240409091007-84d9b34a8681 h1:VUlaOqGXKIMCJjy8o3V32vlbgsgHkjECNTaBDOeHkSQ=
-github.com/0xPolygon/cosmos-sdk/simapp v0.0.0-20240409091007-84d9b34a8681/go.mod h1:QdY82T390uj4Gu4/dd88rMFUfeqn/lnm6diA2dFPh1o=
 github.com/0xPolygon/cosmos-sdk/store v1.0.1 h1:yjwcUvWHgVWXJQ6t7rgjkFxwZGh6SbM5Ca/zhQ3crYE=
 github.com/0xPolygon/cosmos-sdk/store v1.0.1/go.mod h1:EFtENTqVTuWwitGW1VwaBct+yDagk7oG/axBMPH+FXs=
 github.com/0xPolygon/cosmos-sdk/x/circuit v0.1.1-0.20240409091007-84d9b34a8681 h1:MxuC4W2USBbTijzQwE46WEWTcrxhHGygYuuUK3b6PDM=

@@ -230,7 +230,7 @@ replace (
 	cosmossdk.io/errors => github.com/0xPolygon/cosmos-sdk/errors v1.0.0
 	cosmossdk.io/log => github.com/0xPolygon/cosmos-sdk/log v1.2.1
 	cosmossdk.io/math => github.com/0xPolygon/cosmos-sdk/math v1.2.0
-	cosmossdk.io/simapp => github.com/0xPolygon/cosmos-sdk/simapp v0.0.0-20240409091007-84d9b34a8681
+	cosmossdk.io/simapp => ./simapp
 	cosmossdk.io/store => github.com/0xPolygon/cosmos-sdk/store v1.0.1
 
 	// latest versions on our fork
@@ -243,7 +243,8 @@ replace (
 
 	// our tagged forks
 	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.0-beta
-	github.com/cosmos/cosmos-sdk => github.com/0xPolygon/cosmos-sdk v0.1.0-beta-polygon
+	// TODO HV2: replace with a release version once development is completed
+	github.com/cosmos/cosmos-sdk => ./../
 )
 
 retract (
