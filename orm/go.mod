@@ -16,7 +16,7 @@ require (
 	github.com/stretchr/testify v1.8.4
 	golang.org/x/exp v0.0.0-20230817173708-d852ddb80c63
 	google.golang.org/grpc v1.58.3
-	google.golang.org/protobuf v1.31.0
+	google.golang.org/protobuf v1.33.0
 	gotest.tools/v3 v3.5.0
 	pgregory.net/rapid v0.6.2
 )
@@ -39,7 +39,7 @@ require (
 	github.com/getsentry/sentry-go v0.23.0 // indirect
 	github.com/gofrs/uuid v4.2.0+incompatible // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
-	github.com/golang/protobuf v1.5.3 // indirect
+	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/google/btree v1.1.2 // indirect
 	github.com/klauspost/compress v1.16.5 // indirect
@@ -67,4 +67,12 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	sigs.k8s.io/yaml v1.3.0 // indirect
+)
+
+// HV2 related packages
+replace (
+	cosmossdk.io/api => github.com/0xPolygon/cosmos-sdk/api v0.7.2
+	cosmossdk.io/core => github.com/0xPolygon/cosmos-sdk/core v0.11.0
+	cosmossdk.io/depinject => github.com/0xPolygon/cosmos-sdk/depinject v1.0.0-alpha.4
+	cosmossdk.io/errors => github.com/0xPolygon/cosmos-sdk/errors v1.0.0-beta.7
 )

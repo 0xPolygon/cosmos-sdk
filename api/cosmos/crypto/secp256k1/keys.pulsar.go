@@ -1715,11 +1715,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// PubKeyOld defines a tendermint secp256k1 public key
-// Key is the compressed form of the pubkey. The first byte depends is a 0x02 byte
-// if the y-coordinate is the lexicographically largest of the two associated with
-// the x-coordinate. Otherwise the first byte is a 0x03.
-// This prefix is followed with the x-coordinate.
+// PubKeyOld defines a tendermint uncompressed secp256k1 public key
+// Key is the uncompressed form of the pubkey.
 type PubKeyOld struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1828,7 +1825,7 @@ func (x *PrivKeyOld) GetKey() []byte {
 	return nil
 }
 
-// PrivKeyOld defines a comet uncompressed secp256k1 private key.
+// PrivKey defines a comet secp256k1 private key.
 type PrivKey struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

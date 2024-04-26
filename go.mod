@@ -17,7 +17,7 @@ require (
 	cosmossdk.io/x/tx v0.12.0
 	github.com/99designs/keyring v1.2.1
 	github.com/bgentry/speakeasy v0.1.1-0.20220910012023-760eaf8b6816
-	github.com/bits-and-blooms/bitset v1.8.0
+	github.com/bits-and-blooms/bitset v1.10.0
 	github.com/chzyer/readline v1.5.1
 	github.com/cockroachdb/apd/v2 v2.0.2
 	github.com/cockroachdb/errors v1.11.1
@@ -30,9 +30,9 @@ require (
 	github.com/cosmos/gogoproto v1.4.11
 	github.com/cosmos/ledger-cosmos-go v0.13.3
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.2.0
-	github.com/ethereum/go-ethereum v1.13.4
+	github.com/ethereum/go-ethereum v1.13.15
 	github.com/golang/mock v1.6.0
-	github.com/golang/protobuf v1.5.3
+	github.com/golang/protobuf v1.5.4
 	github.com/google/go-cmp v0.6.0
 	github.com/google/gofuzz v1.2.0
 	github.com/gorilla/handlers v1.5.1
@@ -57,12 +57,12 @@ require (
 	github.com/spf13/viper v1.18.1
 	github.com/stretchr/testify v1.8.4
 	github.com/tendermint/go-amino v0.16.0
-	golang.org/x/crypto v0.18.0
-	golang.org/x/exp v0.0.0-20231006140011-7918f672742d
+	golang.org/x/crypto v0.21.0
+	golang.org/x/exp v0.0.0-20231110203233-9a3e6036ecaa
 	golang.org/x/sync v0.5.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20231106174013-bbf56f31fb17
 	google.golang.org/grpc v1.60.0
-	google.golang.org/protobuf v1.31.0
+	google.golang.org/protobuf v1.33.0
 	gotest.tools/v3 v3.5.1
 	pgregory.net/rapid v1.1.0
 	sigs.k8s.io/yaml v1.3.0
@@ -106,7 +106,7 @@ require (
 	github.com/dgraph-io/ristretto v0.1.1 // indirect
 	github.com/dgryski/go-farm v0.0.0-20200201041132-a6ae2369ad13 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
-	github.com/dvsekhvalnov/jose2go v1.5.0 // indirect
+	github.com/dvsekhvalnov/jose2go v1.7.0 // indirect
 	github.com/emicklei/dot v1.6.0 // indirect
 	github.com/fatih/color v1.15.0 // indirect
 	github.com/felixge/httpsnoop v1.0.2 // indirect
@@ -138,7 +138,7 @@ require (
 	github.com/hashicorp/go-version v1.6.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/hashicorp/yamux v0.1.1 // indirect
-	github.com/holiman/uint256 v1.2.3 // indirect
+	github.com/holiman/uint256 v1.2.4 // indirect
 	github.com/iancoleman/strcase v0.3.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
@@ -182,10 +182,10 @@ require (
 	go.etcd.io/bbolt v1.3.8 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.uber.org/multierr v1.10.0 // indirect
-	golang.org/x/net v0.20.0 // indirect
+	golang.org/x/net v0.21.0 // indirect
 	golang.org/x/oauth2 v0.15.0 // indirect
-	golang.org/x/sys v0.16.0 // indirect
-	golang.org/x/term v0.16.0 // indirect
+	golang.org/x/sys v0.18.0 // indirect
+	golang.org/x/term v0.18.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/time v0.5.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
@@ -221,9 +221,30 @@ replace (
 
 // HV2 related packages
 replace (
+	// same versions tagged on our fork
+	cosmossdk.io/api => github.com/0xPolygon/cosmos-sdk/api v0.7.2
+	cosmossdk.io/client/v2 => github.com/0xPolygon/cosmos-sdk/client/v2 v2.0.0-beta.1
+	cosmossdk.io/collections => github.com/0xPolygon/cosmos-sdk/collections v0.4.0
+	cosmossdk.io/core => github.com/0xPolygon/cosmos-sdk/core v0.11.0
+	cosmossdk.io/depinject => github.com/0xPolygon/cosmos-sdk/depinject v1.0.0-alpha.4
+	cosmossdk.io/errors => github.com/0xPolygon/cosmos-sdk/errors v1.0.0
+	cosmossdk.io/log => github.com/0xPolygon/cosmos-sdk/log v1.2.1
+	cosmossdk.io/math => github.com/0xPolygon/cosmos-sdk/math v1.2.0
 	cosmossdk.io/simapp => ./simapp
+	cosmossdk.io/store => github.com/0xPolygon/cosmos-sdk/store v1.0.1
+
+	// latest versions on our fork
+	cosmossdk.io/x/circuit => github.com/0xPolygon/cosmos-sdk/x/circuit v0.1.1-0.20240409091007-84d9b34a8681
+	cosmossdk.io/x/evidence => github.com/0xPolygon/cosmos-sdk/x/evidence v0.1.1-0.20240409091007-84d9b34a8681
+	cosmossdk.io/x/feegrant => github.com/0xPolygon/cosmos-sdk/x/feegrant v0.1.1-0.20240409091007-84d9b34a8681
+	cosmossdk.io/x/nft => github.com/0xPolygon/cosmos-sdk/x/nft v0.1.1-0.20240409091007-84d9b34a8681
+	cosmossdk.io/x/tx => github.com/0xPolygon/cosmos-sdk/x/tx v0.12.0
+	cosmossdk.io/x/upgrade => github.com/0xPolygon/cosmos-sdk/x/upgrade v0.1.2-0.20240409091007-84d9b34a8681
+
+	// our tagged forks
 	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.0-beta
-	github.com/cosmos/cosmos-sdk => github.com/0xPolygon/cosmos-sdk v0.50.3-0.20240409090657-2e910ae577a9
+	// TODO HV2: replace with a release version once development is completed
+	github.com/cosmos/cosmos-sdk => ./../
 )
 
 retract (

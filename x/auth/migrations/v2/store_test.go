@@ -46,6 +46,7 @@ func (ms mockSubspace) GetParamSet(ctx sdk.Context, ps authexported.ParamSet) {
 }
 
 func TestMigrateVestingAccounts(t *testing.T) {
+	t.Skip("skipping test as not relevant to Heimdall (no vesting, no delegation")
 	encCfg := moduletestutil.MakeTestEncodingConfig(auth.AppModuleBasic{})
 	cdc := encCfg.Codec
 
