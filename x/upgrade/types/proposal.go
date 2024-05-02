@@ -5,8 +5,11 @@ import (
 )
 
 const (
-	// TODO HV2: ProposalTypeSoftwareUpgrade was removed. What to do with it?
-	//  ProposalTypeCancelSoftwareUpgrade was not even there in heimdall's gov/types/proposal.go. What to do with it?
+	/* TODO HV2: ProposalTypeSoftwareUpgrade was removed. What to do with it?
+	   ProposalTypeCancelSoftwareUpgrade was not even there in heimdall's gov/types/proposal.go.
+	   Also, ProposalTypeCancelSoftwareUpgrade depends on ProposalTypeSoftwareUpgrade semantically,
+	   so whatever we do with one, we should do with the other.
+	*/
 
 	ProposalTypeSoftwareUpgrade       string = "SoftwareUpgrade"
 	ProposalTypeCancelSoftwareUpgrade string = "CancelSoftwareUpgrade"
