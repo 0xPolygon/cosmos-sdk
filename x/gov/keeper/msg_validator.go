@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"fmt"
+
 	"github.com/cosmos/cosmos-sdk/x/gov/types"
 
 	authv1beta1 "cosmossdk.io/api/cosmos/auth/v1beta1"
@@ -10,7 +11,9 @@ import (
 	govv1 "cosmossdk.io/api/cosmos/gov/v1"
 	stakingv1beta1 "cosmossdk.io/api/cosmos/staking/v1beta1"
 	errorsmod "cosmossdk.io/errors"
+	"github.com/0xPolygon/heimdall-v2/api/heimdallv2/chainmanager"
 
+	chainmanagertypes "github.com/0xPolygon/heimdall-v2/x/chainmanager/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
@@ -29,7 +32,8 @@ func ValidateGovMsgType(msg sdk.Msg) error {
 		*authtypes.MsgUpdateParams, *authv1beta1.MsgUpdateParams,
 		*banktypes.MsgUpdateParams, *bankv1beta1.MsgUpdateParams,
 		*consensustypes.MsgUpdateParams, *consensusv1.MsgUpdateParams,
-		*stakingtypes.MsgUpdateParams, *stakingv1beta1.MsgUpdateParams:
+		*stakingtypes.MsgUpdateParams, *stakingv1beta1.MsgUpdateParams,
+		*chainmanagertypes.MsgUpdateParams, *chainmanager.MsgUpdateParams:
 		return nil
 	default:
 		return errorsmod.Wrap(types.ErrInvalidProposalMsgType, fmt.Sprintf("type not supported: %T", msg))
