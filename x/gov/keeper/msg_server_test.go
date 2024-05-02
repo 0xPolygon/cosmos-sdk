@@ -1,17 +1,19 @@
 package keeper_test
 
 import (
+	"math/big"
+	"strings"
+	"time"
+
 	authv1beta1 "cosmossdk.io/api/cosmos/auth/v1beta1"
 	bankv1beta1 "cosmossdk.io/api/cosmos/bank/v1beta1"
 	consensusv1 "cosmossdk.io/api/cosmos/consensus/v1"
 	govv1 "cosmossdk.io/api/cosmos/gov/v1"
 	stakingv1beta1 "cosmossdk.io/api/cosmos/staking/v1beta1"
+	chainmanagertypes "github.com/0xPolygon/heimdall-v2/x/chainmanager/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	consensustypes "github.com/cosmos/cosmos-sdk/x/consensus/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
-	"math/big"
-	"strings"
-	"time"
 
 	sdkmath "cosmossdk.io/math"
 
@@ -418,6 +420,20 @@ func (suite *KeeperTestSuite) TestSubmitProposalReq() {
 			preRun: func() (*v1.MsgSubmitProposal, error) {
 				return v1.NewMsgSubmitProposal(
 					[]sdk.Msg{&stakingv1beta1.MsgUpdateParams{Authority: govAcct.String()}},
+					initialDeposit,
+					proposer.String(),
+					"",
+					"Proposal",
+					"description of proposal",
+					false,
+				)
+			},
+			expErr: false,
+		},
+		"all good with chainmanagertypes.MsgUpdateParams": {
+			preRun: func() (*v1.MsgSubmitProposal, error) {
+				return v1.NewMsgSubmitProposal(
+					[]sdk.Msg{&chainmanagertypes.MsgUpdateParams{Authority: govAcct.String()}},
 					initialDeposit,
 					proposer.String(),
 					"",

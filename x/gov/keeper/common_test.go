@@ -2,9 +2,11 @@ package keeper_test
 
 import (
 	"fmt"
+	"testing"
+
+	chainmanagertypes "github.com/0xPolygon/heimdall-v2/x/chainmanager/types"
 	consensustypes "github.com/cosmos/cosmos-sdk/x/consensus/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
-	"testing"
 
 	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	cmttime "github.com/cometbft/cometbft/types/time"
@@ -78,6 +80,7 @@ func setupGovKeeper(t *testing.T) (
 	authtypes.RegisterInterfaces(encCfg.InterfaceRegistry)
 	stakingtypes.RegisterInterfaces(encCfg.InterfaceRegistry)
 	consensustypes.RegisterInterfaces(encCfg.InterfaceRegistry)
+	chainmanagertypes.RegisterInterfaces(encCfg.InterfaceRegistry)
 
 	// Create MsgServiceRouter, but don't populate it before creating the gov
 	// keeper.
@@ -126,6 +129,7 @@ func setupGovKeeper(t *testing.T) (
 	authtypes.RegisterMsgServer(msr, nil)
 	stakingtypes.RegisterMsgServer(msr, nil)
 	consensustypes.RegisterMsgServer(msr, nil)
+	chainmanagertypes.RegisterMsgServer(msr, nil)
 
 	return govKeeper, acctKeeper, bankKeeper, stakingKeeper, distributionKeeper, encCfg, ctx
 }
