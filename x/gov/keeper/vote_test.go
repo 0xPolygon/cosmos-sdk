@@ -56,14 +56,14 @@ func TestVotes(t *testing.T) {
 	require.Equal(t, v1.OptionYes, vote.Options[0].Option)
 
 	// Test second vote
-	err = govKeeper.AddVote(ctx, proposalID, addrs[1], v1.WeightedVoteOptions{
-		v1.NewWeightedVoteOption(v1.OptionYes, sdkmath.LegacyNewDecWithPrec(60, 2)),
-		v1.NewWeightedVoteOption(v1.OptionNo, sdkmath.LegacyNewDecWithPrec(30, 2)),
-		v1.NewWeightedVoteOption(v1.OptionAbstain, sdkmath.LegacyNewDecWithPrec(5, 2)),
-		v1.NewWeightedVoteOption(v1.OptionNoWithVeto, sdkmath.LegacyNewDecWithPrec(5, 2)),
-	}, "")
-	require.Error(t, err)
-	require.ErrorContains(t, err, "too many vote options")
+	require.Panics(t, func() {
+		_ = govKeeper.AddVote(ctx, proposalID, addrs[1], v1.WeightedVoteOptions{
+			v1.NewWeightedVoteOption(v1.OptionYes, sdkmath.LegacyNewDecWithPrec(60, 2)),
+			v1.NewWeightedVoteOption(v1.OptionNo, sdkmath.LegacyNewDecWithPrec(30, 2)),
+			v1.NewWeightedVoteOption(v1.OptionAbstain, sdkmath.LegacyNewDecWithPrec(5, 2)),
+			v1.NewWeightedVoteOption(v1.OptionNoWithVeto, sdkmath.LegacyNewDecWithPrec(5, 2)),
+		}, "")
+	})
 	vote, err = govKeeper.Votes.Get(ctx, collections.Join(proposalID, addrs[1]))
 	require.NotNil(t, err)
 	/* HV2: WeightedVoteOptions is not supported, heimdall won't have the vote options here

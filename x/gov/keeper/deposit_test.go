@@ -138,7 +138,8 @@ func TestDeposits(t *testing.T) {
 			deposit, err = govKeeper.Deposits.Get(ctx, collections.Join(proposalID, TestAddrs[1]))
 			require.Nil(t, err)
 			require.Equal(t, fourStake, sdk.NewCoins(deposit.Amount...))
-			govKeeper.RefundAndDeleteDeposits(ctx, proposalID)
+			err = govKeeper.RefundAndDeleteDeposits(ctx, proposalID)
+			require.NoError(t, err)
 			deposit, err = govKeeper.Deposits.Get(ctx, collections.Join(proposalID, TestAddrs[1]))
 			require.ErrorIs(t, err, collections.ErrNotFound)
 			require.Equal(t, addr0Initial, bankKeeper.GetAllBalances(ctx, TestAddrs[0]))
@@ -150,9 +151,11 @@ func TestDeposits(t *testing.T) {
 			proposalID = proposal.Id
 			_, err = govKeeper.AddDeposit(ctx, proposalID, TestAddrs[0], fourStake)
 			require.NoError(t, err)
-			govKeeper.DeleteAndBurnDeposits(ctx, proposalID)
+			require.Panics(t, func() {
+				_ = govKeeper.DeleteAndBurnDeposits(ctx, proposalID)
+			})
 			deposits, _ = govKeeper.GetDeposits(ctx, proposalID)
-			require.Len(t, deposits, 0)
+			require.Len(t, deposits, 1)
 			require.Equal(t, addr0Initial.Sub(fourStake...), bankKeeper.GetAllBalances(ctx, TestAddrs[0]))
 		})
 	}
