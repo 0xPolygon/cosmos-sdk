@@ -5,11 +5,11 @@ import (
 )
 
 const (
-	// module name
+	// ModuleName defines the module name
 	ModuleName = "auth"
 
 	// StoreKey is string representation of the store key for auth
-	StoreKey = "acc"
+	StoreKey = ModuleName
 
 	// FeeCollectorName the root string for the fee collector account address
 	FeeCollectorName = "fee_collector"
