@@ -518,7 +518,10 @@ func (m *Manager) InitGenesis(ctx sdk.Context, cdc codec.JSONCodec, genesisData 
 		}
 	}
 
-	// HV2: This check is not present in v1. As staking is managed on L1, we should not need it.
+	// TODO HV2: This check is not present in v1.
+	//  As staking is managed on L1,
+	//  and our stake module's InitGenesis does not return []abci.ValidatorUpdate
+	//  we should not need it. Is this assumption correct?
 
 	// a chain must initialize with a non-empty validator set
 	/*
