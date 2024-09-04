@@ -518,10 +518,14 @@ func (m *Manager) InitGenesis(ctx sdk.Context, cdc codec.JSONCodec, genesisData 
 		}
 	}
 
+	// HV2: This check is not present in v1. As staking is managed on L1, we should not need it.
+
 	// a chain must initialize with a non-empty validator set
-	if len(validatorUpdates) == 0 {
-		return &abci.ResponseInitChain{}, fmt.Errorf("validator set is empty after InitGenesis, please ensure at least one validator is initialized with a delegation greater than or equal to the DefaultPowerReduction (%d)", sdk.DefaultPowerReduction)
-	}
+	/*
+		if len(validatorUpdates) == 0 {
+			return &abci.ResponseInitChain{}, fmt.Errorf("validator set is empty after InitGenesis, please ensure at least one validator is initialized with a delegation greater than or equal to the DefaultPowerReduction (%d)", sdk.DefaultPowerReduction)
+		}
+	*/
 
 	return &abci.ResponseInitChain{
 		Validators: validatorUpdates,
