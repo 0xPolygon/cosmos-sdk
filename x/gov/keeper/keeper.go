@@ -24,7 +24,7 @@ type Keeper struct {
 	distrKeeper types.DistributionKeeper
 
 	// The reference to the DelegationSet and ValidatorSet to get information about validators and delegators
-	sk types.StakingKeeper
+	StakingKeeper types.StakingKeeper
 
 	// GovHooks
 	hooks types.GovHooks
@@ -101,7 +101,7 @@ func NewKeeper(
 		authKeeper:             authKeeper,
 		bankKeeper:             bankKeeper,
 		distrKeeper:            distrKeeper,
-		sk:                     sk,
+		StakingKeeper:          sk,
 		cdc:                    cdc,
 		router:                 router,
 		config:                 config,

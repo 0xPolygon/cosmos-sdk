@@ -26,8 +26,8 @@ func (keeper Keeper) Tally(ctx context.Context, proposal v1.Proposal) (passes, b
 	totalVotingPower := math.LegacyZeroDec()
 	currValidators := make(map[string]v1.ValidatorGovInfo)
 
-	err = keeper.sk.IterateCurrentValidatorsAndApplyFn(ctx, func(validator stakingtypes.ValidatorI) bool {
-		valBz, err := keeper.sk.ValidatorAddressCodec().StringToBytes(validator.GetOperator())
+	err = keeper.StakingKeeper.IterateCurrentValidatorsAndApplyFn(ctx, func(validator stakingtypes.ValidatorI) bool {
+		valBz, err := keeper.StakingKeeper.ValidatorAddressCodec().StringToBytes(validator.GetOperator())
 		if err != nil {
 			return false
 		}
@@ -54,7 +54,7 @@ func (keeper Keeper) Tally(ctx context.Context, proposal v1.Proposal) (passes, b
 			return false, err
 		}
 
-		valAddrStr, err := keeper.sk.ValidatorAddressCodec().BytesToString(voter)
+		valAddrStr, err := keeper.StakingKeeper.ValidatorAddressCodec().BytesToString(voter)
 		if err != nil {
 			return false, err
 		}
@@ -65,7 +65,7 @@ func (keeper Keeper) Tally(ctx context.Context, proposal v1.Proposal) (passes, b
 
 		/* HV2: delegations not supported in heimdall
 		// iterate over all delegations from voter, deduct from any delegated-to validators
-		err = keeper.sk.IterateDelegations(ctx, voter, func(index int64, delegation stakingtypes.DelegationI) (stop bool) {
+		err = keeper.StakingKeeper.IterateDelegations(ctx, voter, func(index int64, delegation stakingtypes.DelegationI) (stop bool) {
 			valAddrStr := delegation.GetValidatorAddr()
 
 			if val, ok := currValidators[valAddrStr]; ok {
@@ -141,7 +141,7 @@ func (keeper Keeper) Tally(ctx context.Context, proposal v1.Proposal) (passes, b
 
 	/* 	HV2: this has been removed from heimdall's gov/tally.go and replaced with zero check on totalVotingPower
 	// If there is no staked coins, the proposal fails
-	totalBonded, err := keeper.sk.TotalBondedTokens(ctx)
+	totalBonded, err := keeper.StakingKeeper.TotalBondedTokens(ctx)
 	if err != nil {
 		return false, false, tallyResults, err
 	}
