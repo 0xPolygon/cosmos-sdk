@@ -47,6 +47,9 @@ var DefaultConsensusParams = &cmtproto.ConsensusParams{
 			cmttypes.ABCIPubKeyTypeEd25519,
 		},
 	},
+	Abci: &cmtproto.ABCIParams{
+		VoteExtensionsEnableHeight: 0,
+	},
 }
 
 // CreateRandomValidatorSet creates a validator set with one random validator
