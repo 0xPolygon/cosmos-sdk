@@ -48,7 +48,7 @@ var DefaultConsensusParams = &cmtproto.ConsensusParams{
 		},
 	},
 	Abci: &cmtproto.ABCIParams{
-		VoteExtensionsEnableHeight: 0,
+		VoteExtensionsEnableHeight: 1,
 	},
 }
 
