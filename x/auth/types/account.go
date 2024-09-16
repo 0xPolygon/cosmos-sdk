@@ -315,6 +315,3 @@ type GenesisAccount interface {
 
 	Validate() error
 }
-
-// AccountProcessor is an interface to process account as per module
-type AccountProcessor func(*GenesisAccount, *BaseAccount) sdk.AccountI

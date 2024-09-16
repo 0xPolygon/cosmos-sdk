@@ -47,9 +47,6 @@ var (
 
 	_ appmodule.AppModule     = AppModule{}
 	_ appmodule.HasEndBlocker = AppModule{}
-
-	// TODO HV2: from heimdall. I don't think it's needed. To double check and eventually remove
-	//	_ hmModule.HeimdallModuleBasic = AppModule{}
 )
 
 // AppModuleBasic defines the basic application module used by the gov module.
