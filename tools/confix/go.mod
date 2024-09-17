@@ -170,7 +170,7 @@ replace (
 	cosmossdk.io/math => github.com/0xPolygon/cosmos-sdk/math v1.2.0
 	cosmossdk.io/store => github.com/0xPolygon/cosmos-sdk/store v1.0.0
 	cosmossdk.io/x/tx => github.com/0xPolygon/cosmos-sdk/x/tx v0.12.0
-	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.0-beta.0.20240917094754-68c241d304b1
+	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.0-beta.0.20240917125325-d367048102fb
 
 	// TODO HV2: replace with a release version once development is completed
 	github.com/cosmos/cosmos-sdk => ./../../
