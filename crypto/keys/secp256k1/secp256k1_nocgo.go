@@ -28,9 +28,9 @@ func (privKey *PrivKey) Sign(msg []byte) ([]byte, error) {
 // VerifySignature verifies a signature of the form R || S || V.
 // It rejects signatures which are not in lower-S form.
 func (pubKey *PubKey) VerifySignature(msg []byte, sigStr []byte) bool {
-	if len(sigStr) != SigSize {
-		return false
-	}
+	//if len(sigStr) != SigSize {
+	//	return false
+	//}
 
 	hash := ethCrypto.Keccak256(msg)
 	return ethCrypto.VerifySignature(pubKey.Key, hash, sigStr[:64])
