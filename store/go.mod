@@ -87,7 +87,7 @@ replace (
 	cosmossdk.io/log => github.com/0xPolygon/cosmos-sdk/log v1.2.1
 	cosmossdk.io/math => github.com/0xPolygon/cosmos-sdk/math v1.2.0
 
-	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.0-beta
+	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.0-beta.0.20240917094754-68c241d304b1
 
 	github.com/ethereum/go-ethereum => github.com/maticnetwork/bor v1.4.0
 )
