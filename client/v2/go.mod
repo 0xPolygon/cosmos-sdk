@@ -163,7 +163,7 @@ replace (
 	cosmossdk.io/core => github.com/0xPolygon/cosmos-sdk/core v0.11.0
 	cosmossdk.io/depinject => github.com/0xPolygon/cosmos-sdk/depinject v1.0.0-alpha.4
 	cosmossdk.io/x/tx => github.com/0xPolygon/cosmos-sdk/x/tx v0.12.0
-	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.0-beta.0.20240917125325-d367048102fb
+	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.0-beta.0.20240918084709-e40563677887
 
 	// TODO HV2: replace with a release version once development is completed
 	github.com/cosmos/cosmos-sdk => ./../../

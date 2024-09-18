@@ -1,5 +1,5 @@
-github.com/0xPolygon/cometbft v0.1.0-beta.0.20240917125325-d367048102fb h1:6lS4eqSZ7iJaU7muoQo5YLyrj1/rQODzjT72zGxStVM=
-github.com/0xPolygon/cometbft v0.1.0-beta.0.20240917125325-d367048102fb/go.mod h1:9mQ6UO7icJQz/mjetNQglxzY9AcRc9+ikj3r77LNb5c=
+github.com/0xPolygon/cometbft v0.1.0-beta.0.20240918084709-e40563677887 h1:44lpiKhfTYwltk0fbHzPfTegM1TiLDzwfkv36mknJk4=
+github.com/0xPolygon/cometbft v0.1.0-beta.0.20240918084709-e40563677887/go.mod h1:9mQ6UO7icJQz/mjetNQglxzY9AcRc9+ikj3r77LNb5c=
 github.com/0xPolygon/cosmos-sdk/errors v1.0.0 h1:17cbZ91UK+FIm+vQwzwk++hqDQl92Q4EpL+gvV34Tz4=
 github.com/0xPolygon/cosmos-sdk/errors v1.0.0/go.mod h1:+hJZLuhdDE0pYN8HkOrVNwrIOYvUGnn6+4fjnJs/oV0=
 github.com/0xPolygon/cosmos-sdk/log v1.2.1 h1:Pn8+wMsvhifKmtzJzo92mbfbzFDSRnWCdNmx3kSRkZQ=
