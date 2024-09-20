@@ -48,7 +48,8 @@ var DefaultConsensusParams = &cmtproto.ConsensusParams{
 		},
 	},
 	Abci: &cmtproto.ABCIParams{
-		VoteExtensionsEnableHeight: 1,
+		// returning a fixed non-nil value, set it to 100, and used for testing. In reality, it'll be the Heimdall v1 final height +1
+		VoteExtensionsEnableHeight: 100,
 	},
 }
 
