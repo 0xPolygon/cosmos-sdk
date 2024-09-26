@@ -1,6 +1,9 @@
 package keeper_test
 
 import (
+	borTypes "github.com/0xPolygon/heimdall-v2/x/bor/types"
+	checkpointTypes "github.com/0xPolygon/heimdall-v2/x/checkpoint/types"
+	milestoneTypes "github.com/0xPolygon/heimdall-v2/x/milestone/types"
 	"math/big"
 	"strings"
 	"time"
@@ -9,13 +12,10 @@ import (
 	bankv1beta1 "cosmossdk.io/api/cosmos/bank/v1beta1"
 	consensusv1 "cosmossdk.io/api/cosmos/consensus/v1"
 	govv1 "cosmossdk.io/api/cosmos/gov/v1"
-	stakingv1beta1 "cosmossdk.io/api/cosmos/staking/v1beta1"
+	sdkmath "cosmossdk.io/math"
 	chainmanagertypes "github.com/0xPolygon/heimdall-v2/x/chainmanager/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	consensustypes "github.com/cosmos/cosmos-sdk/x/consensus/types"
-	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
-
-	sdkmath "cosmossdk.io/math"
 
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	"github.com/cosmos/cosmos-sdk/testutil/testdata"
@@ -402,10 +402,10 @@ func (suite *KeeperTestSuite) TestSubmitProposalReq() {
 			},
 			expErr: false,
 		},
-		"all good with stakingtypes.MsgUpdateParams": {
+		"all good with borTypes.MsgUpdateParams": {
 			preRun: func() (*v1.MsgSubmitProposal, error) {
 				return v1.NewMsgSubmitProposal(
-					[]sdk.Msg{&stakingtypes.MsgUpdateParams{Authority: govAcct.String()}},
+					[]sdk.Msg{&borTypes.MsgUpdateParams{Authority: govAcct.String()}},
 					initialDeposit,
 					proposer.String(),
 					"",
@@ -416,10 +416,24 @@ func (suite *KeeperTestSuite) TestSubmitProposalReq() {
 			},
 			expErr: false,
 		},
-		"all good with stakingv1beta1.MsgUpdateParams": {
+		"all good with checkpointTypes.MsgUpdateParams": {
 			preRun: func() (*v1.MsgSubmitProposal, error) {
 				return v1.NewMsgSubmitProposal(
-					[]sdk.Msg{&stakingv1beta1.MsgUpdateParams{Authority: govAcct.String()}},
+					[]sdk.Msg{&checkpointTypes.MsgUpdateParams{Authority: govAcct.String()}},
+					initialDeposit,
+					proposer.String(),
+					"",
+					"Proposal",
+					"description of proposal",
+					false,
+				)
+			},
+			expErr: false,
+		},
+		"all good with milestoneTypes.MsgUpdateParams": {
+			preRun: func() (*v1.MsgSubmitProposal, error) {
+				return v1.NewMsgSubmitProposal(
+					[]sdk.Msg{&milestoneTypes.MsgUpdateParams{Authority: govAcct.String()}},
 					initialDeposit,
 					proposer.String(),
 					"",
