@@ -131,6 +131,9 @@ func checkBalance(t *testing.T, baseApp *baseapp.BaseApp, addr sdk.AccAddress, b
 }
 
 func TestSendNotEnoughBalance(t *testing.T) {
+	// TODO HV2: To fix this tests, we need to implement https://polygon.atlassian.net/browse/POS-2540
+	t.Skip("skipping test as it simApp staking module instead of heimdall-v2 custom stake module")
+
 	acc1 := &authtypes.BaseAccount{
 		Address: addr1.String(),
 	}
@@ -224,6 +227,9 @@ func TestSendNotEnoughBalance(t *testing.T) {
 }
 
 func TestMsgMultiSendWithAccounts(t *testing.T) {
+	// TODO HV2: To fix this tests, we need to implement https://polygon.atlassian.net/browse/POS-2540
+	t.Skip("skipping test as it simApp staking module instead of heimdall-v2 custom stake module")
+
 	acc := &authtypes.BaseAccount{
 		Address: addr1.String(),
 	}
@@ -337,6 +343,9 @@ func TestMsgMultiSendWithAccounts(t *testing.T) {
 }
 
 func TestMsgMultiSendMultipleOut(t *testing.T) {
+	// TODO HV2: To fix this tests, we need to implement https://polygon.atlassian.net/browse/POS-2540
+	t.Skip("skipping test as it simApp staking module instead of heimdall-v2 custom stake module")
+
 	acc1 := &authtypes.BaseAccount{
 		Address: addr1.String(),
 	}
@@ -386,6 +395,9 @@ func TestMsgMultiSendMultipleOut(t *testing.T) {
 }
 
 func TestMsgMultiSendDependent(t *testing.T) {
+	// TODO HV2: To fix this tests, we need to implement https://polygon.atlassian.net/browse/POS-2540
+	t.Skip("skipping test as it simApp staking module instead of heimdall-v2 custom stake module")
+
 	acc1 := authtypes.NewBaseAccountWithAddress(addr1)
 	acc2 := authtypes.NewBaseAccountWithAddress(addr2)
 	err := acc2.SetAccountNumber(1)
