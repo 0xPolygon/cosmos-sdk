@@ -46,5 +46,15 @@ func (bc HexCodec) BytesToString(bz []byte) (string, error) {
 
 	text := common.Bytes2Hex(bz)
 
-	return text, nil
+	if has0xPrefix(text) {
+		return text, nil
+	} else {
+		return "0x" + text, nil
+	}
+
+}
+
+// has0xPrefix validates str begins with '0x' or '0X'.
+func has0xPrefix(str string) bool {
+	return len(str) >= 2 && str[0] == '0' && (str[1] == 'x' || str[1] == 'X')
 }
