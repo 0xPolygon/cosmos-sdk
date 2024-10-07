@@ -61,6 +61,18 @@ func TestHexCodec_BytesToString_InvalidBytes(t *testing.T) {
 	require.Error(t, err)
 }
 
+func TestHexCodec_StringToBytes_BytesToString_Symmetry_0x(t *testing.T) {
+	codec := NewHexCodec()
+	originalText := "0xa316fa9fa91700d7084d377bfdc81eb9f232f5ff"
+
+	bytes, err := codec.StringToBytes(originalText)
+	require.NoError(t, err)
+
+	resultText, err := codec.BytesToString(bytes)
+	require.NoError(t, err)
+	require.Equal(t, originalText, resultText)
+}
+
 func TestHexCodec_StringToBytes_BytesToString_Symmetry(t *testing.T) {
 	codec := NewHexCodec()
 	originalText := "0xa316fa9fa91700d7084d377bfdc81eb9f232f5ff"
@@ -71,4 +83,28 @@ func TestHexCodec_StringToBytes_BytesToString_Symmetry(t *testing.T) {
 	resultText, err := codec.BytesToString(bytes)
 	require.NoError(t, err)
 	require.Equal(t, originalText, resultText)
+}
+
+func TestHexCodec_BytesToString_StringToBytes_Symmetry_0x(t *testing.T) {
+	codec := NewHexCodec()
+	originalBytes := common.FromHex("0xa316fa9fa91700d7084d377bfdc81eb9f232f5ff")
+
+	text, err := codec.BytesToString(originalBytes)
+	require.NoError(t, err)
+
+	resultBytes, err := codec.StringToBytes(text)
+	require.NoError(t, err)
+	require.Equal(t, originalBytes, resultBytes)
+}
+
+func TestHexCodec_BytesToString_StringToBytes_Symmetry(t *testing.T) {
+	codec := NewHexCodec()
+	originalBytes := common.FromHex("a316fa9fa91700d7084d377bfdc81eb9f232f5ff")
+
+	text, err := codec.BytesToString(originalBytes)
+	require.NoError(t, err)
+
+	resultBytes, err := codec.StringToBytes(text)
+	require.NoError(t, err)
+	require.Equal(t, originalBytes, resultBytes)
 }

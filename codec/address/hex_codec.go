@@ -20,12 +20,18 @@ func NewHexCodec() address.Codec {
 }
 
 // StringToBytes encodes text to bytes
-func (bc HexCodec) StringToBytes(text string) ([]byte, error) {
-	if len(strings.TrimSpace(text)) == 0 {
+func (bc HexCodec) StringToBytes(hexAddr string) ([]byte, error) {
+	if len(strings.TrimSpace(hexAddr)) == 0 {
 		return []byte{}, errors.New("empty address string is not allowed")
 	}
 
-	bz := common.FromHex(text)
+	hexAddr = strings.ToLower(hexAddr)
+
+	if !has0xPrefix(hexAddr) {
+		hexAddr = "0x" + hexAddr
+	}
+
+	bz := common.FromHex(hexAddr)
 
 	if err := sdk.VerifyAddressFormat(bz); err != nil {
 		return nil, err
@@ -44,12 +50,14 @@ func (bc HexCodec) BytesToString(bz []byte) (string, error) {
 		return "", err
 	}
 
-	text := common.Bytes2Hex(bz)
+	hexAddr := common.Bytes2Hex(bz)
 
-	if has0xPrefix(text) {
-		return text, nil
+	hexAddr = strings.ToLower(hexAddr)
+
+	if has0xPrefix(hexAddr) {
+		return hexAddr, nil
 	} else {
-		return "0x" + text, nil
+		return "0x" + hexAddr, nil
 	}
 
 }
