@@ -928,7 +928,7 @@ func TestABCI_TxGasLimits(t *testing.T) {
 			// AnteHandlers must have their own defer/recover in order for the BaseApp
 			// to know how much gas was used! This is because the GasMeter is created in
 			// the AnteHandler, but if it panics the context won't be set properly in
-			// runTx's recover call.
+			// RunTx's recover call.
 			defer func() {
 				if r := recover(); r != nil {
 					switch rType := r.(type) {

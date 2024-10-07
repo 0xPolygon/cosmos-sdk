@@ -173,7 +173,7 @@ func (h *DefaultProposalHandler) SetTxSelector(ts TxSelector) {
 // transactions are added to the proposal. Transactions are valid if they:
 //
 // 1) Successfully encode to bytes.
-// 2) Are valid (i.e. pass runTx, AnteHandler only).
+// 2) Are valid (i.e. pass RunTx, AnteHandler only).
 //
 // Enumeration is halted once RequestPrepareProposal.MaxBytes of transactions is
 // reached or the mempool is exhausted.
@@ -250,7 +250,7 @@ func (h *DefaultProposalHandler) PrepareProposalHandler() sdk.PrepareProposalHan
 // ABCI proposal. Every transaction in the proposal must pass 2 conditions:
 //
 // 1. The transaction bytes must decode to a valid transaction.
-// 2. The transaction must be valid (i.e. pass runTx, AnteHandler only)
+// 2. The transaction must be valid (i.e. pass RunTx, AnteHandler only)
 //
 // If any transaction fails to pass either condition, the proposal is rejected.
 // Note that step (2) is identical to the validation step performed in
