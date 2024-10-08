@@ -20,12 +20,18 @@ func NewHexCodec() address.Codec {
 }
 
 // StringToBytes encodes text to bytes
-func (bc hexCodec) StringToBytes(text string) ([]byte, error) {
-	if len(strings.TrimSpace(text)) == 0 {
+func (bc hexCodec) StringToBytes(hexAddr string) ([]byte, error) {
+	if len(strings.TrimSpace(hexAddr)) == 0 {
 		return []byte{}, errors.New("empty address string is not allowed")
 	}
 
-	bz := common.FromHex(text)
+	hexAddr = strings.ToLower(hexAddr)
+
+	if !has0xPrefix(hexAddr) {
+		hexAddr = "0x" + hexAddr
+	}
+
+	bz := common.FromHex(hexAddr)
 
 	if err := sdk.VerifyAddressFormat(bz); err != nil {
 		return nil, err
@@ -44,7 +50,19 @@ func (bc hexCodec) BytesToString(bz []byte) (string, error) {
 		return "", err
 	}
 
-	text := common.Bytes2Hex(bz)
+	hexAddr := common.Bytes2Hex(bz)
 
-	return text, nil
+	hexAddr = strings.ToLower(hexAddr)
+
+	if has0xPrefix(hexAddr) {
+		return hexAddr, nil
+	} else {
+		return "0x" + hexAddr, nil
+	}
+
+}
+
+// has0xPrefix validates str begins with '0x' or '0X'.
+func has0xPrefix(str string) bool {
+	return len(str) >= 2 && str[0] == '0' && (str[1] == 'x' || str[1] == 'X')
 }

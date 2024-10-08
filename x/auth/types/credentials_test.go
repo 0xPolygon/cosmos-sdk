@@ -1,7 +1,6 @@
 package types_test
 
 import (
-	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -44,11 +43,11 @@ func TestNewModuleCrendentials(t *testing.T) {
 	require.NoError(t, err)
 	require.False(t, credential.Equals(c))
 
-	address := secp256k1.GenPrivKey().PubKey().Address()
+	address := sdk.AccAddress(secp256k1.GenPrivKey().PubKey().Address())
 	expected := sdk.MustAccAddressFromHex(address.String())
 	c, err = authtypes.NewModuleCredential("group", address)
 	require.NoError(t, err)
-	require.Equal(t, strings.ToLower(expected.String()), "0x"+strings.ToLower(address.String()))
+	require.Equal(t, expected.String(), address.String())
 }
 
 func TestNewBaseAccountWithPubKey(t *testing.T) {
