@@ -241,17 +241,35 @@ func TestAnteHandlerAccountNumbers(t *testing.T) {
 			false,
 		},
 		{
-			"new tx with another signer and incorrect account numbers",
+			"new tx with more than 1 message",
 			func(suite *AnteTestSuite) TestCaseArgs {
 				accs := suite.CreateTestAccounts(2)
 				msg1 := testdata.NewTestMsg(accs[0].acc.GetAddress(), accs[1].acc.GetAddress())
 				msg2 := testdata.NewTestMsg(accs[1].acc.GetAddress(), accs[0].acc.GetAddress())
-				suite.bankKeeper.EXPECT().SendCoinsFromAccountToModule(gomock.Any(), accs[0].acc.GetAddress(), gomock.Any(), gomock.Any()).Return(nil)
 
 				return TestCaseArgs{
 					accNums: []uint64{2, 0},
 					accSeqs: []uint64{0, 0},
 					msgs:    []sdk.Msg{msg1, msg2},
+					privs:   []cryptotypes.PrivKey{accs[0].priv, accs[1].priv},
+				}
+			},
+			false,
+			false,
+			sdkerrors.ErrTooManyMsgsInTx,
+			false,
+		},
+		{
+			"new tx with another signer and incorrect account numbers",
+			func(suite *AnteTestSuite) TestCaseArgs {
+				accs := suite.CreateTestAccounts(2)
+				msg1 := testdata.NewTestMsg(accs[0].acc.GetAddress(), accs[1].acc.GetAddress())
+				suite.bankKeeper.EXPECT().SendCoinsFromAccountToModule(gomock.Any(), accs[0].acc.GetAddress(), gomock.Any(), gomock.Any()).Return(nil)
+
+				return TestCaseArgs{
+					accNums: []uint64{2, 0},
+					accSeqs: []uint64{0, 0},
+					msgs:    []sdk.Msg{msg1},
 					privs:   []cryptotypes.PrivKey{accs[0].priv, accs[1].priv},
 				}
 			},
@@ -265,11 +283,10 @@ func TestAnteHandlerAccountNumbers(t *testing.T) {
 			func(suite *AnteTestSuite) TestCaseArgs {
 				accs := suite.CreateTestAccounts(1)
 				msg1 := testdata.NewTestMsg(accs[0].acc.GetAddress())
-				msg2 := testdata.NewTestMsg(accs[0].acc.GetAddress())
 				suite.bankKeeper.EXPECT().SendCoinsFromAccountToModule(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(nil)
 
 				return TestCaseArgs{
-					msgs: []sdk.Msg{msg1, msg2},
+					msgs: []sdk.Msg{msg1},
 				}.WithAccountsInfo(accs)
 			},
 			false,
@@ -338,14 +355,13 @@ func TestAnteHandlerAccountNumbersAtBlockHeightZero(t *testing.T) {
 			func(suite *AnteTestSuite) TestCaseArgs {
 				accs := suite.CreateTestAccounts(1)
 				msg1 := testdata.NewTestMsg(accs[0].acc.GetAddress())
-				msg2 := testdata.NewTestMsg(accs[0].acc.GetAddress())
 
 				suite.bankKeeper.EXPECT().SendCoinsFromAccountToModule(gomock.Any(), accs[0].acc.GetAddress(), gomock.Any(), gomock.Any()).Return(nil)
 
 				return TestCaseArgs{
 					accNums: []uint64{1, 0}, // wrong account numbers
 					accSeqs: []uint64{0, 0},
-					msgs:    []sdk.Msg{msg1, msg2},
+					msgs:    []sdk.Msg{msg1},
 					privs:   []cryptotypes.PrivKey{accs[0].priv},
 				}
 			},
@@ -359,14 +375,13 @@ func TestAnteHandlerAccountNumbersAtBlockHeightZero(t *testing.T) {
 			func(suite *AnteTestSuite) TestCaseArgs {
 				accs := suite.CreateTestAccounts(1)
 				msg1 := testdata.NewTestMsg(accs[0].acc.GetAddress())
-				msg2 := testdata.NewTestMsg(accs[0].acc.GetAddress())
 
 				suite.bankKeeper.EXPECT().SendCoinsFromAccountToModule(gomock.Any(), accs[0].acc.GetAddress(), gomock.Any(), gomock.Any()).Return(nil)
 
 				return TestCaseArgs{
 					accNums: []uint64{0}, // correct account numbers
 					accSeqs: []uint64{0},
-					msgs:    []sdk.Msg{msg1, msg2},
+					msgs:    []sdk.Msg{msg1},
 					privs:   []cryptotypes.PrivKey{accs[0].priv},
 				}
 			},
@@ -472,12 +487,11 @@ func TestAnteHandlerSequences(t *testing.T) {
 			func(suite *AnteTestSuite) TestCaseArgs {
 				accs := suite.CreateTestAccounts(1)
 				msg1 := testdata.NewTestMsg(accs[0].acc.GetAddress())
-				msg2 := testdata.NewTestMsg(accs[0].acc.GetAddress())
 
 				suite.bankKeeper.EXPECT().SendCoinsFromAccountToModule(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(nil)
 
 				return TestCaseArgs{
-					msgs: []sdk.Msg{msg1, msg2},
+					msgs: []sdk.Msg{msg1},
 				}.WithAccountsInfo(accs)
 			},
 			false,
@@ -490,8 +504,7 @@ func TestAnteHandlerSequences(t *testing.T) {
 			func(suite *AnteTestSuite) TestCaseArgs {
 				accs := suite.CreateTestAccounts(1)
 				msg1 := testdata.NewTestMsg(accs[0].acc.GetAddress())
-				msg2 := testdata.NewTestMsg(accs[0].acc.GetAddress())
-				msgs := []sdk.Msg{msg1, msg2}
+				msgs := []sdk.Msg{msg1}
 
 				privs := []cryptotypes.PrivKey{accs[0].priv}
 				accNums := []uint64{accs[0].acc.GetAccountNumber()}
@@ -504,7 +517,7 @@ func TestAnteHandlerSequences(t *testing.T) {
 				require.NoError(t, err)
 
 				return TestCaseArgs{
-					msgs: []sdk.Msg{msg1, msg2},
+					msgs: []sdk.Msg{msg1},
 				}.WithAccountsInfo(accs)
 			},
 			false,
@@ -517,8 +530,7 @@ func TestAnteHandlerSequences(t *testing.T) {
 			func(suite *AnteTestSuite) TestCaseArgs {
 				accs := suite.CreateTestAccounts(1)
 				msg1 := testdata.NewTestMsg(accs[0].acc.GetAddress())
-				msg2 := testdata.NewTestMsg(accs[0].acc.GetAddress())
-				msgs := []sdk.Msg{msg1, msg2}
+				msgs := []sdk.Msg{msg1}
 
 				privs := []cryptotypes.PrivKey{accs[0].priv}
 				accNums := []uint64{accs[0].acc.GetAccountNumber()}
@@ -552,8 +564,7 @@ func TestAnteHandlerSequences(t *testing.T) {
 			func(suite *AnteTestSuite) TestCaseArgs {
 				accs := suite.CreateTestAccounts(1)
 				msg1 := testdata.NewTestMsg(accs[0].acc.GetAddress())
-				msg2 := testdata.NewTestMsg(accs[0].acc.GetAddress())
-				msgs := []sdk.Msg{msg1, msg2}
+				msgs := []sdk.Msg{msg1}
 
 				privs := []cryptotypes.PrivKey{accs[0].priv}
 				accNums := []uint64{accs[0].acc.GetAccountNumber()}

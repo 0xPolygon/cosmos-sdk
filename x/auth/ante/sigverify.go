@@ -64,6 +64,15 @@ func (spkd SetPubKeyDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate b
 		return ctx, errorsmod.Wrap(sdkerrors.ErrTxDecode, "invalid tx type")
 	}
 
+	msgV2, err := sigTx.GetMsgsV2()
+	if err != nil {
+		return ctx, err
+	}
+
+	if len(msgV2) > 1 || len(sigTx.GetMsgs()) > 1 {
+		return ctx, errorsmod.Wrap(sdkerrors.ErrTooManyMsgsInTx, "Tx must contain only one message")
+	}
+
 	pubkeys, err := sigTx.GetPubKeys()
 	if err != nil {
 		return ctx, err
@@ -165,6 +174,15 @@ func (sgcd SigGasConsumeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simula
 	sigTx, ok := tx.(authsigning.SigVerifiableTx)
 	if !ok {
 		return ctx, errorsmod.Wrap(sdkerrors.ErrTxDecode, "invalid transaction type")
+	}
+
+	msgV2, err := sigTx.GetMsgsV2()
+	if err != nil {
+		return ctx, err
+	}
+
+	if len(msgV2) > 1 || len(sigTx.GetMsgs()) > 1 {
+		return ctx, errorsmod.Wrap(sdkerrors.ErrTooManyMsgsInTx, "Tx must contain only one message")
 	}
 
 	params := sgcd.ak.GetParams(ctx)
@@ -269,6 +287,15 @@ func (svd SigVerificationDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simul
 	sigTx, ok := tx.(authsigning.Tx)
 	if !ok {
 		return ctx, errorsmod.Wrap(sdkerrors.ErrTxDecode, "invalid transaction type")
+	}
+
+	msgV2, err := sigTx.GetMsgsV2()
+	if err != nil {
+		return ctx, err
+	}
+
+	if len(msgV2) > 1 || len(sigTx.GetMsgs()) > 1 {
+		return ctx, errorsmod.Wrap(sdkerrors.ErrTooManyMsgsInTx, "Tx must contain only one message")
 	}
 
 	// stdSigs contains the sequence number, account number, and signatures.
@@ -392,6 +419,15 @@ func (isd IncrementSequenceDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, sim
 	sigTx, ok := tx.(authsigning.SigVerifiableTx)
 	if !ok {
 		return ctx, errorsmod.Wrap(sdkerrors.ErrTxDecode, "invalid transaction type")
+	}
+
+	msgV2, err := sigTx.GetMsgsV2()
+	if err != nil {
+		return ctx, err
+	}
+
+	if len(msgV2) > 1 || len(sigTx.GetMsgs()) > 1 {
+		return ctx, errorsmod.Wrap(sdkerrors.ErrTooManyMsgsInTx, "Tx must contain only one message")
 	}
 
 	// increment sequence of all signers

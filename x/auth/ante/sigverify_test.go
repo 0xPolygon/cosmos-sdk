@@ -34,10 +34,9 @@ func TestSetPubKey(t *testing.T) {
 
 	// keys and addresses
 	priv1, pub1, addr1 := testdata.KeyTestPubAddr()
-	priv2, pub2, addr2 := testdata.KeyTestPubAddr()
 
-	addrs := []sdk.AccAddress{addr1, addr2}
-	pubs := []cryptotypes.PubKey{pub1, pub2}
+	addrs := []sdk.AccAddress{addr1}
+	pubs := []cryptotypes.PubKey{pub1}
 
 	msgs := make([]sdk.Msg, len(addrs))
 	// set accounts and create msg for each address
@@ -51,7 +50,7 @@ func TestSetPubKey(t *testing.T) {
 	suite.txBuilder.SetFeeAmount(testdata.NewTestFeeAmount())
 	suite.txBuilder.SetGasLimit(testdata.NewTestGasLimit())
 
-	privs, accNums, accSeqs := []cryptotypes.PrivKey{priv1, priv2}, []uint64{0, 1}, []uint64{0, 0}
+	privs, accNums, accSeqs := []cryptotypes.PrivKey{priv1}, []uint64{0}, []uint64{0}
 	tx, err := suite.CreateTestTx(suite.ctx, privs, accNums, accSeqs, suite.ctx.ChainID(), signing.SignMode_SIGN_MODE_DIRECT)
 	require.NoError(t, err)
 
@@ -148,10 +147,9 @@ func TestSigVerification(t *testing.T) {
 
 	// keys and addresses
 	priv1, _, addr1 := testdata.KeyTestPubAddr()
-	priv2, _, addr2 := testdata.KeyTestPubAddr()
-	priv3, _, addr3 := testdata.KeyTestPubAddr()
+	priv2, _, _ := testdata.KeyTestPubAddr()
 
-	addrs := []sdk.AccAddress{addr1, addr2, addr3}
+	addrs := []sdk.AccAddress{addr1}
 
 	msgs := make([]sdk.Msg, len(addrs))
 	accs := make([]sdk.AccountI, len(addrs))
@@ -194,12 +192,12 @@ func TestSigVerification(t *testing.T) {
 	validSigs := false
 	testCases := []testCase{
 		{"no signers", []cryptotypes.PrivKey{}, []uint64{}, []uint64{}, validSigs, false, true},
-		{"not enough signers", []cryptotypes.PrivKey{priv1, priv2}, []uint64{accs[0].GetAccountNumber(), accs[1].GetAccountNumber()}, []uint64{0, 0}, validSigs, false, true},
-		{"wrong order signers", []cryptotypes.PrivKey{priv3, priv2, priv1}, []uint64{accs[2].GetAccountNumber(), accs[1].GetAccountNumber(), accs[0].GetAccountNumber()}, []uint64{0, 0, 0}, validSigs, false, true},
-		{"wrong accnums", []cryptotypes.PrivKey{priv1, priv2, priv3}, []uint64{7, 8, 9}, []uint64{0, 0, 0}, validSigs, false, true},
-		{"wrong sequences", []cryptotypes.PrivKey{priv1, priv2, priv3}, []uint64{accs[0].GetAccountNumber(), accs[1].GetAccountNumber(), accs[2].GetAccountNumber()}, []uint64{3, 4, 5}, validSigs, false, true},
-		{"valid tx", []cryptotypes.PrivKey{priv1, priv2, priv3}, []uint64{accs[0].GetAccountNumber(), accs[1].GetAccountNumber(), accs[2].GetAccountNumber()}, []uint64{0, 0, 0}, validSigs, false, false},
-		{"no err on recheck", []cryptotypes.PrivKey{priv1, priv2, priv3}, []uint64{0, 0, 0}, []uint64{0, 0, 0}, !validSigs, true, false},
+		{"not enough signers", []cryptotypes.PrivKey{}, []uint64{accs[0].GetAccountNumber()}, []uint64{0}, validSigs, false, true},
+		{"wrong order signers", []cryptotypes.PrivKey{priv2}, []uint64{accs[0].GetAccountNumber()}, []uint64{0}, validSigs, false, true},
+		{"wrong accnums", []cryptotypes.PrivKey{priv1}, []uint64{7}, []uint64{0}, validSigs, false, true},
+		{"wrong sequences", []cryptotypes.PrivKey{priv1}, []uint64{accs[0].GetAccountNumber()}, []uint64{3}, validSigs, false, true},
+		{"valid tx", []cryptotypes.PrivKey{priv1}, []uint64{accs[0].GetAccountNumber()}, []uint64{0}, validSigs, false, false},
+		{"no err on recheck", []cryptotypes.PrivKey{priv1}, []uint64{0}, []uint64{0}, !validSigs, true, false},
 	}
 
 	for i, tc := range testCases {
