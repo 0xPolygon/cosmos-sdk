@@ -49,12 +49,14 @@ type SignatureVerificationGasConsumer = func(meter storetypes.GasMeter, sig sign
 // PubKeys must be set in context for all signers before any other sigverify decorators run
 // CONTRACT: Tx must implement SigVerifiableTx interface
 type SetPubKeyDecorator struct {
-	ak AccountKeeper
+	ak              AccountKeeper
+	signModeHandler *txsigning.HandlerMap
 }
 
-func NewSetPubKeyDecorator(ak AccountKeeper) SetPubKeyDecorator {
+func NewSetPubKeyDecorator(ak AccountKeeper, signModeHandler *txsigning.HandlerMap) SetPubKeyDecorator {
 	return SetPubKeyDecorator{
-		ak: ak,
+		ak:              ak,
+		signModeHandler: signModeHandler,
 	}
 }
 
@@ -116,6 +118,44 @@ func (spkd SetPubKeyDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate b
 		if err != nil {
 			return ctx, errorsmod.Wrap(sdkerrors.ErrInvalidPubKey, err.Error())
 		}
+
+		/* TODO HV2: The following code is intended to comply with heimdall v1 (see https://polygon.atlassian.net/browse/POS-2492).
+		    There, `RecoverPubKey` is used to obtain the public key according to the eth-go library.
+		    This was done in x/auth/ante.go `processSig` method, which is now part of the `SigVerificationDecorator`.
+		    However, in v0.50.x, the `SigVerificationDecorator` expects the pubKey to be already set in `SetPubKeyDecorator`.
+		    So, this logic is now moved under `SetPubKeyDecorator`, which also requires a `signModeHandler` to invoke the `VerifySignature`.
+		    Such `VerifySignature` method has been modified to return the recovered public key, which is then set in the account.
+		    This code is hit every time pubKeys are set and txs (in `SigVerificationDecorator`) are verified, so it is very frequent.
+		    The code is currently disabled, because - if it was needed - secp256k1 pubkey.VerifySignature would return false already.
+		    If something breaks very early on in the game, we might need to revisit enable this code.
+		    More context: 	https://github.com/0xPolygon/cosmos-sdk/pull/3/#discussion_r1497996133
+		                    https://github.com/0xPolygon/cosmos-sdk/pull/3/#discussion_r1498023925
+
+		anyPk, _ := codectypes.NewAnyWithValue(pk)
+
+		signerData := txsigning.SignerData{
+			Address:       acc.GetAddress().String(),
+			ChainID:       ctx.ChainID(),
+			AccountNumber: acc.GetAccountNumber(),
+			Sequence:      acc.GetSequence(),
+			PubKey: &anypb.Any{
+				TypeUrl: anyPk.TypeUrl,
+				Value:   anyPk.Value,
+			},
+		}
+
+		adaptableTx, ok := tx.(authsigning.V2AdaptableTx)
+		if !ok {
+			return ctx, fmt.Errorf("expected tx to implement V2AdaptableTx, got %T", tx)
+		}
+		txData := adaptableTx.GetSigningTxData()
+		recoveredPubKey, err := authsigning.VerifySignature(ctx, pk, signerData, sigs[i].Data, spkd.signModeHandler, txData)
+		err = acc.SetPubKey(recoveredPubKey)
+		if err != nil {
+			return ctx, errorsmod.Wrap(sdkerrors.ErrInvalidPubKey, err.Error())
+		}
+		*/
+
 		spkd.ak.SetAccount(ctx, acc)
 	}
 
@@ -279,11 +319,6 @@ func OnlyLegacyAminoSigners(sigData signing.SignatureData) bool {
 
 func (svd SigVerificationDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.AnteHandler) (newCtx sdk.Context, err error) {
 
-	// TODO HV2: do we need any change here to be compliant with heimdall's business logic?
-	//  See https://polygon.atlassian.net/browse/POS-2492
-	//  Specifically, check https://github.com/Raneet10/cosmos-sdk/pull/2/files
-	//  x/auth/ante.go (`processSig` method) and x/auth/types/txbuilder.go
-
 	sigTx, ok := tx.(authsigning.Tx)
 	if !ok {
 		return ctx, errorsmod.Wrap(sdkerrors.ErrTxDecode, "invalid transaction type")
@@ -347,21 +382,6 @@ func (svd SigVerificationDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simul
 		if !simulate && !ctx.IsReCheckTx() {
 			anyPk, _ := codectypes.NewAnyWithValue(pubKey)
 
-			/* TODO HV2: do we need to add here (and modify accordingly) the following code from heimdall?
-			// This should be needed, and - most probably - since the `processSig` method disappeared, it should be done in SetPubKeyDecorator
-			// If that's the case, we need to implement the RecoverPubkey method
-			// see https://github.com/0xPolygon/cosmos-sdk/pull/3/#discussion_r1497996133
-			// see https://github.com/0xPolygon/cosmos-sdk/pull/3/#discussion_r1498023925
-
-			var pk secp256k1.PubKeySecp256k1
-			p, err := authTypes.RecoverPubkey(signBytes, sig.Bytes())
-			if err != nil {
-				return nil, sdk.ErrUnauthorized("signature verification failed; verify correct account sequence and chain-id").Result()
-			}
-			copy(pk[:], p[:])
-
-			*/
-
 			signerData := txsigning.SignerData{
 				Address:       acc.GetAddress().String(),
 				ChainID:       chainID,
@@ -377,7 +397,8 @@ func (svd SigVerificationDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simul
 				return ctx, fmt.Errorf("expected tx to implement V2AdaptableTx, got %T", tx)
 			}
 			txData := adaptableTx.GetSigningTxData()
-			err = authsigning.VerifySignature(ctx, pubKey, signerData, sig.Data, svd.signModeHandler, txData)
+			_, err := authsigning.VerifySignature(ctx, pubKey, signerData, sig.Data, svd.signModeHandler, txData)
+
 			if err != nil {
 				var errMsg string
 				if OnlyLegacyAminoSigners(sig.Data) {

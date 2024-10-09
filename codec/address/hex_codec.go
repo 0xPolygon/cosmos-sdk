@@ -7,7 +7,8 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 
 	"cosmossdk.io/core/address"
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	errorsmod "cosmossdk.io/errors"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 type HexCodec struct {
@@ -33,7 +34,7 @@ func (bc HexCodec) StringToBytes(hexAddr string) ([]byte, error) {
 
 	bz := common.FromHex(hexAddr)
 
-	if err := sdk.VerifyAddressFormat(bz); err != nil {
+	if err := VerifyAddressFormat(bz); err != nil {
 		return nil, err
 	}
 
@@ -46,7 +47,7 @@ func (bc HexCodec) BytesToString(bz []byte) (string, error) {
 		return "", nil
 	}
 
-	if err := sdk.VerifyAddressFormat(bz); err != nil {
+	if err := VerifyAddressFormat(bz); err != nil {
 		return "", err
 	}
 
@@ -65,4 +66,17 @@ func (bc HexCodec) BytesToString(bz []byte) (string, error) {
 // has0xPrefix validates str begins with '0x' or '0X'.
 func has0xPrefix(str string) bool {
 	return len(str) >= 2 && str[0] == '0' && (str[1] == 'x' || str[1] == 'X')
+}
+
+// VerifyAddressFormat verifies that the provided bytes form a valid address
+func VerifyAddressFormat(bz []byte) error {
+	if len(bz) == 0 {
+		return errorsmod.Wrap(sdkerrors.ErrUnknownAddress, "addresses cannot be empty")
+	}
+
+	if !common.IsHexAddress(common.Bytes2Hex(bz)) {
+		return errorsmod.Wrapf(sdkerrors.ErrUnknownAddress, "invalid address")
+	}
+
+	return nil
 }
