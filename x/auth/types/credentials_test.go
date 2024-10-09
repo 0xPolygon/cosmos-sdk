@@ -11,8 +11,6 @@ import (
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 )
 
-// TODO HV2: check differences in this file by looking at auth PR https://github.com/0xPolygon/cosmos-sdk/pull/3/
-
 func TestNewModuleCredentials(t *testing.T) {
 	// wrong derivation keys
 	_, err := authtypes.NewModuleCredential("group", []byte{})

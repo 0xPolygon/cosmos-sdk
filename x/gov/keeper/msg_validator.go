@@ -34,7 +34,7 @@ func ValidateGovMsgType(msg sdk.Msg) error {
 		*authtypes.MsgUpdateParams, *authv1beta1.MsgUpdateParams,
 		*banktypes.MsgUpdateParams, *bankv1beta1.MsgUpdateParams,
 		*consensustypes.MsgUpdateParams, *consensusv1.MsgUpdateParams,
-		// TODO HV2: list of MsgUpdateParams for heimdall-v2 custom modules, to be extended?
+		// HV2: list of MsgUpdateParams for heimdall-v2 custom modules, to be eventually extended
 		*chainmanagertypes.MsgUpdateParams, *chainmanager.MsgUpdateParams,
 		*borTypes.MsgUpdateParams, *bor.MsgUpdateParams,
 		*checkpointTypes.MsgUpdateParams, *checkpoint.MsgUpdateParams,
@@ -49,7 +49,7 @@ func ValidateGovMsgType(msg sdk.Msg) error {
 // It only accepts `TextProposal` and `ParamChange` for the heimdall-v2 enabled modules.
 func ValidateGovMsgContentType(msg *v1.MsgExecLegacyContent) error {
 	switch msg.Content.TypeUrl {
-	// TODO HV2: list to be eventually extended?
+	// HV2: list of Proposals for heimdall-v2 custom modules, to be eventually extended
 	case "/cosmos.gov.v1beta1.TextProposal",
 		"/cosmos.params.v1beta1.ParameterChangeProposal", "/cosmos.params.v1beta1.ParamChange":
 		return nil

@@ -82,7 +82,7 @@ func setupGovKeeper(t *testing.T) (
 	authtypes.RegisterInterfaces(encCfg.InterfaceRegistry)
 	stakingtypes.RegisterInterfaces(encCfg.InterfaceRegistry)
 	consensustypes.RegisterInterfaces(encCfg.InterfaceRegistry)
-	// TODO HV2: list to be extended to register additional interfaces for MsgUpdateParams
+	// HV2: list to be eventually extended to register additional interfaces for MsgUpdateParams
 	borTypes.RegisterInterfaces(encCfg.InterfaceRegistry)
 	chainmanagertypes.RegisterInterfaces(encCfg.InterfaceRegistry)
 	checkpointTypes.RegisterInterfaces(encCfg.InterfaceRegistry)
@@ -134,7 +134,7 @@ func setupGovKeeper(t *testing.T) (
 	authtypes.RegisterMsgServer(msr, nil)
 	stakingtypes.RegisterMsgServer(msr, nil)
 	consensustypes.RegisterMsgServer(msr, nil)
-	// TODO HV2: list to be extended to register additional MsgServer for MsgUpdateParams
+	// HV2: list to be eventually extended to register additional MsgServer for MsgUpdateParams
 	borTypes.RegisterMsgServer(msr, nil)
 	chainmanagertypes.RegisterMsgServer(msr, nil)
 	checkpointTypes.RegisterMsgServer(msr, nil)
