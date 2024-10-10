@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"fmt"
+	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 
 	abci "github.com/cometbft/cometbft/abci/types"
 
@@ -183,7 +184,7 @@ func (k Keeper) GetValIdFromAddress(context context.Context, address string) (ui
 }
 
 // IterateCurrentValidatorsAndApplyFn iterate through current validators
-func (k Keeper) IterateCurrentValidatorsAndApplyFn(ctx context.Context, f func(validator types.ValidatorI) bool) error {
+func (k Keeper) IterateCurrentValidatorsAndApplyFn(ctx context.Context, f func(validator stakeTypes.Validator) bool) error {
 	// HV2: returning nil error
 	return nil
 }

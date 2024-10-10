@@ -15,7 +15,7 @@ require (
 	cosmossdk.io/simapp v0.0.0-20230620040119-e078f1a49e8b
 	cosmossdk.io/store v1.1.0
 	cosmossdk.io/x/tx v0.12.0
-	github.com/0xPolygon/heimdall-v2 v0.0.0-20240926151144-a4618b2d93b3
+	github.com/0xPolygon/heimdall-v2 v0.0.0-20241010171906-1214e5225027
 	github.com/99designs/keyring v1.2.1
 	github.com/bgentry/speakeasy v0.1.1-0.20220910012023-760eaf8b6816
 	github.com/bits-and-blooms/bitset v1.10.0

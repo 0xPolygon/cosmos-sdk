@@ -43,7 +43,7 @@ require (
 	cosmossdk.io/collections v0.4.0 // indirect
 	cosmossdk.io/x/circuit v0.1.0 // indirect
 	filippo.io/edwards25519 v1.0.0 // indirect
-	github.com/0xPolygon/heimdall-v2 v0.0.0-20240926151144-a4618b2d93b3 // indirect
+	github.com/0xPolygon/heimdall-v2 v0.0.0-20241010171906-1214e5225027 // indirect
 	github.com/99designs/go-keychain v0.0.0-20191008050251-8e49817e8af4 // indirect
 	github.com/99designs/keyring v1.2.1 // indirect
 	github.com/BurntSushi/toml v1.4.0 // indirect
