@@ -32,8 +32,8 @@ Features that may be added in the future are described in [Future Improvements](
 
 ## Contents
 
-The following specification uses *MATIC* as the native staking token. The module
-can be adapted to any Proof-Of-Stake blockchain by replacing *MATIC* with the native
+The following specification uses *POL* as the native staking token. The module
+can be adapted to any Proof-Of-Stake blockchain by replacing *POL* with the native
 staking token of the chain.
 
 * [Concepts](#concepts)
@@ -141,7 +141,7 @@ However, they can submit and deposit on proposals.
 
 [//]: # ( TODO HV2: if we don't want non-validators to submit/deposit on proposals, we would need to add an additional check then on gov proposal submission, to validate the proposer is in the active set)
 
-Note that for *participants*, their voting power is calculated from their L1 MATIC stakes only.
+Note that for *participants*, their voting power is calculated from their L1 POL stakes only.
 
 #### Voting period
 
@@ -475,7 +475,7 @@ And the pseudocode for the `ProposalProcessingQueue`:
         //  proposal was accepted at the end of the voting period
         //  refund deposits (non-voters already punished)
         for each (amount, depositor) in proposal.Deposits
-          depositor.MaticBalance += amount
+          depositor.PolBalance += amount
 
         stateWriter, err := proposal.Handler()
         if err != nil
@@ -532,7 +532,7 @@ The `initialDeposit` must be strictly positive and conform to the accepted denom
 
 ### Deposit
 
-Once a proposal is submitted, if `Proposal.TotalDeposit < ActiveParam.MinDeposit`, MATIC holders can send
+Once a proposal is submitted, if `Proposal.TotalDeposit < ActiveParam.MinDeposit`, POL holders can send
 `MsgDeposit` transactions to increase the proposal's deposit.
 
 A deposit is accepted iff:
@@ -638,21 +638,21 @@ The governance module emits the following events:
 
 The governance module contains the following parameters:
 
-| Key                           | Type             | Example                                 |
-|-------------------------------|------------------|-----------------------------------------|
-| min_deposit                   | array (coins)    | [{"denom":"matic","amount":"10000000"}] |
-| max_deposit_period            | string (time ns) | "172800000000000" (17280s)              |
-| voting_period                 | string (time ns) | "172800000000000" (17280s)              |
-| quorum                        | string (dec)     | "0.334000000000000000"                  |
-| threshold                     | string (dec)     | "0.500000000000000000"                  |
-| veto                          | string (dec)     | "0.334000000000000000"                  |
-| expedited_threshold           | string (time ns) | "0.667000000000000000"                  |
-| expedited_voting_period       | string (time ns) | "86400000000000" (8600s)                |
-| expedited_min_deposit         | array (coins)    | [{"denom":"matic","amount":"50000000"}] |
-| burn_proposal_deposit_prevote | bool             | false                                   |
-| burn_vote_quorum              | bool             | false                                   |
-| burn_vote_veto                | bool             | false                                   |
-| min_initial_deposit_ratio                | string             | "0.1"                                   |
+| Key                           | Type             | Example                               |
+|-------------------------------|------------------|---------------------------------------|
+| min_deposit                   | array (coins)    | [{"denom":"pol","amount":"10000000"}] |
+| max_deposit_period            | string (time ns) | "172800000000000" (17280s)            |
+| voting_period                 | string (time ns) | "172800000000000" (17280s)            |
+| quorum                        | string (dec)     | "0.334000000000000000"                |
+| threshold                     | string (dec)     | "0.500000000000000000"                |
+| veto                          | string (dec)     | "0.334000000000000000"                |
+| expedited_threshold           | string (time ns) | "0.667000000000000000"                |
+| expedited_voting_period       | string (time ns) | "86400000000000" (8600s)              |
+| expedited_min_deposit         | array (coins)    | [{"denom":"pol","amount":"50000000"}] |
+| burn_proposal_deposit_prevote | bool             | false                                 |
+| burn_vote_quorum              | bool             | false                                 |
+| burn_vote_veto                | bool             | false                                 |
+| min_initial_deposit_ratio                | string             | "0.1"                                 |
 
 
 **NOTE**: The governance module contains parameters that are objects unlike other
@@ -692,7 +692,7 @@ Example Output:
 ```bash
 amount:
 - amount: "100"
-  denom: matic
+  denom: pol
 depositor: 0x...
 proposal_id: "1"
 ```
@@ -717,7 +717,7 @@ Example Output:
 deposits:
 - amount:
   - amount: "100"
-    denom: matic
+    denom: pol
   depositor: 0x...
   proposal_id: "1"
 pagination:
@@ -766,17 +766,17 @@ deposit_params:
   max_deposit_period: 172800s
   min_deposit:
   - amount: "10000000"
-    denom: matic
+    denom: pol
 params:
   expedited_min_deposit:
   - amount: "50000000"
-    denom: matic
+    denom: pol
   expedited_threshold: "0.670000000000000000"
   expedited_voting_period: 86400s
   max_deposit_period: 172800s
   min_deposit:
   - amount: "10000000"
-    denom: matic
+    denom: pol
   min_initial_deposit_ratio: "0.000000000000000000"
   proposal_cancel_burn_rate: "0.500000000000000000"
   quorum: "0.334000000000000000"
@@ -819,7 +819,7 @@ messages:
 - '@type': /cosmos.bank.v1beta1.MsgSend
   amount:
   - amount: "10"
-    denom: matic
+    denom: pol
   from_address: 0x...
   to_address: 0x...
 metadata: AQ==
@@ -827,7 +827,7 @@ status: PROPOSAL_STATUS_DEPOSIT_PERIOD
 submit_time: "2022-03-28T11:50:20.819676256Z"
 total_deposit:
 - amount: "10"
-  denom: matic
+  denom: pol
 voting_end_time: null
 voting_start_time: null
 ```
@@ -864,7 +864,7 @@ proposals:
   - '@type': /cosmos.bank.v1beta1.MsgSend
     amount:
     - amount: "10"
-      denom: matic
+      denom: pol
     from_address: 0x...
     to_address: 0x...
   metadata: AQ==
@@ -872,7 +872,7 @@ proposals:
   submit_time: "2022-03-28T11:50:20.819676256Z"
   total_deposit:
   - amount: "10"
-    denom: matic
+    denom: pol
   voting_end_time: null
   voting_start_time: null
 - deposit_end_time: "2022-03-30T14:02:41.165025015Z"
@@ -886,7 +886,7 @@ proposals:
   - '@type': /cosmos.bank.v1beta1.MsgSend
     amount:
     - amount: "10"
-      denom: matic
+      denom: pol
     from_address: 0x...
     to_address: 0x...
   metadata: AQ==
@@ -894,7 +894,7 @@ proposals:
   submit_time: "2022-03-28T14:02:41.165025015Z"
   total_deposit:
   - amount: "10"
-    denom: matic
+    denom: pol
   voting_end_time: null
   voting_start_time: null
 ```
@@ -1016,7 +1016,7 @@ simd tx gov deposit [proposal-id] [deposit] [flags]
 Example:
 
 ```bash
-simd tx gov deposit 1 10000000matic --from 0x...
+simd tx gov deposit 1 10000000pol --from 0x...
 ```
 
 ##### draft-proposal
@@ -1053,11 +1053,11 @@ where `proposal.json` contains:
       "@type": "/cosmos.bank.v1beta1.MsgSend",
       "from_address": "0x...", // The gov module module address
       "to_address": "0x...",
-      "amount":[{"denom": "matic","amount": "10"}]
+      "amount":[{"denom": "pol","amount": "10"}]
     }
   ],
   "metadata": "AQ==",
-  "deposit": "10matic",
+  "deposit": "10pol",
   "title": "Proposal Title",
   "summary": "Proposal Summary"
 }
@@ -1082,7 +1082,7 @@ simd tx gov submit-legacy-proposal [command] [flags]
 Example:
 
 ```bash
-simd tx gov submit-legacy-proposal --title="Test Proposal" --description="testing" --type="Text" --deposit="100000000matic" --from 0x...
+simd tx gov submit-legacy-proposal --title="Test Proposal" --description="testing" --type="Text" --deposit="100000000pol" --from 0x...
 ```
 
 Example (`param-change`):
@@ -1102,7 +1102,7 @@ simd tx gov submit-legacy-proposal param-change proposal.json --from 0x...
       "value": 100
     }
   ],
-  "deposit": "10000000matic"
+  "deposit": "10000000pol"
 }
 ```
 
@@ -1191,7 +1191,7 @@ Example Output:
     "depositEndTime": "2021-09-18T19:40:08.712440474Z",
     "totalDeposit": [
       {
-        "denom": "matic",
+        "denom": "pol",
         "amount": "10000000"
       }
     ],
@@ -1225,7 +1225,7 @@ Example Output:
   "proposal": {
     "id": "1",
     "messages": [
-      {"@type":"/cosmos.bank.v1beta1.MsgSend","amount":[{"denom":"matic","amount":"10"}],"fromAddress":"0x...","toAddress":"0x..."}
+      {"@type":"/cosmos.bank.v1beta1.MsgSend","amount":[{"denom":"pol","amount":"10"}],"fromAddress":"0x...","toAddress":"0x..."}
     ],
     "status": "PROPOSAL_STATUS_VOTING_PERIOD",
     "finalTallyResult": {
@@ -1238,7 +1238,7 @@ Example Output:
     "depositEndTime": "2022-03-30T11:50:20.819676256Z",
     "totalDeposit": [
       {
-        "denom": "matic",
+        "denom": "pol",
         "amount": "10000000"
       }
     ],
@@ -1287,7 +1287,7 @@ Example Output:
       "depositEndTime": "2022-03-30T11:50:20.819676256Z",
       "totalDeposit": [
         {
-          "denom": "matic",
+          "denom": "pol",
           "amount": "10000000010"
         }
       ],
@@ -1307,7 +1307,7 @@ Example Output:
       "depositEndTime": "2022-03-30T14:02:41.165025015Z",
       "totalDeposit": [
         {
-          "denom": "matic",
+          "denom": "pol",
           "amount": "10"
         }
       ],
@@ -1344,7 +1344,7 @@ Example Output:
     {
       "id": "1",
       "messages": [
-        {"@type":"/cosmos.bank.v1beta1.MsgSend","amount":[{"denom":"matic","amount":"10"}],"fromAddress":"0x...","toAddress":"0x..."}
+        {"@type":"/cosmos.bank.v1beta1.MsgSend","amount":[{"denom":"pol","amount":"10"}],"fromAddress":"0x...","toAddress":"0x..."}
       ],
       "status": "PROPOSAL_STATUS_VOTING_PERIOD",
       "finalTallyResult": {
@@ -1357,7 +1357,7 @@ Example Output:
       "depositEndTime": "2022-03-30T11:50:20.819676256Z",
       "totalDeposit": [
         {
-          "denom": "matic",
+          "denom": "pol",
           "amount": "10000000010"
         }
       ],
@@ -1370,7 +1370,7 @@ Example Output:
     {
       "id": "2",
       "messages": [
-        {"@type":"/cosmos.bank.v1beta1.MsgSend","amount":[{"denom":"matic","amount":"10"}],"fromAddress":"0x...","toAddress":"0x..."}
+        {"@type":"/cosmos.bank.v1beta1.MsgSend","amount":[{"denom":"pol","amount":"10"}],"fromAddress":"0x...","toAddress":"0x..."}
       ],
       "status": "PROPOSAL_STATUS_DEPOSIT_PERIOD",
       "finalTallyResult": {
@@ -1383,7 +1383,7 @@ Example Output:
       "depositEndTime": "2022-03-30T14:02:41.165025015Z",
       "totalDeposit": [
         {
-          "denom": "matic",
+          "denom": "pol",
           "amount": "10"
         }
       ],
@@ -1638,7 +1638,7 @@ Example Output:
     "depositor": "0x...",
     "amount": [
       {
-        "denom": "matic",
+        "denom": "pol",
         "amount": "10000000"
       }
     ]
@@ -1670,7 +1670,7 @@ Example Output:
     "depositor": "0x...",
     "amount": [
       {
-        "denom": "matic",
+        "denom": "pol",
         "amount": "10000000"
       }
     ]
@@ -1707,7 +1707,7 @@ Example Output:
       "depositor": "0x...",
       "amount": [
         {
-          "denom": "matic",
+          "denom": "pol",
           "amount": "10000000"
         }
       ]
@@ -1744,7 +1744,7 @@ Example Output:
       "depositor": "0x...",
       "amount": [
         {
-          "denom": "matic",
+          "denom": "pol",
           "amount": "10000000"
         }
       ]
@@ -1854,7 +1854,7 @@ Example Output:
     "deposit_end_time": "2022-03-30T11:50:20.819676256Z",
     "total_deposit": [
       {
-        "denom": "matic",
+        "denom": "pol",
         "amount": "10000000010"
       }
     ],
@@ -1889,7 +1889,7 @@ Example Output:
         "to_address": "0x...",
         "amount": [
           {
-            "denom": "matic",
+            "denom": "pol",
             "amount": "10"
           }
         ]
@@ -1906,7 +1906,7 @@ Example Output:
     "deposit_end_time": "2022-03-30T11:50:20.819676256Z",
     "total_deposit": [
       {
-        "denom": "matic",
+        "denom": "pol",
         "amount": "10000000"
       }
     ],
@@ -1954,7 +1954,7 @@ Example Output:
       "deposit_end_time": "2022-03-30T11:50:20.819676256Z",
       "total_deposit": [
         {
-          "denom": "matic",
+          "denom": "pol",
           "amount": "10000000"
         }
       ],
@@ -1975,7 +1975,7 @@ Example Output:
       "deposit_end_time": "2022-03-30T14:02:41.165025015Z",
       "total_deposit": [
         {
-          "denom": "matic",
+          "denom": "pol",
           "amount": "10"
         }
       ],
@@ -2016,7 +2016,7 @@ Example Output:
           "to_address": "0x...",
           "amount": [
             {
-              "denom": "matic",
+              "denom": "pol",
               "amount": "10"
             }
           ]
@@ -2033,7 +2033,7 @@ Example Output:
       "deposit_end_time": "2022-03-30T11:50:20.819676256Z",
       "total_deposit": [
         {
-          "denom": "matic",
+          "denom": "pol",
           "amount": "10000000010"
         }
       ],
@@ -2052,7 +2052,7 @@ Example Output:
           "to_address": "0x...",
           "amount": [
             {
-              "denom": "matic",
+              "denom": "pol",
               "amount": "10"
             }
           ]
@@ -2069,7 +2069,7 @@ Example Output:
       "deposit_end_time": "2022-03-30T14:02:41.165025015Z",
       "total_deposit": [
         {
-          "denom": "matic",
+          "denom": "pol",
           "amount": "10"
         }
       ],
@@ -2322,7 +2322,7 @@ Example Output:
     "depositor": "0x...",
     "amount": [
       {
-        "denom": "matic",
+        "denom": "pol",
         "amount": "10000000"
       }
     ]
@@ -2351,7 +2351,7 @@ Example Output:
     "depositor": "0x...",
     "amount": [
       {
-        "denom": "matic",
+        "denom": "pol",
         "amount": "10000000"
       }
     ]
@@ -2385,7 +2385,7 @@ Example Output:
       "depositor": "0x...",
       "amount": [
         {
-          "denom": "matic",
+          "denom": "pol",
           "amount": "10000000"
         }
       ]
@@ -2420,7 +2420,7 @@ Example Output:
       "depositor": "0x...",
       "amount": [
         {
-          "denom": "matic",
+          "denom": "pol",
           "amount": "10000000"
         }
       ]
@@ -2530,7 +2530,7 @@ governance module. Future improvements may include:
 
 * **`BountyProposals`:** If accepted, a `BountyProposal` creates an open
   bounty. The `BountyProposal` specifies how many tokens will be given upon
-  completion. These MATIC will be taken from the `reserve pool`. After a
+  completion. These POL will be taken from the `reserve pool`. After a
   `BountyProposal` is accepted by governance, anybody can submit a
   `SoftwareUpgradeProposal` with the code to claim the bounty. Note that once a
   `BountyProposal` is accepted, the corresponding funds in the `reserve pool`

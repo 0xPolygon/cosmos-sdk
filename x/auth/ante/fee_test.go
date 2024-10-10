@@ -75,8 +75,8 @@ func TestEnsureMempoolFees(t *testing.T) {
 	require.NoError(t, err)
 
 	// Set high gas price so standard test fee fails
-	maticPrice := sdk.NewDecCoinFromDec("matic", math.LegacyNewDec(20))
-	highGasPrice := []sdk.DecCoin{maticPrice}
+	polPrice := sdk.NewDecCoinFromDec("pol", math.LegacyNewDec(20))
+	highGasPrice := []sdk.DecCoin{polPrice}
 	s.ctx = s.ctx.WithMinGasPrices(highGasPrice)
 
 	// Set IsCheckTx to true
@@ -101,14 +101,14 @@ func TestEnsureMempoolFees(t *testing.T) {
 	// Set IsCheckTx back to true for testing sufficient mempool fee
 	s.ctx = s.ctx.WithIsCheckTx(true)
 
-	maticPrice = sdk.NewDecCoinFromDec("matic", math.LegacyNewDec(0).Quo(math.LegacyNewDec(1000000000000000)))
-	lowGasPrice := []sdk.DecCoin{maticPrice}
+	polPrice = sdk.NewDecCoinFromDec("pol", math.LegacyNewDec(0).Quo(math.LegacyNewDec(1000000000000000)))
+	lowGasPrice := []sdk.DecCoin{polPrice}
 	s.ctx = s.ctx.WithMinGasPrices(lowGasPrice)
 
 	newCtx, err := antehandler(s.ctx, tx, false)
 	require.Nil(t, err, "Decorator should not have errored on fee higher than local gasPrice")
 	// Priority is the smallest gas price amount in any denom. Since we have only 1 gas price
-	// of 1000000000matic, the priority here is 1000000000.
+	// of 1000000000pol, the priority here is 1000000000.
 	require.Equal(t, int64(1000000000), newCtx.Priority())
 }
 

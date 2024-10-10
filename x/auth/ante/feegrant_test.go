@@ -171,7 +171,7 @@ func TestDeductFeesNoDelegation(t *testing.T) {
 
 			signer, feeAcc := stc.malleate(suite)
 
-			fee := sdk.NewCoins(sdk.NewInt64Coin("matic", tc.fee))
+			fee := sdk.NewCoins(sdk.NewInt64Coin("pol", tc.fee))
 			msgs := []sdk.Msg{testdata.NewTestMsg(signer.acc.GetAddress())}
 
 			acc := suite.accountKeeper.GetAccount(suite.ctx, signer.acc.GetAddress())

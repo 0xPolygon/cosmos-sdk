@@ -27,7 +27,7 @@ func TestImportExportQueues_ErrorUnconsistentState(t *testing.T) {
 					Depositor:  "me",
 					Amount: sdk.Coins{
 						sdk.NewCoin(
-							"matic",
+							"pol",
 							sdkmath.NewInt(1234),
 						),
 					},

@@ -109,7 +109,7 @@ func setupGovKeeper(t *testing.T) (
 		return sdk.TokensFromConsensusPower(power, math.NewIntFromUint64(1000000000000000000))
 	}).AnyTimes()
 
-	stakingKeeper.EXPECT().BondDenom(ctx).Return("matic", nil).AnyTimes()
+	stakingKeeper.EXPECT().BondDenom(ctx).Return("pol", nil).AnyTimes()
 	stakingKeeper.EXPECT().IterateCurrentValidatorsAndApplyFn(gomock.Any(), gomock.Any()).AnyTimes()
 	stakingKeeper.EXPECT().TokensFromConsensusPower(gomock.Any(), gomock.Any()).AnyTimes()
 	stakingKeeper.EXPECT().ValidatorAddressCodec().Return(address.NewHexCodec()).AnyTimes()
