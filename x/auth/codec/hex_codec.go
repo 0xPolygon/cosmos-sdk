@@ -7,7 +7,8 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 
 	"cosmossdk.io/core/address"
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	errorsmod "cosmossdk.io/errors"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 type hexCodec struct {
@@ -20,14 +21,20 @@ func NewHexCodec() address.Codec {
 }
 
 // StringToBytes encodes text to bytes
-func (bc hexCodec) StringToBytes(text string) ([]byte, error) {
-	if len(strings.TrimSpace(text)) == 0 {
+func (bc hexCodec) StringToBytes(hexAddr string) ([]byte, error) {
+	if len(strings.TrimSpace(hexAddr)) == 0 {
 		return []byte{}, errors.New("empty address string is not allowed")
 	}
 
-	bz := common.FromHex(text)
+	hexAddr = strings.ToLower(hexAddr)
 
-	if err := sdk.VerifyAddressFormat(bz); err != nil {
+	if !has0xPrefix(hexAddr) {
+		hexAddr = "0x" + hexAddr
+	}
+
+	bz := common.FromHex(hexAddr)
+
+	if err := VerifyAddressFormat(bz); err != nil {
 		return nil, err
 	}
 
@@ -40,11 +47,36 @@ func (bc hexCodec) BytesToString(bz []byte) (string, error) {
 		return "", nil
 	}
 
-	if err := sdk.VerifyAddressFormat(bz); err != nil {
+	if err := VerifyAddressFormat(bz); err != nil {
 		return "", err
 	}
 
-	text := common.Bytes2Hex(bz)
+	hexAddr := common.Bytes2Hex(bz)
 
-	return text, nil
+	hexAddr = strings.ToLower(hexAddr)
+
+	if has0xPrefix(hexAddr) {
+		return hexAddr, nil
+	} else {
+		return "0x" + hexAddr, nil
+	}
+
+}
+
+// has0xPrefix validates str begins with '0x' or '0X'.
+func has0xPrefix(str string) bool {
+	return len(str) >= 2 && str[0] == '0' && (str[1] == 'x' || str[1] == 'X')
+}
+
+// VerifyAddressFormat verifies that the provided bytes form a valid address
+func VerifyAddressFormat(bz []byte) error {
+	if len(bz) == 0 {
+		return errorsmod.Wrap(sdkerrors.ErrUnknownAddress, "addresses cannot be empty")
+	}
+
+	if !common.IsHexAddress(common.Bytes2Hex(bz)) {
+		return errorsmod.Wrapf(sdkerrors.ErrUnknownAddress, "invalid address")
+	}
+
+	return nil
 }

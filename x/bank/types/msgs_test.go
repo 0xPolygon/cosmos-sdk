@@ -48,7 +48,7 @@ func TestInputValidation(t *testing.T) {
 		{"", NewInput(addr2, multiCoins)},
 		{"", NewInput(addr3, someCoins)},
 
-		{"invalid input address: decoding address from hex string failed: empty address: invalid address", NewInput(addrEmpty, someCoins)},
+		{"invalid input address: empty address string is not allowed: invalid address", NewInput(addrEmpty, someCoins)},
 		{": invalid coins", NewInput(addr1, emptyCoins)},                // invalid coins
 		{": invalid coins", NewInput(addr1, emptyCoins2)},               // invalid coins
 		{"10eth,0atom: invalid coins", NewInput(addr1, someEmptyCoins)}, // invalid coins
@@ -89,7 +89,7 @@ func TestOutputValidation(t *testing.T) {
 		{"", NewOutput(addr2, multiCoins)},
 		{"", NewOutput(addr3, someCoins)},
 
-		{"invalid output address: decoding address from hex string failed: empty address: invalid address", NewOutput(addrEmpty, someCoins)},
+		{"invalid output address: empty address string is not allowed: invalid address", NewOutput(addrEmpty, someCoins)},
 		{": invalid coins", NewOutput(addr1, emptyCoins)},                // invalid coins
 		{": invalid coins", NewOutput(addr1, emptyCoins2)},               // invalid coins
 		{"10eth,0atom: invalid coins", NewOutput(addr1, someEmptyCoins)}, // invalid coins

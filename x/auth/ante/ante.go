@@ -21,9 +21,6 @@ type HandlerOptions struct {
 	TxFeeChecker           TxFeeChecker
 }
 
-// TODO HV2: We need to double check the NewAnteHandler function and all the Decorators it uses (especially the AnteHandle methods of each Decorator).
-//  Also, is this implementation enough or we need further changes to reconcile with heimdall's `auth/ante.go` ?
-
 // NewAnteHandler returns an AnteHandler that checks and increments sequence
 // numbers, checks signatures & account numbers, and deducts fees from the first
 // signer.
@@ -44,12 +41,12 @@ func NewAnteHandler(options HandlerOptions) (sdk.AnteHandler, error) {
 		NewSetUpContextDecorator(), // outermost AnteDecorator. SetUpContext must be called first
 		NewExtensionOptionsDecorator(options.ExtensionOptionChecker),
 		NewValidateBasicDecorator(),
-		// NewTxTimeoutHeightDecorator(), 																				// HV2: this is not present in heimdall. Is it safe to remove?
-		NewValidateMemoDecorator(options.AccountKeeper), // TODO HV2: can we keep this despite we don't support Memo? Or is it better/safer to remove it?
+		NewTxTimeoutHeightDecorator(),
+		NewValidateMemoDecorator(options.AccountKeeper),
 		NewConsumeGasForTxSizeDecorator(options.AccountKeeper),
-		NewDeductFeeDecorator(options.AccountKeeper, options.BankKeeper, options.FeegrantKeeper, options.TxFeeChecker), // TODO HV2: heavily changed, double check
-		NewSetPubKeyDecorator(options.AccountKeeper),                                                                   // SetPubKeyDecorator must be called before all signature verification decorators
-		// NewValidateSigCountDecorator(options.AccountKeeper), 														// HV2: this was removed in heimdall's `auth/ante.go` (original ancestor's method `ValidateSigCount`)
+		NewDeductFeeDecorator(options.AccountKeeper, options.BankKeeper, options.FeegrantKeeper, options.TxFeeChecker),
+		NewSetPubKeyDecorator(options.AccountKeeper, options.SignModeHandler), // SetPubKeyDecorator must be called before all signature verification decorators
+		NewValidateSigCountDecorator(options.AccountKeeper),
 		NewSigGasConsumeDecorator(options.AccountKeeper, options.SigGasConsumer),
 		NewSigVerificationDecorator(options.AccountKeeper, options.SignModeHandler),
 		NewIncrementSequenceDecorator(options.AccountKeeper),

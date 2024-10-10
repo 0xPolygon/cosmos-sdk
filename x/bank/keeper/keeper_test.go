@@ -61,13 +61,13 @@ var (
 	addr, _ = address.HexCodec{}.StringToBytes("0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef")
 	baseAcc = authtypes.NewBaseAccountWithAddress(addr)
 
-	accAddrs = []sdk.AccAddress{
-		sdk.AccAddress([]byte("addr1_______________")),
-		sdk.AccAddress([]byte("addr2_______________")),
-		sdk.AccAddress([]byte("addr3_______________")),
-		sdk.AccAddress([]byte("addr4_______________")),
-		sdk.AccAddress([]byte("addr5_______________")),
-	}
+	addr1, _ = sdk.AccAddressFromHex("0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbee1")
+	addr2, _ = sdk.AccAddressFromHex("0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbee2")
+	addr3, _ = sdk.AccAddressFromHex("0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbee3")
+	addr4, _ = sdk.AccAddressFromHex("0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbee4")
+	addr5, _ = sdk.AccAddressFromHex("0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbee5")
+
+	accAddrs = []sdk.AccAddress{addr1, addr2, addr3, addr4, addr5}
 
 	// The default power validators are initialized to have within tests
 	initTokens = sdk.TokensFromConsensusPower(initialPower, sdk.DefaultPowerReduction)

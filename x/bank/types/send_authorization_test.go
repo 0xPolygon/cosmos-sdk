@@ -16,11 +16,11 @@ import (
 )
 
 var (
-	coins1000   = sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(1000)))
-	coins500    = sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(500)))
-	fromAddr    = sdk.AccAddress("_____from _____")
-	toAddr      = sdk.AccAddress("_______to________")
-	unknownAddr = sdk.AccAddress("_____unknown_____")
+	coins1000      = sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(1000)))
+	coins500       = sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(500)))
+	fromAddr, _    = sdk.AccAddressFromHex("deadbeefdeadbeefdeadbeefdeadbeefdeadbee0")
+	toAddr, _      = sdk.AccAddressFromHex("deadbeefdeadbeefdeadbeefdeadbeefdeadbee1")
+	unknownAddr, _ = sdk.AccAddressFromHex("deadbeefdeadbeefdeadbeefdeadbeefdeadbee2")
 )
 
 func TestSendAuthorization(t *testing.T) {

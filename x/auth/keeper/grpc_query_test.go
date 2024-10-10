@@ -14,7 +14,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
 )
 
-const addrStr = "8186b214a917fb4922eb984fb80cfafa30ee8810"
+const addrStr = "0x8186b214a917fb4922eb984fb80cfafa30ee8810"
 
 var addrBytes = []byte{129, 134, 178, 20, 169, 23, 251, 73, 34, 235, 152, 79, 184, 12, 250, 250, 48, 238, 136, 16}
 

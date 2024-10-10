@@ -148,7 +148,7 @@ func printAndValidateSigs(
 			}
 			txData := adaptableTx.GetSigningTxData()
 
-			err = authsigning.VerifySignature(cmd.Context(), pubKey, txSignerData, sig.Data, signModeHandler, txData)
+			_, err = authsigning.VerifySignature(cmd.Context(), pubKey, txSignerData, sig.Data, signModeHandler, txData)
 			if err != nil {
 				cmd.PrintErrf("failed to verify signature: %v", err)
 				return false

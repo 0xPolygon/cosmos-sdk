@@ -2,6 +2,9 @@ package keeper_test
 
 import (
 	"fmt"
+	borTypes "github.com/0xPolygon/heimdall-v2/x/bor/types"
+	checkpointTypes "github.com/0xPolygon/heimdall-v2/x/checkpoint/types"
+	milestoneTypes "github.com/0xPolygon/heimdall-v2/x/milestone/types"
 	"testing"
 
 	chainmanagertypes "github.com/0xPolygon/heimdall-v2/x/chainmanager/types"
@@ -76,11 +79,14 @@ func setupGovKeeper(t *testing.T) (
 	v1.RegisterInterfaces(encCfg.InterfaceRegistry)
 	v1beta1.RegisterInterfaces(encCfg.InterfaceRegistry)
 	banktypes.RegisterInterfaces(encCfg.InterfaceRegistry)
-	// HV2: register additional interfaces for MsgUpdateParams
 	authtypes.RegisterInterfaces(encCfg.InterfaceRegistry)
 	stakingtypes.RegisterInterfaces(encCfg.InterfaceRegistry)
 	consensustypes.RegisterInterfaces(encCfg.InterfaceRegistry)
+	// HV2: list to be eventually extended to register additional interfaces for MsgUpdateParams
+	borTypes.RegisterInterfaces(encCfg.InterfaceRegistry)
 	chainmanagertypes.RegisterInterfaces(encCfg.InterfaceRegistry)
+	checkpointTypes.RegisterInterfaces(encCfg.InterfaceRegistry)
+	milestoneTypes.RegisterInterfaces(encCfg.InterfaceRegistry)
 
 	// Create MsgServiceRouter, but don't populate it before creating the gov
 	// keeper.
@@ -103,7 +109,7 @@ func setupGovKeeper(t *testing.T) (
 		return sdk.TokensFromConsensusPower(power, math.NewIntFromUint64(1000000000000000000))
 	}).AnyTimes()
 
-	stakingKeeper.EXPECT().BondDenom(ctx).Return("matic", nil).AnyTimes()
+	stakingKeeper.EXPECT().BondDenom(ctx).Return("pol", nil).AnyTimes()
 	stakingKeeper.EXPECT().IterateCurrentValidatorsAndApplyFn(gomock.Any(), gomock.Any()).AnyTimes()
 	stakingKeeper.EXPECT().TokensFromConsensusPower(gomock.Any(), gomock.Any()).AnyTimes()
 	stakingKeeper.EXPECT().ValidatorAddressCodec().Return(address.NewHexCodec()).AnyTimes()
@@ -125,11 +131,14 @@ func setupGovKeeper(t *testing.T) (
 	msr.SetInterfaceRegistry(encCfg.InterfaceRegistry)
 	v1.RegisterMsgServer(msr, keeper.NewMsgServerImpl(govKeeper))
 	banktypes.RegisterMsgServer(msr, nil) // Nil is fine here as long as we never execute the proposal's Msgs.
-	// HV2: register additional MsgServer for MsgUpdateParams
 	authtypes.RegisterMsgServer(msr, nil)
 	stakingtypes.RegisterMsgServer(msr, nil)
 	consensustypes.RegisterMsgServer(msr, nil)
+	// HV2: list to be eventually extended to register additional MsgServer for MsgUpdateParams
+	borTypes.RegisterMsgServer(msr, nil)
 	chainmanagertypes.RegisterMsgServer(msr, nil)
+	checkpointTypes.RegisterMsgServer(msr, nil)
+	milestoneTypes.RegisterMsgServer(msr, nil)
 
 	return govKeeper, acctKeeper, bankKeeper, stakingKeeper, distributionKeeper, encCfg, ctx
 }

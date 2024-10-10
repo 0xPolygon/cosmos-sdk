@@ -2,13 +2,14 @@ package keeper
 
 import (
 	"context"
-	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 
 	"cosmossdk.io/collections"
 	"cosmossdk.io/math"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
+
+	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 )
 
 // TODO: Break into several smaller functions for clarity
@@ -26,14 +27,14 @@ func (keeper Keeper) Tally(ctx context.Context, proposal v1.Proposal) (passes, b
 	totalVotingPower := math.LegacyZeroDec()
 	currValidators := make(map[string]v1.ValidatorGovInfo)
 
-	err = keeper.sk.IterateCurrentValidatorsAndApplyFn(ctx, func(validator stakingtypes.ValidatorI) bool {
+	err = keeper.sk.IterateCurrentValidatorsAndApplyFn(ctx, func(validator stakeTypes.Validator) bool {
 		valBz, err := keeper.sk.ValidatorAddressCodec().StringToBytes(validator.GetOperator())
 		if err != nil {
 			return false
 		}
 		currValidators[validator.GetOperator()] = v1.NewValidatorGovInfo(
 			valBz,
-			// TODO HV2: using validator.GetBondedTokens() as custom staking module will return the validator's VotingPower for it
+			// HV2: using validator.GetBondedTokens() as custom staking module will return the validator's VotingPower for it
 			validator.GetBondedTokens(),
 			math.LegacyZeroDec(),
 			math.LegacyZeroDec(),
@@ -100,7 +101,7 @@ func (keeper Keeper) Tally(ctx context.Context, proposal v1.Proposal) (passes, b
 
 	// iterate over the validators again to tally their voting power
 	for _, val := range currValidators {
-		// TODO HV2: using val.BondedTokens as this is heimdall's val.VotingPower
+		// HV2: using val.BondedTokens as this is heimdall's val.VotingPower
 		votingPower := math.LegacyNewDec(val.BondedTokens.Int64())
 		totalBondedTokens = totalBondedTokens.Add(votingPower)
 

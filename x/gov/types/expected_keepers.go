@@ -2,9 +2,11 @@ package types
 
 import (
 	"context"
+
 	addresscodec "cosmossdk.io/core/address"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+
+	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 )
 
 // ParamSubspace defines the expected Subspace interface for parameters (noalias)
@@ -30,7 +32,7 @@ type StakingKeeper interface {
 	*/
 
 	// HV2: added for heimdall business logic
-	IterateCurrentValidatorsAndApplyFn(context.Context, func(stakingtypes.ValidatorI) bool) error
+	IterateCurrentValidatorsAndApplyFn(context.Context, func(stakeTypes.Validator) bool) error
 	GetValIdFromAddress(ctx context.Context, address string) (uint64, error)
 }
 

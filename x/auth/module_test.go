@@ -15,6 +15,9 @@ import (
 )
 
 func TestItCreatesModuleAccountOnInitBlock(t *testing.T) {
+	// TODO HV2: To fix this test, we need to implement https://polygon.atlassian.net/browse/POS-2540
+	t.Skip("skipping test as it simApp staking module instead of heimdall-v2 custom stake module")
+
 	var accountKeeper keeper.AccountKeeper
 	app, err := simtestutil.SetupAtGenesis(
 		depinject.Configs(

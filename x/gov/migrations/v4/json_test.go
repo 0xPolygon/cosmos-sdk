@@ -67,7 +67,7 @@ func TestMigrateJSON(t *testing.T) {
 		"expedited_min_deposit": [
 			{
 				"amount": "50000000000000000000",
-				"denom": "matic"
+				"denom": "pol"
 			}
 		],
 		"expedited_threshold": "0.667000000000000000",
@@ -76,7 +76,7 @@ func TestMigrateJSON(t *testing.T) {
 		"min_deposit": [
 			{
 				"amount": "10000000000000000000",
-				"denom": "matic"
+				"denom": "pol"
 			}
 		],
 		"min_deposit_ratio": "0.010000000000000000",

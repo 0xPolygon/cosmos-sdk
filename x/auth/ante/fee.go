@@ -15,13 +15,11 @@ import (
 )
 
 var (
-	// DefaultFeeInMatic represents default fee in matic
-	DefaultFeeInMatic = big.NewInt(10).Exp(big.NewInt(10), big.NewInt(15), nil)
-
-	// TODO HV2: no usage of DefaultFeeWantedPerTx so far. This is used in heimdall topup module's `side_handler.go`
+	// DefaultFeeInPol represents default fee in pol
+	DefaultFeeInPol = big.NewInt(10).Exp(big.NewInt(10), big.NewInt(15), nil)
 
 	// DefaultFeeWantedPerTx fee wanted per tx
-	DefaultFeeWantedPerTx = sdk.Coins{sdk.Coin{Denom: types.FeeToken, Amount: math.NewIntFromBigInt(DefaultFeeInMatic)}}
+	DefaultFeeWantedPerTx = sdk.Coins{sdk.Coin{Denom: types.FeeToken, Amount: math.NewIntFromBigInt(DefaultFeeInPol)}}
 )
 
 // TxFeeChecker check if the provided fee is enough and returns the effective fee and tx priority,

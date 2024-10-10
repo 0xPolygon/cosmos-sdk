@@ -174,7 +174,7 @@ func TestConsumeGasForTxSize(t *testing.T) {
 
 			// require that antehandler passes and does not underestimate decorator cost
 			require.Nil(t, err, "ConsumeTxSizeGasDecorator returned error: %v", err)
-			// TODO HV2: removed as `ConsumeGas` is not used in heimdall
+			// HV2: removed as `ConsumeGas` is not used in heimdall
 			// require.True(t, consumedSimGas >= expectedGas, "Simulate mode underestimates gas on AnteDecorator. Simulated cost: %d, expected cost: %d", consumedSimGas, expectedGas)
 		})
 	}

@@ -9,7 +9,7 @@ import (
 // Default parameter values
 const (
 	DefaultMaxMemoCharacters      uint64 = 256
-	DefaultTxSigLimit             uint64 = 7
+	DefaultTxSigLimit             uint64 = 1
 	DefaultTxSizeCostPerByte      uint64 = 10
 	DefaultSigVerifyCostED25519   uint64 = 590
 	DefaultSigVerifyCostSecp256k1 uint64 = 1000

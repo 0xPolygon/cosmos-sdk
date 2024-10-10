@@ -53,8 +53,8 @@ func TestRandomizedGenState(t *testing.T) {
 		minInitialDepositDec    = "0.880000000000000000"
 	)
 
-	assert.Equal(t, "272matic", govGenesis.Params.MinDeposit[0].String())
-	assert.Equal(t, "800matic", govGenesis.Params.ExpeditedMinDeposit[0].String())
+	assert.Equal(t, "272pol", govGenesis.Params.MinDeposit[0].String())
+	assert.Equal(t, "800pol", govGenesis.Params.ExpeditedMinDeposit[0].String())
 	assert.Equal(t, "41h11m36s", govGenesis.Params.MaxDepositPeriod.String())
 	assert.Equal(t, float64(283889), govGenesis.Params.VotingPeriod.Seconds())
 	assert.Equal(t, float64(123081), govGenesis.Params.ExpeditedVotingPeriod.Seconds())

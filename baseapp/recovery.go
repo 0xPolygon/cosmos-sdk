@@ -47,7 +47,7 @@ func newRecoveryMiddleware(handler RecoveryHandler, next recoveryMiddleware) rec
 	}
 }
 
-// newOutOfGasRecoveryMiddleware creates a standard OutOfGas recovery middleware for app.runTx method.
+// newOutOfGasRecoveryMiddleware creates a standard OutOfGas recovery middleware for app.RunTx method.
 func newOutOfGasRecoveryMiddleware(gasWanted uint64, ctx sdk.Context, next recoveryMiddleware) recoveryMiddleware {
 	handler := func(recoveryObj interface{}) error {
 		err, ok := recoveryObj.(storetypes.ErrorOutOfGas)
@@ -66,7 +66,7 @@ func newOutOfGasRecoveryMiddleware(gasWanted uint64, ctx sdk.Context, next recov
 	return newRecoveryMiddleware(handler, next)
 }
 
-// newDefaultRecoveryMiddleware creates a default (last in chain) recovery middleware for app.runTx method.
+// newDefaultRecoveryMiddleware creates a default (last in chain) recovery middleware for app.RunTx method.
 func newDefaultRecoveryMiddleware() recoveryMiddleware {
 	handler := func(recoveryObj interface{}) error {
 		return errorsmod.Wrap(

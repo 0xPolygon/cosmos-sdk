@@ -20,6 +20,15 @@ func checkTxFeeWithValidatorMinGasPrices(ctx sdk.Context, tx sdk.Tx, params type
 		return nil, 0, errorsmod.Wrap(sdkerrors.ErrInvalidTxFees, "must provide correct txFees")
 	}
 
+	msgV2, err := tx.GetMsgsV2()
+	if err != nil {
+		return nil, 0, err
+	}
+
+	if len(msgV2) > 1 || len(tx.GetMsgs()) > 1 {
+		return nil, 0, errorsmod.Wrap(sdkerrors.ErrTooManyMsgsInTx, "Tx must contain only one message")
+	}
+
 	// HV2: gas is retrieved from Params as currently done in heimdall
 	gas := params.GetMaxTxGas()
 	feeCoins := sdk.Coins{sdk.Coin{Denom: types.FeeToken, Amount: amount}}

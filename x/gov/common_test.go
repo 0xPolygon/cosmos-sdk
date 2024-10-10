@@ -112,6 +112,9 @@ type suite struct {
 	App                *runtime.App
 }
 
+// TODO HV2: To fix many tests, we need to implement https://polygon.atlassian.net/browse/POS-2540
+//  and change NewSimApp function accordingly
+
 func createTestSuite(t *testing.T) suite {
 	res := suite{}
 

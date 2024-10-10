@@ -410,7 +410,7 @@ The message handling can fail if:
 
 ### MsgSetSendEnabled
 
-**NOTE**: Heimdall only supports denom (matic) and hence this msg type is not supported.
+**NOTE**: Heimdall only supports denom (pol) and hence this msg type is not supported.
 Used with the x/gov module to set create/edit SendEnabled entries.
 
 ```protobuf reference
@@ -1041,8 +1041,8 @@ Example Output:
 
 Since heimdall is a unique component of the PoS architecture and not a traditional Cosmos SDK app, some changes had to be made in order to ensure correct functionality, some of which are :
 
-* MsgSetSendEnabled is not supported since matic is the only denom used. 
+* MsgSetSendEnabled is not supported since pol is the only denom used. 
 
 * (Un)delegation is not supported since staking related logic is handled by PoS [core contracts](https://github.com/0xPolygon/core-contracts/tree/main/contracts) deployed on Ethereum.
 
-* A default fee of 10^15 matic (`DefaultFeeInMatic`) is deducted from the tx sender.
+* A default fee of 10^15 pol (`DefaultFeeInPol`) is deducted from the tx sender.
