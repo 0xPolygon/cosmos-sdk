@@ -163,7 +163,7 @@ type BaseApp struct {
 	// if BaseApp is passed to the upgrade keeper's NewKeeper method.
 	appVersion uint64
 
-	// recovery handler for app.RunTx method
+	// recovery handler for app.runTx method
 	runTxRecoveryMiddleware recoveryMiddleware
 
 	// trace set will return full stack traces for errors in ABCI Log field
@@ -534,7 +534,7 @@ func (app *BaseApp) StoreConsensusParams(ctx sdk.Context, cp cmtproto.ConsensusP
 	return app.paramStore.Set(ctx, cp)
 }
 
-// AddRunTxRecoveryHandler adds custom app.RunTx method panic handlers.
+// AddRunTxRecoveryHandler adds custom app.runTx method panic handlers.
 func (app *BaseApp) AddRunTxRecoveryHandler(handlers ...RecoveryHandler) {
 	for _, h := range handlers {
 		app.runTxRecoveryMiddleware = newRecoveryMiddleware(h, app.runTxRecoveryMiddleware)
@@ -738,7 +738,7 @@ func (app *BaseApp) deliverTx(tx []byte) *abci.ExecTxResult {
 		telemetry.SetGauge(float32(gInfo.GasWanted), "tx", "gas", "wanted")
 	}()
 
-	gInfo, result, anteEvents, err := app.RunTx(execModeFinalize, tx)
+	gInfo, result, anteEvents, err := app.runTx(execModeFinalize, tx)
 	if err != nil {
 		resultStr = "failed"
 		resp = sdkerrors.ResponseExecTxResultWithEvents(
@@ -788,14 +788,14 @@ func (app *BaseApp) endBlock(ctx context.Context) (sdk.EndBlock, error) {
 	return endblock, nil
 }
 
-// RunTx processes a transaction within a given execution mode, encoded transaction
+// runTx processes a transaction within a given execution mode, encoded transaction
 // bytes, and the decoded transaction itself. All state transitions occur through
 // a cached Context depending on the mode provided. State only gets persisted
 // if all messages get executed successfully and the execution mode is DeliverTx.
 // Note, gas execution info is always returned. A reference to a Result is
 // returned if the tx does not run out of gas and if all the messages are valid
 // and execute successfully. An error is returned otherwise.
-func (app *BaseApp) RunTx(mode execMode, txBytes []byte) (gInfo sdk.GasInfo, result *sdk.Result, anteEvents []abci.Event, err error) {
+func (app *BaseApp) runTx(mode execMode, txBytes []byte) (gInfo sdk.GasInfo, result *sdk.Result, anteEvents []abci.Event, err error) {
 	// NOTE: GasWanted should be returned by the AnteHandler. GasUsed is
 	// determined by the GasMeter. We need access to the context to get the gas
 	// meter, so we initialize upfront.
@@ -813,7 +813,7 @@ func (app *BaseApp) RunTx(mode execMode, txBytes []byte) (gInfo sdk.GasInfo, res
 		if r := recover(); r != nil {
 			recoveryMW := newOutOfGasRecoveryMiddleware(gasWanted, ctx, app.runTxRecoveryMiddleware)
 			err, result = processRecovery(r, recoveryMW), nil
-			ctx.Logger().Error("panic recovered in RunTx", "err", err)
+			ctx.Logger().Error("panic recovered in runTx", "err", err)
 		}
 
 		gInfo = sdk.GasInfo{GasWanted: gasWanted, GasUsed: ctx.GasMeter().GasConsumed()}
@@ -1073,7 +1073,7 @@ func (app *BaseApp) PrepareProposalVerifyTx(tx sdk.Tx) ([]byte, error) {
 		return nil, err
 	}
 
-	_, _, _, err = app.RunTx(execModePrepareProposal, bz)
+	_, _, _, err = app.runTx(execModePrepareProposal, bz)
 	if err != nil {
 		return nil, err
 	}
@@ -1092,7 +1092,7 @@ func (app *BaseApp) ProcessProposalVerifyTx(txBz []byte) (sdk.Tx, error) {
 		return nil, err
 	}
 
-	_, _, _, err = app.RunTx(execModeProcessProposal, txBz)
+	_, _, _, err = app.runTx(execModeProcessProposal, txBz)
 	if err != nil {
 		return nil, err
 	}

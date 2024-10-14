@@ -11,21 +11,21 @@ import (
 
 // SimCheck defines a CheckTx helper function that used in tests and simulations.
 func (app *BaseApp) SimCheck(txEncoder sdk.TxEncoder, tx sdk.Tx) (sdk.GasInfo, *sdk.Result, error) {
-	// RunTx expects tx bytes as argument, so we encode the tx argument into
-	// bytes. Note that RunTx will actually decode those bytes again. But since
+	// runTx expects tx bytes as argument, so we encode the tx argument into
+	// bytes. Note that runTx will actually decode those bytes again. But since
 	// this helper is only used in tests/simulation, it's fine.
 	bz, err := txEncoder(tx)
 	if err != nil {
 		return sdk.GasInfo{}, nil, errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "%s", err)
 	}
 
-	gasInfo, result, _, err := app.RunTx(execModeCheck, bz)
+	gasInfo, result, _, err := app.runTx(execModeCheck, bz)
 	return gasInfo, result, err
 }
 
 // Simulate executes a tx in simulate mode to get result and gas info.
 func (app *BaseApp) Simulate(txBytes []byte) (sdk.GasInfo, *sdk.Result, error) {
-	gasInfo, result, _, err := app.RunTx(execModeSimulate, txBytes)
+	gasInfo, result, _, err := app.runTx(execModeSimulate, txBytes)
 	return gasInfo, result, err
 }
 
@@ -35,7 +35,7 @@ func (app *BaseApp) SimDeliver(txEncoder sdk.TxEncoder, tx sdk.Tx) (sdk.GasInfo,
 	if err != nil {
 		return sdk.GasInfo{}, nil, errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "%s", err)
 	}
-	gasInfo, result, _, err := app.RunTx(execModeFinalize, bz)
+	gasInfo, result, _, err := app.runTx(execModeFinalize, bz)
 	return gasInfo, result, err
 }
 
@@ -46,7 +46,7 @@ func (app *BaseApp) SimTxFinalizeBlock(txEncoder sdk.TxEncoder, tx sdk.Tx) (sdk.
 		return sdk.GasInfo{}, nil, errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "%s", err)
 	}
 
-	gasInfo, result, _, err := app.RunTx(execModeFinalize, bz)
+	gasInfo, result, _, err := app.runTx(execModeFinalize, bz)
 	return gasInfo, result, err
 }
 
