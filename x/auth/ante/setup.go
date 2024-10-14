@@ -37,15 +37,6 @@ func (sud SetUpContextDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate
 		return newCtx, errorsmod.Wrap(sdkerrors.ErrTxDecode, "Tx must be GasTx")
 	}
 
-	msgV2, err := gasTx.GetMsgsV2()
-	if err != nil {
-		return newCtx, err
-	}
-
-	if len(msgV2) > 1 || len(gasTx.GetMsgs()) > 1 {
-		return newCtx, errorsmod.Wrap(sdkerrors.ErrTooManyMsgsInTx, "Tx must contain only one message")
-	}
-
 	newCtx = SetGasMeter(simulate, ctx, gasTx.GetGas())
 
 	if cp := ctx.ConsensusParams(); cp.Block != nil {

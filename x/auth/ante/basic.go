@@ -25,15 +25,6 @@ func NewValidateBasicDecorator() ValidateBasicDecorator {
 }
 
 func (vbd ValidateBasicDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.AnteHandler) (sdk.Context, error) {
-	msgV2, err := tx.GetMsgsV2()
-	if err != nil {
-		return ctx, err
-	}
-
-	if len(msgV2) > 1 || len(tx.GetMsgs()) > 1 {
-		return ctx, errorsmod.Wrap(sdkerrors.ErrTooManyMsgsInTx, "Tx must contain only one message")
-	}
-
 	// no need to validate basic on recheck tx, call next antehandler
 	if ctx.IsReCheckTx() {
 		return next(ctx, tx, simulate)
@@ -65,15 +56,6 @@ func (vmd ValidateMemoDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate
 	memoTx, ok := tx.(sdk.TxWithMemo)
 	if !ok {
 		return ctx, errorsmod.Wrap(sdkerrors.ErrTxDecode, "invalid transaction type")
-	}
-
-	msgV2, err := memoTx.GetMsgsV2()
-	if err != nil {
-		return ctx, err
-	}
-
-	if len(msgV2) > 1 || len(memoTx.GetMsgs()) > 1 {
-		return ctx, errorsmod.Wrap(sdkerrors.ErrTooManyMsgsInTx, "Tx must contain only one message")
 	}
 
 	memoLength := len(memoTx.GetMemo())
@@ -115,15 +97,6 @@ func (cgts ConsumeTxSizeGasDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, sim
 		return ctx, errorsmod.Wrap(sdkerrors.ErrTxDecode, "invalid tx type")
 	}
 	params := cgts.ak.GetParams(ctx)
-
-	msgV2, err := sigTx.GetMsgsV2()
-	if err != nil {
-		return ctx, err
-	}
-
-	if len(msgV2) > 1 || len(sigTx.GetMsgs()) > 1 {
-		return ctx, errorsmod.Wrap(sdkerrors.ErrTooManyMsgsInTx, "Tx must contain only one message")
-	}
 
 	// HV2: removed `ConsumeGas` in it as done in heimdall's `auth/ante.go` (original ancestor's method `newCtx.GasMeter().ConsumeGas`)
 	// ctx.GasMeter().ConsumeGas(params.TxSizeCostPerByte*storetypes.Gas(len(ctx.TxBytes())), "txSize")

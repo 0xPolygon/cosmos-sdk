@@ -151,7 +151,4 @@ var (
 
 	// ErrRemoveBlockProposer defines an error when removing the block proposer fails.
 	ErrRemoveBlockProposer = errorsmod.Register(RootCodespace, 44, "error removing block proposer")
-
-	// ErrTooManyMsgsInTx defines an error when number of messages is not correct.
-	ErrTooManyMsgsInTx = errorsmod.Register(RootCodespace, 45, "too many messages in tx")
 )
