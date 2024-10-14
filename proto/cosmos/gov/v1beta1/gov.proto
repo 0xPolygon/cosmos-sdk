@@ -45,7 +45,7 @@ message WeightedVoteOption {
   ];
 }
 
-// TODO HV2: TextProposals are disabled in heimdall. Remove it and re-implement all tests?
+// TODO HV2: TextProposals are disabled in heimdall. If we remove it, we need to re-implement all tests. It should be ok as is.
 
 // TextProposal defines a standard text proposal whose changes need to be manually updated in case of approval.
 message TextProposal {

@@ -296,6 +296,7 @@ func (pubKey *PubKeyOld) Equals(other cryptotypes.PubKey) bool {
 
 func (pubKey *PubKeyOld) VerifySignature(msg []byte, sigStr []byte) bool {
 	if len(sigStr) != SigSize {
+
 		return false
 	}
 

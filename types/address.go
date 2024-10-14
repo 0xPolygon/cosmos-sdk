@@ -14,6 +14,7 @@ import (
 
 	errorsmod "cosmossdk.io/errors"
 
+	addresscodec "github.com/cosmos/cosmos-sdk/codec/address"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -188,7 +189,12 @@ func (aa *AccAddress) UnmarshalJSON(data []byte) error {
 		*aa = AccAddress{}
 		return nil
 	}
-	*aa = common.HexToAddress(s).Bytes()
+	ac := addresscodec.NewHexCodec()
+	bz, err := ac.StringToBytes(s)
+	if err != nil {
+		return err
+	}
+	*aa = bz
 	return nil
 }
 
@@ -199,7 +205,12 @@ func (aa *AccAddress) UnmarshalYAML(data []byte) error {
 		return err
 	}
 
-	*aa = common.HexToAddress(s).Bytes()
+	ac := addresscodec.NewHexCodec()
+	bz, err := ac.StringToBytes(s)
+	if err != nil {
+		return err
+	}
+	*aa = bz
 
 	return nil
 }
@@ -214,7 +225,12 @@ func (aa AccAddress) String() string {
 	if aa.Empty() {
 		return ""
 	}
-	return "0x" + common.Bytes2Hex(aa.Bytes())
+	ac := addresscodec.NewHexCodec()
+	s, err := ac.BytesToString(aa.Bytes())
+	if err != nil {
+		return ""
+	}
+	return s
 }
 
 // Format implements the fmt.Formatter interface.
@@ -291,7 +307,12 @@ func (va *ValAddress) UnmarshalJSON(data []byte) error {
 		*va = ValAddress{}
 		return nil
 	}
-	*va = common.HexToAddress(s).Bytes()
+	ac := addresscodec.NewHexCodec()
+	bz, err := ac.StringToBytes(s)
+	if err != nil {
+		return err
+	}
+	*va = bz
 
 	return nil
 }
@@ -303,7 +324,12 @@ func (va *ValAddress) UnmarshalYAML(data []byte) error {
 		return err
 	}
 
-	*va = common.HexToAddress(s).Bytes()
+	ac := addresscodec.NewHexCodec()
+	bz, err := ac.StringToBytes(s)
+	if err != nil {
+		return err
+	}
+	*va = bz
 
 	return nil
 }
@@ -318,7 +344,12 @@ func (va ValAddress) String() string {
 	if va.Empty() {
 		return ""
 	}
-	return "0x" + common.Bytes2Hex(va.Bytes())
+	ac := addresscodec.NewHexCodec()
+	s, err := ac.BytesToString(va.Bytes())
+	if err != nil {
+		return ""
+	}
+	return s
 }
 
 // Format implements the fmt.Formatter interface.
@@ -399,7 +430,12 @@ func (ca *ConsAddress) UnmarshalJSON(data []byte) error {
 		*ca = ConsAddress{}
 		return nil
 	}
-	*ca = common.HexToAddress(s).Bytes()
+	ac := addresscodec.NewHexCodec()
+	bz, err := ac.StringToBytes(s)
+	if err != nil {
+		return err
+	}
+	*ca = bz
 
 	return nil
 }
@@ -411,7 +447,12 @@ func (ca *ConsAddress) UnmarshalYAML(data []byte) error {
 		return err
 	}
 
-	*ca = common.HexToAddress(s).Bytes()
+	ac := addresscodec.NewHexCodec()
+	bz, err := ac.StringToBytes(s)
+	if err != nil {
+		return err
+	}
+	*ca = bz
 
 	return nil
 }
@@ -426,17 +467,20 @@ func (ca ConsAddress) String() string {
 	if ca.Empty() {
 		return ""
 	}
-	return "0x" + common.Bytes2Hex(ca.Bytes())
+	ac := addresscodec.NewHexCodec()
+	s, err := ac.BytesToString(ca.Bytes())
+	if err != nil {
+		return ""
+	}
+	return s
 }
 
 // HexifyAddressBytes returns a hex representation of address bytes.
 // Returns an empty string if the byte slice is 0-length. Returns an error if the hex conversion
 // fails or the prefix is empty.
 func HexifyAddressBytes(bs []byte) (string, error) {
-	if len(bs) == 0 {
-		return "", nil
-	}
-	return common.Bytes2Hex(bs), nil
+	ac := addresscodec.NewHexCodec()
+	return ac.BytesToString(bs)
 }
 
 // MustHexifyAddressBytes returns a hex representation of address bytes.
@@ -473,12 +517,6 @@ func GetFromHex(hexStr string) ([]byte, error) {
 }
 
 func addressBytesFromHexString(address string) ([]byte, error) {
-	if len(address) == 0 {
-		return nil, ErrEmptyHexAddress
-	}
-	if !common.IsHexAddress(address) {
-		return nil, ErrNotHexAddress
-	}
-
-	return common.FromHex(address), nil
+	ac := addresscodec.NewHexCodec()
+	return ac.StringToBytes(address)
 }

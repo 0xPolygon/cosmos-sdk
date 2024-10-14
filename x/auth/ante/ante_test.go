@@ -38,7 +38,7 @@ func TestSimulateGasCost(t *testing.T) {
 
 	testCases := []TestCase{
 		{
-			"tx with 1000000000000000matic fee",
+			"tx with 1000000000000000pol fee",
 			func(suite *AnteTestSuite) TestCaseArgs {
 				accs := suite.CreateTestAccounts(1)
 				suite.bankKeeper.EXPECT().SendCoinsFromAccountToModule(gomock.Any(), accs[0].acc.GetAddress(), authtypes.FeeCollectorName, feeAmount).Return(nil)
@@ -658,7 +658,7 @@ func TestAnteHandlerMemoGas(t *testing.T) {
 			func(suite *AnteTestSuite) TestCaseArgs {
 				accs := suite.CreateTestAccounts(1)
 				return TestCaseArgs{
-					feeAmount: sdk.NewCoins(sdk.NewInt64Coin("matic", 0)),
+					feeAmount: sdk.NewCoins(sdk.NewInt64Coin("pol", 0)),
 					gasLimit:  0,
 					msgs:      []sdk.Msg{testdata.NewTestMsg(accs[0].acc.GetAddress())},
 				}.WithAccountsInfo(accs)
@@ -675,7 +675,7 @@ func TestAnteHandlerMemoGas(t *testing.T) {
 				suite.txBuilder.SetMemo("abcininasidniandsinasindiansdiansdinaisndiasndiadninsd")
 
 				return TestCaseArgs{
-					feeAmount: sdk.NewCoins(sdk.NewInt64Coin("matic", 0)),
+					feeAmount: sdk.NewCoins(sdk.NewInt64Coin("pol", 0)),
 					gasLimit:  801,
 					msgs:      []sdk.Msg{testdata.NewTestMsg(accs[0].acc.GetAddress())},
 				}.WithAccountsInfo(accs)
@@ -692,7 +692,7 @@ func TestAnteHandlerMemoGas(t *testing.T) {
 				suite.txBuilder.SetMemo(strings.Repeat("01234567890", 500))
 
 				return TestCaseArgs{
-					feeAmount: sdk.NewCoins(sdk.NewInt64Coin("matic", 0)),
+					feeAmount: sdk.NewCoins(sdk.NewInt64Coin("pol", 0)),
 					gasLimit:  50000,
 					msgs:      []sdk.Msg{testdata.NewTestMsg(accs[0].acc.GetAddress())},
 				}.WithAccountsInfo(accs)
@@ -710,7 +710,7 @@ func TestAnteHandlerMemoGas(t *testing.T) {
 				// HV2 in heimdall, the fee is taken from params.GetTxFees() (hence not zero here), so we expect a call to SendCoinsFromAccountToModule
 				suite.bankKeeper.EXPECT().SendCoinsFromAccountToModule(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(nil).Times(1)
 				return TestCaseArgs{
-					feeAmount: sdk.NewCoins(sdk.NewInt64Coin("matic", 0)),
+					feeAmount: sdk.NewCoins(sdk.NewInt64Coin("pol", 0)),
 					gasLimit:  60000,
 					msgs:      []sdk.Msg{testdata.NewTestMsg(accs[0].acc.GetAddress())},
 				}.WithAccountsInfo(accs)

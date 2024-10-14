@@ -6,6 +6,8 @@ import (
 
 	signingv1beta1 "cosmossdk.io/api/cosmos/tx/signing/v1beta1"
 	txsigning "cosmossdk.io/x/tx/signing"
+	"github.com/ethereum/go-ethereum/crypto"
+	ethCrypto "github.com/ethereum/go-ethereum/crypto/secp256k1"
 
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	"github.com/cosmos/cosmos-sdk/crypto/types/multisig"
@@ -59,33 +61,31 @@ func internalSignModeToAPI(mode signing.SignMode) (signingv1beta1.SignMode, erro
 
 // VerifySignature verifies a transaction signature contained in SignatureData abstracting over different signing
 // modes. It differs from VerifySignature in that it uses the new txsigning.TxData interface in x/tx.
-func VerifySignature(
-	ctx context.Context,
-	pubKey cryptotypes.PubKey,
-	signerData txsigning.SignerData,
-	signatureData signing.SignatureData,
-	handler *txsigning.HandlerMap,
-	txData txsigning.TxData,
-) error {
+func VerifySignature(ctx context.Context, pubKey cryptotypes.PubKey, signerData txsigning.SignerData, signatureData signing.SignatureData, handler *txsigning.HandlerMap, txData txsigning.TxData) (cryptotypes.PubKey, error) {
 	switch data := signatureData.(type) {
 	case *signing.SingleSignatureData:
 		signMode, err := internalSignModeToAPI(data.SignMode)
 		if err != nil {
-			return err
+			return nil, err
 		}
 		signBytes, err := handler.GetSignBytes(ctx, signMode, signerData, txData)
 		if err != nil {
-			return err
+			return nil, err
 		}
+		/* TODO HV2: See comment in `sigverify.go` (relates to https://polygon.atlassian.net/browse/POS-2492).
+		p, err := RecoverPubKey(signBytes, signatureData.(*signing.SingleSignatureData).Signature)
+		pubKey = &secp256k1.PubKey{Key: p}
+		*/
 		if !pubKey.VerifySignature(signBytes, data.Signature) {
-			return fmt.Errorf("unable to verify single signer signature")
+			return nil, fmt.Errorf("unable to verify single signer signature")
 		}
-		return nil
+		return pubKey, nil
 
 	case *signing.MultiSignatureData:
+		return nil, fmt.Errorf("MultiSignatureData not supported in heimdall")
 		multiPK, ok := pubKey.(multisig.PubKey)
 		if !ok {
-			return fmt.Errorf("expected %T, got %T", (multisig.PubKey)(nil), pubKey)
+			return nil, fmt.Errorf("expected %T, got %T", (multisig.PubKey)(nil), pubKey)
 		}
 		err := multiPK.VerifyMultisignature(func(mode signing.SignMode) ([]byte, error) {
 			signMode, err := internalSignModeToAPI(mode)
@@ -95,10 +95,16 @@ func VerifySignature(
 			return handler.GetSignBytes(ctx, signMode, signerData, txData)
 		}, data)
 		if err != nil {
-			return err
+			return nil, err
 		}
-		return nil
+		return nil, nil
 	default:
-		return fmt.Errorf("unexpected SignatureData %T", signatureData)
+		return nil, fmt.Errorf("unexpected SignatureData %T", signatureData)
 	}
+}
+
+// RecoverPubKey builds a signature for given a signed msg.
+func RecoverPubKey(msg []byte, sig []byte) ([]byte, error) {
+	data := crypto.Keccak256(msg)
+	return ethCrypto.RecoverPubkey(data, sig[:])
 }

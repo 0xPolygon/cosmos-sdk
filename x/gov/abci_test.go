@@ -23,6 +23,9 @@ import (
 )
 
 func TestUnregisteredProposal_InactiveProposalFails(t *testing.T) {
+	// TODO HV2: To fix this tests, we need to implement https://polygon.atlassian.net/browse/POS-2540
+	t.Skip("skipping test as it simApp staking module instead of heimdall-v2 custom stake module")
+
 	suite := createTestSuite(t)
 	ctx := suite.App.BaseApp.NewContext(false)
 	addrs := simtestutil.AddTestAddrs(suite.BankKeeper, suite.StakingKeeper, ctx, 10, valTokens)
@@ -51,6 +54,9 @@ func TestUnregisteredProposal_InactiveProposalFails(t *testing.T) {
 }
 
 func TestUnregisteredProposal_ActiveProposalFails(t *testing.T) {
+	// TODO HV2: To fix this tests, we need to implement https://polygon.atlassian.net/browse/POS-2540
+	t.Skip("skipping test as it simApp staking module instead of heimdall-v2 custom stake module")
+
 	suite := createTestSuite(t)
 	ctx := suite.App.BaseApp.NewContext(false)
 	addrs := simtestutil.AddTestAddrs(suite.BankKeeper, suite.StakingKeeper, ctx, 10, valTokens)
@@ -82,6 +88,9 @@ func TestUnregisteredProposal_ActiveProposalFails(t *testing.T) {
 }
 
 func TestTickExpiredDepositPeriod(t *testing.T) {
+	// TODO HV2: To fix this tests, we need to implement https://polygon.atlassian.net/browse/POS-2540
+	t.Skip("skipping test as it simApp staking module instead of heimdall-v2 custom stake module")
+
 	suite := createTestSuite(t)
 	app := suite.App
 	ctx := app.BaseApp.NewContext(false)
@@ -133,6 +142,9 @@ func TestTickExpiredDepositPeriod(t *testing.T) {
 }
 
 func TestTickMultipleExpiredDepositPeriod(t *testing.T) {
+	// TODO HV2: To fix this tests, we need to implement https://polygon.atlassian.net/browse/POS-2540
+	t.Skip("skipping test as it simApp staking module instead of heimdall-v2 custom stake module")
+
 	suite := createTestSuite(t)
 	app := suite.App
 	ctx := app.BaseApp.NewContext(false)
@@ -204,6 +216,9 @@ func TestTickMultipleExpiredDepositPeriod(t *testing.T) {
 }
 
 func TestTickPassedDepositPeriod(t *testing.T) {
+	// TODO HV2: To fix this tests, we need to implement https://polygon.atlassian.net/browse/POS-2540
+	t.Skip("skipping test as it simApp staking module instead of heimdall-v2 custom stake module")
+
 	suite := createTestSuite(t)
 	app := suite.App
 	ctx := app.BaseApp.NewContext(false)
@@ -251,6 +266,9 @@ func TestTickPassedDepositPeriod(t *testing.T) {
 }
 
 func TestTickPassedVotingPeriod(t *testing.T) {
+	// TODO HV2: To fix this tests, we need to implement https://polygon.atlassian.net/browse/POS-2540
+	t.Skip("skipping test as it simApp staking module instead of heimdall-v2 custom stake module")
+
 	testcases := []struct {
 		name      string
 		expedited bool

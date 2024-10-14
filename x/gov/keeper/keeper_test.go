@@ -51,7 +51,7 @@ func (suite *KeeperTestSuite) reset() {
 
 	// Populate the gov account with some coins, as the TestProposal we have
 	// is a MsgSend from the gov account.
-	coins := sdk.NewCoins(sdk.NewCoin("matic", sdkmath.NewInt(100000000000000000)))
+	coins := sdk.NewCoins(sdk.NewCoin("pol", sdkmath.NewInt(100000000000000000)))
 	err := bankKeeper.MintCoins(suite.ctx, minttypes.ModuleName, coins)
 	suite.NoError(err)
 	err = bankKeeper.SendCoinsFromModuleToModule(ctx, minttypes.ModuleName, types.ModuleName, coins)

@@ -13,6 +13,9 @@ import (
 )
 
 func TestImportExportQueues_ErrorUnconsistentState(t *testing.T) {
+	// TODO HV2: To fix this tests, we need to implement https://polygon.atlassian.net/browse/POS-2540
+	t.Skip("skipping test as it simApp staking module instead of heimdall-v2 custom stake module")
+
 	suite := createTestSuite(t)
 	app := suite.App
 	ctx := app.BaseApp.NewContext(false)
@@ -24,7 +27,7 @@ func TestImportExportQueues_ErrorUnconsistentState(t *testing.T) {
 					Depositor:  "me",
 					Amount: sdk.Coins{
 						sdk.NewCoin(
-							"matic",
+							"pol",
 							sdkmath.NewInt(1234),
 						),
 					},

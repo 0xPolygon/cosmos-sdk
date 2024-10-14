@@ -1,7 +1,6 @@
 package types_test
 
 import (
-	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -12,10 +11,7 @@ import (
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 )
 
-// TODO HV2: check differences in this file by looking at auth PR https://github.com/0xPolygon/cosmos-sdk/pull/3/
-//  then re-enable credentials checks in all these tests, when https://polygon.atlassian.net/browse/POS-2493 is done
-
-func TestNewModuleCrendentials(t *testing.T) {
+func TestNewModuleCredentials(t *testing.T) {
 	// wrong derivation keys
 	_, err := authtypes.NewModuleCredential("group", []byte{})
 	require.Error(t, err, "derivation keys must be non empty")
@@ -44,11 +40,11 @@ func TestNewModuleCrendentials(t *testing.T) {
 	require.NoError(t, err)
 	require.False(t, credential.Equals(c))
 
-	address := secp256k1.GenPrivKey().PubKey().Address()
+	address := sdk.AccAddress(secp256k1.GenPrivKey().PubKey().Address())
 	expected := sdk.MustAccAddressFromHex(address.String())
 	c, err = authtypes.NewModuleCredential("group", address)
 	require.NoError(t, err)
-	require.Equal(t, strings.ToLower(expected.String()), "0x"+strings.ToLower(address.String()))
+	require.Equal(t, expected.String(), address.String())
 }
 
 func TestNewBaseAccountWithPubKey(t *testing.T) {
