@@ -26,11 +26,7 @@ func (bc hexCodec) StringToBytes(hexAddr string) ([]byte, error) {
 		return []byte{}, errors.New("empty address string is not allowed")
 	}
 
-	hexAddr = strings.ToLower(hexAddr)
-
-	if !has0xPrefix(hexAddr) {
-		hexAddr = "0x" + hexAddr
-	}
+	hexAddr = "0x" + strings.TrimPrefix(strings.ToLower(hexAddr), "0x")
 
 	bz := common.FromHex(hexAddr)
 
@@ -51,21 +47,9 @@ func (bc hexCodec) BytesToString(bz []byte) (string, error) {
 		return "", err
 	}
 
-	hexAddr := common.Bytes2Hex(bz)
+	hexAddr := "0x" + strings.TrimPrefix(strings.ToLower(common.Bytes2Hex(bz)), "0x")
 
-	hexAddr = strings.ToLower(hexAddr)
-
-	if has0xPrefix(hexAddr) {
-		return hexAddr, nil
-	} else {
-		return "0x" + hexAddr, nil
-	}
-
-}
-
-// has0xPrefix validates str begins with '0x' or '0X'.
-func has0xPrefix(str string) bool {
-	return len(str) >= 2 && str[0] == '0' && (str[1] == 'x' || str[1] == 'X')
+	return hexAddr, nil
 }
 
 // VerifyAddressFormat verifies that the provided bytes form a valid address
