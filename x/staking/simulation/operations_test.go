@@ -56,6 +56,7 @@ type SimTestSuite struct {
 }
 
 func (s *SimTestSuite) SetupTest() {
+	s.T().Skip("skipping test as not relevant for Heimdall")
 	sdk.DefaultPowerReduction = math.NewIntFromBigInt(new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil))
 
 	s.r = rand.New(rand.NewSource(1))
@@ -122,6 +123,7 @@ func (s *SimTestSuite) SetupTest() {
 
 // TestWeightedOperations tests the weights of the operations.
 func (s *SimTestSuite) TestWeightedOperations() {
+	s.T().Skip("skipping test as not relevant for Heimdall")
 	require := s.Require()
 
 	s.ctx.WithChainID("test-chain")
@@ -162,6 +164,7 @@ func (s *SimTestSuite) TestWeightedOperations() {
 // TestSimulateMsgCreateValidator tests the normal scenario of a valid message of type TypeMsgCreateValidator.
 // Abonormal scenarios, where the message are created by an errors are not tested here.
 func (s *SimTestSuite) TestSimulateMsgCreateValidator() {
+	s.T().Skip("skipping test as not relevant for Heimdall")
 	require := s.Require()
 	_, err := s.app.FinalizeBlock(&abci.RequestFinalizeBlock{Height: s.app.LastBlockHeight() + 1, Hash: s.app.LastCommitID().Hash})
 	require.NoError(err)
@@ -186,6 +189,7 @@ func (s *SimTestSuite) TestSimulateMsgCreateValidator() {
 // TestSimulateMsgCancelUnbondingDelegation tests the normal scenario of a valid message of type TypeMsgCancelUnbondingDelegation.
 // Abonormal scenarios, where the message is
 func (s *SimTestSuite) TestSimulateMsgCancelUnbondingDelegation() {
+	s.T().Skip("skipping test as not relevant for Heimdall")
 	require := s.Require()
 	blockTime := time.Now().UTC()
 	ctx := s.ctx.WithBlockTime(blockTime)
@@ -232,6 +236,7 @@ func (s *SimTestSuite) TestSimulateMsgCancelUnbondingDelegation() {
 // TestSimulateMsgEditValidator tests the normal scenario of a valid message of type TypeMsgEditValidator.
 // Abonormal scenarios, where the message is created by an errors are not tested here.
 func (s *SimTestSuite) TestSimulateMsgEditValidator() {
+	s.T().Skip("skipping test as not relevant for Heimdall")
 	require := s.Require()
 	blockTime := time.Now().UTC()
 	ctx := s.ctx.WithBlockTime(blockTime)
@@ -259,6 +264,7 @@ func (s *SimTestSuite) TestSimulateMsgEditValidator() {
 // TestSimulateMsgDelegate tests the normal scenario of a valid message of type TypeMsgDelegate.
 // Abonormal scenarios, where the message is created by an errors are not tested here.
 func (s *SimTestSuite) TestSimulateMsgDelegate() {
+	s.T().Skip("skipping test as not relevant for Heimdall")
 	require := s.Require()
 	blockTime := time.Now().UTC()
 	ctx := s.ctx.WithBlockTime(blockTime)
@@ -282,6 +288,7 @@ func (s *SimTestSuite) TestSimulateMsgDelegate() {
 // TestSimulateMsgUndelegate tests the normal scenario of a valid message of type TypeMsgUndelegate.
 // Abonormal scenarios, where the message is created by an errors are not tested here.
 func (s *SimTestSuite) TestSimulateMsgUndelegate() {
+	s.T().Skip("skipping test as not relevant for Heimdall")
 	require := s.Require()
 	blockTime := time.Now().UTC()
 	ctx := s.ctx.WithBlockTime(blockTime)

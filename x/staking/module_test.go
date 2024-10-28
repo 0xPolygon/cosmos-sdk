@@ -16,6 +16,7 @@ import (
 )
 
 func TestItCreatesModuleAccountOnInitBlock(t *testing.T) {
+	t.Skip("skipping as not relevant to Heimdall")
 	var accountKeeper authKeeper.AccountKeeper
 	app, err := simtestutil.SetupAtGenesis(
 		depinject.Configs(

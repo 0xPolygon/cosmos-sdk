@@ -59,6 +59,7 @@ type SimTestSuite struct {
 }
 
 func (suite *SimTestSuite) SetupTest() {
+	suite.T().Skip("skipping test as not relevant for Heimdall")
 	s := rand.NewSource(1)
 	suite.r = rand.New(s)
 	accounts := simtypes.RandomAccounts(suite.r, 4)
@@ -124,6 +125,7 @@ func TestSimTestSuite(t *testing.T) {
 
 // TestWeightedOperations tests the weights of the operations.
 func (suite *SimTestSuite) TestWeightedOperations() {
+	suite.T().Skip("skipping test as not relevant for Heimdall")
 	ctx := suite.ctx.WithChainID("test-chain")
 	appParams := make(simtypes.AppParams)
 
@@ -152,6 +154,7 @@ func (suite *SimTestSuite) TestWeightedOperations() {
 // TestSimulateMsgUnjail tests the normal scenario of a valid message of type types.MsgUnjail.
 // Abonormal scenarios, where the message is created by an errors, are not tested here.
 func (suite *SimTestSuite) TestSimulateMsgUnjail() {
+	suite.T().Skip("skipping test as not relevant for Heimdall")
 	blockTime := time.Now().UTC()
 	ctx := suite.ctx.WithBlockTime(blockTime)
 

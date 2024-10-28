@@ -17,7 +17,7 @@ import (
 
 func TestEquivocation_Valid(t *testing.T) {
 	n, _ := time.Parse(time.RFC3339, "2006-01-02T15:04:05Z")
-	addr := sdk.ConsAddress("foo_________________")
+	addr := sdk.ConsAddress("0x000000000000000000000000000000000000dead")
 
 	e := types.Equivocation{
 		Height:           100,
@@ -32,8 +32,8 @@ func TestEquivocation_Valid(t *testing.T) {
 	require.Equal(t, e.GetConsensusAddress(address.NewHexCodec()).String(), e.ConsensusAddress)
 	require.Equal(t, e.GetHeight(), e.Height)
 	require.Equal(t, e.Route(), types.RouteEquivocation)
-	require.Equal(t, strings.ToUpper(hex.EncodeToString(e.Hash())), "1E10F9267BEA3A9A4AB5302C2C510CC1AFD7C54E232DA5B2E3360DFAFACF7A76")
-	require.Equal(t, "height:100 time:<seconds:1136214245 > power:1000000 consensus_address:\"cosmosvalcons1vehk7h6lta047h6lta047h6lta047h6l8m4r53\" ", e.String())
+	require.Equal(t, strings.ToUpper(hex.EncodeToString(e.Hash())), "7A0AAD3F62F722427B523F41CE0C1F345FEE740A33DB9643B23C5673782568EF")
+	require.Equal(t, "height:100 time:<seconds:1136214245 > power:1000000 ", e.String())
 	require.NoError(t, e.ValidateBasic())
 
 	require.Equal(t, int64(0), e.GetTotalPower())
@@ -43,7 +43,7 @@ func TestEquivocation_Valid(t *testing.T) {
 	require.Equal(t, e.Height, e.GetHeight())
 	require.Equal(t, types.RouteEquivocation, e.Route())
 	require.Equal(t, "1E10F9267BEA3A9A4AB5302C2C510CC1AFD7C54E232DA5B2E3360DFAFACF7A76", strings.ToUpper(hex.EncodeToString(e.Hash())))
-	require.Equal(t, "height:100 time:<seconds:1136214245 > power:1000000 consensus_address:\"cosmosvalcons1vehk7h6lta047h6lta047h6lta047h6l8m4r53\" ", e.String())
+	require.Equal(t, "height:100 time:<seconds:1136214245 > power:1000000 consensus_address:\"0x000000000000000000000000000000000000dead\" ", e.String())
 	require.NoError(t, e.ValidateBasic())
 }
 

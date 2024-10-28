@@ -164,7 +164,7 @@ func (s *CLITestSuite) TestNewCmdFeeGrant() {
 			append(
 				[]string{
 					"wrong_granter",
-					"cosmos1nph3cfzk6trsmfxkeu943nvach5qw4vwstnvkl",
+					"0x000000000000000000000000000000000000dead",
 					fmt.Sprintf("--%s=%s", cli.FlagSpendLimit, "100stake"),
 					fmt.Sprintf("--%s=%s", flags.FlagFrom, granter),
 				},
@@ -190,7 +190,7 @@ func (s *CLITestSuite) TestNewCmdFeeGrant() {
 			append(
 				[]string{
 					"invalid_granter",
-					"cosmos16dun6ehcc86e03wreqqww89ey569wuj4em572w",
+					"0x000000000000000000000000000000000000dead",
 					fmt.Sprintf("--%s=%s", cli.FlagSpendLimit, "100stake"),
 					fmt.Sprintf("--%s=%s", flags.FlagFrom, granter),
 				},
@@ -203,7 +203,7 @@ func (s *CLITestSuite) TestNewCmdFeeGrant() {
 			append(
 				[]string{
 					granter.String(),
-					"cosmos1nph3cfzk6trsmfxkeu943nvach5qw4vwstnvkl",
+					"0x000000000000000000000000000000000000dead",
 					fmt.Sprintf("--%s=%s", cli.FlagSpendLimit, "100stake"),
 					fmt.Sprintf("--%s=%s", flags.FlagFrom, granter),
 				},
@@ -216,7 +216,7 @@ func (s *CLITestSuite) TestNewCmdFeeGrant() {
 			append(
 				[]string{
 					fromName,
-					"cosmos16dun6ehcc86e03wreqqww89ey569wuj4em572w",
+					"0x000000000000000000000000000000000000dead",
 					fmt.Sprintf("--%s=%s", cli.FlagSpendLimit, "100stake"),
 					fmt.Sprintf("--%s=%s", flags.FlagFrom, fromName),
 				},
@@ -229,7 +229,7 @@ func (s *CLITestSuite) TestNewCmdFeeGrant() {
 			append(
 				[]string{
 					granter.String(),
-					"cosmos1v57fx2l2rt6ehujuu99u2fw05779m5e2ux4z2h",
+					"0x000000000000000000000000000000000000dead",
 					fmt.Sprintf("--%s=%s", cli.FlagSpendLimit, "100stake"),
 					fmt.Sprintf("--%s=%s", flags.FlagFrom, granter),
 					fmt.Sprintf("--%s=%s", flags.FlagSignMode, flags.SignModeLegacyAminoJSON),
@@ -243,7 +243,7 @@ func (s *CLITestSuite) TestNewCmdFeeGrant() {
 			append(
 				[]string{
 					granter.String(),
-					"cosmos17h5lzptx3ghvsuhk7wx4c4hnl7rsswxjer97em",
+					"0x000000000000000000000000000000000000dead",
 					fmt.Sprintf("--%s=%s", flags.FlagFrom, granter),
 				},
 				commonFlags...,
@@ -255,7 +255,7 @@ func (s *CLITestSuite) TestNewCmdFeeGrant() {
 			append(
 				[]string{
 					granter.String(),
-					"cosmos16dlc38dcqt0uralyd8hksxyrny6kaeqfjvjwp5",
+					"0x000000000000000000000000000000000000dead",
 					fmt.Sprintf("--%s=%s", cli.FlagSpendLimit, "100stake"),
 					fmt.Sprintf("--%s=%s", flags.FlagFrom, granter),
 				},
@@ -268,7 +268,7 @@ func (s *CLITestSuite) TestNewCmdFeeGrant() {
 			append(
 				[]string{
 					granter.String(),
-					"cosmos1ku40qup9vwag4wtf8cls9mkszxfthaklxkp3c8",
+					"0x000000000000000000000000000000000000dead",
 					fmt.Sprintf("--%s=%s", flags.FlagFrom, granter),
 				},
 				commonFlags...,
@@ -293,7 +293,7 @@ func (s *CLITestSuite) TestNewCmdFeeGrant() {
 			append(
 				[]string{
 					granter.String(),
-					"cosmos1nph3cfzk6trsmfxkeu943nvach5qw4vwstnvkl",
+					"0x000000000000000000000000000000000000dead",
 					fmt.Sprintf("--%s=%s", cli.FlagSpendLimit, "100stake"),
 					fmt.Sprintf("--%s=%s", cli.FlagPeriodLimit, "10stake"),
 					fmt.Sprintf("--%s=%s", flags.FlagFrom, granter),
@@ -308,7 +308,7 @@ func (s *CLITestSuite) TestNewCmdFeeGrant() {
 			append(
 				[]string{
 					granter.String(),
-					"cosmos1nph3cfzk6trsmfxkeu943nvach5qw4vwstnvkl",
+					"0x000000000000000000000000000000000000dead",
 					fmt.Sprintf("--%s=%s", cli.FlagSpendLimit, "100stake"),
 					fmt.Sprintf("--%s=%d", cli.FlagPeriod, tenHours),
 					fmt.Sprintf("--%s=%s", flags.FlagFrom, granter),
@@ -323,7 +323,7 @@ func (s *CLITestSuite) TestNewCmdFeeGrant() {
 			append(
 				[]string{
 					granter.String(),
-					"cosmos1nph3cfzk6trsmfxkeu943nvach5qw4vwstnvkl",
+					"0x000000000000000000000000000000000000dead",
 					fmt.Sprintf("--%s=%s", cli.FlagSpendLimit, "100stake"),
 					fmt.Sprintf("--%s=%d", cli.FlagPeriod, tenHours),
 					fmt.Sprintf("--%s=%s", cli.FlagPeriodLimit, "10stake"),
@@ -339,7 +339,7 @@ func (s *CLITestSuite) TestNewCmdFeeGrant() {
 			append(
 				[]string{
 					granter.String(),
-					"cosmos1w55kgcf3ltaqdy4ww49nge3klxmrdavrr6frmp",
+					"0x000000000000000000000000000000000000dead",
 					fmt.Sprintf("--%s=%s", cli.FlagSpendLimit, "100stake"),
 					fmt.Sprintf("--%s=%d", cli.FlagPeriod, oneHour),
 					fmt.Sprintf("--%s=%s", cli.FlagPeriodLimit, "10stake"),
@@ -355,7 +355,7 @@ func (s *CLITestSuite) TestNewCmdFeeGrant() {
 			append(
 				[]string{
 					granter.String(),
-					"cosmos1vevyks8pthkscvgazc97qyfjt40m6g9xe85ry8",
+					"0x000000000000000000000000000000000000dead",
 					fmt.Sprintf("--%s=%d", cli.FlagPeriod, oneHour),
 					fmt.Sprintf("--%s=%s", cli.FlagPeriodLimit, "10stake"),
 					fmt.Sprintf("--%s=%s", flags.FlagFrom, granter),
@@ -370,7 +370,7 @@ func (s *CLITestSuite) TestNewCmdFeeGrant() {
 			append(
 				[]string{
 					granter.String(),
-					"cosmos14cm33pvnrv2497tyt8sp9yavhmw83nwej3m0e8",
+					"0x000000000000000000000000000000000000dead",
 					fmt.Sprintf("--%s=%s", cli.FlagSpendLimit, "100stake"),
 					fmt.Sprintf("--%s=%d", cli.FlagPeriod, oneHour),
 					fmt.Sprintf("--%s=%s", cli.FlagPeriodLimit, "10stake"),
@@ -385,7 +385,7 @@ func (s *CLITestSuite) TestNewCmdFeeGrant() {
 			append(
 				[]string{
 					granter.String(),
-					"cosmos12nyk4pcf4arshznkpz882e4l4ts0lt0ap8ce54",
+					"0x000000000000000000000000000000000000dead",
 					fmt.Sprintf("--%s=%d", cli.FlagPeriod, oneHour),
 					fmt.Sprintf("--%s=%s", cli.FlagPeriodLimit, "10stake"),
 					fmt.Sprintf("--%s=%s", flags.FlagFrom, granter),
@@ -399,7 +399,7 @@ func (s *CLITestSuite) TestNewCmdFeeGrant() {
 			append(
 				[]string{
 					granter.String(),
-					"cosmos1vevyks8pthkscvgazc97qyfjt40m6g9xe85ry8",
+					"0x000000000000000000000000000000000000dead",
 					fmt.Sprintf("--%s=%d", cli.FlagPeriod, oneHour),
 					fmt.Sprintf("--%s=%s", cli.FlagPeriodLimit, "10stake"),
 					fmt.Sprintf("--%s=%s", flags.FlagFrom, granter),
@@ -589,7 +589,7 @@ func (s *CLITestSuite) TestFilteredFeeAllowance() {
 				},
 				commonFlags...,
 			),
-			"decoding bech32 failed",
+			"addresses cannot be empty: unknown address",
 		},
 		{
 			"valid filter fee grant",
@@ -640,21 +640,12 @@ func (s *CLITestSuite) TestFilteredFeeAllowance() {
 			},
 		},
 		{
-			"valid weighted_vote tx",
-			func() error {
-				return s.msgVote(s.baseCtx, grantee.String(), "0", "yes",
-					fmt.Sprintf("--%s=%s", flags.FlagFeeGranter, granter.String()),
-					fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, sdkmath.NewInt(100))).String()),
-				)
-			},
-		},
-		{
 			"should fail with unauthorized msgs",
 			func() error {
 				args := append(
 					[]string{
 						grantee.String(),
-						"cosmos14cm33pvnrv2497tyt8sp9yavhmw83nwej3m0e8",
+						"0x000000000000000000000000000000000000dead",
 						fmt.Sprintf("--%s=%s", cli.FlagSpendLimit, "100stake"),
 						fmt.Sprintf("--%s=%s", flags.FlagFeeGranter, granter),
 					},

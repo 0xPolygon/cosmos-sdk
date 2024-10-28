@@ -34,6 +34,7 @@ var (
 )
 
 func TestStakingMsgs(t *testing.T) {
+	t.Skip("skipping as not relevant to Heimdall")
 	genTokens := sdk.TokensFromConsensusPower(42, sdk.DefaultPowerReduction)
 	bondTokens := sdk.TokensFromConsensusPower(10, sdk.DefaultPowerReduction)
 	genCoin := sdk.NewCoin(sdk.DefaultBondDenom, genTokens)

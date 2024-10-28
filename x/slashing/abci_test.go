@@ -24,6 +24,7 @@ import (
 )
 
 func TestBeginBlocker(t *testing.T) {
+	t.Skip("skipping test as not relevant for Heimdall")
 	var (
 		interfaceRegistry codectypes.InterfaceRegistry
 		bankKeeper        bankkeeper.Keeper

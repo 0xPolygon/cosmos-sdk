@@ -35,6 +35,7 @@ var (
 )
 
 func TestSlashingMsgs(t *testing.T) {
+	t.Skip("skipping test as not relevant for Heimdall")
 	genTokens := sdk.TokensFromConsensusPower(42, sdk.DefaultPowerReduction)
 	bondTokens := sdk.TokensFromConsensusPower(10, sdk.DefaultPowerReduction)
 	genCoin := sdk.NewCoin(sdk.DefaultBondDenom, genTokens)

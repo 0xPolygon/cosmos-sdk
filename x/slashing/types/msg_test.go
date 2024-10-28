@@ -1,6 +1,7 @@
 package types
 
 import (
+	"github.com/cosmos/cosmos-sdk/codec/address"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -11,14 +12,16 @@ import (
 )
 
 func TestMsgUnjailGetSignBytes(t *testing.T) {
-	addr := sdk.AccAddress("abcd")
+	ac := address.NewHexCodec()
+	addr, err := ac.StringToBytes("0x000000000000000000000000000000000000dead")
+	require.NoError(t, err)
 	msg := NewMsgUnjail(sdk.ValAddress(addr).String())
 	pc := codec.NewProtoCodec(types.NewInterfaceRegistry())
 	bytes, err := pc.MarshalAminoJSON(msg)
 	require.NoError(t, err)
 	require.Equal(
 		t,
-		`{"type":"cosmos-sdk/MsgUnjail","value":{"address":"cosmosvaloper1v93xxeqhg9nn6"}}`,
+		`{"type":"cosmos-sdk/MsgUnjail","value":{"address":"0x000000000000000000000000000000000000dead"}}`,
 		string(bytes),
 	)
 }

@@ -83,7 +83,7 @@ func (s *KeeperTestSuite) TestSoftwareUpgrade() {
 }
 
 func (s *KeeperTestSuite) TestCancelUpgrade() {
-	govAccAddr := "cosmos10d07y265gmmuvt4z0w9aw880jnsr700j6zn9kn" // TODO
+	govAccAddr := "0x7b5fe22b5446f7c62ea27b8bd71cef94e03f3df2" // TODO
 	// govAccAddr := s.govKeeper.GetGovernanceAccount(s.ctx).GetAddress().String()
 	err := s.upgradeKeeper.ScheduleUpgrade(s.ctx, types.Plan{
 		Name:   "some name",

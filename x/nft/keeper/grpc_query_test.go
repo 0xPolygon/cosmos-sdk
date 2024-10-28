@@ -44,7 +44,7 @@ func (s *TestSuite) TestBalance() {
 					Owner:   "owner",
 				}
 			},
-			"decoding bech32 failed",
+			"addresses cannot be empty: unknown address",
 			0,
 			func(index int, require *require.Assertions, res *nft.QueryBalanceResponse, expBalance uint64) {},
 		},

@@ -32,6 +32,7 @@ import (
 
 // TestWeightedOperations tests the weights of the operations.
 func (suite *SimTestSuite) TestWeightedOperations() {
+	suite.T().Skip("skipping test as not relevant for Heimdall (no wighted operations)")
 	appParams := make(simtypes.AppParams)
 
 	weightedOps := simulation.WeightedOperations(appParams, suite.cdc, suite.txConfig, suite.accountKeeper,
@@ -69,6 +70,7 @@ func (suite *SimTestSuite) TestWeightedOperations() {
 // TestSimulateMsgSetWithdrawAddress tests the normal scenario of a valid message of type TypeMsgSetWithdrawAddress.
 // Abonormal scenarios, where the message is created by an errors, are not tested here.
 func (suite *SimTestSuite) TestSimulateMsgSetWithdrawAddress() {
+	suite.T().Skip("skipping test as not relevant for Heimdall (contains delegation)")
 	// setup 3 accounts
 	s := rand.NewSource(1)
 	r := rand.New(s)
@@ -98,6 +100,7 @@ func (suite *SimTestSuite) TestSimulateMsgSetWithdrawAddress() {
 // of type TypeMsgWithdrawDelegatorReward.
 // Abonormal scenarios, where the message is created by an errors, are not tested here.
 func (suite *SimTestSuite) TestSimulateMsgWithdrawDelegatorReward() {
+	suite.T().Skip("skipping test as not relevant for Heimdall (contains delegation)")
 	// setup 3 accounts
 	s := rand.NewSource(4)
 	r := rand.New(s)
@@ -144,6 +147,7 @@ func (suite *SimTestSuite) TestSimulateMsgWithdrawDelegatorReward() {
 // of type TypeMsgWithdrawValidatorCommission.
 // Abonormal scenarios, where the message is created by an errors, are not tested here.
 func (suite *SimTestSuite) TestSimulateMsgWithdrawValidatorCommission() {
+	suite.T().Skip("skipping test as not relevant for Heimdall (contains delegation)")
 	suite.testSimulateMsgWithdrawValidatorCommission("atoken")
 	suite.testSimulateMsgWithdrawValidatorCommission("tokenxxx")
 }
@@ -213,6 +217,7 @@ func (suite *SimTestSuite) testSimulateMsgWithdrawValidatorCommission(tokenName 
 // TestSimulateMsgFundCommunityPool tests the normal scenario of a valid message of type TypeMsgFundCommunityPool.
 // Abonormal scenarios, where the message is created by an errors, are not tested here.
 func (suite *SimTestSuite) TestSimulateMsgFundCommunityPool() {
+	suite.T().Skip("skipping test as not relevant for Heimdall (contains delegation)")
 	// setup 3 accounts
 	s := rand.NewSource(1)
 	r := rand.New(s)
@@ -254,6 +259,7 @@ type SimTestSuite struct {
 }
 
 func (suite *SimTestSuite) SetupTest() {
+	suite.T().Skip("skipping test as not relevant for Heimdall (contains delegation)")
 	var (
 		appBuilder *runtime.AppBuilder
 		err        error

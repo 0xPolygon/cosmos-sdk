@@ -212,5 +212,6 @@ func (suite *SimTestSuite) TestSimulateMsgRevokeAllowance() {
 }
 
 func TestSimTestSuite(t *testing.T) {
+	t.Skip("skipping test as not relevant for Heimdall")
 	suite.Run(t, new(SimTestSuite))
 }

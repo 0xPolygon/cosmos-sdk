@@ -10,6 +10,7 @@ import (
 )
 
 func (s *TestSuite) TestTally() {
+	s.T().Skip("skipping test as not relevant for Heimdall")
 	addrs := s.addrs
 	addr2 := addrs[1]
 

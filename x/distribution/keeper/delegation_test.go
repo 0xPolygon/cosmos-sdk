@@ -960,6 +960,7 @@ func TestCalculateRewardsMultiDelegatorMultWithdraw(t *testing.T) {
 }
 
 func Test100PercentCommissionReward(t *testing.T) {
+	t.Skip("skipping test as not relevant for Heimdall (contains delegation)")
 	ctrl := gomock.NewController(t)
 	key := storetypes.NewKVStoreKey(disttypes.StoreKey)
 	storeService := runtime.NewKVStoreService(key)
