@@ -206,7 +206,7 @@ func (s *CLITestSuite) TestCLITxGrantAuthorization() {
 		{
 			"Invalid granter Address",
 			[]string{
-				"grantee_addr",
+				"0x000000000000000000000000000000000000dead",
 				"send",
 				fmt.Sprintf("--%s=100stake", cli.FlagSpendLimit),
 				fmt.Sprintf("--%s=%s", flags.FlagFrom, "granter"),
@@ -227,7 +227,7 @@ func (s *CLITestSuite) TestCLITxGrantAuthorization() {
 				fmt.Sprintf("--%s=%d", cli.FlagExpiration, twoHours),
 			},
 			true,
-			"invalid separator index",
+			"addresses cannot be empty: unknown address",
 		},
 		{
 			"Invalid spend limit",

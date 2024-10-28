@@ -45,6 +45,7 @@ type SimTestSuite struct {
 }
 
 func (suite *SimTestSuite) SetupTest() {
+	suite.T().Skip("skipping test as not relevant for Heimdall")
 	app, err := simtestutil.Setup(
 		depinject.Configs(
 			testutil.AppConfig,
@@ -64,6 +65,7 @@ func (suite *SimTestSuite) SetupTest() {
 }
 
 func (suite *SimTestSuite) TestWeightedOperations() {
+	suite.T().Skip("skipping test as not relevant for Heimdall")
 	cdc := suite.codec
 	appParams := make(simtypes.AppParams)
 
@@ -116,6 +118,7 @@ func (suite *SimTestSuite) getTestingAccounts(r *rand.Rand, n int) []simtypes.Ac
 }
 
 func (suite *SimTestSuite) TestSimulateGrant() {
+	suite.T().Skip("skipping test as not relevant for Heimdall")
 	s := rand.NewSource(1)
 	r := rand.New(s)
 	accounts := suite.getTestingAccounts(r, 2)
@@ -145,6 +148,7 @@ func (suite *SimTestSuite) TestSimulateGrant() {
 }
 
 func (suite *SimTestSuite) TestSimulateRevoke() {
+	suite.T().Skip("skipping test as not relevant for Heimdall")
 	// setup 3 accounts
 	s := rand.NewSource(2)
 	r := rand.New(s)
@@ -182,6 +186,7 @@ func (suite *SimTestSuite) TestSimulateRevoke() {
 }
 
 func (suite *SimTestSuite) TestSimulateExec() {
+	suite.T().Skip("skipping test as not relevant for Heimdall")
 	// setup 3 accounts
 	s := rand.NewSource(1)
 	r := rand.New(s)
