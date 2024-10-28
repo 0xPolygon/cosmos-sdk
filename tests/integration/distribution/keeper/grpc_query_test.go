@@ -73,6 +73,7 @@ func TestGRPCParams(t *testing.T) {
 }
 
 func TestGRPCValidatorOutstandingRewards(t *testing.T) {
+	t.Skip("skipping test as not relevant to Heimdall (contains delegation)")
 	t.Parallel()
 	f := initFixture(t)
 
@@ -150,6 +151,7 @@ func TestGRPCValidatorOutstandingRewards(t *testing.T) {
 }
 
 func TestGRPCValidatorCommission(t *testing.T) {
+	t.Skip("skipping test as not relevant to Heimdall (contains delegation)")
 	t.Parallel()
 	f := initFixture(t)
 
@@ -472,6 +474,7 @@ func TestGRPCCommunityPool(t *testing.T) {
 }
 
 func TestGRPCDelegationRewards(t *testing.T) {
+	t.Skip("skipping test as not relevant to Heimdall (contains delegation)")
 	t.Parallel()
 	f := initFixture(t)
 

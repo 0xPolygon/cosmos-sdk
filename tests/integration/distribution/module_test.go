@@ -16,6 +16,7 @@ import (
 )
 
 func TestItCreatesModuleAccountOnInitBlock(t *testing.T) {
+	t.Skip("skipping test as not relevant to Heimdall (contains delegation)")
 	var accountKeeper authkeeper.AccountKeeper
 
 	app, err := simtestutil.SetupAtGenesis(

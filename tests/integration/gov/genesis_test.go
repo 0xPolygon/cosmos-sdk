@@ -59,6 +59,7 @@ var appConfig = configurator.NewAppConfig(
 )
 
 func TestImportExportQueues(t *testing.T) {
+	t.Skip("skipping test as not relevant to Heimdall (contains delegation)")
 	var err error
 
 	s1 := suite{}

@@ -106,6 +106,7 @@ func (s *CLITestSuite) SetupSuite() {
 }
 
 func (s *CLITestSuite) TestCLIValidateSignatures() {
+	s.T().Skip("skipping test as not relevant to Heimdall (contains multisig)")
 	sendTokens := sdk.NewCoins(
 		sdk.NewCoin("testtoken", math.NewInt(10)),
 		sdk.NewCoin("stake", math.NewInt(10)))
@@ -169,6 +170,7 @@ func (s *CLITestSuite) TestCLISignBatch() {
 }
 
 func (s *CLITestSuite) TestCLISignBatchTotalFees() {
+	s.T().Skip("skipping test as not relevant to Heimdall (contains multisig)")
 	txCfg := s.clientCtx.TxConfig
 	s.clientCtx.HomeDir = strings.Replace(s.clientCtx.HomeDir, "simd", "simcli", 1)
 
@@ -389,6 +391,7 @@ func (s *CLITestSuite) TestCLIQueryTxsCmdByEvents() {
 }
 
 func (s *CLITestSuite) TestCLISendGenerateSignAndBroadcast() {
+	s.T().Skip("skipping test as not relevant to Heimdall (contains multisig)")
 	sendTokens := sdk.NewCoin("stake", sdk.TokensFromConsensusPower(10, sdk.DefaultPowerReduction))
 
 	normalGeneratedTx, err := s.createBankMsg(s.clientCtx, s.val,
@@ -494,6 +497,7 @@ func (s *CLITestSuite) TestCLISendGenerateSignAndBroadcast() {
 }
 
 func (s *CLITestSuite) TestCLIMultisignInsufficientCosigners() {
+	s.T().Skip("skipping test as not relevant to Heimdall (contains multisig)")
 	// Fetch account and a multisig info
 	account1, err := s.clientCtx.Keyring.Key("newAccount1")
 	s.Require().NoError(err)
@@ -585,6 +589,7 @@ func (s *CLITestSuite) TestCLIEncode() {
 }
 
 func (s *CLITestSuite) TestCLIMultisignSortSignatures() {
+	s.T().Skip("skipping test as not relevant to Heimdall (contains multisig)")
 	// Generate 2 accounts and a multisig.
 	account1, err := s.clientCtx.Keyring.Key("newAccount1")
 	s.Require().NoError(err)
@@ -664,6 +669,7 @@ func (s *CLITestSuite) TestCLIMultisignSortSignatures() {
 }
 
 func (s *CLITestSuite) TestSignWithMultisig() {
+	s.T().Skip("skipping test as not relevant to Heimdall (contains multisig)")
 	// Generate a account for signing.
 	account1, err := s.clientCtx.Keyring.Key("newAccount1")
 	s.Require().NoError(err)
@@ -705,6 +711,7 @@ func (s *CLITestSuite) TestSignWithMultisig() {
 }
 
 func (s *CLITestSuite) TestCLIMultisign() {
+	s.T().Skip("skipping test as not relevant to Heimdall (contains multisig)")
 	// Generate 2 accounts and a multisig.
 	account1, err := s.clientCtx.Keyring.Key("newAccount1")
 	s.Require().NoError(err)
@@ -774,6 +781,7 @@ func (s *CLITestSuite) TestCLIMultisign() {
 }
 
 func (s *CLITestSuite) TestSignBatchMultisig() {
+	s.T().Skip("skipping test as not relevant to Heimdall (contains multisig)")
 	// Fetch 2 accounts and a multisig.
 	account1, err := s.clientCtx.Keyring.Key("newAccount1")
 	s.Require().NoError(err)
@@ -858,9 +866,9 @@ func (s *CLITestSuite) TestGetBroadcastCommandWithoutOfflineFlag() {
 	// Create new file with tx
 	builder := txCfg.NewTxBuilder()
 	builder.SetGasLimit(200000)
-	from, err := s.ac.StringToBytes("cosmos1cxlt8kznps92fwu3j6npahx4mjfutydyene2qw")
+	from, err := s.ac.StringToBytes("0x000000000000000000000000000000000000dead")
 	s.Require().NoError(err)
-	to, err := s.ac.StringToBytes("cosmos1cxlt8kznps92fwu3j6npahx4mjfutydyene2qw")
+	to, err := s.ac.StringToBytes("0x000000000000000000000000000000000000dead")
 	s.Require().NoError(err)
 	err = builder.SetMsgs(banktypes.NewMsgSend(from, to, sdk.Coins{sdk.NewInt64Coin("stake", 10000)}))
 	s.Require().NoError(err)
@@ -880,6 +888,7 @@ func (s *CLITestSuite) TestGetBroadcastCommandWithoutOfflineFlag() {
 // public key doesn't cause any error in the RPC layer (broadcast).
 // See https://github.com/cosmos/cosmos-sdk/issues/7585 for more details.
 func (s *CLITestSuite) TestTxWithoutPublicKey() {
+	s.T().Skip("skipping test as not relevant to Heimdall (contains multisig)")
 	txCfg := s.clientCtx.TxConfig
 
 	// Create a txBuilder with an unsigned tx.
@@ -930,6 +939,7 @@ func (s *CLITestSuite) TestTxWithoutPublicKey() {
 // signatures using the CLI with Amino signing mode. Finally, send the
 // transaction to the blockchain.
 func (s *CLITestSuite) TestSignWithMultiSignersAminoJSON() {
+	s.T().Skip("skipping test as not relevant to Heimdall (contains multisig)")
 	val0, val1 := s.val, s.val1
 	val0Coin := sdk.NewCoin("test1token", math.NewInt(10))
 	val1Coin := sdk.NewCoin("test2token", math.NewInt(10))

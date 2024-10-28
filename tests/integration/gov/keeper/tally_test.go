@@ -89,9 +89,10 @@ func TestTallyOnlyValidatorsAllYes(t *testing.T) {
 	assert.Assert(t, ok)
 	passes, burnDeposits, tallyResults, _ := f.govKeeper.Tally(ctx, proposal)
 
-	assert.Assert(t, passes)
+	// HV2: weighted operations not allowed
+	assert.Assert(t, !passes)
 	assert.Assert(t, burnDeposits == false)
-	assert.Assert(t, tallyResults.Equals(v1.EmptyTallyResult()) == false)
+	assert.Assert(t, tallyResults.Equals(v1.EmptyTallyResult()) == true)
 }
 
 func TestTallyOnlyValidators51No(t *testing.T) {
@@ -144,9 +145,10 @@ func TestTallyOnlyValidators51Yes(t *testing.T) {
 	assert.Assert(t, ok)
 	passes, burnDeposits, tallyResults, _ := f.govKeeper.Tally(ctx, proposal)
 
-	assert.Assert(t, passes)
+	// HV2: weighted operations not allowed
+	assert.Assert(t, !passes)
 	assert.Assert(t, burnDeposits == false)
-	assert.Assert(t, tallyResults.Equals(v1.EmptyTallyResult()) == false)
+	assert.Assert(t, tallyResults.Equals(v1.EmptyTallyResult()) == true)
 }
 
 func TestTallyOnlyValidatorsVetoed(t *testing.T) {
@@ -174,8 +176,9 @@ func TestTallyOnlyValidatorsVetoed(t *testing.T) {
 	passes, burnDeposits, tallyResults, _ := f.govKeeper.Tally(ctx, proposal)
 
 	assert.Assert(t, passes == false)
-	assert.Assert(t, burnDeposits)
-	assert.Assert(t, tallyResults.Equals(v1.EmptyTallyResult()) == false)
+	// HV2: not burning in heimdall
+	assert.Assert(t, !burnDeposits)
+	assert.Assert(t, tallyResults.Equals(v1.EmptyTallyResult()) == true)
 }
 
 func TestTallyOnlyValidatorsAbstainPasses(t *testing.T) {
@@ -202,9 +205,10 @@ func TestTallyOnlyValidatorsAbstainPasses(t *testing.T) {
 	assert.Assert(t, ok)
 	passes, burnDeposits, tallyResults, _ := f.govKeeper.Tally(ctx, proposal)
 
-	assert.Assert(t, passes)
+	// HV2: weighted operations not allowed
+	assert.Assert(t, !passes)
 	assert.Assert(t, burnDeposits == false)
-	assert.Assert(t, tallyResults.Equals(v1.EmptyTallyResult()) == false)
+	assert.Assert(t, tallyResults.Equals(v1.EmptyTallyResult()) == true)
 }
 
 func TestTallyOnlyValidatorsAbstainFails(t *testing.T) {
@@ -233,7 +237,8 @@ func TestTallyOnlyValidatorsAbstainFails(t *testing.T) {
 
 	assert.Assert(t, passes == false)
 	assert.Assert(t, burnDeposits == false)
-	assert.Assert(t, tallyResults.Equals(v1.EmptyTallyResult()) == false)
+	// HV2: weighted operations not allowed
+	assert.Assert(t, tallyResults.Equals(v1.EmptyTallyResult()) == true)
 }
 
 func TestTallyOnlyValidatorsNonVoter(t *testing.T) {
@@ -262,10 +267,12 @@ func TestTallyOnlyValidatorsNonVoter(t *testing.T) {
 
 	assert.Assert(t, passes == false)
 	assert.Assert(t, burnDeposits == false)
-	assert.Assert(t, tallyResults.Equals(v1.EmptyTallyResult()) == false)
+	// HV2: weighted operations not allowed
+	assert.Assert(t, tallyResults.Equals(v1.EmptyTallyResult()) == true)
 }
 
 func TestTallyDelgatorOverride(t *testing.T) {
+	t.Skip("skipping tests as not relevant for Heimdall (contains delegation)")
 	t.Parallel()
 
 	f := initFixture(t)
@@ -305,6 +312,7 @@ func TestTallyDelgatorOverride(t *testing.T) {
 }
 
 func TestTallyDelgatorInherit(t *testing.T) {
+	t.Skip("skipping test as not relevant for Heimdall (contains delegation)")
 	t.Parallel()
 
 	f := initFixture(t)
@@ -343,6 +351,7 @@ func TestTallyDelgatorInherit(t *testing.T) {
 }
 
 func TestTallyDelgatorMultipleOverride(t *testing.T) {
+	t.Skip("skipping test as not relevant for Heimdall (contains delegation)")
 	t.Parallel()
 
 	f := initFixture(t)
@@ -386,6 +395,7 @@ func TestTallyDelgatorMultipleOverride(t *testing.T) {
 }
 
 func TestTallyDelgatorMultipleInherit(t *testing.T) {
+	t.Skip("skipping test as not relevant for Heimdall (contains delegation)")
 	t.Parallel()
 
 	f := initFixture(t)
@@ -430,6 +440,7 @@ func TestTallyDelgatorMultipleInherit(t *testing.T) {
 }
 
 func TestTallyJailedValidator(t *testing.T) {
+	t.Skip("skipping test as not relevant for Heimdall (contains delegation)")
 	t.Parallel()
 
 	f := initFixture(t)
@@ -476,6 +487,7 @@ func TestTallyJailedValidator(t *testing.T) {
 }
 
 func TestTallyValidatorMultipleDelegations(t *testing.T) {
+	t.Skip("skipping test as not relevant for Heimdall (contains delegation)")
 	t.Parallel()
 
 	f := initFixture(t)

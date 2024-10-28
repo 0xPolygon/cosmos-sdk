@@ -89,7 +89,8 @@ func TestGRPCQueryTally(t *testing.T) {
 
 				expRes = &v1.QueryTallyResultResponse{
 					Tally: &v1.TallyResult{
-						YesCount:        math.NewInt(3 * 5 * 1000000).String(),
+						// HV2: weighted operations not allowed
+						YesCount:        "0",
 						NoCount:         "0",
 						AbstainCount:    "0",
 						NoWithVetoCount: "0",
@@ -211,7 +212,8 @@ func TestLegacyGRPCQueryTally(t *testing.T) {
 
 				expRes = &v1beta1.QueryTallyResultResponse{
 					Tally: v1beta1.TallyResult{
-						Yes:        math.NewInt(3 * 5 * 1000000),
+						// HV2: weighted operations not allowed
+						Yes:        math.NewInt(0),
 						No:         math.NewInt(0),
 						Abstain:    math.NewInt(0),
 						NoWithVeto: math.NewInt(0),

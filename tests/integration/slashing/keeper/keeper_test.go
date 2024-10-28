@@ -136,6 +136,7 @@ func initFixture(t testing.TB) *fixture {
 }
 
 func TestUnJailNotBonded(t *testing.T) {
+	t.Skip("skipping tests as not relevant for Heimdall (contains delegation)")
 	t.Parallel()
 	f := initFixture(t)
 
@@ -215,6 +216,7 @@ func TestUnJailNotBonded(t *testing.T) {
 // Ensure that SigningInfo.StartHeight is set correctly
 // and that they are not immediately jailed
 func TestHandleNewValidator(t *testing.T) {
+	t.Skip("skipping tests as not relevant for Heimdall (contains delegation)")
 	t.Parallel()
 	f := initFixture(t)
 
@@ -271,6 +273,7 @@ func TestHandleNewValidator(t *testing.T) {
 // Test a jailed validator being "down" twice
 // Ensure that they're only slashed once
 func TestHandleAlreadyJailed(t *testing.T) {
+	t.Skip("skipping tests as not relevant for Heimdall (contains delegation)")
 	t.Parallel()
 	f := initFixture(t)
 
@@ -336,6 +339,7 @@ func TestHandleAlreadyJailed(t *testing.T) {
 // Ensure that missed blocks are tracked correctly and that
 // the start height of the signing info is reset correctly
 func TestValidatorDippingInAndOut(t *testing.T) {
+	t.Skip("skipping tests as not relevant for Heimdall (contains delegation)")
 	t.Parallel()
 	f := initFixture(t)
 

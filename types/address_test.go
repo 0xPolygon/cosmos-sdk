@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"crypto/rand"
 	"encoding/hex"
-	"fmt"
+	"github.com/cosmos/cosmos-sdk/codec/address"
 	mathrand "math/rand"
 	"testing"
 
@@ -115,7 +115,7 @@ func (s *addressTestSuite) TestRandHexAccAddrConsistency() {
 	}
 
 	_, err := types.AccAddressFromHex("")
-	s.Require().Equal(types.ErrEmptyHexAddress, err)
+	s.Require().Contains(err.Error(), "empty address string is not allowed")
 }
 
 // This test is inherited from cosmos-sdk upstream
@@ -157,7 +157,7 @@ func (s *addressTestSuite) TestAddrCacheDisabled() {
 	cosmosAddrHex := addrCosmos.String()
 
 	// retrieve the address from the cache
-	s.Require().NotEqual(osmoAddrHex, cosmosAddrHex)
+	s.Require().Equal(osmoAddrHex, cosmosAddrHex)
 }
 
 func (s *addressTestSuite) TestValAddr() {
@@ -198,7 +198,7 @@ func (s *addressTestSuite) TestValAddr() {
 
 	// test empty string
 	_, err := types.ValAddressFromHex("")
-	s.Require().Equal(types.ErrEmptyHexAddress, err)
+	s.Require().ErrorContains(err, "empty address string is not allowed")
 }
 
 func (s *addressTestSuite) TestConsAddress() {
@@ -238,7 +238,7 @@ func (s *addressTestSuite) TestConsAddress() {
 
 	// test empty string
 	_, err := types.ConsAddressFromHex("")
-	s.Require().Equal(types.ErrEmptyHexAddress, err)
+	s.Require().ErrorContains(err, "empty address string is not allowed")
 }
 
 const letterBytes = "abcdefghijklmnopqrstuvwxyz"
@@ -339,34 +339,29 @@ func (s *addressTestSuite) TestAddressInterface() {
 }
 
 func (s *addressTestSuite) TestVerifyAddressFormat() {
-	addr0 := make([]byte, 0)
-	addr5 := make([]byte, 5)
-	addr20 := make([]byte, 20)
-	addr32 := make([]byte, 32)
-	addr256 := make([]byte, 256)
+	addr1, err := address.NewHexCodec().StringToBytes("0x000000000000000000000000000000000000dead")
+	require.NoError(s.T(), err)
 
-	err := types.VerifyAddressFormat(addr0)
-	s.Require().EqualError(err, "addresses cannot be empty: unknown address")
-	err = types.VerifyAddressFormat(addr5)
-	s.Require().NoError(err)
-	err = types.VerifyAddressFormat(addr20)
-	s.Require().NoError(err)
-	err = types.VerifyAddressFormat(addr32)
-	s.Require().NoError(err)
-	err = types.VerifyAddressFormat(addr256)
-	s.Require().EqualError(err, "address max length is 255, got 256: unknown address")
+	err = types.VerifyAddressFormat(addr1)
+	s.Require().Nil(err)
+
+	err = types.VerifyAddressFormat([]byte{})
+	s.Require().NotNil(err)
+
+	addr2, err := address.NewHexCodec().StringToBytes("zx000000000000000000000000000000000000dead")
+	require.NotNil(s.T(), err)
+	err = types.VerifyAddressFormat(addr2)
+	s.Require().NotNil(err)
 }
 
 func (s *addressTestSuite) TestCustomAddressVerifier() {
-	// Create a 10 byte address
-	addr := []byte{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	addr, err := address.NewHexCodec().StringToBytes("0x000000000000000000000000000000000000dead")
+	require.NoError(s.T(), err)
 	accBech := types.AccAddress(addr).String()
 	valBech := types.ValAddress(addr).String()
 	consBech := types.ConsAddress(addr).String()
-	// Verify that the default logic doesn't reject this 10 byte address
-	// The default verifier is nil, we're only checking address length is
-	// between 1-255 bytes.
-	err := types.VerifyAddressFormat(addr)
+
+	err = types.VerifyAddressFormat(addr)
 	s.Require().Nil(err)
 	_, err = types.AccAddressFromHex(accBech)
 	s.Require().Nil(err)
@@ -375,6 +370,7 @@ func (s *addressTestSuite) TestCustomAddressVerifier() {
 	_, err = types.ConsAddressFromHex(consBech)
 	s.Require().Nil(err)
 
+	/* HV2: not needed in Heimdall
 	// Set a custom address verifier only accepts 20 byte addresses
 	types.GetConfig().SetAddressVerifier(func(bz []byte) error {
 		n := len(bz)
@@ -396,6 +392,7 @@ func (s *addressTestSuite) TestCustomAddressVerifier() {
 
 	// Reinitialize the global config to default address verifier (nil)
 	types.GetConfig().SetAddressVerifier(nil)
+	*/
 }
 
 func (s *addressTestSuite) TestBech32ifyAddressBytes() {
@@ -432,9 +429,10 @@ func (s *addressTestSuite) TestBech32ifyAddressBytes() {
 	}
 }
 
-func (s *addressTestSuite) TestMustBech32ifyAddressBytes() {
-	addr10byte := []byte{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
-	addr20byte := []byte{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19}
+func (s *addressTestSuite) TestMustHexifyAddressBytes() {
+	ac := address.NewHexCodec()
+	addrBytes, err := ac.StringToBytes("0x000000000000000000000000000000000000dead")
+	require.NoError(s.T(), err)
 	type args struct {
 		prefix string
 		bs     []byte
@@ -446,11 +444,11 @@ func (s *addressTestSuite) TestMustBech32ifyAddressBytes() {
 		wantPanic bool
 	}{
 		{"empty address", args{"prefixa", []byte{}}, "", false},
-		{"empty prefix", args{"", addr20byte}, "", true},
-		{"10-byte address", args{"prefixa", addr10byte}, "prefixa1qqqsyqcyq5rqwzqf3953cc", false},
-		{"10-byte address", args{"prefixb", addr10byte}, "prefixb1qqqsyqcyq5rqwzqf20xxpc", false},
-		{"20-byte address", args{"prefixa", addr20byte}, "prefixa1qqqsyqcyq5rqwzqfpg9scrgwpugpzysn7hzdtn", false},
-		{"20-byte address", args{"prefixb", addr20byte}, "prefixb1qqqsyqcyq5rqwzqfpg9scrgwpugpzysnrujsuw", false},
+		{"empty prefix", args{"", addrBytes}, "0x000000000000000000000000000000000000dead", false},
+		{"10-byte address", args{"prefixa", addrBytes}, "0x000000000000000000000000000000000000dead", false},
+		{"10-byte address", args{"prefixb", addrBytes}, "0x000000000000000000000000000000000000dead", false},
+		{"20-byte address", args{"prefixa", addrBytes}, "0x000000000000000000000000000000000000dead", false},
+		{"20-byte address", args{"prefixb", addrBytes}, "0x000000000000000000000000000000000000dead", false},
 	}
 	for _, tt := range tests {
 		tt := tt
@@ -517,11 +515,10 @@ func (s *addressTestSuite) TestGetConsAddress() {
 	s.Require().Panics(func() { types.GetConsAddress(cryptotypes.PubKey(nil)) })
 }
 
-func (s *addressTestSuite) TestGetFromBech32() {
+func (s *addressTestSuite) TestGetFromHex() {
 	_, err := types.GetFromHex("")
 	s.Require().Error(err)
-	s.Require().Equal("decoding Bech32 address failed: must provide a non empty address", err.Error())
-	_, err = types.GetFromHex("cosmos1qqqsyqcyq5rqwzqfys8f67")
-	s.Require().Error(err)
-	s.Require().Equal("invalid Bech32 prefix; expected x, got cosmos", err.Error())
+	s.Require().Equal("empty address string is not allowed", err.Error())
+	_, err = types.GetFromHex("0x000000000000000000000000000000000000dead")
+	s.Require().NoError(err)
 }

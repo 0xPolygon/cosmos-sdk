@@ -17,6 +17,7 @@ import (
 )
 
 func TestCancelUnbondingDelegation(t *testing.T) {
+	t.Skip("skipping test as not relevant for Heimdall (contains delegation)")
 	t.Parallel()
 	f := initFixture(t)
 

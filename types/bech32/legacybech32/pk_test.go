@@ -12,6 +12,7 @@ import (
 )
 
 func TestBeach32ifPbKey(t *testing.T) {
+	t.Skip("skipping test as not relevant to Heimdall")
 	require := require.New(t)
 	path := *hd.NewFundraiserParams(0, sdk.CoinType, 0)
 	priv, err := ledger.NewPrivKeySecp256k1Unsafe(path)

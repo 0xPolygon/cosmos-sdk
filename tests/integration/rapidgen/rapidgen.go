@@ -16,8 +16,6 @@ import (
 	bankapi "cosmossdk.io/api/cosmos/bank/v1beta1"
 	consensusapi "cosmossdk.io/api/cosmos/consensus/v1"
 	"cosmossdk.io/api/cosmos/crypto/ed25519"
-	multisigapi "cosmossdk.io/api/cosmos/crypto/multisig"
-	"cosmossdk.io/api/cosmos/crypto/secp256k1"
 	distapi "cosmossdk.io/api/cosmos/distribution/v1beta1"
 	evidenceapi "cosmossdk.io/api/cosmos/evidence/v1beta1"
 	feegrantapi "cosmossdk.io/api/cosmos/feegrant/v1beta1"
@@ -34,7 +32,6 @@ import (
 	feegranttypes "cosmossdk.io/x/feegrant"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
 
-	"github.com/cosmos/cosmos-sdk/crypto/keys/multisig"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	vestingtypes "github.com/cosmos/cosmos-sdk/x/auth/vesting/types"
 	authztypes "github.com/cosmos/cosmos-sdk/x/authz"
@@ -120,7 +117,9 @@ var (
 		GenType(&banktypes.MsgSend{}, &bankapi.MsgSend{}, GenOpts.WithDisallowNil()),
 		GenType(&banktypes.MsgMultiSend{}, &bankapi.MsgMultiSend{}, GenOpts.WithDisallowNil()),
 		GenType(&banktypes.MsgUpdateParams{}, &bankapi.MsgUpdateParams{}, GenOpts.WithDisallowNil()),
+		/* HV2 not supported in heimdall
 		GenType(&banktypes.MsgSetSendEnabled{}, &bankapi.MsgSetSendEnabled{}, GenOpts),
+		*/
 
 		// consensus
 		GenType(&consensustypes.MsgUpdateParams{}, &consensusapi.MsgUpdateParams{}, GenOpts.WithDisallowNil()),
@@ -245,8 +244,10 @@ var (
 		GenType(&banktypes.Params{}, &bankapi.Params{}, GenOpts),
 
 		// crypto
+		/* HV2: multisig not supported
 		GenType(&multisig.LegacyAminoPubKey{}, &multisigapi.LegacyAminoPubKey{},
 			GenOpts.WithAnyTypes(&ed25519.PubKey{}, &secp256k1.PubKey{})),
+		*/
 
 		GenType(&disttypes.Params{}, &distapi.Params{}, GenOpts),
 

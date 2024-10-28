@@ -164,6 +164,7 @@ func initFixture(t testing.TB) *fixture {
 }
 
 func TestHandleDoubleSign(t *testing.T) {
+	t.Skip("skipping test as not relevant to Heimdall (contains delegation)")
 	t.Parallel()
 	f := initFixture(t)
 
@@ -256,6 +257,7 @@ func TestHandleDoubleSign(t *testing.T) {
 }
 
 func TestHandleDoubleSign_TooOld(t *testing.T) {
+	t.Skip("skipping test as not relevant to Heimdall (contains delegation)")
 	t.Parallel()
 	f := initFixture(t)
 

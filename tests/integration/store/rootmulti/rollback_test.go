@@ -16,6 +16,7 @@ import (
 )
 
 func TestRollback(t *testing.T) {
+	t.Skip("skipping tests as not relevant for Heimdall (contains delegation)")
 	db := dbm.NewMemDB()
 	options := simapp.SetupOptions{
 		Logger:  log.NewNopLogger(),

@@ -302,6 +302,7 @@ func TestValidatorUnbondingOnHold2(t *testing.T) {
 }
 
 func TestRedelegationOnHold1(t *testing.T) {
+	t.Skip("skipping test as not relevant for Heimdall (contains delegation)")
 	t.Parallel()
 	f := initFixture(t)
 
@@ -335,6 +336,7 @@ func TestRedelegationOnHold1(t *testing.T) {
 }
 
 func TestRedelegationOnHold2(t *testing.T) {
+	t.Skip("skipping test as not relevant for Heimdall (contains delegation)")
 	t.Parallel()
 	f := initFixture(t)
 
@@ -368,6 +370,7 @@ func TestRedelegationOnHold2(t *testing.T) {
 }
 
 func TestUnbondingDelegationOnHold1(t *testing.T) {
+	t.Skip("skipping test as not relevant for Heimdall (contains delegation)")
 	t.Parallel()
 	f := initFixture(t)
 
@@ -407,6 +410,7 @@ func TestUnbondingDelegationOnHold1(t *testing.T) {
 }
 
 func TestUnbondingDelegationOnHold2(t *testing.T) {
+	t.Skip("skipping test as not relevant for Heimdall (contains delegation)")
 	t.Parallel()
 	f := initFixture(t)
 
