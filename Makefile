@@ -193,6 +193,9 @@ build-docs:
 init-simapp:
 	./scripts/init-simapp.sh
 
+run-all-tests:
+	go test  -v ./...
+
 test: test-unit
 test-e2e:
 	$(MAKE) -C tests test-e2e
