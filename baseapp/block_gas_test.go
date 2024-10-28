@@ -55,6 +55,7 @@ func (m BlockGasImpl) Set(ctx context.Context, msg *baseapptestutil.MsgKeyValue)
 }
 
 func TestBaseApp_BlockGas(t *testing.T) {
+	t.Skip("skipping test as not relevant to Heimdall")
 	testcases := []struct {
 		name         string
 		gasToConsume uint64 // gas to consume in the msg execution

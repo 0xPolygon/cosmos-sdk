@@ -246,7 +246,7 @@ replace (
 	cosmossdk.io/errors => github.com/0xPolygon/cosmos-sdk/errors v1.0.0
 	cosmossdk.io/log => github.com/0xPolygon/cosmos-sdk/log v1.2.1
 	cosmossdk.io/math => github.com/0xPolygon/cosmos-sdk/math v1.2.0
-	cosmossdk.io/store => github.com/0xPolygon/cosmos-sdk/store v1.0.1
+	cosmossdk.io/store => github.com/0xPolygon/cosmos-sdk/store v1.1.0
 	cosmossdk.io/x/circuit => github.com/0xPolygon/cosmos-sdk/x/circuit v0.1.1-0.20240409091007-84d9b34a8681
 	cosmossdk.io/x/evidence => github.com/0xPolygon/cosmos-sdk/x/evidence v0.1.1-0.20240409091007-84d9b34a8681
 	cosmossdk.io/x/feegrant => github.com/0xPolygon/cosmos-sdk/x/feegrant v0.1.1-0.20240409091007-84d9b34a8681

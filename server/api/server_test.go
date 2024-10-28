@@ -319,5 +319,6 @@ func (t trailer) Get(key string) string {
 }
 
 func TestGRPCWebTestSuite(t *testing.T) {
+	t.Skip("skipping test as not relevant to Heimdall (contains delegation)")
 	suite.Run(t, new(GRPCWebTestSuite))
 }

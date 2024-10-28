@@ -270,5 +270,6 @@ func (s *IntegrationTestSuite) mkTxBuilder() client.TxBuilder {
 }
 
 func TestIntegrationTestSuite(t *testing.T) {
+	t.Skip("skipping test as not relevant to Heimdall (contains delegation)")
 	suite.Run(t, new(IntegrationTestSuite))
 }

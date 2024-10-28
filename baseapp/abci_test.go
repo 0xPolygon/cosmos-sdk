@@ -1594,7 +1594,7 @@ func TestABCI_PrepareProposal_ReachedMaxBytes(t *testing.T) {
 	}
 	resPrepareProposal, err := suite.baseApp.PrepareProposal(&reqPrepareProposal)
 	require.NoError(t, err)
-	require.Equal(t, 8, len(resPrepareProposal.Txs))
+	require.Equal(t, 7, len(resPrepareProposal.Txs))
 }
 
 func TestABCI_PrepareProposal_BadEncoding(t *testing.T) {

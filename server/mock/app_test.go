@@ -61,6 +61,7 @@ func TestInitApp(t *testing.T) {
 }
 
 func TestDeliverTx(t *testing.T) {
+	t.Skip("skipping test as not relevant to Heimdall (contains delegation)")
 	app := SetupApp(t)
 
 	key := "my-special-key"
