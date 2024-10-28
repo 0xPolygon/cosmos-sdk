@@ -168,6 +168,6 @@ func (suite *GenesisTestSuite) TestExportGenesis() {
 }
 
 func TestGenesisTestSuite(t *testing.T) {
-	suite.T().Skip("skipping test as not relevant for Heimdall (contains delegation)")
+	t.Skip("skipping test as not relevant for Heimdall (contains delegation)")
 	suite.Run(t, new(GenesisTestSuite))
 }
