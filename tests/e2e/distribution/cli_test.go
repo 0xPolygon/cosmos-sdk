@@ -15,9 +15,11 @@ func TestE2ETestSuite(t *testing.T) {
 }
 
 func TestGRPCQueryTestSuite(t *testing.T) {
+	t.Skip("skipping test as not relevant to Heimdall (contains delegation)")
 	suite.Run(t, new(GRPCQueryTestSuite))
 }
 
 func TestWithdrawAllSuite(t *testing.T) {
+	t.Skip("skipping test as not relevant to Heimdall (contains delegation)")
 	suite.Run(t, new(WithdrawAllTestSuite))
 }
