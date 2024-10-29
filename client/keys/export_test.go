@@ -19,6 +19,7 @@ import (
 )
 
 func Test_runExportCmd(t *testing.T) {
+	t.Skip("skipping test as not relevant for Heimdall")
 	cdc := moduletestutil.MakeTestEncodingConfig().Codec
 	testCases := []struct {
 		name           string

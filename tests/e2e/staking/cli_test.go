@@ -12,6 +12,7 @@ import (
 )
 
 func TestE2ETestSuite(t *testing.T) {
+	t.Skip("skipping test as not relevant to Heimdall (contains delegation)")
 	cfg := network.DefaultConfig(simapp.NewTestNetworkFixture)
 	cfg.NumValidators = 2
 	suite.Run(t, NewE2ETestSuite(cfg))

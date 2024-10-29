@@ -43,7 +43,7 @@ var bankAutoCLI = &autocliv1.ServiceCommandDescriptor{
 func TestMsg(t *testing.T) {
 	fixture := initFixture(t)
 	out, err := runCmd(fixture.conn, fixture.b, buildModuleMsgCommand, "send",
-		"cosmos1y74p8wyy4enfhfn342njve6cjmj5c8dtl6emdk", "cosmos1y74p8wyy4enfhfn342njve6cjmj5c8dtl6emdk", "1foo",
+		"0x000000000000000000000000000000000000dead", "0x000000000000000000000000000000000000dead", "1foo",
 		"--generate-only",
 		"--output", "json",
 	)
@@ -63,8 +63,8 @@ func TestMsg(t *testing.T) {
 		},
 		EnhanceCustomCommand: true,
 	}), "send",
-		"cosmos1y74p8wyy4enfhfn342njve6cjmj5c8dtl6emdk", "1foo",
-		"--from", "cosmos1y74p8wyy4enfhfn342njve6cjmj5c8dtl6emdk",
+		"0x000000000000000000000000000000000000dead", "1foo",
+		"--from", "0x000000000000000000000000000000000000dead",
 		"--generate-only",
 		"--output", "json",
 	)
@@ -86,8 +86,8 @@ func TestMsg(t *testing.T) {
 		},
 		EnhanceCustomCommand: true,
 	}), "send",
-		"cosmos1y74p8wyy4enfhfn342njve6cjmj5c8dtl6emdk", "1foo",
-		"--sender", "cosmos1y74p8wyy4enfhfn342njve6cjmj5c8dtl6emdk",
+		"0x000000000000000000000000000000000000dead", "1foo",
+		"--sender", "0x000000000000000000000000000000000000dead",
 		"--generate-only",
 		"--output", "json",
 	)

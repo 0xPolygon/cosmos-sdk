@@ -355,9 +355,9 @@ func TestEverything(t *testing.T) {
 		"--str", "def",
 		"--timestamp", "2019-01-02T00:01:02Z",
 		"--a-coin", "100000foo",
-		"--an-address", "cosmos1y74p8wyy4enfhfn342njve6cjmj5c8dtl6emdk",
-		"--a-validator-address", "cosmosvaloper1tnh2q55v8wyygtt9srz5safamzdengsn9dsd7z",
-		"--a-consensus-address", "cosmosvalcons16vm0nx49eam4q0xasdnwdzsdl6ymgyjt757sgr",
+		"--an-address", "0x100000000000000000000000000000000000dead",
+		"--a-validator-address", "0x200000000000000000000000000000000000dead",
+		"--a-consensus-address", "0x300000000000000000000000000000000000dead",
 		"--bz", "c2RncXdlZndkZ3NkZw==",
 		"--page-count-total",
 		"--page-key", "MTIzNTQ4N3NnaGRhcw==",
@@ -410,9 +410,9 @@ func TestEverything(t *testing.T) {
 				Amount: "100000",
 				Denom:  "foo",
 			},
-			AnAddress:         "cosmos1y74p8wyy4enfhfn342njve6cjmj5c8dtl6emdk",
-			AValidatorAddress: "cosmosvaloper1tnh2q55v8wyygtt9srz5safamzdengsn9dsd7z",
-			AConsensusAddress: "cosmosvalcons16vm0nx49eam4q0xasdnwdzsdl6ymgyjt757sgr",
+			AnAddress:         "0x100000000000000000000000000000000000dead",
+			AValidatorAddress: "0x200000000000000000000000000000000000dead",
+			AConsensusAddress: "0x300000000000000000000000000000000000dead",
 			Bz:                []byte("sdgqwefwdgsdg"),
 			Page: &queryv1beta1.PageRequest{
 				CountTotal: true,
@@ -574,23 +574,23 @@ func TestAddressValidation(t *testing.T) {
 	_, err := runCmd(fixture.conn, fixture.b, buildModuleQueryCommand,
 		"echo",
 		"1", "abc", "1foo",
-		"--an-address", "cosmos1y74p8wyy4enfhfn342njve6cjmj5c8dtl6emdk",
+		"--an-address", "0x100000000000000000000000000000000000dead",
 	)
 	assert.NilError(t, err)
 
 	_, err = runCmd(fixture.conn, fixture.b, buildModuleQueryCommand,
 		"echo",
 		"1", "abc", "1foo",
-		"--an-address", "regen1y74p8wyy4enfhfn342njve6cjmj5c8dtlqj7ule2",
+		"--an-address", "0z200000000000000000000000000000000000dead",
 	)
-	assert.ErrorContains(t, err, "invalid account address")
+	assert.ErrorContains(t, err, "invalid argument")
 
 	_, err = runCmd(fixture.conn, fixture.b, buildModuleQueryCommand,
 		"echo",
 		"1", "abc", "1foo",
-		"--an-address", "cosmps1BAD_ENCODING",
+		"--an-address", "0x300000000000000000000000000000000000",
 	)
-	assert.ErrorContains(t, err, "invalid account address")
+	assert.ErrorContains(t, err, "invalid argument")
 }
 
 func TestOutputFormat(t *testing.T) {

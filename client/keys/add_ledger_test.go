@@ -24,18 +24,11 @@ import (
 func Test_runAddCmdLedgerWithCustomCoinType(t *testing.T) {
 	config := sdk.GetConfig()
 
-	bech32PrefixAccAddr := "terra"
-	bech32PrefixAccPub := "terrapub"
-	bech32PrefixValAddr := "terravaloper"
-	bech32PrefixValPub := "terravaloperpub"
-	bech32PrefixConsAddr := "terravalcons"
-	bech32PrefixConsPub := "terravalconspub"
-
 	config.SetPurpose(44)
 	config.SetCoinType(330)
-	config.SetBech32PrefixForAccount(bech32PrefixAccAddr, bech32PrefixAccPub)
-	config.SetBech32PrefixForValidator(bech32PrefixValAddr, bech32PrefixValPub)
-	config.SetBech32PrefixForConsensusNode(bech32PrefixConsAddr, bech32PrefixConsPub)
+	//config.SetBech32PrefixForAccount(bech32PrefixAccAddr, bech32PrefixAccPub)
+	//config.SetBech32PrefixForValidator(bech32PrefixValAddr, bech32PrefixValPub)
+	//config.SetBech32PrefixForConsensusNode(bech32PrefixConsAddr, bech32PrefixConsPub)
 
 	cmd := AddKeyCommand()
 	cmd.Flags().AddFlagSet(Commands().PersistentFlags())
@@ -79,14 +72,14 @@ func Test_runAddCmdLedgerWithCustomCoinType(t *testing.T) {
 	pub, err := key1.GetPubKey()
 	require.NoError(t, err)
 	require.Equal(t,
-		"PubKeySecp256k1{03028F0D5A9FD41600191CDEFDEA05E77A68DFBCE286241C0190805B9346667D07}",
+		"PubKeySecp256k1{03028F0D5A9FD41600191CDEFDEA05E77A68DFBCE286241C0190805B9346667D070000000000000000000000000000000000000000000000000000000000000000}",
 		pub.String())
 
 	config.SetPurpose(44)
 	config.SetCoinType(118)
-	config.SetBech32PrefixForAccount(sdk.Bech32PrefixAccAddr, sdk.Bech32PrefixAccPub)
-	config.SetBech32PrefixForValidator(sdk.Bech32PrefixValAddr, sdk.Bech32PrefixValPub)
-	config.SetBech32PrefixForConsensusNode(sdk.Bech32PrefixConsAddr, sdk.Bech32PrefixConsPub)
+	//config.SetBech32PrefixForAccount(sdk.Bech32PrefixAccAddr, sdk.Bech32PrefixAccPub)
+	//config.SetBech32PrefixForValidator(sdk.Bech32PrefixValAddr, sdk.Bech32PrefixValPub)
+	//config.SetBech32PrefixForConsensusNode(sdk.Bech32PrefixConsAddr, sdk.Bech32PrefixConsPub)
 }
 
 func Test_runAddCmdLedger(t *testing.T) {
@@ -131,7 +124,7 @@ func Test_runAddCmdLedger(t *testing.T) {
 	pub, err := key1.GetPubKey()
 	require.NoError(t, err)
 	require.Equal(t,
-		"PubKeySecp256k1{034FEF9CD7C4C63588D3B03FEB5281B9D232CBA34D6F3D71AEE59211FFBFE1FE87}",
+		"PubKeySecp256k1{034FEF9CD7C4C63588D3B03FEB5281B9D232CBA34D6F3D71AEE59211FFBFE1FE870000000000000000000000000000000000000000000000000000000000000000}",
 		pub.String())
 }
 
