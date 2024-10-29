@@ -1,8 +1,6 @@
 module cosmossdk.io/simapp
 
-go 1.22.1
-
-toolchain go1.22.2
+go 1.23.2
 
 require (
 	cosmossdk.io/api v0.7.2
@@ -25,7 +23,7 @@ require (
 	// this version is not used as it is always replaced by the latest Cosmos SDK version
 	github.com/cosmos/cosmos-sdk v0.50.6
 	github.com/cosmos/gogoproto v1.4.11
-	github.com/ethereum/go-ethereum v1.13.15
+	github.com/ethereum/go-ethereum v1.14.11
 	github.com/golang/mock v1.6.0
 	github.com/spf13/cast v1.6.0
 	github.com/spf13/cobra v1.8.0
@@ -42,7 +40,7 @@ require (
 	cloud.google.com/go/storage v1.38.0 // indirect
 	cosmossdk.io/errors v1.0.0 // indirect
 	filippo.io/edwards25519 v1.0.0 // indirect
-	github.com/0xPolygon/heimdall-v2 v0.0.0-20241010171906-1214e5225027 // indirect
+	github.com/0xPolygon/heimdall-v2 v0.0.0-20241029153709-7d0688d71063 // indirect
 	github.com/99designs/go-keychain v0.0.0-20191008050251-8e49817e8af4 // indirect
 	github.com/99designs/keyring v1.2.1 // indirect
 	github.com/BurntSushi/toml v1.4.0 // indirect

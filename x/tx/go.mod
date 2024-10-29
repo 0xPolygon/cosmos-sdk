@@ -1,8 +1,6 @@
 module cosmossdk.io/x/tx
 
-go 1.22
-
-toolchain go1.22.2
+go 1.23.2
 
 require (
 	cosmossdk.io/api v0.7.2

@@ -1,6 +1,4 @@
-go 1.22.1
-
-toolchain go1.22.2
+go 1.23.2
 
 module github.com/cosmos/cosmos-sdk
 
@@ -15,7 +13,7 @@ require (
 	cosmossdk.io/simapp v0.0.0-20230620040119-e078f1a49e8b
 	cosmossdk.io/store v1.1.0
 	cosmossdk.io/x/tx v0.12.0
-	github.com/0xPolygon/heimdall-v2 v0.0.0-20241010171906-1214e5225027
+	github.com/0xPolygon/heimdall-v2 v0.0.0-20241029153709-7d0688d71063
 	github.com/99designs/keyring v1.2.1
 	github.com/bgentry/speakeasy v0.1.1-0.20220910012023-760eaf8b6816
 	github.com/bits-and-blooms/bitset v1.10.0
@@ -31,7 +29,7 @@ require (
 	github.com/cosmos/gogoproto v1.4.11
 	github.com/cosmos/ledger-cosmos-go v0.13.3
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.2.0
-	github.com/ethereum/go-ethereum v1.13.15
+	github.com/ethereum/go-ethereum v1.14.11
 	github.com/golang/mock v1.6.0
 	github.com/golang/protobuf v1.5.4
 	github.com/google/go-cmp v0.6.0
