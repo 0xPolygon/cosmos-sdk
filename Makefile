@@ -193,9 +193,6 @@ build-docs:
 init-simapp:
 	./scripts/init-simapp.sh
 
-run-all-tests:
-	go test  -v ./...
-
 test: test-unit
 test-e2e:
 	$(MAKE) -C tests test-e2e
@@ -240,7 +237,7 @@ ifneq (,$(shell which tparse 2>/dev/null))
 	for module in $(SUB_MODULES); do \
 		cd ${CURRENT_DIR}/$$module; \
 		echo "Running unit tests for $$(grep '^module' go.mod)"; \
-		go test -mod=readonly -json $(ARGS) $(TEST_PACKAGES) ./... | tparse; \
+		go test -v -mod=readonly -json $(ARGS) $(TEST_PACKAGES) ./... | tparse; \
 		ec=$$?; \
 		if [ "$$ec" -ne '0' ]; then finalec=$$ec; fi; \
 	done; \
@@ -251,7 +248,7 @@ else
 	for module in $(SUB_MODULES); do \
 		cd ${CURRENT_DIR}/$$module; \
 		echo "Running unit tests for $$(grep '^module' go.mod)"; \
-		go test -mod=readonly $(ARGS) $(TEST_PACKAGES) ./... ; \
+		go test -v -mod=readonly $(ARGS) $(TEST_PACKAGES) ./... ; \
 		ec=$$?; \
 		if [ "$$ec" -ne '0' ]; then finalec=$$ec; fi; \
 	done; \
