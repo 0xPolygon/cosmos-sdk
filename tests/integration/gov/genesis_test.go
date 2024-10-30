@@ -59,7 +59,7 @@ var appConfig = configurator.NewAppConfig(
 )
 
 func TestImportExportQueues(t *testing.T) {
-	t.Skip("skipping test as not relevant to Heimdall (contains delegation)")
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	var err error
 
 	s1 := suite{}

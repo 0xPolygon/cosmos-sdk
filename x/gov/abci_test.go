@@ -23,8 +23,7 @@ import (
 )
 
 func TestUnregisteredProposal_InactiveProposalFails(t *testing.T) {
-	// TODO HV2: To fix this tests, we need to implement https://polygon.atlassian.net/browse/POS-2540
-	t.Skip("skipping test as it simApp staking module instead of heimdall-v2 custom stake module")
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 
 	suite := createTestSuite(t)
 	ctx := suite.App.BaseApp.NewContext(false)
@@ -54,8 +53,7 @@ func TestUnregisteredProposal_InactiveProposalFails(t *testing.T) {
 }
 
 func TestUnregisteredProposal_ActiveProposalFails(t *testing.T) {
-	// TODO HV2: To fix this tests, we need to implement https://polygon.atlassian.net/browse/POS-2540
-	t.Skip("skipping test as it simApp staking module instead of heimdall-v2 custom stake module")
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 
 	suite := createTestSuite(t)
 	ctx := suite.App.BaseApp.NewContext(false)
@@ -88,8 +86,7 @@ func TestUnregisteredProposal_ActiveProposalFails(t *testing.T) {
 }
 
 func TestTickExpiredDepositPeriod(t *testing.T) {
-	// TODO HV2: To fix this tests, we need to implement https://polygon.atlassian.net/browse/POS-2540
-	t.Skip("skipping test as it simApp staking module instead of heimdall-v2 custom stake module")
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 
 	suite := createTestSuite(t)
 	app := suite.App
@@ -142,8 +139,7 @@ func TestTickExpiredDepositPeriod(t *testing.T) {
 }
 
 func TestTickMultipleExpiredDepositPeriod(t *testing.T) {
-	// TODO HV2: To fix this tests, we need to implement https://polygon.atlassian.net/browse/POS-2540
-	t.Skip("skipping test as it simApp staking module instead of heimdall-v2 custom stake module")
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 
 	suite := createTestSuite(t)
 	app := suite.App
@@ -216,8 +212,7 @@ func TestTickMultipleExpiredDepositPeriod(t *testing.T) {
 }
 
 func TestTickPassedDepositPeriod(t *testing.T) {
-	// TODO HV2: To fix this tests, we need to implement https://polygon.atlassian.net/browse/POS-2540
-	t.Skip("skipping test as it simApp staking module instead of heimdall-v2 custom stake module")
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 
 	suite := createTestSuite(t)
 	app := suite.App
@@ -266,8 +261,7 @@ func TestTickPassedDepositPeriod(t *testing.T) {
 }
 
 func TestTickPassedVotingPeriod(t *testing.T) {
-	// TODO HV2: To fix this tests, we need to implement https://polygon.atlassian.net/browse/POS-2540
-	t.Skip("skipping test as it simApp staking module instead of heimdall-v2 custom stake module")
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 
 	testcases := []struct {
 		name      string
@@ -360,14 +354,7 @@ func TestTickPassedVotingPeriod(t *testing.T) {
 }
 
 func TestProposalPassedEndblocker(t *testing.T) {
-	t.Skip("skipping test as not relevant to Heimdall (no delegation)")
-	/* TODO HV2: check and (in case) enable this test.
-	   It fails on step `network, err := network.New(t, t.TempDir(), cfg)` while creating the validators
-	   The failure happens since the introduction of custom implementation of bank module
-	   because of the following error:
-	   `DelegateCoinsFromAccountToModule not supported in Heimdall since vesting and delegation are disabled`
-		Validators creation will happen in custom staking module, maybe we can fix this when merged
-	*/
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	testcases := []struct {
 		name      string
 		expedited bool
@@ -444,14 +431,7 @@ func TestProposalPassedEndblocker(t *testing.T) {
 }
 
 func TestEndBlockerProposalHandlerFailed(t *testing.T) {
-	t.Skip("skipping test as not relevant to Heimdall (no delegation)")
-	/* TODO HV2: check and (in case) enable this test.
-	   It fails on step `network, err := network.New(t, t.TempDir(), cfg)` while creating the validators
-	   The failure happens since the introduction of custom implementation of bank module
-	   because of the following error:
-	   `DelegateCoinsFromAccountToModule not supported in Heimdall since vesting and delegation are disabled`
-		Validators creation will happen in custom staking module, maybe we can fix this when merged
-	*/
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	suite := createTestSuite(t)
 	app := suite.App
 	ctx := app.BaseApp.NewContext(false)
@@ -511,9 +491,7 @@ func TestEndBlockerProposalHandlerFailed(t *testing.T) {
 }
 
 func TestExpeditedProposal_PassAndConversionToRegular(t *testing.T) {
-	// HV2: to enable this test we would need `IterateCurrentValidatorsAndApplyFn`.
-	// That function will be implemented in heimdall's staking module, hence gov.EndBlocker is incomplete here.
-	t.Skip("skipping test as not relevant to Heimdall (can't reproduce)")
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	testcases := []struct {
 		name string
 		// indicates whether the expedited proposal passes.

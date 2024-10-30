@@ -47,7 +47,7 @@ type TestSuite struct {
 }
 
 func (s *TestSuite) SetupTest() {
-	s.T().Skip("skipping test as not relevant for Heimdall")
+	s.T().Skip("skipping test for HV2 (groups not relevant)")
 	s.blockTime = cmttime.Now()
 	key := storetypes.NewKVStoreKey(group.StoreKey)
 
@@ -150,7 +150,7 @@ func TestKeeperTestSuite(t *testing.T) {
 }
 
 func (s *TestSuite) TestProposalsByVPEnd() {
-	s.T().Skip("skipping test as not relevant for Heimdall")
+	s.T().Skip("skipping test for HV2 (groups not relevant)")
 	addrs := s.addrs
 	addr2 := addrs[1]
 
@@ -289,7 +289,7 @@ func (s *TestSuite) TestProposalsByVPEnd() {
 }
 
 func (s *TestSuite) TestPruneProposals() {
-	s.T().Skip("skipping test as not relevant for Heimdall")
+	s.T().Skip("skipping test for HV2 (groups not relevant)")
 	addrs := s.addrs
 	expirationTime := time.Hour * 24 * 15 // 15 days
 	groupID := s.groupID
@@ -403,7 +403,7 @@ func (s *TestSuite) createGroupAndGroupPolicy(
 }
 
 func (s *TestSuite) TestTallyProposalsAtVPEnd() {
-	s.T().Skip("skipping test as not relevant for Heimdall")
+	s.T().Skip("skipping test for HV2 (groups not relevant)")
 	addrs := s.addrs
 	addr1 := addrs[0]
 	addr2 := addrs[1]
@@ -462,7 +462,7 @@ func (s *TestSuite) TestTallyProposalsAtVPEnd() {
 // TestTallyProposalsAtVPEnd_GroupMemberLeaving test that the node doesn't
 // panic if a member leaves after the voting period end.
 func (s *TestSuite) TestTallyProposalsAtVPEnd_GroupMemberLeaving() {
-	s.T().Skip("skipping test as not relevant for Heimdall")
+	s.T().Skip("skipping test for HV2 (groups not relevant)")
 	addrs := s.addrs
 	addr1 := addrs[0]
 	addr2 := addrs[1]

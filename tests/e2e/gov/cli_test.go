@@ -17,14 +17,14 @@ import (
 )
 
 func TestE2ETestSuite(t *testing.T) {
-	t.Skip("skipping test as not relevant to Heimdall (contains delegation)")
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	cfg := network.DefaultConfig(simapp.NewTestNetworkFixture)
 	cfg.NumValidators = 1
 	suite.Run(t, NewE2ETestSuite(cfg))
 }
 
 func TestDepositTestSuite(t *testing.T) {
-	t.Skip("skipping test as not relevant to Heimdall (contains delegation)")
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	cfg := network.DefaultConfig(simapp.NewTestNetworkFixture)
 	cfg.NumValidators = 1
 	genesisState := v1.DefaultGenesisState()

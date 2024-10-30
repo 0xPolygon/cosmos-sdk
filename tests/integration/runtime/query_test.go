@@ -69,7 +69,7 @@ func initFixture(t assert.TestingT) *fixture {
 }
 
 func TestQueryAppConfig(t *testing.T) {
-	t.Skip("skipping test as not relevant to Heimdall (contains delegation)")
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	t.Parallel()
 	f := initFixture(t)
 
@@ -94,7 +94,7 @@ func TestQueryAppConfig(t *testing.T) {
 }
 
 func TestReflectionService(t *testing.T) {
-	t.Skip("skipping test as not relevant to Heimdall (contains delegation)")
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	t.Parallel()
 	f := initFixture(t)
 
@@ -125,7 +125,7 @@ func TestReflectionService(t *testing.T) {
 }
 
 func TestQueryAutoCLIAppOptions(t *testing.T) {
-	t.Skip("skipping test as not relevant to Heimdall (contains delegation)")
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	t.Parallel()
 	f := initFixture(t)
 

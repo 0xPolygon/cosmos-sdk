@@ -734,7 +734,7 @@ func TestAnteHandlerMemoGas(t *testing.T) {
 }
 
 func TestAnteHandlerMultiSigner(t *testing.T) {
-	t.Skip("skipping test as not relevant to Heimdall (no multisign)")
+	t.Skip("skipping test for HV2 (multisign not relevant)")
 	feeAmount := testdata.NewTestFeeAmount()
 	gasLimit := testdata.NewTestGasLimit()
 

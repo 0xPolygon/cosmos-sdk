@@ -396,7 +396,7 @@ func (s *addressTestSuite) TestCustomAddressVerifier() {
 }
 
 func (s *addressTestSuite) TestBech32ifyAddressBytes() {
-	s.T().Skip("skipping test as not relevant to Heimdall")
+	s.T().Skip("skipping test for HV2 (bech32 not relevant)")
 	addr10byte := []byte{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
 	addr20byte := []byte{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19}
 	type args struct {

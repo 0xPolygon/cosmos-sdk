@@ -32,7 +32,7 @@ func addressStringCaller(require *require.Assertions, prefix byte, max uint32, c
 }
 
 func (s *addressTestSuite) TestAddressRace() {
-	s.T().Skip("skipping as this test requires too much time, and it often goes in timeout. When able to run, it is successful.")
+	s.T().Skip("skipping test for HV2 as this test requires too much time, and it often goes in timeout")
 
 	if testing.Short() {
 		s.T().Skip("AddressRace test is not short")

@@ -150,7 +150,7 @@ func initFixture(t testing.TB) *fixture {
 }
 
 func TestMsgWithdrawDelegatorReward(t *testing.T) {
-	t.Skip("skipping test as not relevant for Heimdall (contains delegation)")
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	t.Parallel()
 	f := initFixture(t)
 
@@ -459,7 +459,7 @@ func TestMsgSetWithdrawAddress(t *testing.T) {
 }
 
 func TestMsgWithdrawValidatorCommission(t *testing.T) {
-	t.Skip("TODO HV2: fix this test?")
+	t.Skip("TODO HV2: fix and enable this test?")
 	t.Parallel()
 	f := initFixture(t)
 
@@ -880,7 +880,7 @@ func TestMsgCommunityPoolSpend(t *testing.T) {
 }
 
 func TestMsgDepositValidatorRewardsPool(t *testing.T) {
-	t.Skip("skipping tests as not relevant for Heimdall (contains delegation)")
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	t.Parallel()
 	f := initFixture(t)
 

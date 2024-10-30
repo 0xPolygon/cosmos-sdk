@@ -29,7 +29,7 @@ func ProvideCustomGetSigners() signing.CustomGetSigner {
 }
 
 func TestDefineCustomGetSigners(t *testing.T) {
-	t.Skip("skipping tests as not relevant for Heimdall (contains delegation)")
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	var interfaceRegistry codectypes.InterfaceRegistry
 	_, err := simtestutil.SetupAtGenesis(
 		depinject.Configs(

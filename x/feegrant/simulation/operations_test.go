@@ -212,6 +212,6 @@ func (suite *SimTestSuite) TestSimulateMsgRevokeAllowance() {
 }
 
 func TestSimTestSuite(t *testing.T) {
-	t.Skip("skipping test as not relevant for Heimdall")
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	suite.Run(t, new(SimTestSuite))
 }

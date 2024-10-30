@@ -16,7 +16,7 @@ import (
 )
 
 func TestItCreatesModuleAccountOnInitBlock(t *testing.T) {
-	t.Skip("skipping test as not relevant for Heimdall")
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	var accountKeeper authkeeper.AccountKeeper
 
 	app, err := simtestutil.SetupAtGenesis(

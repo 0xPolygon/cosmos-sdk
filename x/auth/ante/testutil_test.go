@@ -185,7 +185,7 @@ func (suite *AnteTestSuite) RunTestCase(t *testing.T, tc TestCase, args TestCase
 	newCtx, anteErr := suite.anteHandler(bytesCtx, tx, tc.simulate)
 
 	if tc.skip {
-		t.Skip("skipping test as not relevant to Heimdall")
+		t.Skip("skipping test for HV2 (not relevant)")
 		require.Error(t, txErr)
 		require.ErrorIs(t, txErr, tc.expErr)
 	}

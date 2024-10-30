@@ -18,7 +18,7 @@ import (
 )
 
 func TestUnbondingDelegationsMaxEntries(t *testing.T) {
-	t.Skip("skipping test as not relevant for Heimdall (contains delegation)")
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	t.Parallel()
 	f := initFixture(t)
 

@@ -331,7 +331,8 @@ func NewCLILogger(cmd *cobra.Command) CLILogger {
 	return CLILogger{cmd}
 }
 
-// TODO HV2: We can modify this function to be compliant with heimdall-v2 and unskip many e2e tests
+// TODO HV2: To fix many tests, we need to implement https://polygon.atlassian.net/browse/POS-2540
+//  and change New function accordingly
 
 // New creates a new Network for integration tests or in-process testnets run via the CLI
 func New(l Logger, baseDir string, cfg Config) (*Network, error) {

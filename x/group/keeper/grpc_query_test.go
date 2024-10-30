@@ -95,7 +95,7 @@ func initKeeper(t *testing.T) *fixture {
 }
 
 func TestQueryGroupInfo(t *testing.T) {
-	t.Skip("skipping test as not relevant for Heimdall")
+	t.Skip("skipping test for HV2 (groups not relevant)")
 	fixture := initKeeper(t)
 
 	testCases := []struct {
@@ -133,7 +133,7 @@ func TestQueryGroupInfo(t *testing.T) {
 }
 
 func TestQueryGroupPolicyInfo(t *testing.T) {
-	t.Skip("skipping test as not relevant for Heimdall")
+	t.Skip("skipping test for HV2 (groups not relevant)")
 	fixture := initKeeper(t)
 
 	testCases := []struct {
@@ -172,7 +172,7 @@ func TestQueryGroupPolicyInfo(t *testing.T) {
 }
 
 func TestQueryGroupMembers(t *testing.T) {
-	t.Skip("skipping test as not relevant for Heimdall")
+	t.Skip("skipping test for HV2 (groups not relevant)")
 	fixture := initKeeper(t)
 
 	testCases := []struct {
@@ -217,7 +217,7 @@ func TestQueryGroupMembers(t *testing.T) {
 }
 
 func TestQueryGroupsByAdmin(t *testing.T) {
-	t.Skip("skipping test as not relevant for Heimdall")
+	t.Skip("skipping test for HV2 (groups not relevant)")
 	fixture := initKeeper(t)
 
 	testCases := []struct {
@@ -263,7 +263,7 @@ func TestQueryGroupsByAdmin(t *testing.T) {
 }
 
 func TestQueryGroupPoliciesByGroup(t *testing.T) {
-	t.Skip("skipping test as not relevant for Heimdall")
+	t.Skip("skipping test for HV2 (groups not relevant)")
 	fixture := initKeeper(t)
 
 	testCases := []struct {
@@ -304,7 +304,7 @@ func TestQueryGroupPoliciesByGroup(t *testing.T) {
 }
 
 func TestQueryGroupPoliciesByAdmin(t *testing.T) {
-	t.Skip("skipping test as not relevant for Heimdall")
+	t.Skip("skipping test for HV2 (groups not relevant)")
 	fixture := initKeeper(t)
 
 	testCases := []struct {
@@ -350,7 +350,7 @@ func TestQueryGroupPoliciesByAdmin(t *testing.T) {
 }
 
 func TestQueryGroupsByMember(t *testing.T) {
-	t.Skip("skipping test as not relevant for Heimdall")
+	t.Skip("skipping test for HV2 (groups not relevant)")
 	fixture := initKeeper(t)
 
 	members := []group.MemberRequest{
@@ -385,7 +385,7 @@ func TestQueryGroupsByMember(t *testing.T) {
 }
 
 func TestQueryGroups(t *testing.T) {
-	t.Skip("skipping test as not relevant for Heimdall")
+	t.Skip("skipping test for HV2 (groups not relevant)")
 	fixture := initKeeper(t)
 
 	members := []group.MemberRequest{

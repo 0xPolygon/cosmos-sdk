@@ -52,7 +52,7 @@ func TestInMemoryCreateLedger(t *testing.T) {
 // TestSignVerify does some detailed checks on how we sign and validate
 // signatures
 func TestSignVerifyKeyRingWithLedger(t *testing.T) {
-	t.Skip("skipping test as not relevant for Heimdall")
+	t.Skip("TODO HV2: fix and enable this test? Is ledger supported?")
 	dir := t.TempDir()
 	cdc := getCodec()
 

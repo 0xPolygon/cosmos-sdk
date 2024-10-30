@@ -164,7 +164,7 @@ func initFixture(t testing.TB) *fixture {
 }
 
 func TestHandleDoubleSign(t *testing.T) {
-	t.Skip("skipping test as not relevant to Heimdall (contains delegation)")
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	t.Parallel()
 	f := initFixture(t)
 
@@ -257,7 +257,7 @@ func TestHandleDoubleSign(t *testing.T) {
 }
 
 func TestHandleDoubleSign_TooOld(t *testing.T) {
-	t.Skip("skipping test as not relevant to Heimdall (contains delegation)")
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	t.Parallel()
 	f := initFixture(t)
 

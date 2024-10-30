@@ -55,7 +55,7 @@ func bootstrapSlashTest(t *testing.T, power int64) (*fixture, []sdk.AccAddress, 
 
 // tests slashUnbondingDelegation
 func TestSlashUnbondingDelegation(t *testing.T) {
-	t.Skip("skipping test as not relevant for Heimdall (contains delegation)")
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	f, addrDels, addrVals := bootstrapSlashTest(t, 10)
 
 	fraction := math.LegacyNewDecWithPrec(5, 1)
@@ -105,7 +105,7 @@ func TestSlashUnbondingDelegation(t *testing.T) {
 
 // tests slashRedelegation
 func TestSlashRedelegation(t *testing.T) {
-	t.Skip("skipping test as not relevant for Heimdall (contains delegation)")
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	f, addrDels, addrVals := bootstrapSlashTest(t, 10)
 	fraction := math.LegacyNewDecWithPrec(5, 1)
 
@@ -256,7 +256,7 @@ func TestSlashValidatorAtCurrentHeight(t *testing.T) {
 
 // tests Slash at a previous height with an unbonding delegation
 func TestSlashWithUnbondingDelegation(t *testing.T) {
-	t.Skip("skipping test as not relevant for Heimdall (contains delegation)")
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	f, addrDels, addrVals := bootstrapSlashTest(t, 10)
 
 	consAddr := sdk.ConsAddress(PKs[0].Address())
@@ -390,7 +390,7 @@ func TestSlashWithUnbondingDelegation(t *testing.T) {
 
 // tests Slash at a previous height with a redelegation
 func TestSlashWithRedelegation(t *testing.T) {
-	t.Skip("skipping test as not relevant for Heimdall (contains delegation)")
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	f, addrDels, addrVals := bootstrapSlashTest(t, 10)
 	consAddr := sdk.ConsAddress(PKs[0].Address())
 	fraction := math.LegacyNewDecWithPrec(5, 1)

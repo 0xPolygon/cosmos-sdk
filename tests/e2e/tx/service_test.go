@@ -1081,7 +1081,7 @@ func (s *E2ETestSuite) TestTxDecodeAmino_GRPCGateway() {
 }
 
 func TestE2ETestSuite(t *testing.T) {
-	t.Skip("skipping tests as not relevant for Heimdall (contains delegation)")
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	suite.Run(t, new(E2ETestSuite))
 }
 

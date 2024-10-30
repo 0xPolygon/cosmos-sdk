@@ -12,7 +12,7 @@ import (
 )
 
 func TestMigrateGenState(t *testing.T) {
-	t.Skip("skipping test as not relevant for Heimdall")
+	t.Skip("skipping test for HV2 (groups not relevant)")
 	tests := []struct {
 		name     string
 		oldState *authtypes.GenesisState

@@ -32,7 +32,7 @@ var (
 )
 
 func TestMigrate(t *testing.T) {
-	t.Skip("skipping test as not relevant for Heimdall")
+	t.Skip("skipping test for HV2 (groups not relevant)")
 	cdc := moduletestutil.MakeTestEncodingConfig(auth.AppModuleBasic{}, groupmodule.AppModuleBasic{}).Codec
 	storeKey := storetypes.NewKVStoreKey(v2.ModuleName)
 	tKey := storetypes.NewTransientStoreKey("transient_test")
