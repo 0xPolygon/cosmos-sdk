@@ -160,7 +160,7 @@ func (s *KeeperTestSuite) TestUnjail() {
 				}
 			},
 			expErr:    true,
-			expErrMsg: "decoding bech32 failed",
+			expErrMsg: "addresses cannot be empty: unknown address",
 		},
 		{
 			name: "no self delegation: invalid request",

@@ -14,9 +14,9 @@ import (
 
 func TestMarshalAndUnmarshalFeegrantKey(t *testing.T) {
 	addressCodec := codecaddress.NewHexCodec()
-	grantee, err := addressCodec.StringToBytes("cosmos1qk93t4j0yyzgqgt6k5qf8deh8fq6smpn3ntu3x")
+	grantee, err := addressCodec.StringToBytes("0x100000000000000000000000000000000000dead")
 	require.NoError(t, err)
-	granter, err := addressCodec.StringToBytes("cosmos1p9qh4ldfd6n0qehujsal4k7g0e37kel90rc4ts")
+	granter, err := addressCodec.StringToBytes("0x200000000000000000000000000000000000dead")
 	require.NoError(t, err)
 
 	key := feegrant.FeeAllowanceKey(granter, grantee)
@@ -30,9 +30,9 @@ func TestMarshalAndUnmarshalFeegrantKey(t *testing.T) {
 
 func TestMarshalAndUnmarshalFeegrantKeyQueueKey(t *testing.T) {
 	addressCodec := codecaddress.NewHexCodec()
-	grantee, err := addressCodec.StringToBytes("cosmos1qk93t4j0yyzgqgt6k5qf8deh8fq6smpn3ntu3x")
+	grantee, err := addressCodec.StringToBytes("0x100000000000000000000000000000000000dead")
 	require.NoError(t, err)
-	granter, err := addressCodec.StringToBytes("cosmos1p9qh4ldfd6n0qehujsal4k7g0e37kel90rc4ts")
+	granter, err := addressCodec.StringToBytes("0x200000000000000000000000000000000000dead")
 	require.NoError(t, err)
 
 	exp := time.Now()

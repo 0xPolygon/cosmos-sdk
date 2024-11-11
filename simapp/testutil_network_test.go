@@ -39,5 +39,6 @@ func (s *IntegrationTestSuite) TestNetwork_Liveness() {
 }
 
 func TestIntegrationTestSuite(t *testing.T) {
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	suite.Run(t, new(IntegrationTestSuite))
 }

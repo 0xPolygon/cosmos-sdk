@@ -1,6 +1,7 @@
 package codec_test
 
 import (
+	"github.com/cosmos/cosmos-sdk/codec/address"
 	"math"
 	"reflect"
 	"testing"
@@ -187,10 +188,14 @@ func TestGetSigners(t *testing.T) {
 	})
 	require.NoError(t, err)
 	cdc := codec.NewProtoCodec(interfaceRegistry)
-	testAddr := sdk.AccAddress("test")
-	testAddrStr := testAddr.String()
-	testAddr2 := sdk.AccAddress("test2")
-	testAddrStr2 := testAddr2.String()
+
+	ac := address.HexCodec{}
+	testAddrStr := "0x000000000000000000000000000000000000dead"
+	testAddr, err := ac.StringToBytes(testAddrStr)
+	require.NoError(t, err)
+	testAddrStr2 := "0x100000000000000000000000000000000000dead"
+	testAddr2, err := ac.StringToBytes(testAddrStr2)
+	require.NoError(t, err)
 
 	msgSendV1 := banktypes.NewMsgSend(testAddr, testAddr2, sdk.NewCoins(sdk.NewCoin("foo", sdkmath.NewInt(1))))
 	msgSendV2 := &bankv1beta1.MsgSend{

@@ -241,6 +241,6 @@ func (suite *SimTestSuite) getTestingAccounts(r *rand.Rand, n int) []simtypes.Ac
 }
 
 func TestSimTestSuite(t *testing.T) {
-	t.Skip("skipping test as not relevant to Heimdall (simulation is not enabled)")
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	suite.Run(t, new(SimTestSuite))
 }

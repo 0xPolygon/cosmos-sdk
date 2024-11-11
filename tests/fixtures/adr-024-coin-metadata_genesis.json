@@ -27,7 +27,7 @@
       },
       "balances": [
         {
-          "address": "cosmos106vrzv5xkheqhjm023pxcxlqmcjvuhtfyachz4",
+          "address": "0x000000000000000000000000000000000000dead",
           "coins": [
             {
               "denom": "nametoken",
@@ -40,7 +40,7 @@
           ]
         },
         {
-          "address": "cosmos1xztun2634zplhajda7tmjaxy488qj44n765t58",
+          "address": "0x100000000000000000000000000000000000dead",
           "coins": [
             {
               "denom": "nametoken",

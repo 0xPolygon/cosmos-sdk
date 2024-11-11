@@ -40,12 +40,12 @@ github.com/0xPolygon/cosmos-sdk/log v1.2.1 h1:Pn8+wMsvhifKmtzJzo92mbfbzFDSRnWCdN
 github.com/0xPolygon/cosmos-sdk/log v1.2.1/go.mod h1:GNSCc/6+DhFIj1aLn/j7Id7PaO8DzNylUZoOYBL9+I4=
 github.com/0xPolygon/cosmos-sdk/math v1.2.0 h1:jyGCyEKSyvXGwqZsctx+zw6JZRYzMhr5v3kVjnPjPvA=
 github.com/0xPolygon/cosmos-sdk/math v1.2.0/go.mod h1:l2Gnda87F0su8a/7FEKJfFdJrM0JZRXQaohlgJeyQh0=
-github.com/0xPolygon/cosmos-sdk/store v1.0.1 h1:yjwcUvWHgVWXJQ6t7rgjkFxwZGh6SbM5Ca/zhQ3crYE=
-github.com/0xPolygon/cosmos-sdk/store v1.0.1/go.mod h1:EFtENTqVTuWwitGW1VwaBct+yDagk7oG/axBMPH+FXs=
+github.com/0xPolygon/cosmos-sdk/store v1.1.0 h1:BPKw+bz/SHKsO5AsfzWl8hCRlCQJ5wAl71YT/SGg6WU=
+github.com/0xPolygon/cosmos-sdk/store v1.1.0/go.mod h1:oZfW/4Fc/zYqu3JmQcQdUJ3fqu5vnYTn3LZFFy8P8ng=
 github.com/0xPolygon/cosmos-sdk/x/tx v0.12.0 h1:L0J9Kc7o4yYUSF+krWvXfVqW9F7lvtYxLIoUFUKXQ+U=
 github.com/0xPolygon/cosmos-sdk/x/tx v0.12.0/go.mod h1:qTth2coAGkwCwOCjqQ8EAQg+9udXNRzcnSbMgGKGEI0=
-github.com/0xPolygon/heimdall-v2 v0.0.0-20241010171906-1214e5225027 h1:jH7bC7ddNylm9ymvWw8l5feJrXvnbgPT6X8ZiTzbZKU=
-github.com/0xPolygon/heimdall-v2 v0.0.0-20241010171906-1214e5225027/go.mod h1:/Ry81iO7E6K8S1SDjumBjk2tDVGcgJv8ALA28AZnM8U=
+github.com/0xPolygon/heimdall-v2 v0.0.0-20241029153709-7d0688d71063 h1:8dSFT4vVPbRweKUBmI0NlxGPP+zPs8i0zbcr0aYSGKk=
+github.com/0xPolygon/heimdall-v2 v0.0.0-20241029153709-7d0688d71063/go.mod h1:jxWWwKcdiKFgVBFeGqGHxx+6ReY+HJNJPxfwhitBhIQ=
 github.com/99designs/go-keychain v0.0.0-20191008050251-8e49817e8af4 h1:/vQbFIOMbk2FiG/kXiLl8BRyzTWDw7gX/Hz7Dd5eDMs=
 github.com/99designs/go-keychain v0.0.0-20191008050251-8e49817e8af4/go.mod h1:hN7oaIRCjzsZ2dE+yG5k+rsdt3qcwykqK6HVGcKwsw4=
 github.com/99designs/keyring v1.2.1 h1:tYLp1ULvO7i3fI5vE21ReQuj99QFSs7lGm0xWyJo87o=

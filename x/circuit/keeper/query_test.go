@@ -35,7 +35,7 @@ func TestQueryAccount(t *testing.T) {
 	// test invalid address
 	res, err = qs.Account(f.ctx, &types.QueryAccountRequest{Address: "invalid"})
 	require.Error(t, err)
-	require.ErrorContains(t, err, "invalid bech32 string")
+	require.ErrorContains(t, err, "addresses cannot be empty: unknown address")
 	require.Nil(t, res)
 
 	// test account not found

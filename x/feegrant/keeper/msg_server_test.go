@@ -38,7 +38,7 @@ func (suite *KeeperTestSuite) TestGrantAllowance() {
 				}
 			},
 			true,
-			"decoding bech32 failed",
+			"addresses cannot be empty: unknown address",
 		},
 		{
 			"invalid grantee address",
@@ -53,12 +53,12 @@ func (suite *KeeperTestSuite) TestGrantAllowance() {
 				}
 			},
 			true,
-			"decoding bech32 failed",
+			"addresses cannot be empty: unknown address",
 		},
 		{
 			"valid: grantee account doesn't exist",
 			func() *feegrant.MsgGrantAllowance {
-				grantee := "cosmos139f7kncmglres2nf3h4hc4tade85ekfr8sulz5"
+				grantee := "0x000000000000000000000000000000000000dead"
 				granteeAccAddr, err := addressCodec.StringToBytes(grantee)
 				suite.Require().NoError(err)
 				any, err := codectypes.NewAnyWithValue(&feegrant.BasicAllowance{
@@ -207,7 +207,7 @@ func (suite *KeeperTestSuite) TestRevokeAllowance() {
 			},
 			func() {},
 			true,
-			"decoding bech32 failed",
+			"addresses cannot be empty: unknown address",
 		},
 		{
 			"error: invalid grantee",
@@ -217,7 +217,7 @@ func (suite *KeeperTestSuite) TestRevokeAllowance() {
 			},
 			func() {},
 			true,
-			"decoding bech32 failed",
+			"addresses cannot be empty: unknown address",
 		},
 		{
 			"error: fee allowance not found",

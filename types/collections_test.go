@@ -5,23 +5,29 @@ import (
 	"time"
 
 	"cosmossdk.io/collections/colltest"
+	"github.com/cosmos/cosmos-sdk/codec/address"
+	"github.com/stretchr/testify/require"
 )
 
 func TestCollectionsCorrectness(t *testing.T) {
+	ac := address.HexCodec{}
+	addr, err := ac.StringToBytes("0x000000000000000000000000000000000000dead")
+	require.NoError(t, err)
+
 	t.Run("AccAddress", func(t *testing.T) {
-		colltest.TestKeyCodec(t, AccAddressKey, AccAddress{0x0, 0x2, 0x3, 0x5})
+		colltest.TestKeyCodec(t, AccAddressKey, addr)
 	})
 
 	t.Run("ValAddress", func(t *testing.T) {
-		colltest.TestKeyCodec(t, ValAddressKey, ValAddress{0x1, 0x3, 0x4})
+		colltest.TestKeyCodec(t, ValAddressKey, addr)
 	})
 
 	t.Run("ConsAddress", func(t *testing.T) {
-		colltest.TestKeyCodec(t, ConsAddressKey, ConsAddress{0x32, 0x0, 0x0, 0x3})
+		colltest.TestKeyCodec(t, ConsAddressKey, addr)
 	})
 
 	t.Run("AddressIndexingKey", func(t *testing.T) {
-		colltest.TestKeyCodec(t, LengthPrefixedAddressKey(AccAddressKey), AccAddress{0x2, 0x5, 0x8})
+		colltest.TestKeyCodec(t, LengthPrefixedAddressKey(AccAddressKey), addr)
 	})
 
 	t.Run("Time", func(t *testing.T) {

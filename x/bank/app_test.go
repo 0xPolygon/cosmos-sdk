@@ -131,8 +131,7 @@ func checkBalance(t *testing.T, baseApp *baseapp.BaseApp, addr sdk.AccAddress, b
 }
 
 func TestSendNotEnoughBalance(t *testing.T) {
-	// TODO HV2: To fix this tests, we need to implement https://polygon.atlassian.net/browse/POS-2540
-	t.Skip("skipping test as it simApp staking module instead of heimdall-v2 custom stake module")
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 
 	acc1 := &authtypes.BaseAccount{
 		Address: addr1.String(),
@@ -227,8 +226,7 @@ func TestSendNotEnoughBalance(t *testing.T) {
 }
 
 func TestMsgMultiSendWithAccounts(t *testing.T) {
-	// TODO HV2: To fix this tests, we need to implement https://polygon.atlassian.net/browse/POS-2540
-	t.Skip("skipping test as it simApp staking module instead of heimdall-v2 custom stake module")
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 
 	acc := &authtypes.BaseAccount{
 		Address: addr1.String(),
@@ -343,8 +341,7 @@ func TestMsgMultiSendWithAccounts(t *testing.T) {
 }
 
 func TestMsgMultiSendMultipleOut(t *testing.T) {
-	// TODO HV2: To fix this tests, we need to implement https://polygon.atlassian.net/browse/POS-2540
-	t.Skip("skipping test as it simApp staking module instead of heimdall-v2 custom stake module")
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 
 	acc1 := &authtypes.BaseAccount{
 		Address: addr1.String(),
@@ -395,8 +392,7 @@ func TestMsgMultiSendMultipleOut(t *testing.T) {
 }
 
 func TestMsgMultiSendDependent(t *testing.T) {
-	// TODO HV2: To fix this tests, we need to implement https://polygon.atlassian.net/browse/POS-2540
-	t.Skip("skipping test as it simApp staking module instead of heimdall-v2 custom stake module")
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 
 	acc1 := authtypes.NewBaseAccountWithAddress(addr1)
 	acc2 := authtypes.NewBaseAccountWithAddress(addr2)
@@ -463,7 +459,7 @@ func TestMsgMultiSendDependent(t *testing.T) {
 }
 
 func TestMsgSetSendEnabled(t *testing.T) {
-	t.Skip("skipping test as not relevant to Heimdall (MsgSetSendEnabled is not required as the only denom supported is pol)")
+	t.Skip("skipping test for HV2 (MsgSetSendEnabled not relevant because the only denom supported is 'pol')")
 	acc1 := authtypes.NewBaseAccountWithAddress(addr1)
 
 	genAccs := []authtypes.GenesisAccount{acc1}

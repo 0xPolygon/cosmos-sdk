@@ -26,6 +26,7 @@ import (
 var EventProposalPruned = "cosmos.group.v1.EventProposalPruned"
 
 func (s *TestSuite) TestCreateGroupWithLotsOfMembers() {
+	s.T().Skip("skipping test for HV2 (groups not relevant)")
 	for i := 50; i < 70; i++ {
 		membersResp := s.createGroupAndGetMembers(i)
 		s.Require().Equal(len(membersResp), i)
@@ -59,6 +60,7 @@ func (s *TestSuite) createGroupAndGetMembers(numMembers int) []*group.GroupMembe
 }
 
 func (s *TestSuite) TestCreateGroup() {
+	s.T().Skip("skipping test for HV2 (groups not relevant)")
 	addrs := s.addrs
 	addr1 := addrs[0]
 	addr3 := addrs[2]
@@ -237,6 +239,7 @@ func (s *TestSuite) TestCreateGroup() {
 }
 
 func (s *TestSuite) TestUpdateGroupMembers() {
+	s.T().Skip("skipping test for HV2 (groups not relevant)")
 	addrs := s.addrs
 	addr3 := addrs[2]
 	addr4 := addrs[3]
@@ -573,6 +576,7 @@ func (s *TestSuite) TestUpdateGroupMembers() {
 }
 
 func (s *TestSuite) TestUpdateGroupAdmin() {
+	s.T().Skip("skipping test for HV2 (groups not relevant)")
 	addrs := s.addrs
 	addr1 := addrs[0]
 	addr2 := addrs[1]
@@ -691,6 +695,7 @@ func (s *TestSuite) TestUpdateGroupAdmin() {
 }
 
 func (s *TestSuite) TestUpdateGroupMetadata() {
+	s.T().Skip("skipping test for HV2 (groups not relevant)")
 	addrs := s.addrs
 	addr1 := addrs[0]
 	addr3 := addrs[2]
@@ -768,6 +773,7 @@ func (s *TestSuite) TestUpdateGroupMetadata() {
 }
 
 func (s *TestSuite) TestCreateGroupWithPolicy() {
+	s.T().Skip("skipping test for HV2 (groups not relevant)")
 	addrs := s.addrs
 	addr1 := addrs[0]
 	addr3 := addrs[2]
@@ -994,6 +1000,7 @@ func (s *TestSuite) TestCreateGroupWithPolicy() {
 }
 
 func (s *TestSuite) TestCreateGroupPolicy() {
+	s.T().Skip("skipping test for HV2 (groups not relevant)")
 	addrs := s.addrs
 	addr1 := addrs[0]
 	addr4 := addrs[3]
@@ -1154,6 +1161,7 @@ func (s *TestSuite) TestCreateGroupPolicy() {
 }
 
 func (s *TestSuite) TestUpdateGroupPolicyAdmin() {
+	s.T().Skip("skipping test for HV2 (groups not relevant)")
 	addrs := s.addrs
 	addr1 := addrs[0]
 	addr2 := addrs[1]
@@ -1265,6 +1273,7 @@ func (s *TestSuite) TestUpdateGroupPolicyAdmin() {
 }
 
 func (s *TestSuite) TestUpdateGroupPolicyDecisionPolicy() {
+	s.T().Skip("skipping test for HV2 (groups not relevant)")
 	addrs := s.addrs
 	addr1 := addrs[0]
 	addr5 := addrs[4]
@@ -1430,6 +1439,7 @@ func (s *TestSuite) TestUpdateGroupPolicyDecisionPolicy() {
 }
 
 func (s *TestSuite) TestUpdateGroupPolicyMetadata() {
+	s.T().Skip("skipping test for HV2 (groups not relevant)")
 	addrs := s.addrs
 	addr1 := addrs[0]
 	addr5 := addrs[4]
@@ -1534,6 +1544,7 @@ func (s *TestSuite) TestUpdateGroupPolicyMetadata() {
 }
 
 func (s *TestSuite) TestGroupPoliciesByAdminOrGroup() {
+	s.T().Skip("skipping test for HV2 (groups not relevant)")
 	addrs := s.addrs
 	addr2 := addrs[1]
 
@@ -1647,6 +1658,7 @@ func (s *TestSuite) TestGroupPoliciesByAdminOrGroup() {
 }
 
 func (s *TestSuite) TestSubmitProposal() {
+	s.T().Skip("skipping test for HV2 (groups not relevant)")
 	addrs := s.addrs
 	addr1 := addrs[0]
 	addr2 := addrs[1] // Has weight 2
@@ -1954,6 +1966,7 @@ func (s *TestSuite) TestSubmitProposal() {
 }
 
 func (s *TestSuite) TestWithdrawProposal() {
+	s.T().Skip("skipping test for HV2 (groups not relevant)")
 	addrs := s.addrs
 	addr2 := addrs[1]
 	addr5 := addrs[4]
@@ -2058,6 +2071,7 @@ func (s *TestSuite) TestWithdrawProposal() {
 }
 
 func (s *TestSuite) TestVote() {
+	s.T().Skip("skipping test for HV2 (groups not relevant)")
 	addrs := s.addrs
 	addr1 := addrs[0]
 	addr2 := addrs[1]
@@ -2571,6 +2585,7 @@ func (s *TestSuite) TestVote() {
 }
 
 func (s *TestSuite) TestExecProposal() {
+	s.T().Skip("skipping test for HV2 (groups not relevant)")
 	addrs := s.addrs
 	addr1 := addrs[0]
 	addr2 := addrs[1]
@@ -2824,6 +2839,7 @@ func (s *TestSuite) TestExecProposal() {
 }
 
 func (s *TestSuite) TestExecPrunedProposalsAndVotes() {
+	s.T().Skip("skipping test for HV2 (groups not relevant)")
 	addrs := s.addrs
 	addr1 := addrs[0]
 	addr2 := addrs[1]
@@ -3022,6 +3038,7 @@ func (s *TestSuite) TestExecPrunedProposalsAndVotes() {
 }
 
 func (s *TestSuite) TestLeaveGroup() {
+	s.T().Skip("skipping test for HV2 (groups not relevant)")
 	addrs := simtestutil.CreateIncrementalAccounts(7)
 
 	admin1 := addrs[0]
@@ -3212,6 +3229,7 @@ func (s *TestSuite) TestLeaveGroup() {
 }
 
 func (s *TestSuite) TestExecProposalsWhenMemberLeavesOrIsUpdated() {
+	s.T().Skip("skipping test for HV2 (groups not relevant)")
 	proposers := []string{s.addrs[1].String()}
 
 	specs := map[string]struct {

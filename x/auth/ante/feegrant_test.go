@@ -158,7 +158,7 @@ func TestDeductFeesNoDelegation(t *testing.T) {
 		tc := stc // to make scopelint happy
 		t.Run(name, func(t *testing.T) {
 			if tc.skip {
-				t.Skip("skipping test as not relevant to Heimdall")
+				t.Skip("skipping test for HV2 (not relevant)")
 			}
 			suite := SetupTestSuite(t, false)
 			protoTxCfg := tx.NewTxConfig(codec.NewProtoCodec(suite.encCfg.InterfaceRegistry), tx.DefaultSignModes)

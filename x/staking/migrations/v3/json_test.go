@@ -41,7 +41,7 @@ func TestMigrateJSON(t *testing.T) {
 	"last_total_power": "0",
 	"last_validator_powers": [],
 	"params": {
-		"bond_denom": "stake",
+		"bond_denom": "pol",
 		"historical_entries": 10000,
 		"max_entries": 7,
 		"max_validators": 100,

@@ -1002,7 +1002,7 @@ func (s *CLITestSuite) TestTxUpdateGroupPolicyDecisionPolicy() {
 				commonFlags...,
 			),
 			fmt.Sprintf("%s %s %s", newAdmin.Address.String(), "invalid", thresholdDecisionPolicy.Name()),
-			"decoding bech32 failed",
+			"addresses cannot be empty: unknown address",
 		},
 	}
 

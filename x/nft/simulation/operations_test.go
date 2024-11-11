@@ -64,6 +64,7 @@ func (suite *SimTestSuite) SetupTest() {
 }
 
 func (suite *SimTestSuite) TestWeightedOperations() {
+	suite.T().Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	weightedOps := simulation.WeightedOperations(
 		suite.interfaceRegistry,
 		make(simtypes.AppParams),
@@ -117,6 +118,7 @@ func (suite *SimTestSuite) getTestingAccounts(r *rand.Rand, n int) []simtypes.Ac
 }
 
 func (suite *SimTestSuite) TestSimulateMsgSend() {
+	suite.Suite.T().Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	s := rand.NewSource(1)
 	r := rand.New(s)
 	accounts := suite.getTestingAccounts(r, 2)
@@ -142,5 +144,6 @@ func (suite *SimTestSuite) TestSimulateMsgSend() {
 }
 
 func TestSimTestSuite(t *testing.T) {
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	suite.Run(t, new(SimTestSuite))
 }

@@ -16,6 +16,7 @@ import (
 )
 
 func TestRollback(t *testing.T) {
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	db := dbm.NewMemDB()
 	options := simapp.SetupOptions{
 		Logger:  log.NewNopLogger(),

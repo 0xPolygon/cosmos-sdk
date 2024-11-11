@@ -1,8 +1,6 @@
 module cosmossdk.io/x/evidence
 
-go 1.22.1
-
-toolchain go1.22.2
+go 1.23.2
 
 require (
 	cosmossdk.io/api v0.7.2
@@ -30,7 +28,7 @@ require (
 require (
 	cosmossdk.io/x/tx v0.12.0 // indirect
 	filippo.io/edwards25519 v1.0.0 // indirect
-	github.com/0xPolygon/heimdall-v2 v0.0.0-20241010171906-1214e5225027 // indirect
+	github.com/0xPolygon/heimdall-v2 v0.0.0-20241029153709-7d0688d71063 // indirect
 	github.com/99designs/go-keychain v0.0.0-20191008050251-8e49817e8af4 // indirect
 	github.com/99designs/keyring v1.2.1 // indirect
 	github.com/DataDog/datadog-go v3.2.0+incompatible // indirect
@@ -64,7 +62,7 @@ require (
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/dvsekhvalnov/jose2go v1.7.0 // indirect
 	github.com/emicklei/dot v1.6.1 // indirect
-	github.com/ethereum/go-ethereum v1.13.15 // indirect
+	github.com/ethereum/go-ethereum v1.14.11 // indirect
 	github.com/fatih/color v1.17.0 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
@@ -168,7 +166,7 @@ replace (
 	cosmossdk.io/errors => github.com/0xPolygon/cosmos-sdk/errors v1.0.0
 	cosmossdk.io/log => github.com/0xPolygon/cosmos-sdk/log v1.2.1
 	cosmossdk.io/math => github.com/0xPolygon/cosmos-sdk/math v1.2.0
-	cosmossdk.io/store => github.com/0xPolygon/cosmos-sdk/store v1.0.1
+	cosmossdk.io/store => github.com/0xPolygon/cosmos-sdk/store v1.1.0
 	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.0-beta.0.20240918084709-e40563677887
 
 	// TODO HV2: replace with a release version once development is completed

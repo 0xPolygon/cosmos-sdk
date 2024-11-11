@@ -68,7 +68,7 @@ func (s *VestingTestSuite) SetupTest() {
 }
 
 func (s *VestingTestSuite) TestCreateVestingAccount() {
-	s.T().Skip("skipping test as not relevant to Heimdall (no vesting)")
+	s.T().Skip("skipping test for HV2 (vesting not relevant)")
 	testCases := map[string]struct {
 		preRun    func()
 		input     *vestingtypes.MsgCreateVestingAccount
@@ -187,7 +187,7 @@ func (s *VestingTestSuite) TestCreateVestingAccount() {
 }
 
 func (s *VestingTestSuite) TestCreatePermanentLockedAccount() {
-	s.T().Skip("skipping test as not relevant to Heimdall (no vesting)")
+	s.T().Skip("skipping test for HV2 (vesting not relevant)")
 	testCases := map[string]struct {
 		preRun    func()
 		input     *vestingtypes.MsgCreatePermanentLockedAccount
@@ -270,7 +270,7 @@ func (s *VestingTestSuite) TestCreatePermanentLockedAccount() {
 }
 
 func (s *VestingTestSuite) TestCreatePeriodicVestingAccount() {
-	s.T().Skip("skipping test as not relevant to Heimdall (no vesting)")
+	s.T().Skip("skipping test for HV2 (vesting not relevant)")
 	testCases := []struct {
 		name      string
 		preRun    func()

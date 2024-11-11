@@ -461,7 +461,7 @@ func (s *CLITestSuite) TestNewDelegateCmd() {
 				fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
 				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, sdkmath.NewInt(10))).String()),
 			},
-			"decoding bech32 failed",
+			"invalid address: unknown address",
 		},
 		{
 			"valid transaction of delegate",
@@ -527,7 +527,7 @@ func (s *CLITestSuite) TestNewRedelegateCmd() {
 				fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
 				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, sdkmath.NewInt(10))).String()),
 			},
-			"invalid bech32",
+			"addresses cannot be empty: unknown address",
 		},
 		{
 			"wrong dst validator",
@@ -541,7 +541,7 @@ func (s *CLITestSuite) TestNewRedelegateCmd() {
 				fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
 				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, sdkmath.NewInt(10))).String()),
 			},
-			"invalid bech32",
+			"addresses cannot be empty: unknown address",
 		},
 		{
 			"valid transaction of delegate",
@@ -606,7 +606,7 @@ func (s *CLITestSuite) TestNewUnbondCmd() {
 				fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
 				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, sdkmath.NewInt(10))).String()),
 			},
-			"decoding bech32 failed",
+			"invalid address: unknown address",
 		},
 		{
 			"valid transaction of unbond",
@@ -658,7 +658,7 @@ func (s *CLITestSuite) TestNewCancelUnbondingDelegationCmd() {
 				fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
 				fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, sdkmath.NewInt(10))).String()),
 			},
-			"decoding bech32 failed",
+			"invalid address: unknown address",
 		},
 		{
 			"invalid canceling unbond delegation amount",

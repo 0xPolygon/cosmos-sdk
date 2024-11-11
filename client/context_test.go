@@ -180,8 +180,8 @@ func TestGetFromFields(t *testing.T) {
 			keyring: func() keyring.Keyring {
 				return keyring.NewInMemory(cfg.Codec)
 			},
-			from:        "cosmos139f7kncmglres2nf3h4hc4tade85ekfr8sulz5",
-			expectedErr: "key with address cosmos139f7kncmglres2nf3h4hc4tade85ekfr8sulz5 not found: key not found",
+			from:        "0x000000000000000000000000000000000000dead",
+			expectedErr: "key with address 0x000000000000000000000000000000000000dead not found: key not found",
 		},
 		{
 			keyring: func() keyring.Keyring {
@@ -196,7 +196,7 @@ func TestGetFromFields(t *testing.T) {
 			keyring: func() keyring.Keyring {
 				return keyring.NewInMemory(cfg.Codec)
 			},
-			from:      "cosmos139f7kncmglres2nf3h4hc4tade85ekfr8sulz5",
+			from:      "0x000000000000000000000000000000000000dead",
 			clientCtx: client.Context{}.WithSimulation(true),
 		},
 		{
@@ -205,13 +205,13 @@ func TestGetFromFields(t *testing.T) {
 			},
 			from:        "alice",
 			clientCtx:   client.Context{}.WithSimulation(true),
-			expectedErr: "a valid bech32 address must be provided in simulation mode",
+			expectedErr: "a valid hex address must be provided in simulation mode",
 		},
 		{
 			keyring: func() keyring.Keyring {
 				return keyring.NewInMemory(cfg.Codec)
 			},
-			from:      "cosmos139f7kncmglres2nf3h4hc4tade85ekfr8sulz5",
+			from:      "0x000000000000000000000000000000000000dead",
 			clientCtx: client.Context{}.WithGenerateOnly(true),
 		},
 		{

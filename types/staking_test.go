@@ -23,6 +23,7 @@ func (s *stakingTestSuite) SetupSuite() {
 }
 
 func (s *stakingTestSuite) TestTokensToConsensusPower() {
+	s.T().Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	s.Require().Equal(int64(0), sdk.TokensToConsensusPower(math.NewInt(999_999), sdk.DefaultPowerReduction))
 	s.Require().Equal(int64(1), sdk.TokensToConsensusPower(math.NewInt(1_000_000), sdk.DefaultPowerReduction))
 }

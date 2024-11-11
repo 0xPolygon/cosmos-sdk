@@ -60,7 +60,7 @@ func TestAminoJSON(t *testing.T) {
 	tx := legacytx.StdTx{}
 	blockTime := time.Date(1, 1, 1, 1, 1, 1, 1, time.UTC)
 	expiresAt := blockTime.Add(time.Hour)
-	msgSend := banktypes.MsgSend{FromAddress: "cosmos1ghi", ToAddress: "cosmos1jkl"}
+	msgSend := banktypes.MsgSend{FromAddress: "0x100000000000000000000000000000000000dead", ToAddress: "0x200000000000000000000000000000000000dead"}
 	typeURL := sdk.MsgTypeURL(&msgSend)
 	msgSendAny, err := cdctypes.NewAnyWithValue(&msgSend)
 	require.NoError(t, err)
@@ -69,7 +69,7 @@ func TestAminoJSON(t *testing.T) {
 	sendAuthz := banktypes.NewSendAuthorization(sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(1000))), nil)
 	sendGrant, err := authz.NewGrant(blockTime, sendAuthz, &expiresAt)
 	require.NoError(t, err)
-	valAddr, err := sdk.ValAddressFromHex("cosmosvaloper1xcy3els9ua75kdm783c3qu0rfa2eples6eavqq")
+	valAddr, err := sdk.ValAddressFromHex("0x000000000000000000000000000000000000dead")
 	require.NoError(t, err)
 	stakingAuth, err := stakingtypes.NewStakeAuthorization([]sdk.ValAddress{valAddr}, nil, stakingtypes.AuthorizationType_AUTHORIZATION_TYPE_DELEGATE, &sdk.Coin{Denom: "stake", Amount: sdkmath.NewInt(1000)})
 	require.NoError(t, err)
@@ -78,7 +78,7 @@ func TestAminoJSON(t *testing.T) {
 
 	// Amino JSON encoding has changed in authz since v0.46.
 	// Before, it was outputting something like:
-	// `{"account_number":"1","chain_id":"foo","fee":{"amount":[],"gas":"0"},"memo":"memo","msgs":[{"grant":{"authorization":{"msg":"/cosmos.bank.v1beta1.MsgSend"},"expiration":"0001-01-01T02:01:01.000000001Z"},"grantee":"cosmos1def","granter":"cosmos1abc"}],"sequence":"1","timeout_height":"1"}`
+	// `{"account_number":"1","chain_id":"foo","fee":{"amount":[],"gas":"0"},"memo":"memo","msgs":[{"grant":{"authorization":{"msg":"/cosmos.bank.v1beta1.MsgSend"},"expiration":"0001-01-01T02:01:01.000000001Z"},"grantee":"0xb00000000000000000000000000000000000dead","granter":"0xa00000000000000000000000000000000000dead"}],"sequence":"1","timeout_height":"1"}`
 	//
 	// This was a bug. Now, it's as below, See how there's `type` & `value` fields.
 	// ref: https://github.com/cosmos/cosmos-sdk/issues/11190
@@ -88,24 +88,24 @@ func TestAminoJSON(t *testing.T) {
 		exp string
 	}{
 		{
-			msg: &authz.MsgGrant{Granter: "cosmos1abc", Grantee: "cosmos1def", Grant: grant},
-			exp: `{"account_number":"1","chain_id":"foo","fee":{"amount":[],"gas":"0"},"memo":"memo","msgs":[{"type":"cosmos-sdk/MsgGrant","value":{"grant":{"authorization":{"type":"cosmos-sdk/GenericAuthorization","value":{"msg":"/cosmos.bank.v1beta1.MsgSend"}},"expiration":"0001-01-01T02:01:01.000000001Z"},"grantee":"cosmos1def","granter":"cosmos1abc"}}],"sequence":"1","timeout_height":"1"}`,
+			msg: &authz.MsgGrant{Granter: "0xa00000000000000000000000000000000000dead", Grantee: "0xb00000000000000000000000000000000000dead", Grant: grant},
+			exp: `{"account_number":"1","chain_id":"foo","fee":{"amount":[],"gas":"0"},"memo":"memo","msgs":[{"type":"cosmos-sdk/MsgGrant","value":{"grant":{"authorization":{"type":"cosmos-sdk/GenericAuthorization","value":{"msg":"/cosmos.bank.v1beta1.MsgSend"}},"expiration":"0001-01-01T02:01:01.000000001Z"},"grantee":"0xb00000000000000000000000000000000000dead","granter":"0xa00000000000000000000000000000000000dead"}}],"sequence":"1","timeout_height":"1"}`,
 		},
 		{
-			msg: &authz.MsgGrant{Granter: "cosmos1abc", Grantee: "cosmos1def", Grant: sendGrant},
-			exp: `{"account_number":"1","chain_id":"foo","fee":{"amount":[],"gas":"0"},"memo":"memo","msgs":[{"type":"cosmos-sdk/MsgGrant","value":{"grant":{"authorization":{"type":"cosmos-sdk/SendAuthorization","value":{"spend_limit":[{"amount":"1000","denom":"stake"}]}},"expiration":"0001-01-01T02:01:01.000000001Z"},"grantee":"cosmos1def","granter":"cosmos1abc"}}],"sequence":"1","timeout_height":"1"}`,
+			msg: &authz.MsgGrant{Granter: "0xa00000000000000000000000000000000000dead", Grantee: "0xb00000000000000000000000000000000000dead", Grant: sendGrant},
+			exp: `{"account_number":"1","chain_id":"foo","fee":{"amount":[],"gas":"0"},"memo":"memo","msgs":[{"type":"cosmos-sdk/MsgGrant","value":{"grant":{"authorization":{"type":"cosmos-sdk/SendAuthorization","value":{"spend_limit":[{"amount":"1000","denom":"stake"}]}},"expiration":"0001-01-01T02:01:01.000000001Z"},"grantee":"0xb00000000000000000000000000000000000dead","granter":"0xa00000000000000000000000000000000000dead"}}],"sequence":"1","timeout_height":"1"}`,
 		},
 		{
-			msg: &authz.MsgGrant{Granter: "cosmos1abc", Grantee: "cosmos1def", Grant: delegateGrant},
-			exp: `{"account_number":"1","chain_id":"foo","fee":{"amount":[],"gas":"0"},"memo":"memo","msgs":[{"type":"cosmos-sdk/MsgGrant","value":{"grant":{"authorization":{"type":"cosmos-sdk/StakeAuthorization","value":{"Validators":{"type":"cosmos-sdk/StakeAuthorization/AllowList","value":{"allow_list":{"address":["cosmosvaloper1xcy3els9ua75kdm783c3qu0rfa2eples6eavqq"]}}},"authorization_type":1,"max_tokens":{"amount":"1000","denom":"stake"}}}},"grantee":"cosmos1def","granter":"cosmos1abc"}}],"sequence":"1","timeout_height":"1"}`,
+			msg: &authz.MsgGrant{Granter: "0xa00000000000000000000000000000000000dead", Grantee: "0xb00000000000000000000000000000000000dead", Grant: delegateGrant},
+			exp: `{"account_number":"1","chain_id":"foo","fee":{"amount":[],"gas":"0"},"memo":"memo","msgs":[{"type":"cosmos-sdk/MsgGrant","value":{"grant":{"authorization":{"type":"cosmos-sdk/StakeAuthorization","value":{"Validators":{"type":"cosmos-sdk/StakeAuthorization/AllowList","value":{"allow_list":{"address":["0x000000000000000000000000000000000000dead"]}}},"authorization_type":1,"max_tokens":{"amount":"1000","denom":"stake"}}}},"grantee":"0xb00000000000000000000000000000000000dead","granter":"0xa00000000000000000000000000000000000dead"}}],"sequence":"1","timeout_height":"1"}`,
 		},
 		{
-			msg: &authz.MsgRevoke{Granter: "cosmos1abc", Grantee: "cosmos1def", MsgTypeUrl: typeURL},
-			exp: `{"account_number":"1","chain_id":"foo","fee":{"amount":[],"gas":"0"},"memo":"memo","msgs":[{"type":"cosmos-sdk/MsgRevoke","value":{"grantee":"cosmos1def","granter":"cosmos1abc","msg_type_url":"/cosmos.bank.v1beta1.MsgSend"}}],"sequence":"1","timeout_height":"1"}`,
+			msg: &authz.MsgRevoke{Granter: "0xa00000000000000000000000000000000000dead", Grantee: "0xb00000000000000000000000000000000000dead", MsgTypeUrl: typeURL},
+			exp: `{"account_number":"1","chain_id":"foo","fee":{"amount":[],"gas":"0"},"memo":"memo","msgs":[{"type":"cosmos-sdk/MsgRevoke","value":{"grantee":"0xb00000000000000000000000000000000000dead","granter":"0xa00000000000000000000000000000000000dead","msg_type_url":"/cosmos.bank.v1beta1.MsgSend"}}],"sequence":"1","timeout_height":"1"}`,
 		},
 		{
-			msg: &authz.MsgExec{Grantee: "cosmos1def", Msgs: []*cdctypes.Any{msgSendAny}},
-			exp: `{"account_number":"1","chain_id":"foo","fee":{"amount":[],"gas":"0"},"memo":"memo","msgs":[{"type":"cosmos-sdk/MsgExec","value":{"grantee":"cosmos1def","msgs":[{"type":"cosmos-sdk/MsgSend","value":{"amount":[],"from_address":"cosmos1ghi","to_address":"cosmos1jkl"}}]}}],"sequence":"1","timeout_height":"1"}`,
+			msg: &authz.MsgExec{Grantee: "0xb00000000000000000000000000000000000dead", Msgs: []*cdctypes.Any{msgSendAny}},
+			exp: `{"account_number":"1","chain_id":"foo","fee":{"amount":[],"gas":"0"},"memo":"memo","msgs":[{"type":"cosmos-sdk/MsgExec","value":{"grantee":"0xb00000000000000000000000000000000000dead","msgs":[{"type":"cosmos-sdk/MsgSend","value":{"amount":[],"from_address":"0x100000000000000000000000000000000000dead","to_address":"0x200000000000000000000000000000000000dead"}}]}}],"sequence":"1","timeout_height":"1"}`,
 		},
 	}
 	for i, tt := range tests {

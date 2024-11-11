@@ -43,6 +43,7 @@ type SimTestSuite struct {
 }
 
 func (suite *SimTestSuite) SetupTest() {
+	suite.T().Skip("skipping test for HV2 (groups not relevant)")
 	app, err := simtestutil.Setup(
 		depinject.Configs(
 			grouptestutil.AppConfig,
@@ -62,6 +63,7 @@ func (suite *SimTestSuite) SetupTest() {
 }
 
 func (suite *SimTestSuite) TestWeightedOperations() {
+	suite.T().Skip("skipping test for HV2 (groups not relevant)")
 	cdc := suite.codec
 	appParams := make(simtypes.AppParams)
 
@@ -125,6 +127,7 @@ func (suite *SimTestSuite) getTestingAccounts(r *rand.Rand, n int) []simtypes.Ac
 }
 
 func (suite *SimTestSuite) TestSimulateCreateGroup() {
+	suite.T().Skip("skipping test for HV2 (groups not relevant)")
 	// setup 1 account
 	s := rand.NewSource(1)
 	r := rand.New(s)
@@ -151,6 +154,7 @@ func (suite *SimTestSuite) TestSimulateCreateGroup() {
 }
 
 func (suite *SimTestSuite) TestSimulateCreateGroupWithPolicy() {
+	suite.T().Skip("skipping test for HV2 (groups not relevant)")
 	// setup 1 account
 	s := rand.NewSource(1)
 	r := rand.New(s)
@@ -177,6 +181,7 @@ func (suite *SimTestSuite) TestSimulateCreateGroupWithPolicy() {
 }
 
 func (suite *SimTestSuite) TestSimulateCreateGroupPolicy() {
+	suite.T().Skip("skipping test for HV2 (groups not relevant)")
 	// setup 1 account
 	s := rand.NewSource(1)
 	r := rand.New(s)
@@ -216,6 +221,7 @@ func (suite *SimTestSuite) TestSimulateCreateGroupPolicy() {
 }
 
 func (suite *SimTestSuite) TestSimulateSubmitProposal() {
+	suite.T().Skip("skipping test for HV2 (groups not relevant)")
 	// setup 1 account
 	s := rand.NewSource(2)
 	r := rand.New(s)
@@ -266,6 +272,7 @@ func (suite *SimTestSuite) TestSimulateSubmitProposal() {
 }
 
 func (suite *SimTestSuite) TestWithdrawProposal() {
+	suite.T().Skip("skipping test for HV2 (groups not relevant)")
 	// setup 1 account
 	s := rand.NewSource(1)
 	r := rand.New(s)
@@ -329,6 +336,7 @@ func (suite *SimTestSuite) TestWithdrawProposal() {
 }
 
 func (suite *SimTestSuite) TestSimulateVote() {
+	suite.T().Skip("skipping test for HV2 (groups not relevant)")
 	// setup 1 account
 	s := rand.NewSource(1)
 	r := rand.New(s)
@@ -393,6 +401,7 @@ func (suite *SimTestSuite) TestSimulateVote() {
 }
 
 func (suite *SimTestSuite) TestSimulateExec() {
+	suite.T().Skip("skipping test for HV2 (groups not relevant)")
 	// setup 1 account
 	s := rand.NewSource(1)
 	r := rand.New(s)
@@ -465,6 +474,7 @@ func (suite *SimTestSuite) TestSimulateExec() {
 }
 
 func (suite *SimTestSuite) TestSimulateUpdateGroupAdmin() {
+	suite.T().Skip("skipping test for HV2 (groups not relevant)")
 	// setup 1 account
 	s := rand.NewSource(1)
 	r := rand.New(s)
@@ -504,6 +514,7 @@ func (suite *SimTestSuite) TestSimulateUpdateGroupAdmin() {
 }
 
 func (suite *SimTestSuite) TestSimulateUpdateGroupMetadata() {
+	suite.T().Skip("skipping test for HV2 (groups not relevant)")
 	// setup 1 account
 	s := rand.NewSource(1)
 	r := rand.New(s)
@@ -543,6 +554,7 @@ func (suite *SimTestSuite) TestSimulateUpdateGroupMetadata() {
 }
 
 func (suite *SimTestSuite) TestSimulateUpdateGroupMembers() {
+	suite.T().Skip("skipping test for HV2 (groups not relevant)")
 	// setup 1 account
 	s := rand.NewSource(1)
 	r := rand.New(s)
@@ -582,6 +594,7 @@ func (suite *SimTestSuite) TestSimulateUpdateGroupMembers() {
 }
 
 func (suite *SimTestSuite) TestSimulateUpdateGroupPolicyAdmin() {
+	suite.T().Skip("skipping test for HV2 (groups not relevant)")
 	// setup 1 account
 	s := rand.NewSource(1)
 	r := rand.New(s)
@@ -632,6 +645,7 @@ func (suite *SimTestSuite) TestSimulateUpdateGroupPolicyAdmin() {
 }
 
 func (suite *SimTestSuite) TestSimulateUpdateGroupPolicyDecisionPolicy() {
+	suite.T().Skip("skipping test for HV2 (groups not relevant)")
 	// setup 1 account
 	s := rand.NewSource(1)
 	r := rand.New(s)
@@ -682,6 +696,7 @@ func (suite *SimTestSuite) TestSimulateUpdateGroupPolicyDecisionPolicy() {
 }
 
 func (suite *SimTestSuite) TestSimulateUpdateGroupPolicyMetadata() {
+	suite.T().Skip("skipping test for HV2 (groups not relevant)")
 	// setup 1 account
 	s := rand.NewSource(1)
 	r := rand.New(s)
@@ -732,6 +747,7 @@ func (suite *SimTestSuite) TestSimulateUpdateGroupPolicyMetadata() {
 }
 
 func (suite *SimTestSuite) TestSimulateLeaveGroup() {
+	suite.T().Skip("skipping test for HV2 (groups not relevant)")
 	s := rand.NewSource(1)
 	r := rand.New(s)
 	require := suite.Require()

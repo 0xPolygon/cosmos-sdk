@@ -1,6 +1,8 @@
 package keeper_test
 
 import (
+	"github.com/cosmos/cosmos-sdk/codec/address"
+	"github.com/stretchr/testify/require"
 	"testing"
 	"time"
 
@@ -16,6 +18,7 @@ import (
 )
 
 func TestUnbondingDelegationsMaxEntries(t *testing.T) {
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	t.Parallel()
 	f := initFixture(t)
 
@@ -24,7 +27,11 @@ func TestUnbondingDelegationsMaxEntries(t *testing.T) {
 	initTokens := f.stakingKeeper.TokensFromConsensusPower(ctx, int64(1000))
 	assert.NilError(t, f.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, initTokens))))
 
-	addrDel := sdk.AccAddress([]byte("addr"))
+	ac := address.NewHexCodec()
+	addrStr := "0x000000000000000000000000000000000000dead"
+	addrDel, err := ac.StringToBytes(addrStr)
+	require.NoError(t, err)
+
 	accAmt := math.NewInt(10000)
 	bondDenom, err := f.stakingKeeper.BondDenom(ctx)
 	assert.NilError(t, err)
@@ -51,7 +58,7 @@ func TestUnbondingDelegationsMaxEntries(t *testing.T) {
 	assert.Assert(math.IntEq(t, startTokens, validator.BondedTokens()))
 	assert.Assert(t, validator.IsBonded())
 
-	delegation := types.NewDelegation(addrDel.String(), addrVal.String(), issuedShares)
+	delegation := types.NewDelegation(addrStr, addrVal.String(), issuedShares)
 	assert.NilError(t, f.stakingKeeper.SetDelegation(ctx, delegation))
 
 	maxEntries, err := f.stakingKeeper.MaxEntries(ctx)

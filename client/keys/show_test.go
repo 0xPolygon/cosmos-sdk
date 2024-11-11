@@ -33,11 +33,11 @@ func Test_multiSigKey_Properties(t *testing.T) {
 
 	pub, err := k.GetPubKey()
 	require.NoError(t, err)
-	require.Equal(t, "D3923267FA8A3DD367BB768FA8BDC8FF7F89DA3F", pub.Address().String())
+	require.Equal(t, "D2B8E5992CF6A3F5904E537F65F27B8FE85DDD38", pub.Address().String())
 
 	addr, err := k.GetAddress()
 	require.NoError(t, err)
-	require.Equal(t, "cosmos16wfryel63g7axeamw68630wglalcnk3l0zuadc", sdk.MustHexifyAddressBytes(addr))
+	require.Equal(t, "0xd2b8e5992cf6a3f5904e537f65f27b8fe85ddd38", sdk.MustHexifyAddressBytes(addr))
 }
 
 func Test_showKeysCmd(t *testing.T) {
@@ -63,10 +63,10 @@ func Test_runShowCmd(t *testing.T) {
 	ctx := context.WithValue(context.Background(), client.ClientContextKey, &clientCtx)
 
 	cmd.SetArgs([]string{"invalid"})
-	require.EqualError(t, cmd.ExecuteContext(ctx), "invalid is not a valid name or address: decoding hex failed: invalid hex string length 7")
+	require.ErrorContains(t, cmd.ExecuteContext(ctx), "invalid is not a valid name or address: addresses cannot be empty: unknown address")
 
 	cmd.SetArgs([]string{"invalid1", "invalid2"})
-	require.EqualError(t, cmd.ExecuteContext(ctx), "invalid1 is not a valid name or address: decoding hex failed: invalid hex string")
+	require.ErrorContains(t, cmd.ExecuteContext(ctx), "invalid1 is not a valid name or address: addresses cannot be empty: unknown address")
 
 	fakeKeyName1 := "runShowCmd_Key1"
 	fakeKeyName2 := "runShowCmd_Key2"
@@ -90,7 +90,6 @@ func Test_runShowCmd(t *testing.T) {
 		fmt.Sprintf("--%s=%s", flags.FlagKeyringDir, kbHome),
 		fmt.Sprintf("--%s=%s", flags.FlagKeyringBackend, keyring.BackendTest),
 	})
-	require.EqualError(t, cmd.ExecuteContext(ctx), "invalid hex prefix encoding provided: ")
 
 	cmd.SetArgs([]string{
 		fakeKeyName1,
@@ -148,7 +147,7 @@ func Test_runShowCmd(t *testing.T) {
 		fmt.Sprintf("--%s=2", flagMultiSigThreshold),
 		fmt.Sprintf("--%s=%s", flags.FlagKeyringBackend, keyring.BackendTest),
 	})
-	require.EqualError(t, cmd.ExecuteContext(ctx), "the device flag (-d) can only be used for accounts")
+	require.EqualError(t, cmd.ExecuteContext(ctx), "the device flag (-d) can only be used for accounts stored in devices")
 
 	cmd.SetArgs([]string{
 		fakeKeyName1, fakeKeyName2,

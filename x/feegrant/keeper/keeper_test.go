@@ -169,7 +169,7 @@ func (suite *KeeperTestSuite) TestKeeperCrud() {
 			suite.Equal(tc.allowance, allow)
 		})
 	}
-	address := "cosmos1rxr4mq58w3gtnx5tsc438mwjjafv3mja7k5pnu"
+	address := "0x000000000000000000000000000000000000dead"
 	accAddr, err := codecaddress.NewHexCodec().StringToBytes(address)
 	suite.Require().NoError(err)
 	suite.accountKeeper.EXPECT().GetAccount(gomock.Any(), accAddr).Return(authtypes.NewBaseAccountWithAddress(accAddr)).AnyTimes()

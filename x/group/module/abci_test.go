@@ -48,6 +48,7 @@ func TestIntegrationTestSuite(t *testing.T) {
 }
 
 func (s *IntegrationTestSuite) SetupTest() {
+	s.T().Skip("skipping test for HV2 (groups not relevant)")
 	app, err := simtestutil.Setup(
 		depinject.Configs(
 			grouptestutil.AppConfig,
@@ -72,6 +73,7 @@ func (s *IntegrationTestSuite) SetupTest() {
 }
 
 func (s *IntegrationTestSuite) TestEndBlockerPruning() {
+	s.T().Skip("skipping test for HV2 (groups not relevant)")
 	ctx := s.ctx
 	addr1 := s.addrs[0]
 	addr2 := s.addrs[1]
@@ -373,6 +375,7 @@ func (s *IntegrationTestSuite) TestEndBlockerPruning() {
 }
 
 func (s *IntegrationTestSuite) TestEndBlockerTallying() {
+	s.T().Skip("skipping test for HV2 (groups not relevant)")
 	app := s.app
 	ctx := s.ctx
 

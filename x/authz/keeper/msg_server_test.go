@@ -68,7 +68,7 @@ func (suite *TestSuite) TestGrant() {
 				}
 			},
 			expErr: true,
-			errMsg: "invalid bech32 string",
+			errMsg: "addresses cannot be empty: unknown address: invalid address",
 		},
 		{
 			name: "invalid grantee",
@@ -82,7 +82,7 @@ func (suite *TestSuite) TestGrant() {
 				}
 			},
 			expErr: true,
-			errMsg: "invalid bech32 string",
+			errMsg: "addresses cannot be empty: unknown address: invalid address",
 		},
 		{
 			name: "invalid grant",
@@ -119,7 +119,9 @@ func (suite *TestSuite) TestGrant() {
 		{
 			name: "grantee account does not exist on chain: valid grant",
 			malleate: func() *authz.MsgGrant {
-				newAcc := sdk.AccAddress("valid")
+				ac := address.NewHexCodec()
+				addr, err := ac.StringToBytes("0x000000000000000000000000000000000000dead")
+				newAcc := sdk.AccAddress(addr)
 				suite.accountKeeper.EXPECT().GetAccount(gomock.Any(), newAcc).Return(nil).AnyTimes()
 				acc := authtypes.NewBaseAccountWithAddress(newAcc)
 				suite.accountKeeper.EXPECT().NewAccountWithAddress(gomock.Any(), newAcc).Return(acc).AnyTimes()
@@ -239,7 +241,7 @@ func (suite *TestSuite) TestRevoke() {
 				}
 			},
 			expErr: true,
-			errMsg: "invalid bech32 string",
+			errMsg: "addresses cannot be empty: unknown address: invalid address",
 		},
 		{
 			name: "invalid grantee",
@@ -251,7 +253,7 @@ func (suite *TestSuite) TestRevoke() {
 				}
 			},
 			expErr: true,
-			errMsg: "invalid bech32 string",
+			errMsg: "addresses cannot be empty: unknown address: invalid address",
 		},
 		{
 			name: "no msg given",

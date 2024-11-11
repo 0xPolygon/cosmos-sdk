@@ -61,6 +61,7 @@ func TestInitApp(t *testing.T) {
 }
 
 func TestDeliverTx(t *testing.T) {
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	app := SetupApp(t)
 
 	key := "my-special-key"

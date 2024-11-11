@@ -33,7 +33,7 @@ func NewAnteHandler(options HandlerOptions) (sdk.AnteHandler, error) {
 		return nil, errorsmod.Wrap(sdkerrors.ErrLogic, "bank keeper is required for ante builder")
 	}
 
-	if options.SignModeHandler == nil { // TODO HV2: what is the signing mode for heimdall? Is it `SignDoc` ?
+	if options.SignModeHandler == nil { // TODO HV2: confirm signing mode for heimdall is SignMode_SIGN_MODE_DIRECT
 		return nil, errorsmod.Wrap(sdkerrors.ErrLogic, "sign mode handler is required for ante builder")
 	}
 
