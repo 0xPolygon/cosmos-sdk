@@ -26,9 +26,6 @@ func Test_runAddCmdLedgerWithCustomCoinType(t *testing.T) {
 
 	config.SetPurpose(44)
 	config.SetCoinType(330)
-	//config.SetBech32PrefixForAccount(bech32PrefixAccAddr, bech32PrefixAccPub)
-	//config.SetBech32PrefixForValidator(bech32PrefixValAddr, bech32PrefixValPub)
-	//config.SetBech32PrefixForConsensusNode(bech32PrefixConsAddr, bech32PrefixConsPub)
 
 	cmd := AddKeyCommand()
 	cmd.Flags().AddFlagSet(Commands().PersistentFlags())
@@ -77,9 +74,6 @@ func Test_runAddCmdLedgerWithCustomCoinType(t *testing.T) {
 
 	config.SetPurpose(44)
 	config.SetCoinType(118)
-	//config.SetBech32PrefixForAccount(sdk.Bech32PrefixAccAddr, sdk.Bech32PrefixAccPub)
-	//config.SetBech32PrefixForValidator(sdk.Bech32PrefixValAddr, sdk.Bech32PrefixValPub)
-	//config.SetBech32PrefixForConsensusNode(sdk.Bech32PrefixConsAddr, sdk.Bech32PrefixConsPub)
 }
 
 func Test_runAddCmdLedger(t *testing.T) {
