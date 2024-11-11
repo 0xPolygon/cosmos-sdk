@@ -115,7 +115,7 @@ func (s *addressTestSuite) TestRandHexAccAddrConsistency() {
 	}
 
 	_, err := types.AccAddressFromHex("")
-	s.Require().Contains(err.Error(), "empty address string is not allowed")
+	s.Require().Contains(err.Error(), types.ErrEmptyHexAddress)
 }
 
 // This test is inherited from cosmos-sdk upstream

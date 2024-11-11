@@ -66,6 +66,7 @@ func TestTallyNoQuorum(t *testing.T) {
 }
 
 func TestTallyOnlyValidatorsAllYes(t *testing.T) {
+	t.Skip("HV2: Skipped because this invokes `IterateCurrentValidatorsAndApplyFn` which returns `nil` here (the real implementation is in our custom `stake` module)")
 	t.Parallel()
 
 	f := initFixture(t)
@@ -89,7 +90,6 @@ func TestTallyOnlyValidatorsAllYes(t *testing.T) {
 	assert.Assert(t, ok)
 	passes, burnDeposits, tallyResults, _ := f.govKeeper.Tally(ctx, proposal)
 
-	// HV2: weighted operations not allowed
 	assert.Assert(t, !passes)
 	assert.Assert(t, burnDeposits == false)
 	assert.Assert(t, tallyResults.Equals(v1.EmptyTallyResult()) == true)

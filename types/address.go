@@ -54,10 +54,9 @@ var (
 	isCachingEnabled atomic.Bool
 )
 
-// sentinel errors
+// sentinel error
 var (
-	ErrEmptyHexAddress = errors.New("decoding address from hex string failed: empty address")
-	ErrNotHexAddress   = errors.New("decoding address from hex string failed: not valid address")
+	ErrEmptyHexAddress = errors.New("empty address string is not allowed")
 )
 
 func init() {
@@ -124,7 +123,9 @@ func VerifyAddressFormat(bz []byte) error {
 	if len(bz) == 0 {
 		return errorsmod.Wrap(sdkerrors.ErrUnknownAddress, "addresses cannot be empty")
 	}
-
+	if len(bz) != 20 {
+		return errorsmod.Wrap(sdkerrors.ErrUnknownAddress, "addresses cannot be longer than 20 bytes")
+	}
 	if !common.IsHexAddress(common.Bytes2Hex(bz)) {
 		return errorsmod.Wrapf(sdkerrors.ErrUnknownAddress, "invalid address")
 	}

@@ -79,6 +79,7 @@ func TestGRPCQueryTally(t *testing.T) {
 			"request tally after few votes",
 			func() {
 				proposal.Status = v1.StatusVotingPeriod
+				proposal.Id = 1
 				f.govKeeper.SetProposal(ctx, proposal)
 
 				assert.NilError(t, f.govKeeper.AddVote(ctx, proposal.Id, addrs[0], v1.NewNonSplitVoteOption(v1.OptionYes), ""))
@@ -89,7 +90,8 @@ func TestGRPCQueryTally(t *testing.T) {
 
 				expRes = &v1.QueryTallyResultResponse{
 					Tally: &v1.TallyResult{
-						// HV2: weighted operations not allowed
+						// HV2: this invokes `IterateCurrentValidatorsAndApplyFn` which returns `nil` here (the real implementation is in our custom `stake` module)
+						// YesCount:        math.NewInt(3 * 5 * 1000000).String(),
 						YesCount:        "0",
 						NoCount:         "0",
 						AbstainCount:    "0",
