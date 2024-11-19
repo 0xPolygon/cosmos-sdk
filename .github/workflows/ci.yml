@@ -13,6 +13,9 @@ jobs:
   build:
     name: build
     runs-on: ubuntu-latest
+    env:
+      GOPRIVATE : github.com/0xPolygon/heimdall-v2
+      GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
     steps:
       - uses: actions/checkout@v3
 
@@ -22,7 +25,7 @@ jobs:
           go-version-file: go.mod
 
       - name: "Build binaries"
-        run: make build
+        run: git config --global url.https://$GH_ACCESS_TOKEN@github.com/.insteadOf https://github.com/ && make build
 
   test:
     name: test
