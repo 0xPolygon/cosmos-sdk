@@ -30,9 +30,9 @@ jobs:
 
   test:
     env:
-    GIT_TERMINAL_PROMPT: 1
-    GOPRIVATE: github.com/0xPolygon/heimdall-v2
-    GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+      GIT_TERMINAL_PROMPT: 1
+      GOPRIVATE: github.com/0xPolygon/heimdall-v2
+      GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
     name: test
     runs-on: ubuntu-latest
     steps:
