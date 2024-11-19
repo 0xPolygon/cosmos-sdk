@@ -39,16 +39,16 @@ jobs:
           go-version: 1.23.x
 
       - name: "Run unit tests"
-        run: make test-unit
+        run: git config --global url.https://$GH_ACCESS_TOKEN@github.com/.insteadOf https://github.com/ && make test-unit
 
       - name: "Run e2e tests"
-        run: make test-e2e
+        run: git config --global url.https://$GH_ACCESS_TOKEN@github.com/.insteadOf https://github.com/ && make test-e2e
 
       - name: "Run integration tests"
-        run: make test-integration
+        run: git config --global url.https://$GH_ACCESS_TOKEN@github.com/.insteadOf https://github.com/ && make test-integration
 
       - name: "Run ledger tests"
-        run: make test-ledger-mock
+        run: git config --global url.https://$GH_ACCESS_TOKEN@github.com/.insteadOf https://github.com/ && make test-ledger-mock
 
       - name: "Run race tests"
-        run: make test-race
+        run: git config --global url.https://$GH_ACCESS_TOKEN@github.com/.insteadOf https://github.com/ && make test-race
