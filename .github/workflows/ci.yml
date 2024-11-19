@@ -14,6 +14,7 @@ jobs:
     name: build
     runs-on: ubuntu-latest
     env:
+      GIT_TERMINAL_PROMPT: 1
       GOPRIVATE : github.com/0xPolygon/heimdall-v2
       GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
     steps:
@@ -28,6 +29,7 @@ jobs:
         run: git config --global url.https://$GH_ACCESS_TOKEN@github.com/.insteadOf https://github.com/ && make build
 
   test:
+    GIT_TERMINAL_PROMPT: 1
     GOPRIVATE: github.com/0xPolygon/heimdall-v2
     GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
     name: test
