@@ -29,12 +29,12 @@ jobs:
       - name: "Build binaries"
         run: git config --global url.https://$GH_ACCESS_TOKEN@github.com/.insteadOf https://github.com/ && make build
 
-  test:
+  test-unit:
     env:
       GIT_TERMINAL_PROMPT: 1
       GOPRIVATE: github.com/0xPolygon/heimdall-v2
       GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
-    name: test
+    name: test-unit
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -47,14 +47,74 @@ jobs:
       - name: "Run unit tests"
         run: git config --global url.https://$GH_ACCESS_TOKEN@github.com/.insteadOf https://github.com/ && make test-unit
 
+  test-e2e:
+    env:
+      GIT_TERMINAL_PROMPT: 1
+      GOPRIVATE: github.com/0xPolygon/heimdall-v2
+      GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+    name: test-e2e
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.23.x
+
       - name: "Run e2e tests"
         run: git config --global url.https://$GH_ACCESS_TOKEN@github.com/.insteadOf https://github.com/ && make test-e2e
+
+  test-integration:
+    env:
+      GIT_TERMINAL_PROMPT: 1
+      GOPRIVATE: github.com/0xPolygon/heimdall-v2
+      GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+    name: test-integration
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.23.x
 
       - name: "Run integration tests"
         run: git config --global url.https://$GH_ACCESS_TOKEN@github.com/.insteadOf https://github.com/ && make test-integration
 
+  test-ledger:
+    env:
+      GIT_TERMINAL_PROMPT: 1
+      GOPRIVATE: github.com/0xPolygon/heimdall-v2
+      GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+    name: test-unit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.23.x
+
       - name: "Run ledger tests"
         run: git config --global url.https://$GH_ACCESS_TOKEN@github.com/.insteadOf https://github.com/ && make test-ledger-mock
+
+  test-race:
+    env:
+      GIT_TERMINAL_PROMPT: 1
+      GOPRIVATE: github.com/0xPolygon/heimdall-v2
+      GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+    name: test-unit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.23.x
 
       - name: "Run race tests"
         run: git config --global url.https://$GH_ACCESS_TOKEN@github.com/.insteadOf https://github.com/ && make test-race
