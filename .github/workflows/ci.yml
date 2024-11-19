@@ -88,7 +88,7 @@ jobs:
       GIT_TERMINAL_PROMPT: 1
       GOPRIVATE: github.com/0xPolygon/heimdall-v2
       GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
-    name: test-unit
+    name: test-ledger
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -106,7 +106,7 @@ jobs:
       GIT_TERMINAL_PROMPT: 1
       GOPRIVATE: github.com/0xPolygon/heimdall-v2
       GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
-    name: test-unit
+    name: test-race
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
