@@ -1,3 +1,4 @@
+# TODO HV2: remove git configs and env vars once heimdall-v2 is public
 name: CI
 
 on:
