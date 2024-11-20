@@ -251,7 +251,7 @@ replace (
 	cosmossdk.io/x/tx => github.com/0xPolygon/cosmos-sdk/x/tx v0.12.0
 	cosmossdk.io/x/upgrade => github.com/0xPolygon/cosmos-sdk/x/upgrade v0.1.2-0.20240409091007-84d9b34a8681
 
-	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.0-beta.0.20240918084709-e40563677887
+	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.1-beta-polygon
 
 	github.com/ethereum/go-ethereum => github.com/maticnetwork/bor v1.4.0
 )
