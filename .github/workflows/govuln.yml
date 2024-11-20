@@ -1,4 +1,4 @@
-# TODO HV2: remove git configs and env vars once heimdall-v2 is public
+# TODO HV2: remove GIT_TERMINAL_PROMPT, GOPRIVATE and GH_PAT_TOKEN vars once heimdall-v2 is a public repo
 name: Govuln
 on: [ push, pull_request ]
 

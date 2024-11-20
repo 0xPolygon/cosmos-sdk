@@ -1,4 +1,5 @@
-# TODO HV2: remove git configs and env vars once heimdall-v2 is public
+# TODO HV2: remove GIT_TERMINAL_PROMPT, GOPRIVATE and GH_ACCESS_TOKEN vars once heimdall-v2 is a public repo
+#  also, "git config --global url.https://$GH_ACCESS_TOKEN@github.com/.insteadOf https://github.com/ &&" can be removed in each run step
 name: CI
 
 on:
