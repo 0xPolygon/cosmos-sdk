@@ -1,3 +1,4 @@
+# TODO HV2: remove GIT_TERMINAL_PROMPT, GOPRIVATE and GH_PAT_TOKEN vars once heimdall-v2 is a public repo
 name: Govuln
 on: [ push, pull_request ]
 
@@ -8,10 +9,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Running govulncheck
-        uses: Templum/govulncheck-action@v1.0.0
+        uses: Templum/govulncheck-action@v1.0.1
         continue-on-error: true
         env:
           DEBUG: "true"
+          GIT_TERMINAL_PROMPT: 1
+          GOPRIVATE: github.com/0xPolygon/heimdall-v2
+          GH_PAT_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
         with:
           go-version: 1.23.2
           package: ./...

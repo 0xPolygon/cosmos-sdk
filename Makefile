@@ -234,10 +234,10 @@ run-tests:
 ifneq (,$(shell which tparse 2>/dev/null))
 	@echo "Starting unit tests"; \
 	finalec=0; \
-	for module in $(SUB_MODULES); do \
+	for module in $(filter-out ./tools/cosmovisor,$(SUB_MODULES)); do \
 		cd ${CURRENT_DIR}/$$module; \
 		echo "Running unit tests for $$(grep '^module' go.mod)"; \
-		go test -v -mod=readonly -json $(ARGS) $(TEST_PACKAGES) ./... | tparse; \
+		go test -mod=readonly -json $(ARGS) $(TEST_PACKAGES) ./... | tparse; \
 		ec=$$?; \
 		if [ "$$ec" -ne '0' ]; then finalec=$$ec; fi; \
 	done; \
@@ -245,10 +245,10 @@ ifneq (,$(shell which tparse 2>/dev/null))
 else
 	@echo "Starting unit tests"; \
 	finalec=0; \
-	for module in $(SUB_MODULES); do \
+	for module in $(filter-out ./tools/cosmovisor,$(SUB_MODULES)); do \
 		cd ${CURRENT_DIR}/$$module; \
 		echo "Running unit tests for $$(grep '^module' go.mod)"; \
-		go test -v -mod=readonly $(ARGS) $(TEST_PACKAGES) ./... ; \
+		go test -mod=readonly $(ARGS) $(TEST_PACKAGES) ./... ; \
 		ec=$$?; \
 		if [ "$$ec" -ne '0' ]; then finalec=$$ec; fi; \
 	done; \
