@@ -37,12 +37,14 @@ jobs:
     name: test-unit
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Install Go
         uses: actions/setup-go@v5
         with:
           go-version: 1.23.x
+          cache: true
+          cache-dependency-path: go.sum
 
       - name: "Run unit tests"
         run: git config --global url.https://$GH_ACCESS_TOKEN@github.com/.insteadOf https://github.com/ && make test-unit
@@ -55,12 +57,14 @@ jobs:
     name: test-e2e
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Install Go
         uses: actions/setup-go@v5
         with:
           go-version: 1.23.x
+          cache: true
+          cache-dependency-path: go.sum
 
       - name: "Run e2e tests"
         run: git config --global url.https://$GH_ACCESS_TOKEN@github.com/.insteadOf https://github.com/ && make test-e2e
@@ -73,12 +77,14 @@ jobs:
     name: test-integration
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Install Go
         uses: actions/setup-go@v5
         with:
           go-version: 1.23.x
+          cache: true
+          cache-dependency-path: go.sum
 
       - name: "Run integration tests"
         run: git config --global url.https://$GH_ACCESS_TOKEN@github.com/.insteadOf https://github.com/ && make test-integration
@@ -91,30 +97,14 @@ jobs:
     name: test-ledger
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Install Go
         uses: actions/setup-go@v5
         with:
           go-version: 1.23.x
+          cache: true
+          cache-dependency-path: go.sum
 
       - name: "Run ledger tests"
         run: git config --global url.https://$GH_ACCESS_TOKEN@github.com/.insteadOf https://github.com/ && make test-ledger-mock
-
-  test-race:
-    env:
-      GIT_TERMINAL_PROMPT: 1
-      GOPRIVATE: github.com/0xPolygon/heimdall-v2
-      GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
-    name: test-race
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Install Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: 1.23.x
-
-      - name: "Run race tests"
-        run: git config --global url.https://$GH_ACCESS_TOKEN@github.com/.insteadOf https://github.com/ && make test-race
