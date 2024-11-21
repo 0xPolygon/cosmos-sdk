@@ -6,6 +6,7 @@ import (
 	"os"
 	"testing"
 
+	hApp "github.com/0xPolygon/heimdall-v2/app"
 	abci "github.com/cometbft/cometbft/abci/types"
 	cmtjson "github.com/cometbft/cometbft/libs/json"
 	cmttypes "github.com/cometbft/cometbft/types"
@@ -153,7 +154,7 @@ func SetupWithGenesisValSet(t *testing.T, valSet *cmttypes.ValidatorSet, genAccs
 
 // GenesisStateWithSingleValidator initializes GenesisState with a single validator and genesis accounts
 // that also act as delegators.
-func GenesisStateWithSingleValidator(t *testing.T, app *SimApp) GenesisState {
+func GenesisStateWithSingleValidator(t *testing.T, app *hApp.HeimdallApp) GenesisState {
 	t.Helper()
 
 	privVal := mock.NewPV()
@@ -166,7 +167,7 @@ func GenesisStateWithSingleValidator(t *testing.T, app *SimApp) GenesisState {
 
 	// generate genesis account
 	senderPrivKey := secp256k1.GenPrivKey()
-	acc := authtypes.NewBaseAccount(senderPrivKey.PubKey().Address().Bytes(), senderPrivKey.PubKey(), 0, 0)
+	acc := authtypes.NewBaseAccount(senderPrivKey.PubKey().Address().Bytes(), senderPrivKey.PubKey(), 1337, 0)
 	balances := []banktypes.Balance{
 		{
 			Address: acc.GetAddress().String(),

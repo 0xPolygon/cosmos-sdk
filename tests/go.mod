@@ -31,7 +31,10 @@ require (
 	pgregory.net/rapid v1.1.0
 )
 
-require github.com/ethereum/go-ethereum v1.14.12
+require (
+	github.com/0xPolygon/heimdall-v2 v0.0.0-20241122133045-7afed273eb4d
+	github.com/ethereum/go-ethereum v1.14.12
+)
 
 require (
 	cloud.google.com/go v0.112.1 // indirect
@@ -42,7 +45,6 @@ require (
 	cosmossdk.io/collections v0.4.0 // indirect
 	cosmossdk.io/x/circuit v0.1.1 // indirect
 	filippo.io/edwards25519 v1.0.0 // indirect
-	github.com/0xPolygon/heimdall-v2 v0.0.0-20241121085728-d0b571674757 // indirect
 	github.com/99designs/go-keychain v0.0.0-20191008050251-8e49817e8af4 // indirect
 	github.com/99designs/keyring v1.2.1 // indirect
 	github.com/BurntSushi/toml v1.4.0 // indirect

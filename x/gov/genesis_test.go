@@ -13,13 +13,11 @@ import (
 )
 
 func TestImportExportQueues_ErrorUnconsistentState(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
-
 	suite := createTestSuite(t)
 	app := suite.App
 	ctx := app.BaseApp.NewContext(false)
 	require.Panics(t, func() {
-		gov.InitGenesis(ctx, suite.AccountKeeper, suite.BankKeeper, suite.GovKeeper, &v1.GenesisState{
+		gov.InitGenesis(ctx, app.AccountKeeper, app.BankKeeper, &app.GovKeeper, &v1.GenesisState{
 			Deposits: v1.Deposits{
 				{
 					ProposalId: 1234,
@@ -34,8 +32,8 @@ func TestImportExportQueues_ErrorUnconsistentState(t *testing.T) {
 			},
 		})
 	})
-	gov.InitGenesis(ctx, suite.AccountKeeper, suite.BankKeeper, suite.GovKeeper, v1.DefaultGenesisState())
-	genState, err := gov.ExportGenesis(ctx, suite.GovKeeper)
+	gov.InitGenesis(ctx, app.AccountKeeper, app.BankKeeper, &app.GovKeeper, v1.DefaultGenesisState())
+	genState, err := gov.ExportGenesis(ctx, &app.GovKeeper)
 	require.NoError(t, err)
 	require.Equal(t, genState, v1.DefaultGenesisState())
 }

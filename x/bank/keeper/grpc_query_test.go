@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	topupTypes "github.com/0xPolygon/heimdall-v2/x/topup/types"
 	"github.com/cosmos/cosmos-sdk/testutil/testdata"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
@@ -12,7 +13,6 @@ import (
 	vestingtypes "github.com/cosmos/cosmos-sdk/x/auth/vesting/types"
 	"github.com/cosmos/cosmos-sdk/x/bank/testutil"
 	"github.com/cosmos/cosmos-sdk/x/bank/types"
-	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
 )
 
 func (suite *KeeperTestSuite) TestQueryBalance() {
@@ -286,7 +286,7 @@ func (suite *KeeperTestSuite) TestQueryTotalSupply() {
 	testCoins := sdk.NewCoins(sdk.NewInt64Coin("test", 400000000))
 
 	suite.mockMintCoins(mintAcc)
-	suite.Require().NoError(suite.bankKeeper.MintCoins(ctx, minttypes.ModuleName, testCoins))
+	suite.Require().NoError(suite.bankKeeper.MintCoins(ctx, topupTypes.ModuleName, testCoins))
 
 	res, err = queryClient.TotalSupply(gocontext.Background(), &types.QueryTotalSupplyRequest{})
 	suite.Require().NoError(err)
@@ -305,7 +305,7 @@ func (suite *KeeperTestSuite) TestQueryTotalSupplyOf() {
 	expectedTotalSupply := sdk.NewCoins(test1Supply, test2Supply)
 
 	suite.mockMintCoins(mintAcc)
-	suite.Require().NoError(suite.bankKeeper.MintCoins(ctx, minttypes.ModuleName, expectedTotalSupply))
+	suite.Require().NoError(suite.bankKeeper.MintCoins(ctx, topupTypes.ModuleName, expectedTotalSupply))
 
 	_, err := queryClient.SupplyOf(gocontext.Background(), &types.QuerySupplyOfRequest{})
 	suite.Require().Error(err)
@@ -591,7 +591,7 @@ func (suite *KeeperTestSuite) TestGRPCDenomOwners() {
 	keeper := suite.bankKeeper
 
 	suite.mockMintCoins(mintAcc)
-	suite.Require().NoError(keeper.MintCoins(ctx, minttypes.ModuleName, initCoins))
+	suite.Require().NoError(keeper.MintCoins(ctx, topupTypes.ModuleName, initCoins))
 
 	for i := 0; i < 10; i++ {
 		addr, _ := sdk.AccAddressFromHex(fmt.Sprintf("0xdeedbeefdeedbeefdeedbeefdeedbeefdeedbee%d", i))
@@ -601,7 +601,7 @@ func (suite *KeeperTestSuite) TestGRPCDenomOwners() {
 			sdk.TokensFromConsensusPower(initialPower/10, sdk.DefaultPowerReduction),
 		))
 		suite.mockSendCoinsFromModuleToAccount(mintAcc, addr)
-		suite.Require().NoError(keeper.SendCoinsFromModuleToAccount(ctx, minttypes.ModuleName, addr, bal))
+		suite.Require().NoError(keeper.SendCoinsFromModuleToAccount(ctx, topupTypes.ModuleName, addr, bal))
 	}
 
 	testCases := map[string]struct {
@@ -812,11 +812,11 @@ func (suite *KeeperTestSuite) TestGRPCDenomOwnersByQuery() {
 	keeper := suite.bankKeeper
 
 	suite.mockMintCoins(mintAcc)
-	suite.Require().NoError(keeper.MintCoins(ctx, minttypes.ModuleName, initCoins))
+	suite.Require().NoError(keeper.MintCoins(ctx, topupTypes.ModuleName, initCoins))
 	denom := "ibc/123123213123"
 	newCoins := sdk.NewCoins(sdk.NewCoin(denom, initTokens))
 	suite.mockMintCoins(mintAcc)
-	suite.Require().NoError(keeper.MintCoins(ctx, minttypes.ModuleName, newCoins))
+	suite.Require().NoError(keeper.MintCoins(ctx, topupTypes.ModuleName, newCoins))
 
 	for i := 0; i < 10; i++ {
 		addr := sdk.AccAddress(fmt.Sprintf("account-%d", i))
@@ -826,7 +826,7 @@ func (suite *KeeperTestSuite) TestGRPCDenomOwnersByQuery() {
 			sdk.TokensFromConsensusPower(initialPower/10, sdk.DefaultPowerReduction),
 		))
 		suite.mockSendCoinsFromModuleToAccount(mintAcc, addr)
-		suite.Require().NoError(keeper.SendCoinsFromModuleToAccount(ctx, minttypes.ModuleName, addr, bal))
+		suite.Require().NoError(keeper.SendCoinsFromModuleToAccount(ctx, topupTypes.ModuleName, addr, bal))
 	}
 
 	testCases := map[string]struct {

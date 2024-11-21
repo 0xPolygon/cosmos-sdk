@@ -67,7 +67,7 @@ func (s *IntegrationTestSuite) SetupTest() {
 
 	s.ctx = ctx
 
-	s.addrs = simtestutil.AddTestAddrsIncremental(s.bankKeeper, s.stakingKeeper, ctx, 4, math.NewInt(30000000))
+	s.addrs = simtestutil.AddTestAddrsIncremental(s.bankKeeper, ctx, 4, math.NewInt(30000000))
 
 	s.addressCodec = codecaddress.NewHexCodec()
 }

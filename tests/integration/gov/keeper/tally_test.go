@@ -46,7 +46,7 @@ func TestTallyNoQuorum(t *testing.T) {
 
 	createValidators(t, f, []int64{2, 5, 0})
 
-	addrs := simtestutil.AddTestAddrsIncremental(f.bankKeeper, f.stakingKeeper, ctx, 1, math.NewInt(10000000))
+	addrs := simtestutil.AddTestAddrsIncremental(f.bankKeeper, ctx, 1, math.NewInt(10000000))
 
 	tp := TestProposal
 	proposal, err := f.govKeeper.SubmitProposal(ctx, tp, "", "test", "description", addrs[0], false)
@@ -66,7 +66,6 @@ func TestTallyNoQuorum(t *testing.T) {
 }
 
 func TestTallyOnlyValidatorsAllYes(t *testing.T) {
-	t.Skip("HV2: Skipped because this invokes `IterateCurrentValidatorsAndApplyFn` which returns `nil` here (the real implementation is in our custom `stake` module)")
 	t.Parallel()
 
 	f := initFixture(t)

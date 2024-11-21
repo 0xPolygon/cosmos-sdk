@@ -60,6 +60,7 @@ func initValidators(t testing.TB, power int64, numAddrs int, powers []int64) (*f
 }
 
 func TestUpdateBondedValidatorsDecreaseCliff(t *testing.T) {
+	t.Skip("skipping test for HV2, because we have own stake module")
 	numVals := 10
 	maxVals := 5
 
@@ -125,6 +126,7 @@ func TestUpdateBondedValidatorsDecreaseCliff(t *testing.T) {
 }
 
 func TestSlashToZeroPowerRemoved(t *testing.T) {
+	t.Skip("skipping test for HV2, because we have own stake module")
 	// initialize setup
 	f, _, addrVals := bootstrapValidatorTest(t, 100, 20)
 
@@ -157,6 +159,7 @@ func TestSlashToZeroPowerRemoved(t *testing.T) {
 
 // test how the validators are sorted, tests GetBondedValidatorsByPower
 func TestGetValidatorSortingUnmixed(t *testing.T) {
+	t.Skip("skipping test for HV2, because we have own stake module")
 	f, addrs, _ := bootstrapValidatorTest(t, 1000, 20)
 
 	// initialize some validators into the state
@@ -245,6 +248,7 @@ func TestGetValidatorSortingUnmixed(t *testing.T) {
 }
 
 func TestGetValidatorSortingMixed(t *testing.T) {
+	t.Skip("skipping test for HV2, because we have own stake module")
 	f, addrs, _ := bootstrapValidatorTest(t, 1000, 20)
 	bondedPool := f.stakingKeeper.GetBondedPool(f.sdkCtx)
 	notBondedPool := f.stakingKeeper.GetNotBondedPool(f.sdkCtx)
@@ -311,6 +315,7 @@ func TestGetValidatorSortingMixed(t *testing.T) {
 
 // TODO separate out into multiple tests
 func TestGetValidatorsEdgeCases(t *testing.T) {
+	t.Skip("skipping test for HV2, because we have own stake module")
 	f, addrs, _ := bootstrapValidatorTest(t, 1000, 20)
 
 	// set max validators to 2
@@ -431,6 +436,7 @@ func TestGetValidatorsEdgeCases(t *testing.T) {
 }
 
 func TestValidatorBondHeight(t *testing.T) {
+	t.Skip("skipping test for HV2, because we have own stake module")
 	f, addrs, _ := bootstrapValidatorTest(t, 1000, 20)
 
 	// now 2 max resValidators
@@ -481,6 +487,7 @@ func TestValidatorBondHeight(t *testing.T) {
 }
 
 func TestFullValidatorSetPowerChange(t *testing.T) {
+	t.Skip("skipping test for HV2, because we have own stake module")
 	f, addrs, _ := bootstrapValidatorTest(t, 1000, 20)
 	params, err := f.stakingKeeper.GetParams(f.sdkCtx)
 	assert.NilError(t, err)
@@ -528,6 +535,7 @@ func TestFullValidatorSetPowerChange(t *testing.T) {
 }
 
 func TestApplyAndReturnValidatorSetUpdatesAllNone(t *testing.T) {
+	t.Skip("skipping test for HV2, because we have own stake module")
 	f, _, _ := bootstrapValidatorTest(t, 1000, 20)
 
 	powers := []int64{10, 20}
@@ -561,6 +569,7 @@ func TestApplyAndReturnValidatorSetUpdatesAllNone(t *testing.T) {
 }
 
 func TestApplyAndReturnValidatorSetUpdatesIdentical(t *testing.T) {
+	t.Skip("skipping test for HV2, because we have own stake module")
 	f, addrs, _ := bootstrapValidatorTest(t, 1000, 20)
 
 	powers := []int64{10, 20}
@@ -584,6 +593,7 @@ func TestApplyAndReturnValidatorSetUpdatesIdentical(t *testing.T) {
 }
 
 func TestApplyAndReturnValidatorSetUpdatesSingleValueChange(t *testing.T) {
+	t.Skip("skipping test for HV2, because we have own stake module")
 	f, addrs, _ := bootstrapValidatorTest(t, 1000, 20)
 
 	powers := []int64{10, 20}
@@ -610,6 +620,7 @@ func TestApplyAndReturnValidatorSetUpdatesSingleValueChange(t *testing.T) {
 }
 
 func TestApplyAndReturnValidatorSetUpdatesMultipleValueChange(t *testing.T) {
+	t.Skip("skipping test for HV2, because we have own stake module")
 	powers := []int64{10, 20}
 	// TODO: use it in other places
 	f, _, _, validators := initValidators(t, 1000, 20, powers)
@@ -633,6 +644,7 @@ func TestApplyAndReturnValidatorSetUpdatesMultipleValueChange(t *testing.T) {
 }
 
 func TestApplyAndReturnValidatorSetUpdatesInserted(t *testing.T) {
+	t.Skip("skipping test for HV2, because we have own stake module")
 	powers := []int64{10, 20, 5, 15, 25}
 	f, _, _, validators := initValidators(t, 1000, 20, powers)
 
@@ -672,6 +684,7 @@ func TestApplyAndReturnValidatorSetUpdatesInserted(t *testing.T) {
 }
 
 func TestApplyAndReturnValidatorSetUpdatesWithCliffValidator(t *testing.T) {
+	t.Skip("skipping test for HV2, because we have own stake module")
 	f, addrs, _ := bootstrapValidatorTest(t, 1000, 20)
 	params := types.DefaultParams()
 	params.MaxValidators = 2
@@ -710,6 +723,7 @@ func TestApplyAndReturnValidatorSetUpdatesWithCliffValidator(t *testing.T) {
 }
 
 func TestApplyAndReturnValidatorSetUpdatesNewValidator(t *testing.T) {
+	t.Skip("skipping test for HV2, because we have own stake module")
 	f, _, _ := bootstrapValidatorTest(t, 1000, 20)
 	params, err := f.stakingKeeper.GetParams(f.sdkCtx)
 	assert.NilError(t, err)
@@ -796,6 +810,7 @@ func TestApplyAndReturnValidatorSetUpdatesNewValidator(t *testing.T) {
 }
 
 func TestApplyAndReturnValidatorSetUpdatesBondTransition(t *testing.T) {
+	t.Skip("skipping test for HV2, because we have own stake module")
 	f, _, _ := bootstrapValidatorTest(t, 1000, 20)
 	params, err := f.stakingKeeper.GetParams(f.sdkCtx)
 	assert.NilError(t, err)

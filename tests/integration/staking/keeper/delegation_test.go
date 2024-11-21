@@ -1,10 +1,11 @@
 package keeper_test
 
 import (
-	"github.com/cosmos/cosmos-sdk/codec/address"
-	"github.com/stretchr/testify/require"
 	"testing"
 	"time"
+
+	"github.com/cosmos/cosmos-sdk/codec/address"
+	"github.com/stretchr/testify/require"
 
 	"gotest.tools/v3/assert"
 
@@ -18,7 +19,7 @@ import (
 )
 
 func TestUnbondingDelegationsMaxEntries(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	t.Skip("skipping test for HV2, because we have own stake module")
 	t.Parallel()
 	f := initFixture(t)
 

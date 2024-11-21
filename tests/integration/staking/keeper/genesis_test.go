@@ -26,6 +26,7 @@ func bootstrapGenesisTest(t *testing.T, numAddrs int) (*fixture, []sdk.AccAddres
 }
 
 func TestInitGenesis(t *testing.T) {
+	t.Skip("skipping test for HV2, because we have own stake module")
 	f, addrs := bootstrapGenesisTest(t, 10)
 
 	valTokens := f.stakingKeeper.TokensFromConsensusPower(f.sdkCtx, 1)
@@ -180,6 +181,7 @@ func TestInitGenesis_PoolsBalanceMismatch(t *testing.T) {
 }
 
 func TestInitGenesisLargeValidatorSet(t *testing.T) {
+	t.Skip("skipping test for HV2, because we have own stake module")
 	size := 200
 	assert.Assert(t, size > 100)
 

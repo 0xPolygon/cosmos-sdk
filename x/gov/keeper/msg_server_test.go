@@ -1,12 +1,13 @@
 package keeper_test
 
 import (
-	borTypes "github.com/0xPolygon/heimdall-v2/x/bor/types"
-	checkpointTypes "github.com/0xPolygon/heimdall-v2/x/checkpoint/types"
-	milestoneTypes "github.com/0xPolygon/heimdall-v2/x/milestone/types"
 	"math/big"
 	"strings"
 	"time"
+
+	borTypes "github.com/0xPolygon/heimdall-v2/x/bor/types"
+	checkpointTypes "github.com/0xPolygon/heimdall-v2/x/checkpoint/types"
+	milestoneTypes "github.com/0xPolygon/heimdall-v2/x/milestone/types"
 
 	authv1beta1 "cosmossdk.io/api/cosmos/auth/v1beta1"
 	bankv1beta1 "cosmossdk.io/api/cosmos/bank/v1beta1"
@@ -708,7 +709,7 @@ func (suite *KeeperTestSuite) TestVoteWeightedReq() {
 	suite.reset()
 
 	accAmt := sdkmath.NewIntFromBigInt(new(big.Int).Mul(big.NewInt(10), new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil)))
-	proposer := simtestutil.AddTestAddrsIncremental(suite.bankKeeper, suite.stakingKeeper, suite.ctx, 1, accAmt.Mul(sdkmath.NewInt(5)))[0]
+	proposer := simtestutil.AddTestAddrsIncremental(suite.bankKeeper, suite.ctx, 1, accAmt.Mul(sdkmath.NewInt(5)))[0]
 
 	coins := sdk.NewCoins(sdk.NewCoin("pol", sdkmath.NewInt(100000000000000000)))
 	params, _ := suite.govKeeper.Params.Get(suite.ctx)
@@ -1043,7 +1044,7 @@ func (suite *KeeperTestSuite) TestDepositReq() {
 // legacy msg server tests
 func (suite *KeeperTestSuite) TestLegacyMsgSubmitProposal() {
 	accAmt := sdkmath.NewIntFromBigInt(new(big.Int).Mul(big.NewInt(10), new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil)))
-	proposer := simtestutil.AddTestAddrsIncremental(suite.bankKeeper, suite.stakingKeeper, suite.ctx, 1, accAmt.Mul(sdkmath.NewInt(5)))[0]
+	proposer := simtestutil.AddTestAddrsIncremental(suite.bankKeeper, suite.ctx, 1, accAmt.Mul(sdkmath.NewInt(5)))[0]
 	coins := sdk.NewCoins(sdk.NewCoin("pol", sdkmath.NewInt(100000000000000000)))
 	initialDeposit := coins
 	params, _ := suite.govKeeper.Params.Get(suite.ctx)
@@ -1920,7 +1921,7 @@ func (suite *KeeperTestSuite) TestSubmitProposal_InitialDeposit() {
 		suite.Run(name, func() {
 			// Setup
 			govKeeper, ctx := suite.govKeeper, suite.ctx
-			address := simtestutil.AddTestAddrs(suite.bankKeeper, suite.stakingKeeper, ctx, 1, tc.accountBalance[0].Amount)[0]
+			address := simtestutil.AddTestAddrs(suite.bankKeeper, ctx, 1, tc.accountBalance[0].Amount)[0]
 
 			params := v1.DefaultParams()
 			params.MinDeposit = tc.minDeposit

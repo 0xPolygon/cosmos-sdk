@@ -17,7 +17,7 @@ import (
 )
 
 func TestCancelUnbondingDelegation(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	t.Skip("skipping test for HV2, because we have own stake module")
 	t.Parallel()
 	f := initFixture(t)
 
@@ -37,7 +37,7 @@ func TestCancelUnbondingDelegation(t *testing.T) {
 	assert.DeepEqual(t, sdk.NewInt64Coin(bondDenom, startTokens.Int64()), moduleBalance)
 
 	// accounts
-	addrs := simtestutil.AddTestAddrsIncremental(f.bankKeeper, f.stakingKeeper, ctx, 2, math.NewInt(10000))
+	addrs := simtestutil.AddTestAddrsIncremental(f.bankKeeper, ctx, 2, math.NewInt(10000))
 	valAddr := sdk.ValAddress(addrs[0])
 	delegatorAddr := addrs[1]
 

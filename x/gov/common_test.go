@@ -6,17 +6,13 @@ import (
 	"sort"
 	"testing"
 
+	hApp "github.com/0xPolygon/heimdall-v2/app"
 	"github.com/stretchr/testify/require"
 
-	"cosmossdk.io/depinject"
-	sdklog "cosmossdk.io/log"
 	"cosmossdk.io/math"
 
-	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
-	"github.com/cosmos/cosmos-sdk/runtime"
-	"github.com/cosmos/cosmos-sdk/testutil/configurator"
-	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	_ "github.com/cosmos/cosmos-sdk/x/auth"
 	authkeeper "github.com/cosmos/cosmos-sdk/x/auth/keeper"
@@ -98,9 +94,9 @@ func SortByteArrays(src [][]byte) [][]byte {
 }
 
 var pubkeys = []cryptotypes.PubKey{
-	ed25519.GenPrivKey().PubKey(),
-	ed25519.GenPrivKey().PubKey(),
-	ed25519.GenPrivKey().PubKey(),
+	secp256k1.GenPrivKey().PubKey(),
+	secp256k1.GenPrivKey().PubKey(),
+	secp256k1.GenPrivKey().PubKey(),
 }
 
 type suite struct {
@@ -109,33 +105,16 @@ type suite struct {
 	GovKeeper          *keeper.Keeper
 	StakingKeeper      *stakingkeeper.Keeper
 	DistributionKeeper distrkeeper.Keeper
-	App                *runtime.App
+	App                *hApp.HeimdallApp
 }
-
-// TODO HV2: To fix many tests, we need to implement https://polygon.atlassian.net/browse/POS-2540
-//  and change NewSimApp function accordingly
 
 func createTestSuite(t *testing.T) suite {
 	res := suite{}
 
-	app, err := simtestutil.SetupWithConfiguration(
-		depinject.Configs(
-			configurator.NewAppConfig(
-				configurator.ParamsModule(),
-				configurator.AuthModule(),
-				configurator.StakingModule(),
-				configurator.BankModule(),
-				configurator.GovModule(),
-				configurator.ConsensusModule(),
-				configurator.DistributionModule(),
-			),
-			depinject.Supply(sdklog.NewNopLogger()),
-		),
-		simtestutil.DefaultStartUpConfig(),
-		&res.AccountKeeper, &res.BankKeeper, &res.GovKeeper, &res.DistributionKeeper, &res.StakingKeeper,
-	)
-	require.NoError(t, err)
+	app, _, _ := hApp.SetupApp(t, 2)
+	hApp.RequestFinalizeBlock(t, app, app.LastBlockHeight()+1)
 
 	res.App = app
+
 	return res
 }

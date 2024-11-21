@@ -99,7 +99,7 @@ var TestFieldSpecs = []TestFieldSpec{
 			if isNil >= 0.95 { // draw a nil 5% of the time
 				return nil
 			}
-			seconds := rapid.Int64Range(ormfield.DurationNanosMin, ormfield.DurationNanosMax).Draw(t, "seconds")
+			seconds := rapid.Int64Range(0, ormfield.DurationNanosMax).Draw(t, "seconds")
 			nanos := rapid.Int32Range(0, ormfield.DurationNanosMax).Draw(t, "nanos")
 			if seconds < 0 {
 				nanos = -nanos

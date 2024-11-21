@@ -329,7 +329,7 @@ func fundAccountAndDelegate(f *deterministicFixture, t *testing.T, delegator sdk
 }
 
 func TestGRPCValidator(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	t.Skip("skipping test for HV2, because we have own stake module")
 	t.Parallel()
 	f := initDeterministicFixture(t)
 
@@ -352,7 +352,7 @@ func TestGRPCValidator(t *testing.T) {
 }
 
 func TestGRPCValidators(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	t.Skip("skipping test for HV2, because we have own stake module")
 	t.Parallel()
 	f := initDeterministicFixture(t)
 
@@ -379,7 +379,7 @@ func TestGRPCValidators(t *testing.T) {
 }
 
 func TestGRPCValidatorDelegations(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	t.Skip("skipping test for HV2, because we have own stake module")
 	t.Parallel()
 	f := initDeterministicFixture(t)
 
@@ -419,7 +419,7 @@ func TestGRPCValidatorDelegations(t *testing.T) {
 }
 
 func TestGRPCValidatorUnbondingDelegations(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	t.Skip("skipping test for HV2, because we have own stake module")
 	t.Parallel()
 	f := initDeterministicFixture(t)
 
@@ -468,7 +468,7 @@ func TestGRPCValidatorUnbondingDelegations(t *testing.T) {
 }
 
 func TestGRPCDelegation(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	t.Skip("skipping test for HV2, because we have own stake module")
 	t.Parallel()
 	f := initDeterministicFixture(t)
 
@@ -501,7 +501,7 @@ func TestGRPCDelegation(t *testing.T) {
 }
 
 func TestGRPCUnbondingDelegation(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	t.Skip("skipping test for HV2, because we have own stake module")
 	t.Parallel()
 	f := initDeterministicFixture(t)
 
@@ -542,7 +542,7 @@ func TestGRPCUnbondingDelegation(t *testing.T) {
 }
 
 func TestGRPCDelegatorDelegations(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	t.Skip("skipping test for HV2, because we have own stake module")
 	t.Parallel()
 	f := initDeterministicFixture(t)
 
@@ -578,7 +578,7 @@ func TestGRPCDelegatorDelegations(t *testing.T) {
 }
 
 func TestGRPCDelegatorValidator(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	t.Skip("skipping test for HV2, because we have own stake module")
 	t.Parallel()
 	f := initDeterministicFixture(t)
 
@@ -613,7 +613,7 @@ func TestGRPCDelegatorValidator(t *testing.T) {
 }
 
 func TestGRPCDelegatorUnbondingDelegations(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	t.Skip("skipping test for HV2, because we have own stake module")
 	t.Parallel()
 	f := initDeterministicFixture(t)
 
@@ -656,7 +656,7 @@ func TestGRPCDelegatorUnbondingDelegations(t *testing.T) {
 }
 
 func TestGRPCHistoricalInfo(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	t.Skip("skipping test for HV2, because we have own stake module")
 	t.Parallel()
 	f := initDeterministicFixture(t)
 
@@ -713,7 +713,7 @@ func TestGRPCHistoricalInfo(t *testing.T) {
 }
 
 func TestGRPCDelegatorValidators(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	t.Skip("skipping test for HV2, because we have own stake module")
 	t.Parallel()
 	f := initDeterministicFixture(t)
 
@@ -747,7 +747,7 @@ func TestGRPCDelegatorValidators(t *testing.T) {
 }
 
 func TestGRPCPool(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	t.Skip("skipping test for HV2, because we have own stake module")
 	t.Parallel()
 	f := initDeterministicFixture(t)
 
@@ -763,7 +763,7 @@ func TestGRPCPool(t *testing.T) {
 }
 
 func TestGRPCRedelegations(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	t.Skip("skipping test for HV2, because we have own stake module")
 	t.Parallel()
 	f := initDeterministicFixture(t)
 
@@ -829,6 +829,7 @@ func TestGRPCRedelegations(t *testing.T) {
 }
 
 func TestGRPCParams(t *testing.T) {
+	t.Skip("skipping test for HV2, because we have own stake module")
 	t.Parallel()
 	f := initDeterministicFixture(t)
 

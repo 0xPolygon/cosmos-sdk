@@ -87,6 +87,7 @@ func TestSimAppExportAndBlockedAddrs(t *testing.T) {
 }
 
 func TestRunMigrations(t *testing.T) {
+	t.Skip("We have migration tests in HV2")
 	db := dbm.NewMemDB()
 	logger := log.NewTestLogger(t)
 	app := NewSimApp(logger.With("instance", "simapp"), db, nil, true, simtestutil.NewAppOptionsWithFlagHome(t.TempDir()))
@@ -227,6 +228,7 @@ func TestRunMigrations(t *testing.T) {
 }
 
 func TestInitGenesisOnMigration(t *testing.T) {
+	t.Skip("We have migration tests in HV2")
 	db := dbm.NewMemDB()
 	app := NewSimApp(log.NewTestLogger(t), db, nil, true, simtestutil.NewAppOptionsWithFlagHome(t.TempDir()))
 	ctx := app.NewContextLegacy(true, cmtproto.Header{Height: app.LastBlockHeight()})
@@ -317,6 +319,7 @@ func (c customAddressCodec) BytesToString(bz []byte) (string, error) {
 }
 
 func TestAddressCodecFactory(t *testing.T) {
+	t.Skip("We dont have custom address codec in HV2")
 	var addrCodec address.Codec
 	var valAddressCodec runtime.ValidatorAddressCodec
 	var consAddressCodec runtime.ConsensusAddressCodec

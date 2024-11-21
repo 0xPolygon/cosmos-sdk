@@ -14,6 +14,7 @@ import (
 )
 
 func BenchmarkGetValidator(b *testing.B) {
+	b.Skip("skipping test for HV2, because we have own stake module")
 	// 900 is the max number we are allowed to use in order to avoid simtestutil.CreateTestPubKeys
 	// panic: encoding/hex: odd length hex string
 	powersNumber := 900
@@ -40,6 +41,7 @@ func BenchmarkGetValidator(b *testing.B) {
 }
 
 func BenchmarkGetValidatorDelegations(b *testing.B) {
+	b.Skip("skipping test for HV2, because we have own stake module")
 	var totalPower int64
 	powersNumber := 10
 
@@ -75,6 +77,7 @@ func BenchmarkGetValidatorDelegations(b *testing.B) {
 }
 
 func BenchmarkGetValidatorDelegationsLegacy(b *testing.B) {
+	b.Skip("skipping test for HV2, because we have own stake module")
 	var totalPower int64
 	powersNumber := 10
 

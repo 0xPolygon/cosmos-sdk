@@ -15,6 +15,7 @@ import (
 )
 
 func TestInitCmd(t *testing.T) {
+	t.Skip("skipping simapp tests because we use directly the heimdall app in tests")
 	rootCmd := cmd.NewRootCmd()
 	rootCmd.SetArgs([]string{
 		"init",        // Test the init cmd
@@ -26,6 +27,7 @@ func TestInitCmd(t *testing.T) {
 }
 
 func TestHomeFlagRegistration(t *testing.T) {
+	t.Skip("skipping simapp tests because we use directly the heimdall app in tests")
 	homeDir := "/tmp/foo"
 
 	rootCmd := cmd.NewRootCmd()

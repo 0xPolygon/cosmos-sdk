@@ -6,7 +6,7 @@ import (
 	cmttypes "github.com/cometbft/cometbft/types"
 
 	cryptocodec "github.com/cosmos/cosmos-sdk/crypto/codec"
-	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 )
 
@@ -19,7 +19,7 @@ type PV struct {
 }
 
 func NewPV() PV {
-	return PV{ed25519.GenPrivKey()}
+	return PV{secp256k1.GenPrivKey()}
 }
 
 // GetPubKey implements PrivValidator interface

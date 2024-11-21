@@ -74,7 +74,7 @@ func TestImportExportQueues(t *testing.T) {
 	assert.NilError(t, err)
 
 	ctx := s1.app.BaseApp.NewContext(false)
-	addrs := simtestutil.AddTestAddrs(s1.BankKeeper, s1.StakingKeeper, ctx, 1, valTokens)
+	addrs := simtestutil.AddTestAddrs(s1.BankKeeper, ctx, 1, valTokens)
 
 	_, err = s1.app.FinalizeBlock(&abci.RequestFinalizeBlock{
 		Height: s1.app.LastBlockHeight() + 1,

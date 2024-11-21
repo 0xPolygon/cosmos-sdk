@@ -13,13 +13,11 @@ import (
 	"path"
 	"testing"
 
-	abci "github.com/cometbft/cometbft/abci/types"
-	dbm "github.com/cosmos/cosmos-db"
-	"github.com/spf13/cobra"
-	"gotest.tools/v3/assert"
-
 	"cosmossdk.io/log"
 	"cosmossdk.io/simapp"
+	hApp "github.com/0xPolygon/heimdall-v2/app"
+	abci "github.com/cometbft/cometbft/abci/types"
+	dbm "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/server"
@@ -27,6 +25,8 @@ import (
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
+	"github.com/spf13/cobra"
+	"gotest.tools/v3/assert"
 )
 
 func TestExportCmd_ConsensusParams(t *testing.T) {
@@ -70,21 +70,24 @@ func TestExportCmd_Height(t *testing.T) {
 		{
 			"should export correct height",
 			[]string{},
-			5, 6,
+			5,
+			106,
 		},
 		{
 			"should export correct height with --height",
 			[]string{
-				fmt.Sprintf("--%s=%d", server.FlagHeight, 3),
+				fmt.Sprintf("--%s=%d", server.FlagHeight, 103),
 			},
-			5, 4,
+			5,
+			104,
 		},
 		{
 			"should export height 0 with --for-zero-height",
 			[]string{
 				fmt.Sprintf("--%s=%s", server.FlagForZeroHeight, "true"),
 			},
-			2, 0,
+			2,
+			103,
 		},
 	}
 
@@ -95,9 +98,7 @@ func TestExportCmd_Height(t *testing.T) {
 
 			// Fast forward to block `tc.fastForward`.
 			for i := int64(2); i <= tc.fastForward; i++ {
-				app.FinalizeBlock(&abci.RequestFinalizeBlock{
-					Height: i,
-				})
+				hApp.RequestFinalizeBlock(t, app, app.LastBlockHeight()+1)
 				app.Commit()
 			}
 
@@ -152,15 +153,14 @@ func TestExportCmd_Output(t *testing.T) {
 	}
 }
 
-func setupApp(t *testing.T, tempDir string) (*simapp.SimApp, context.Context, genutiltypes.AppGenesis, *cobra.Command) {
+func setupApp(t *testing.T, tempDir string) (*hApp.HeimdallApp, context.Context, genutiltypes.AppGenesis, *cobra.Command) {
 	t.Helper()
 
 	logger := log.NewTestLogger(t)
 	err := createConfigFolder(tempDir)
 	assert.NilError(t, err)
 
-	db := dbm.NewMemDB()
-	app := simapp.NewSimApp(logger, db, nil, true, simtestutil.NewAppOptionsWithFlagHome(tempDir))
+	app, db, _ := hApp.SetupApp(t, 1)
 
 	genesisState := simapp.GenesisStateWithSingleValidator(t, app)
 	stateBytes, err := json.MarshalIndent(genesisState, "", " ")
@@ -195,17 +195,17 @@ func setupApp(t *testing.T, tempDir string) (*simapp.SimApp, context.Context, ge
 
 	cmd := server.ExportCmd(
 		func(_ log.Logger, _ dbm.DB, _ io.Writer, height int64, forZeroHeight bool, jailAllowedAddrs []string, appOptions types.AppOptions, modulesToExport []string) (types.ExportedApp, error) {
-			var simApp *simapp.SimApp
+			var heimdallApp *hApp.HeimdallApp
 			if height != -1 {
-				simApp = simapp.NewSimApp(logger, db, nil, false, appOptions)
-				if err := simApp.LoadHeight(height); err != nil {
+				heimdallApp = hApp.NewHeimdallApp(logger, db, nil, false, appOptions)
+				if err := heimdallApp.LoadHeight(height); err != nil {
 					return types.ExportedApp{}, err
 				}
 			} else {
-				simApp = simapp.NewSimApp(logger, db, nil, true, appOptions)
+				heimdallApp = hApp.NewHeimdallApp(logger, db, nil, true, appOptions)
 			}
 
-			return simApp.ExportAppStateAndValidators(forZeroHeight, jailAllowedAddrs, modulesToExport)
+			return heimdallApp.ExportAppStateAndValidators(forZeroHeight, jailAllowedAddrs, modulesToExport)
 		}, tempDir)
 
 	ctx := context.Background()
