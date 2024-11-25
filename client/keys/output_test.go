@@ -65,7 +65,7 @@ func TestBech32KeysOutputNestedMsig(t *testing.T) {
 	require.NoError(t, err)
 
 	require.Equal(t, expectedOutput, out)
-	require.Equal(t, "{Name:multisig Type:multi Address:cosmos1nffp6v2j7wva4y4975exlrv8x5vh39axxt3swz PubKey:{\"@type\":\"/cosmos.crypto.multisig.LegacyAminoPubKey\",\"threshold\":2,\"public_keys\":[{\"@type\":\"/cosmos.crypto.secp256k1.PubKey\",\"key\":\"AurroA7jvfPd1AadmmOvWM2rJSwipXfRf8yD6pLbA2DJ\"},{\"@type\":\"/cosmos.crypto.multisig.LegacyAminoPubKey\",\"threshold\":1,\"public_keys\":[{\"@type\":\"/cosmos.crypto.secp256k1.PubKey\",\"key\":\"AurroA7jvfPd1AadmmOvWM2rJSwipXfRf8yD6pLbA2DJ\"}]}]} Mnemonic:}", fmt.Sprintf("%+v", out))
+	require.Equal(t, "{Name:multisig Type:multi Address:0xf03f3dfbd4f8973f5c48ef53297d746e141983c2 PubKey:{\"@type\":\"/cosmos.crypto.multisig.LegacyAminoPubKey\",\"threshold\":2,\"public_keys\":[{\"@type\":\"/cosmos.crypto.secp256k1.PubKey\",\"key\":\"BOrroA7jvfPd1AadmmOvWM2rJSwipXfRf8yD6pLbA2DJRBvMr2v1o7/Tt5MFOm9RcJhxfM8axlq8SseN3Dl07xg=\"},{\"@type\":\"/cosmos.crypto.multisig.LegacyAminoPubKey\",\"threshold\":1,\"public_keys\":[{\"@type\":\"/cosmos.crypto.secp256k1.PubKey\",\"key\":\"BOrroA7jvfPd1AadmmOvWM2rJSwipXfRf8yD6pLbA2DJRBvMr2v1o7/Tt5MFOm9RcJhxfM8axlq8SseN3Dl07xg=\"}]}]} Mnemonic:}", fmt.Sprintf("%+v", out))
 }
 
 func TestProtoMarshalJSON(t *testing.T) {

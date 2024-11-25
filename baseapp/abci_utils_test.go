@@ -602,15 +602,15 @@ func (s *ABCIUtilsTestSuite) TestDefaultProposalHandler_PriorityNonceMempoolTxSe
 		testTxs[i].size = int(cmttypes.ComputeProtoSizeForTxs([]cmttypes.Tx{bz}))
 	}
 
-	s.Require().Equal(testTxs[0].size, 111)
-	s.Require().Equal(testTxs[1].size, 121)
-	s.Require().Equal(testTxs[2].size, 112)
-	s.Require().Equal(testTxs[3].size, 112)
-	s.Require().Equal(testTxs[4].size, 195)
-	s.Require().Equal(testTxs[5].size, 205)
-	s.Require().Equal(testTxs[6].size, 196)
-	s.Require().Equal(testTxs[7].size, 196)
-	s.Require().Equal(testTxs[8].size, 196)
+	s.Require().Equal(testTxs[0].size, 144)
+	s.Require().Equal(testTxs[1].size, 154)
+	s.Require().Equal(testTxs[2].size, 145)
+	s.Require().Equal(testTxs[3].size, 145)
+	s.Require().Equal(testTxs[4].size, 259)
+	s.Require().Equal(testTxs[5].size, 269)
+	s.Require().Equal(testTxs[6].size, 260)
+	s.Require().Equal(testTxs[7].size, 260)
+	s.Require().Equal(testTxs[8].size, 260)
 
 	testCases := map[string]struct {
 		ctx         sdk.Context
@@ -623,7 +623,7 @@ func (s *ABCIUtilsTestSuite) TestDefaultProposalHandler_PriorityNonceMempoolTxSe
 			ctx:      s.ctx,
 			txInputs: []testTx{testTxs[0], testTxs[1], testTxs[2], testTxs[3]},
 			req: &abci.RequestPrepareProposal{
-				MaxTxBytes: 111 + 112,
+				MaxTxBytes: 144 + 145,
 			},
 			expectedTxs: []int{0, 3},
 		},
@@ -631,7 +631,7 @@ func (s *ABCIUtilsTestSuite) TestDefaultProposalHandler_PriorityNonceMempoolTxSe
 			ctx:      s.ctx,
 			txInputs: []testTx{testTxs[4], testTxs[5], testTxs[6], testTxs[7], testTxs[8]},
 			req: &abci.RequestPrepareProposal{
-				MaxTxBytes: 195 + 196,
+				MaxTxBytes: 259 + 260,
 			},
 			expectedTxs: []int{4, 8},
 		},
@@ -640,7 +640,7 @@ func (s *ABCIUtilsTestSuite) TestDefaultProposalHandler_PriorityNonceMempoolTxSe
 			ctx:      s.ctx,
 			txInputs: []testTx{testTxs[9], testTxs[10], testTxs[11]},
 			req: &abci.RequestPrepareProposal{
-				MaxTxBytes: 195 + 196,
+				MaxTxBytes: 259 + 260,
 			},
 			expectedTxs: []int{9},
 		},
@@ -650,7 +650,7 @@ func (s *ABCIUtilsTestSuite) TestDefaultProposalHandler_PriorityNonceMempoolTxSe
 			ctx:      s.ctx,
 			txInputs: []testTx{testTxs[12], testTxs[13], testTxs[14]},
 			req: &abci.RequestPrepareProposal{
-				MaxTxBytes: 112,
+				MaxTxBytes: 145,
 			},
 			expectedTxs: []int{},
 		},

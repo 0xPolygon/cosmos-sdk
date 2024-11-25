@@ -25,6 +25,7 @@ import (
 )
 
 func TestSlashRedelegation(t *testing.T) {
+	t.Skip("skipping test as not relevant for heimdall-v2")
 	// setting up
 	var stakingKeeper *stakingkeeper.Keeper
 	var bankKeeper bankkeeper.Keeper

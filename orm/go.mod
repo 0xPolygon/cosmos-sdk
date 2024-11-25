@@ -71,7 +71,7 @@ require (
 
 // HV2 related packages
 replace (
-	cosmossdk.io/api => github.com/0xPolygon/cosmos-sdk/api v0.7.2
+	cosmossdk.io/api => github.com/0xPolygon/cosmos-sdk/api v0.7.5
 	cosmossdk.io/core => github.com/0xPolygon/cosmos-sdk/core v0.11.0
 	cosmossdk.io/depinject => github.com/0xPolygon/cosmos-sdk/depinject v1.0.0-alpha.4
 	cosmossdk.io/errors => github.com/0xPolygon/cosmos-sdk/errors v1.0.0-beta.7

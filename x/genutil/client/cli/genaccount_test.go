@@ -230,7 +230,7 @@ func TestBulkAddGenesisAccountCmd(t *testing.T) {
 				err = os.WriteFile(filePath, bz, 0o600)
 				require.NoError(t, err)
 
-				cmd := genutilcli.AddBulkGenesisAccountCmd(home, addresscodec.NewBech32Codec("cosmos"))
+				cmd := genutilcli.AddBulkGenesisAccountCmd(home, addresscodec.NewHexCodec())
 				args := []string{filePath}
 				if tc.appendFlag {
 					args = append(args, "--append")

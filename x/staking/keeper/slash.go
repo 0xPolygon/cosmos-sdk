@@ -326,13 +326,13 @@ func (k Keeper) SlashRedelegation(ctx context.Context, srcValidator types.Valida
 		slashAmount := slashAmountDec.TruncateInt()
 		totalSlashAmount = totalSlashAmount.Add(slashAmount)
 
-		validatorDstAddress, err := sdk.ValAddressFromBech32(redelegation.ValidatorDstAddress)
+		validatorDstAddress, err := sdk.ValAddressFromHex(redelegation.ValidatorDstAddress)
 		if err != nil {
 			panic(err)
 		}
 		// Handle undelegation after redelegation
 		// Prioritize slashing unbondingDelegation than delegation
-		unbondingDelegation, err := k.GetUnbondingDelegation(ctx, sdk.MustAccAddressFromBech32(redelegation.DelegatorAddress), validatorDstAddress)
+		unbondingDelegation, err := k.GetUnbondingDelegation(ctx, sdk.MustAccAddressFromHex(redelegation.DelegatorAddress), validatorDstAddress)
 		if err == nil {
 			for i, entry := range unbondingDelegation.Entries {
 				// slash with the amount of `slashAmount` if possible, else slash all unbonding token
