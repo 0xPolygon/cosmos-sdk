@@ -255,7 +255,6 @@ replace (
 	cosmossdk.io/store => github.com/0xPolygon/cosmos-sdk/store v1.1.1
 
 	// latest versions on our fork
-	// TODO MARCELLO update to local commit or upstream version
 	cosmossdk.io/x/circuit => github.com/0xPolygon/cosmos-sdk/x/circuit v0.1.1-0.20240409091007-84d9b34a8681
 	cosmossdk.io/x/evidence => github.com/0xPolygon/cosmos-sdk/x/evidence v0.1.1-0.20240409091007-84d9b34a8681
 	cosmossdk.io/x/feegrant => github.com/0xPolygon/cosmos-sdk/x/feegrant v0.1.1-0.20240409091007-84d9b34a8681
