@@ -97,7 +97,7 @@ func (s txServer) Simulate(ctx context.Context, req *txtypes.SimulateRequest) (*
 
 	gasInfo, result, err := s.simulate(txBytes)
 	if err != nil {
-		return nil, status.Errorf(codes.Unknown, "%v With gas wanted: '%d' and gas used: '%d' ", err, gasInfo.GasWanted, gasInfo.GasUsed)
+		return nil, status.Errorf(codes.Unknown, "%v with gas used: '%d'", err, gasInfo.GasUsed)
 	}
 
 	return &txtypes.SimulateResponse{
@@ -195,13 +195,13 @@ func (s txServer) GetBlockWithTxs(ctx context.Context, req *txtypes.GetBlockWith
 	if req.Pagination != nil && req.Pagination.Reverse {
 		for i, count := offset, uint64(0); i > 0 && count != limit; i, count = i-1, count+1 {
 			if err = decodeTxAt(i); err != nil {
-				return nil, err
+				sdkCtx.Logger().Error("failed to decode tx", "error", err)
 			}
 		}
 	} else {
 		for i, count := offset, uint64(0); i < blockTxsLn && count != limit; i, count = i+1, count+1 {
 			if err = decodeTxAt(i); err != nil {
-				return nil, err
+				sdkCtx.Logger().Error("failed to decode tx", "error", err)
 			}
 		}
 	}

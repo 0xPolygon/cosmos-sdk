@@ -57,7 +57,7 @@ func TestMetrics_Prom(t *testing.T) {
 
 	gr, err := m.Gather(FormatPrometheus)
 	require.NoError(t, err)
-	require.Equal(t, gr.ContentType, "text/plain; version=0.0.4; charset=utf-8")
+	require.Equal(t, gr.ContentType, ContentTypeText)
 
 	require.True(t, strings.Contains(string(gr.Metrics), "test_dummy_counter 30"))
 }

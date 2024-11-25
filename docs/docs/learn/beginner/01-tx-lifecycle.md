@@ -112,6 +112,10 @@ A copy of the cached context is provided to the `AnteHandler`, which performs li
 
 For example, the [`auth`](https://github.com/cosmos/cosmos-sdk/tree/main/x/auth/spec) module `AnteHandler` checks and increments sequence numbers, checks signatures and account numbers, and deducts fees from the first signer of the transaction - all state changes are made using the `checkState`.
 
+:::warning
+Ante handlers only run on a transaction. If a transaction embed multiple messages (like some x/authz, x/gov transactions for instance), the ante handlers only have awareness of the outer message. Inner messages are mostly directly routed to the [message router](https://docs.cosmos.network/main/learn/advanced/baseapp#msg-service-router) and will skip the chain of ante handlers. Keep that in mind when designing your own ante handler.
+:::
+
 ### Gas
 
 The [`Context`](../advanced/02-context.md), which keeps a `GasMeter` that tracks how much gas is used during the execution of `Tx`, is initialized. The user-provided amount of gas for `Tx` is known as `GasWanted`. If `GasConsumed`, the amount of gas consumed during execution, ever exceeds `GasWanted`, the execution stops and the changes made to the cached copy of the state are not committed. Otherwise, `CheckTx` sets `GasUsed` equal to `GasConsumed` and returns it in the result. After calculating the gas and fee values, validator-nodes check that the user-specified `gas-prices` is greater than their locally defined `min-gas-prices`.
@@ -160,45 +164,45 @@ As mentioned throughout the documentation `BeginBlock`, `ExecuteTx` and `EndBloc
 Although every full-node operates individually and locally, the outcome is always consistent and unequivocal. This is because the state changes brought about by the messages are predictable, and the transactions are specifically sequenced in the proposed block.
 
 ```text
-		-----------------------
-		|Receive Block Proposal|
-		-----------------------
-							|
-				v
-		-------------------------
-		| FinalizeBlock	        |
-		          |
-			  v
-				-------------------
-				| BeginBlock	    | 
-				-------------------
-		          |
-			  v
-			--------------------
-			| ExecuteTx(tx0)   |
-			| ExecuteTx(tx1)   |
-			| ExecuteTx(tx2)   |
-			| ExecuteTx(tx3)   |
-			|	.	      |
-			|	.	      |
-			|	.	      |
-			-------------------
-		          |
-			  v
-			--------------------
-			| EndBlock	      |
-			--------------------
-		-------------------------
-		          |
-			  v
-		-----------------------
-		| Consensus	      |
-		-----------------------
-		          |
-			  v
-		-----------------------
-		| Commit	      |
-		-----------------------
+        --------------------------
+        | Receive Block Proposal |
+        --------------------------
+                    |
+                    v
+        -------------------------
+        |     FinalizeBlock      |
+        -------------------------
+                    |
+                    v
+            -------------------
+            |   BeginBlock     | 
+            -------------------
+                    |
+                    v
+            --------------------
+            | ExecuteTx(tx0)   |
+            | ExecuteTx(tx1)   |
+            | ExecuteTx(tx2)   |
+            | ExecuteTx(tx3)   |
+            |       .          |
+            |       .          |
+            |       .          |
+            -------------------
+                    |
+                    v
+            --------------------
+            |    EndBlock      |
+            --------------------
+                    |
+                    v
+        -------------------------
+        |       Consensus        |
+        -------------------------
+                    |
+                    v
+        -------------------------
+        |         Commit         |
+        -------------------------
 ```
 
 ### Transaction Execution

@@ -9,14 +9,9 @@ import (
 
 	cmtcfg "github.com/cometbft/cometbft/config"
 	cmtjson "github.com/cometbft/cometbft/libs/json"
-	"github.com/cometbft/cometbft/light"
 	"github.com/cometbft/cometbft/node"
 	"github.com/cometbft/cometbft/p2p"
 	pvm "github.com/cometbft/cometbft/privval"
-	cmtstore "github.com/cometbft/cometbft/proto/tendermint/store"
-	sm "github.com/cometbft/cometbft/state"
-	"github.com/cometbft/cometbft/statesync"
-	"github.com/cometbft/cometbft/store"
 	cmtversion "github.com/cometbft/cometbft/version"
 	"github.com/spf13/cobra"
 	"sigs.k8s.io/yaml"
@@ -28,7 +23,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/grpc/cmtservice"
 	rpc "github.com/cosmos/cosmos-sdk/client/rpc"
 	cryptocodec "github.com/cosmos/cosmos-sdk/crypto/codec"
-	servercmtlog "github.com/cosmos/cosmos-sdk/server/log"
 	"github.com/cosmos/cosmos-sdk/server/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
@@ -188,7 +182,7 @@ Please refer to each module's documentation for the full set of events to query
 for. Each module documents its respective events under 'xx_events.md'.
 `,
 		Example: fmt.Sprintf(
-			"$ %s query blocks --query \"message.sender='cosmos1...' AND block.height > 7\" --page 1 --limit 30 --order-by ASC",
+			"$ %s query blocks --query \"message.sender='cosmos1...' AND block.height > 7\" --page 1 --limit 30 --order_by asc",
 			version.AppName,
 		),
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -232,7 +226,7 @@ $ %s query block --%s=%s <hash>
 `,
 			version.AppName, auth.FlagType, auth.TypeHeight,
 			version.AppName, auth.FlagType, auth.TypeHash)),
-		Args: cobra.ExactArgs(1),
+		Args: cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
@@ -240,24 +234,37 @@ $ %s query block --%s=%s <hash>
 			}
 
 			typ, _ := cmd.Flags().GetString(auth.FlagType)
+			if len(args) == 0 {
+				// do not break default v0.50 behavior of block hash
+				// if no args are provided, set the type to height
+				typ = auth.TypeHeight
+			}
 
 			switch typ {
 			case auth.TypeHeight:
-
-				if args[0] == "" {
-					return fmt.Errorf("argument should be a block height")
+				var (
+					err    error
+					height int64
+				)
+				heightStr := ""
+				if len(args) > 0 {
+					heightStr = args[0]
 				}
 
-				// optional height
-				var height *int64
-				if len(args) > 0 {
-					height, err = parseOptionalHeight(args[0])
+				if heightStr == "" {
+					cmd.Println("Falling back to latest block height:")
+					height, err = rpc.GetChainHeight(clientCtx)
 					if err != nil {
-						return err
+						return fmt.Errorf("failed to get chain height: %w", err)
+					}
+				} else {
+					height, err = strconv.ParseInt(heightStr, 10, 64)
+					if err != nil {
+						return fmt.Errorf("failed to parse block height: %w", err)
 					}
 				}
 
-				output, err := rpc.GetBlockByHeight(clientCtx, height)
+				output, err := rpc.GetBlockByHeight(clientCtx, &height)
 				if err != nil {
 					return err
 				}
@@ -317,15 +324,21 @@ func QueryBlockResultsCmd() *cobra.Command {
 			}
 
 			// optional height
-			var height *int64
+			var height int64
 			if len(args) > 0 {
-				height, err = parseOptionalHeight(args[0])
+				height, err = strconv.ParseInt(args[0], 10, 64)
 				if err != nil {
 					return err
 				}
+			} else {
+				cmd.Println("Falling back to latest block height:")
+				height, err = rpc.GetChainHeight(clientCtx)
+				if err != nil {
+					return fmt.Errorf("failed to get chain height: %w", err)
+				}
 			}
 
-			blockRes, err := node.BlockResults(context.Background(), height)
+			blockRes, err := node.BlockResults(context.Background(), &height)
 			if err != nil {
 				return err
 			}
@@ -345,21 +358,6 @@ func QueryBlockResultsCmd() *cobra.Command {
 	flags.AddQueryFlagsToCmd(cmd)
 
 	return cmd
-}
-
-func parseOptionalHeight(heightStr string) (*int64, error) {
-	h, err := strconv.Atoi(heightStr)
-	if err != nil {
-		return nil, err
-	}
-
-	if h == 0 {
-		return nil, nil
-	}
-
-	tmp := int64(h)
-
-	return &tmp, nil
 }
 
 func BootstrapStateCmd(appCreator types.AppCreator) *cobra.Command {
@@ -387,62 +385,7 @@ func BootstrapStateCmd(appCreator types.AppCreator) *cobra.Command {
 				height = app.CommitMultiStore().LastCommitID().Version
 			}
 
-			blockStoreDB, err := cmtcfg.DefaultDBProvider(&cmtcfg.DBContext{ID: "blockstore", Config: cfg})
-			if err != nil {
-				return err
-			}
-			blockStore := store.NewBlockStore(blockStoreDB)
-
-			stateDB, err := cmtcfg.DefaultDBProvider(&cmtcfg.DBContext{ID: "state", Config: cfg})
-			if err != nil {
-				return err
-			}
-			stateStore := sm.NewStore(stateDB, sm.StoreOptions{
-				DiscardABCIResponses: cfg.Storage.DiscardABCIResponses,
-			})
-
-			genState, _, err := node.LoadStateFromDBOrGenesisDocProvider(stateDB, node.DefaultGenesisDocProviderFunc(cfg))
-			if err != nil {
-				return err
-			}
-
-			stateProvider, err := statesync.NewLightClientStateProvider(
-				cmd.Context(),
-				genState.ChainID, genState.Version, genState.InitialHeight,
-				cfg.StateSync.RPCServers, light.TrustOptions{
-					Period: cfg.StateSync.TrustPeriod,
-					Height: cfg.StateSync.TrustHeight,
-					Hash:   cfg.StateSync.TrustHashBytes(),
-				}, servercmtlog.CometLoggerWrapper{Logger: logger.With("module", "light")})
-			if err != nil {
-				return fmt.Errorf("failed to set up light client state provider: %w", err)
-			}
-
-			state, err := stateProvider.State(cmd.Context(), uint64(height))
-			if err != nil {
-				return fmt.Errorf("failed to get state: %w", err)
-			}
-
-			commit, err := stateProvider.Commit(cmd.Context(), uint64(height))
-			if err != nil {
-				return fmt.Errorf("failed to get commit: %w", err)
-			}
-
-			if err := stateStore.Bootstrap(state); err != nil {
-				return fmt.Errorf("failed to bootstrap state: %w", err)
-			}
-
-			if err := blockStore.SaveSeenCommit(state.LastBlockHeight, commit); err != nil {
-				return fmt.Errorf("failed to save seen commit: %w", err)
-			}
-
-			store.SaveBlockStoreState(&cmtstore.BlockStoreState{
-				// it breaks the invariant that blocks in range [Base, Height] must exists, but it do works in practice.
-				Base:   state.LastBlockHeight,
-				Height: state.LastBlockHeight,
-			}, blockStoreDB)
-
-			return nil
+			return node.BootstrapStateWithGenProvider(cmd.Context(), cfg, cmtcfg.DefaultDBProvider, getGenDocProvider(cfg), uint64(height), nil)
 		},
 	}
 
