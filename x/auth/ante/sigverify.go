@@ -14,8 +14,6 @@ import (
 	"cosmossdk.io/core/gas"
 	"cosmossdk.io/core/transaction"
 	errorsmod "cosmossdk.io/errors"
-	authsigning "cosmossdk.io/x/auth/signing"
-	"cosmossdk.io/x/auth/types"
 	txsigning "cosmossdk.io/x/tx/signing"
 
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -29,6 +27,8 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/types/tx"
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
+	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
+	"github.com/cosmos/cosmos-sdk/x/auth/types"
 )
 
 var (
@@ -306,17 +306,25 @@ func (svd SigVerificationDecorator) consumeSignatureGas(
 
 // verifySig will verify the signature of the provided signer account.
 func (svd SigVerificationDecorator) verifySig(ctx context.Context, tx sdk.Tx, acc sdk.AccountI, sig signing.SignatureV2, newlyCreated bool) error {
-	if sig.Sequence != acc.GetSequence() {
+	execMode := svd.ak.GetEnvironment().TransactionService.ExecMode(ctx)
+	if execMode == transaction.ExecModeCheck {
+		if sig.Sequence < acc.GetSequence() {
+			return errorsmod.Wrapf(
+				sdkerrors.ErrWrongSequence,
+				"account sequence mismatch, expected higher than or equal to %d, got %d", acc.GetSequence(), sig.Sequence,
+			)
+		}
+	} else if sig.Sequence != acc.GetSequence() {
 		return errorsmod.Wrapf(
 			sdkerrors.ErrWrongSequence,
-			"account sequence mismatch, expected %d, got %d", acc.GetSequence(), sig.Sequence,
+			"account sequence mismatch: expected %d, got %d", acc.GetSequence(), sig.Sequence,
 		)
 	}
 
 	// we're in simulation mode, or in ReCheckTx, or context is not
 	// on sig verify tx, then we do not need to verify the signatures
 	// in the tx.
-	if svd.ak.GetEnvironment().TransactionService.ExecMode(ctx) == transaction.ExecModeSimulate ||
+	if execMode == transaction.ExecModeSimulate ||
 		isRecheckTx(ctx, svd.ak.GetEnvironment().TransactionService) ||
 		!isSigverifyTx(ctx) {
 		return nil
@@ -352,7 +360,7 @@ func (svd SigVerificationDecorator) verifySig(ctx context.Context, tx sdk.Tx, ac
 		Address:       acc.GetAddress().String(),
 		ChainID:       chainID,
 		AccountNumber: accNum,
-		Sequence:      acc.GetSequence(),
+		Sequence:      sig.Sequence,
 		PubKey: &anypb.Any{
 			TypeUrl: anyPk.TypeUrl,
 			Value:   anyPk.Value,

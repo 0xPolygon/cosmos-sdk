@@ -3,8 +3,8 @@ package postgres
 import (
 	"context"
 	"database/sql"
-	"encoding/json"
 	"errors"
+	"fmt"
 
 	"cosmossdk.io/schema/indexer"
 	"cosmossdk.io/schema/logutil"
@@ -21,8 +21,6 @@ type Config struct {
 	DisableRetainDeletions bool `json:"disable_retain_deletions"`
 }
 
-type SqlLogger = func(msg, sql string, params ...interface{})
-
 type indexerImpl struct {
 	ctx     context.Context
 	db      *sql.DB
@@ -32,10 +30,17 @@ type indexerImpl struct {
 	logger  logutil.Logger
 }
 
-func StartIndexer(params indexer.InitParams) (indexer.InitResult, error) {
-	config, err := decodeConfig(params.Config.Config)
-	if err != nil {
-		return indexer.InitResult{}, err
+func init() {
+	indexer.Register("postgres", indexer.Initializer{
+		InitFunc:   startIndexer,
+		ConfigType: Config{},
+	})
+}
+
+func startIndexer(params indexer.InitParams) (indexer.InitResult, error) {
+	config, ok := params.Config.Config.(Config)
+	if !ok {
+		return indexer.InitResult{}, fmt.Errorf("invalid config type, expected %T got %T", Config{}, params.Config.Config)
 	}
 
 	ctx := params.Context
@@ -72,6 +77,7 @@ func StartIndexer(params indexer.InitParams) (indexer.InitResult, error) {
 	opts := options{
 		disableRetainDeletions: config.DisableRetainDeletions,
 		logger:                 params.Logger,
+		addressCodec:           params.AddressCodec,
 	}
 
 	idx := &indexerImpl{
@@ -85,20 +91,6 @@ func StartIndexer(params indexer.InitParams) (indexer.InitResult, error) {
 
 	return indexer.InitResult{
 		Listener: idx.listener(),
+		View:     idx,
 	}, nil
-}
-
-func decodeConfig(rawConfig map[string]interface{}) (*Config, error) {
-	bz, err := json.Marshal(rawConfig)
-	if err != nil {
-		return nil, err
-	}
-
-	var config Config
-	err = json.Unmarshal(bz, &config)
-	if err != nil {
-		return nil, err
-	}
-
-	return &config, nil
 }

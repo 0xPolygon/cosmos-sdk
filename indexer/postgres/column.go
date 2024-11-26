@@ -25,7 +25,7 @@ func (tm *objectIndexer) createColumnDefinition(writer io.Writer, field schema.F
 	} else {
 		switch field.Kind {
 		case schema.EnumKind:
-			_, err = fmt.Fprintf(writer, "%q", enumTypeName(tm.moduleName, field.EnumType))
+			_, err = fmt.Fprintf(writer, "%q", enumTypeName(tm.moduleName, field.ReferencedType))
 			if err != nil {
 				return err
 			}
@@ -88,9 +88,9 @@ func simpleColumnType(kind schema.Kind) string {
 		return "BIGINT"
 	case schema.Uint64Kind:
 		return "NUMERIC"
-	case schema.IntegerStringKind:
+	case schema.IntegerKind:
 		return "NUMERIC"
-	case schema.DecimalStringKind:
+	case schema.DecimalKind:
 		return "NUMERIC"
 	case schema.Float32Kind:
 		return "REAL"
