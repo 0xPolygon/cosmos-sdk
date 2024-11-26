@@ -7,45 +7,43 @@ import (
 	"cosmossdk.io/schema"
 )
 
-var keyFieldsGen = rapid.SliceOfNDistinct(KeyFieldGen, 1, 6, func(f schema.Field) string {
-	return f.Name
-})
+// StateObjectTypeGen generates random StateObjectType's based on the validity criteria of object types.
+func StateObjectTypeGen(typeSet schema.TypeSet) *rapid.Generator[schema.StateObjectType] {
+	keyFieldsGen := rapid.SliceOfNDistinct(KeyFieldGen(typeSet), 1, 6, func(f schema.Field) string {
+		return f.Name
+	})
 
-var valueFieldsGen = rapid.SliceOfNDistinct(FieldGen, 1, 12, func(f schema.Field) string {
-	return f.Name
-})
+	valueFieldsGen := rapid.SliceOfNDistinct(FieldGen(typeSet), 1, 12, func(f schema.Field) string {
+		return f.Name
+	})
 
-// ObjectTypeGen generates random ObjectType's based on the validity criteria of object types.
-var ObjectTypeGen = rapid.Custom(func(t *rapid.T) schema.ObjectType {
-	typ := schema.ObjectType{
-		Name: NameGen.Draw(t, "name"),
-	}
+	return rapid.Custom(func(t *rapid.T) schema.StateObjectType {
+		typ := schema.StateObjectType{
+			Name: NameGen.Filter(func(s string) bool {
+				// filter out names that already exist in the schema
+				_, found := typeSet.LookupType(s)
+				return !found
+			}).Draw(t, "name"),
+		}
 
-	typ.KeyFields = keyFieldsGen.Draw(t, "keyFields")
-	typ.ValueFields = valueFieldsGen.Draw(t, "valueFields")
-	typ.RetainDeletions = boolGen.Draw(t, "retainDeletions")
+		typ.KeyFields = keyFieldsGen.Draw(t, "keyFields")
+		typ.ValueFields = valueFieldsGen.Draw(t, "valueFields")
+		typ.RetainDeletions = boolGen.Draw(t, "retainDeletions")
 
-	return typ
-}).Filter(func(typ schema.ObjectType) bool {
-	// filter out duplicate field names
-	fieldNames := map[string]bool{}
-	if hasDuplicateFieldNames(fieldNames, typ.KeyFields) {
-		return false
-	}
-	if hasDuplicateFieldNames(fieldNames, typ.ValueFields) {
-		return false
-	}
+		return typ
+	}).Filter(func(typ schema.StateObjectType) bool {
+		// filter out duplicate field names
+		fieldNames := map[string]bool{}
+		if hasDuplicateFieldNames(fieldNames, typ.KeyFields) {
+			return false
+		}
+		if hasDuplicateFieldNames(fieldNames, typ.ValueFields) {
+			return false
+		}
 
-	// filter out duplicate type names
-	typeNames := map[string]bool{typ.Name: true}
-	if hasDuplicateTypeNames(typeNames, typ.KeyFields) {
-		return false
-	}
-	if hasDuplicateTypeNames(typeNames, typ.ValueFields) {
-		return false
-	}
-	return true
-})
+		return true
+	})
+}
 
 func hasDuplicateFieldNames(typeNames map[string]bool, fields []schema.Field) bool {
 	for _, field := range fields {
@@ -57,31 +55,15 @@ func hasDuplicateFieldNames(typeNames map[string]bool, fields []schema.Field) bo
 	return false
 }
 
-// hasDuplicateTypeNames checks if there is type name in the fields
-func hasDuplicateTypeNames(typeNames map[string]bool, fields []schema.Field) bool {
-	for _, field := range fields {
-		if field.Kind != schema.EnumKind {
-			continue
-		}
-
-		if _, ok := typeNames[field.EnumType.Name]; ok {
-			return true
-		}
-
-		typeNames[field.EnumType.Name] = true
-	}
-	return false
+// StateObjectInsertGen generates object updates that are valid for insertion.
+func StateObjectInsertGen(objectType schema.StateObjectType, typeSet schema.TypeSet) *rapid.Generator[schema.StateObjectUpdate] {
+	return StateObjectUpdateGen(objectType, nil, typeSet)
 }
 
-// ObjectInsertGen generates object updates that are valid for insertion.
-func ObjectInsertGen(objectType schema.ObjectType) *rapid.Generator[schema.ObjectUpdate] {
-	return ObjectUpdateGen(objectType, nil)
-}
-
-// ObjectUpdateGen generates object updates that are valid for updates using the provided state map as a source
+// StateObjectUpdateGen generates object updates that are valid for updates using the provided state map as a source
 // of valid existing keys.
-func ObjectUpdateGen(objectType schema.ObjectType, state *btree.Map[string, schema.ObjectUpdate]) *rapid.Generator[schema.ObjectUpdate] {
-	keyGen := ObjectKeyGen(objectType.KeyFields).Filter(func(key interface{}) bool {
+func StateObjectUpdateGen(objectType schema.StateObjectType, state *btree.Map[string, schema.StateObjectUpdate], sch schema.TypeSet) *rapid.Generator[schema.StateObjectUpdate] {
+	keyGen := ObjectKeyGen(objectType.KeyFields, sch).Filter(func(key interface{}) bool {
 		// filter out keys that exist in the state
 		if state != nil {
 			_, exists := state.Get(ObjectKeyString(objectType, key))
@@ -89,10 +71,10 @@ func ObjectUpdateGen(objectType schema.ObjectType, state *btree.Map[string, sche
 		}
 		return true
 	})
-	insertValueGen := ObjectValueGen(objectType.ValueFields, false)
-	updateValueGen := ObjectValueGen(objectType.ValueFields, true)
-	return rapid.Custom(func(t *rapid.T) schema.ObjectUpdate {
-		update := schema.ObjectUpdate{
+	insertValueGen := ObjectValueGen(objectType.ValueFields, false, sch)
+	updateValueGen := ObjectValueGen(objectType.ValueFields, true, sch)
+	return rapid.Custom(func(t *rapid.T) schema.StateObjectUpdate {
+		update := schema.StateObjectUpdate{
 			TypeName: objectType.Name,
 		}
 

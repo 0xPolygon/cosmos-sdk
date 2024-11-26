@@ -5,22 +5,27 @@ import (
 	"crypto/sha256"
 	"errors"
 	"fmt"
+	"strings"
 	"sync/atomic"
 
 	abci "github.com/cometbft/cometbft/abci/types"
 	abciproto "github.com/cometbft/cometbft/api/cometbft/abci/v1"
 	gogoproto "github.com/cosmos/gogoproto/proto"
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	"google.golang.org/protobuf/reflect/protoregistry"
 
-	coreappmgr "cosmossdk.io/core/app"
+	"cosmossdk.io/collections"
+	appmodulev2 "cosmossdk.io/core/appmodule/v2"
 	"cosmossdk.io/core/comet"
 	corecontext "cosmossdk.io/core/context"
 	"cosmossdk.io/core/event"
+	"cosmossdk.io/core/server"
 	"cosmossdk.io/core/store"
 	"cosmossdk.io/core/transaction"
-	errorsmod "cosmossdk.io/errors"
+	errorsmod "cosmossdk.io/errors/v2"
 	"cosmossdk.io/log"
+	"cosmossdk.io/schema/appdata"
 	"cosmossdk.io/server/v2/appmanager"
-	"cosmossdk.io/server/v2/cometbft/client/grpc/cmtservice"
 	"cosmossdk.io/server/v2/cometbft/handlers"
 	"cosmossdk.io/server/v2/cometbft/mempool"
 	"cosmossdk.io/server/v2/cometbft/types"
@@ -28,24 +33,37 @@ import (
 	"cosmossdk.io/server/v2/streaming"
 	"cosmossdk.io/store/v2/snapshots"
 	consensustypes "cosmossdk.io/x/consensus/types"
+
+	"github.com/cosmos/cosmos-sdk/codec"
+	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	txtypes "github.com/cosmos/cosmos-sdk/types/tx"
 )
 
-var _ abci.Application = (*Consensus[transaction.Tx])(nil)
+const (
+	QueryPathApp   = "app"
+	QueryPathP2P   = "p2p"
+	QueryPathStore = "store"
+)
 
-type Consensus[T transaction.Tx] struct {
-	logger             log.Logger
-	appName, version   string
-	consensusAuthority string // Set by the application to grant authority to the consensus engine to send messages to the consensus module
-	app                *appmanager.AppManager[T]
-	txCodec            transaction.Codec[T]
-	store              types.Store
-	streaming          streaming.Manager
-	snapshotManager    *snapshots.Manager
-	mempool            mempool.Mempool[T]
+var _ abci.Application = (*consensus[transaction.Tx])(nil)
+
+// consensus contains the implementation of the ABCI interface for CometBFT.
+type consensus[T transaction.Tx] struct {
+	logger           log.Logger
+	appName, version string
+	app              appmanager.AppManager[T]
+	appCodec         codec.Codec
+	txCodec          transaction.Codec[T]
+	store            types.Store
+	listener         *appdata.Listener
+	snapshotManager  *snapshots.Manager
+	streamingManager streaming.Manager
+	mempool          mempool.Mempool[T]
 
 	cfg           Config
-	indexedEvents map[string]struct{}
 	chainID       string
+	indexedEvents map[string]struct{}
 
 	initialHeight uint64
 	// this is only available after this node has committed a block (in FinalizeBlock),
@@ -57,97 +75,56 @@ type Consensus[T transaction.Tx] struct {
 	processProposalHandler handlers.ProcessHandler[T]
 	verifyVoteExt          handlers.VerifyVoteExtensionhandler
 	extendVote             handlers.ExtendVoteHandler
+	checkTxHandler         handlers.CheckTxHandler[T]
 
 	addrPeerFilter types.PeerFilter // filter peers by address and port
 	idPeerFilter   types.PeerFilter // filter peers by node ID
 
-	grpcMethodsMap map[string]func() transaction.Msg // maps gRPC method to message creator func
-}
-
-func NewConsensus[T transaction.Tx](
-	logger log.Logger,
-	appName string,
-	consensusAuthority string,
-	app *appmanager.AppManager[T],
-	mp mempool.Mempool[T],
-	indexedEvents map[string]struct{},
-	gRPCMethodsMap map[string]func() transaction.Msg,
-	store types.Store,
-	cfg Config,
-	txCodec transaction.Codec[T],
-	chainId string,
-) *Consensus[T] {
-	return &Consensus[T]{
-		appName:                appName,
-		version:                getCometBFTServerVersion(),
-		consensusAuthority:     consensusAuthority,
-		grpcMethodsMap:         gRPCMethodsMap,
-		app:                    app,
-		cfg:                    cfg,
-		store:                  store,
-		logger:                 logger,
-		txCodec:                txCodec,
-		streaming:              streaming.Manager{},
-		snapshotManager:        nil,
-		mempool:                mp,
-		lastCommittedHeight:    atomic.Int64{},
-		prepareProposalHandler: nil,
-		processProposalHandler: nil,
-		verifyVoteExt:          nil,
-		extendVote:             nil,
-		chainID:                chainId,
-		indexedEvents:          indexedEvents,
-		initialHeight:          0,
-	}
-}
-
-// SetStreamingManager sets the streaming manager for the consensus module.
-func (c *Consensus[T]) SetStreamingManager(sm streaming.Manager) {
-	c.streaming = sm
-}
-
-// RegisterSnapshotExtensions registers the given extensions with the consensus module's snapshot manager.
-// It allows additional snapshotter implementations to be used for creating and restoring snapshots.
-func (c *Consensus[T]) RegisterSnapshotExtensions(extensions ...snapshots.ExtensionSnapshotter) error {
-	if err := c.snapshotManager.RegisterExtensions(extensions...); err != nil {
-		return fmt.Errorf("failed to register snapshot extensions: %w", err)
-	}
-
-	return nil
+	queryHandlersMap map[string]appmodulev2.Handler
+	getProtoRegistry func() (*protoregistry.Files, error)
 }
 
 // CheckTx implements types.Application.
 // It is called by cometbft to verify transaction validity
-func (c *Consensus[T]) CheckTx(ctx context.Context, req *abciproto.CheckTxRequest) (*abciproto.CheckTxResponse, error) {
+func (c *consensus[T]) CheckTx(ctx context.Context, req *abciproto.CheckTxRequest) (*abciproto.CheckTxResponse, error) {
 	decodedTx, err := c.txCodec.Decode(req.Tx)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := c.app.ValidateTx(ctx, decodedTx)
-	if err != nil {
-		return nil, err
+	if c.checkTxHandler == nil {
+		resp, err := c.app.ValidateTx(ctx, decodedTx)
+		// we do not want to return a cometbft error, but a check tx response with the error
+		if err != nil && !errors.Is(err, resp.Error) {
+			return nil, err
+		}
+
+		events, err := intoABCIEvents(resp.Events, c.indexedEvents)
+		if err != nil {
+			return nil, err
+		}
+
+		cometResp := &abciproto.CheckTxResponse{
+			Code:      0,
+			GasWanted: uint64ToInt64(resp.GasWanted),
+			GasUsed:   uint64ToInt64(resp.GasUsed),
+			Events:    events,
+		}
+		if resp.Error != nil {
+			space, code, log := errorsmod.ABCIInfo(resp.Error, c.cfg.AppTomlConfig.Trace)
+			cometResp.Code = code
+			cometResp.Codespace = space
+			cometResp.Log = log
+		}
+
+		return cometResp, nil
 	}
 
-	cometResp := &abciproto.CheckTxResponse{
-		Code:      resp.Code,
-		GasWanted: uint64ToInt64(resp.GasWanted),
-		GasUsed:   uint64ToInt64(resp.GasUsed),
-		Events:    intoABCIEvents(resp.Events, c.indexedEvents),
-		Info:      resp.Info,
-		Data:      resp.Data,
-		Log:       resp.Log,
-		Codespace: resp.Codespace,
-	}
-	if resp.Error != nil {
-		cometResp.Code = 1
-		cometResp.Log = resp.Error.Error()
-	}
-	return cometResp, nil
+	return c.checkTxHandler(c.app.ValidateTx)
 }
 
 // Info implements types.Application.
-func (c *Consensus[T]) Info(ctx context.Context, _ *abciproto.InfoRequest) (*abciproto.InfoResponse, error) {
+func (c *consensus[T]) Info(ctx context.Context, _ *abciproto.InfoRequest) (*abciproto.InfoResponse, error) {
 	version, _, err := c.store.StateLatest()
 	if err != nil {
 		return nil, err
@@ -159,7 +136,7 @@ func (c *Consensus[T]) Info(ctx context.Context, _ *abciproto.InfoRequest) (*abc
 		cp, err := c.GetConsensusParams(ctx)
 		// if the consensus params are not found, we set the app version to 0
 		// in the case that the start version is > 0
-		if cp == nil || errors.Is(err, errors.New("collections: not found")) {
+		if cp == nil || errors.Is(err, collections.ErrNotFound) {
 			appVersion = 0
 		} else if err != nil {
 			return nil, err
@@ -187,24 +164,10 @@ func (c *Consensus[T]) Info(ctx context.Context, _ *abciproto.InfoRequest) (*abc
 
 // Query implements types.Application.
 // It is called by cometbft to query application state.
-func (c *Consensus[T]) Query(ctx context.Context, req *abciproto.QueryRequest) (resp *abciproto.QueryResponse, err error) {
-	// check if it's a gRPC method
-	makeGRPCRequest, isGRPC := c.grpcMethodsMap[req.Path]
+func (c *consensus[T]) Query(ctx context.Context, req *abciproto.QueryRequest) (resp *abciproto.QueryResponse, err error) {
+	resp, isGRPC, err := c.maybeRunGRPCQuery(ctx, req)
 	if isGRPC {
-		protoRequest := makeGRPCRequest()
-		err = gogoproto.Unmarshal(req.Data, protoRequest) // TODO: use codec
-		if err != nil {
-			return nil, fmt.Errorf("unable to decode gRPC request with path %s from ABCI.Query: %w", req.Path, err)
-		}
-		res, err := c.app.Query(ctx, uint64(req.Height), protoRequest)
-		if err != nil {
-			resp := queryResult(err)
-			resp.Height = req.Height
-			return resp, err
-
-		}
-
-		return queryResponse(res, req.Height)
+		return resp, err
 	}
 
 	// this error most probably means that we can't handle it with a proto message, so
@@ -215,17 +178,17 @@ func (c *Consensus[T]) Query(ctx context.Context, req *abciproto.QueryRequest) (
 	}
 
 	switch path[0] {
-	case cmtservice.QueryPathApp:
-		resp, err = c.handlerQueryApp(ctx, path, req)
+	case QueryPathApp:
+		resp, err = c.handleQueryApp(ctx, path, req)
 
-	case cmtservice.QueryPathStore:
-		resp, err = c.handleQueryStore(path, c.store, req)
+	case QueryPathStore:
+		resp, err = c.handleQueryStore(path, req)
 
-	case cmtservice.QueryPathP2P:
+	case QueryPathP2P:
 		resp, err = c.handleQueryP2P(path)
 
 	default:
-		resp = QueryResult(errorsmod.Wrap(cometerrors.ErrUnknownRequest, "unknown query path"), c.cfg.AppTomlConfig.Trace)
+		resp = QueryResult(errorsmod.Wrapf(cometerrors.ErrUnknownRequest, "unknown query path %s", req.Path), c.cfg.AppTomlConfig.Trace)
 	}
 
 	if err != nil {
@@ -235,8 +198,98 @@ func (c *Consensus[T]) Query(ctx context.Context, req *abciproto.QueryRequest) (
 	return resp, nil
 }
 
+func (c *consensus[T]) maybeRunGRPCQuery(ctx context.Context, req *abci.QueryRequest) (resp *abciproto.QueryResponse, isGRPC bool, err error) {
+	// if this fails then we cannot serve queries anymore
+	registry, err := c.getProtoRegistry()
+	if err != nil {
+		return nil, false, err
+	}
+
+	path := strings.TrimPrefix(req.Path, "/")
+	pathFullName := protoreflect.FullName(strings.ReplaceAll(path, "/", "."))
+
+	// in order to check if it's a gRPC query we ensure that there's a descriptor
+	// for the path, if such descriptor exists, and it is a method descriptor
+	// then we assume this is a gRPC query.
+	desc, err := registry.FindDescriptorByName(pathFullName)
+	if err != nil {
+		return nil, false, err
+	}
+
+	var handlerFullName string
+	md, isGRPC := desc.(protoreflect.MethodDescriptor)
+	if !isGRPC {
+		handlerFullName = string(desc.FullName())
+	} else {
+		handlerFullName = string(md.Input().FullName())
+	}
+
+	// special case for simulation as it is an external gRPC registered on the grpc server component
+	// and not on the app itself, so it won't pass the router afterwards.
+	if req.Path == "/cosmos.tx.v1beta1.Service/Simulate" {
+		simulateRequest := &txtypes.SimulateRequest{}
+		err = gogoproto.Unmarshal(req.Data, simulateRequest)
+		if err != nil {
+			return nil, true, fmt.Errorf("unable to decode gRPC request with path %s from ABCI.Query: %w", req.Path, err)
+		}
+
+		tx, err := c.txCodec.Decode(simulateRequest.TxBytes)
+		if err != nil {
+			return nil, true, fmt.Errorf("failed to decode tx: %w", err)
+		}
+
+		txResult, _, err := c.app.Simulate(ctx, tx)
+		if err != nil {
+			return nil, true, fmt.Errorf("failed with gas used: '%d': %w", txResult.GasUsed, err)
+		}
+
+		msgResponses := make([]*codectypes.Any, 0, len(txResult.Resp))
+		// pack the messages into Any
+		for _, msg := range txResult.Resp {
+			anyMsg, err := codectypes.NewAnyWithValue(msg)
+			if err != nil {
+				return nil, true, fmt.Errorf("failed to pack message response: %w", err)
+			}
+
+			msgResponses = append(msgResponses, anyMsg)
+		}
+
+		resp := &txtypes.SimulateResponse{
+			GasInfo: &sdk.GasInfo{
+				GasUsed:   txResult.GasUsed,
+				GasWanted: txResult.GasWanted,
+			},
+			Result: &sdk.Result{
+				MsgResponses: msgResponses,
+			},
+		}
+
+		res, err := queryResponse(resp, req.Height)
+		return res, true, err
+	}
+
+	handler, found := c.queryHandlersMap[handlerFullName]
+	if !found {
+		return nil, true, fmt.Errorf("no query handler found for %s", req.Path)
+	}
+	protoRequest := handler.MakeMsg()
+	err = gogoproto.Unmarshal(req.Data, protoRequest) // TODO: use codec
+	if err != nil {
+		return nil, true, fmt.Errorf("unable to decode gRPC request with path %s from ABCI.Query: %w", req.Path, err)
+	}
+	res, err := c.app.Query(ctx, uint64(req.Height), protoRequest)
+	if err != nil {
+		resp := QueryResult(err, c.cfg.AppTomlConfig.Trace)
+		resp.Height = req.Height
+		return resp, true, err
+	}
+
+	resp, err = queryResponse(res, req.Height)
+	return resp, true, err
+}
+
 // InitChain implements types.Application.
-func (c *Consensus[T]) InitChain(ctx context.Context, req *abciproto.InitChainRequest) (*abciproto.InitChainResponse, error) {
+func (c *consensus[T]) InitChain(ctx context.Context, req *abciproto.InitChainRequest) (*abciproto.InitChainResponse, error) {
 	c.logger.Info("InitChain", "initialHeight", req.InitialHeight, "chainID", req.ChainId)
 
 	// store chainID to be used later on in execution
@@ -249,8 +302,7 @@ func (c *Consensus[T]) InitChain(ctx context.Context, req *abciproto.InitChainRe
 	}
 
 	if req.ConsensusParams != nil {
-		ctx = context.WithValue(ctx, corecontext.InitInfoKey, &consensustypes.MsgUpdateParams{
-			Authority: c.consensusAuthority,
+		ctx = context.WithValue(ctx, corecontext.CometParamsInitInfoKey, &consensustypes.MsgUpdateParams{
 			Block:     req.ConsensusParams.Block,
 			Evidence:  req.ConsensusParams.Evidence,
 			Validator: req.ConsensusParams.Validator,
@@ -268,7 +320,7 @@ func (c *Consensus[T]) InitChain(ctx context.Context, req *abciproto.InitChainRe
 	// populate hash with empty byte slice instead of nil
 	bz := sha256.Sum256([]byte{})
 
-	br := &coreappmgr.BlockRequest[T]{
+	br := &server.BlockRequest[T]{
 		Height:    uint64(req.InitialHeight - 1),
 		Time:      req.Time,
 		Hash:      bz[:],
@@ -277,7 +329,7 @@ func (c *Consensus[T]) InitChain(ctx context.Context, req *abciproto.InitChainRe
 		IsGenesis: true,
 	}
 
-	blockresponse, genesisState, err := c.app.InitGenesis(
+	blockResponse, genesisState, err := c.app.InitGenesis(
 		ctx,
 		br,
 		req.AppStateBytes,
@@ -286,17 +338,16 @@ func (c *Consensus[T]) InitChain(ctx context.Context, req *abciproto.InitChainRe
 		return nil, fmt.Errorf("genesis state init failure: %w", err)
 	}
 
-	// TODO necessary? where should this WARN live if it all. helpful for testing
-	for _, txRes := range blockresponse.TxResults {
-		if txRes.Error != nil {
-			c.logger.Warn("genesis tx failed", "code", txRes.Code, "log", txRes.Log, "error", txRes.Error)
+	for _, txRes := range blockResponse.TxResults {
+		if err := txRes.Error; err != nil {
+			space, code, txLog := errorsmod.ABCIInfo(err, c.cfg.AppTomlConfig.Trace)
+			c.logger.Warn("genesis tx failed", "codespace", space, "code", code, "log", txLog)
 		}
 	}
 
-	validatorUpdates := intoABCIValidatorUpdates(blockresponse.ValidatorUpdates)
+	validatorUpdates := intoABCIValidatorUpdates(blockResponse.ValidatorUpdates)
 
-	// set the initial version of the store
-	if err := c.store.SetInitialVersion(uint64(req.InitialHeight)); err != nil {
+	if err := c.store.SetInitialVersion(uint64(req.InitialHeight - 1)); err != nil {
 		return nil, fmt.Errorf("failed to set initial version: %w", err)
 	}
 
@@ -305,9 +356,10 @@ func (c *Consensus[T]) InitChain(ctx context.Context, req *abciproto.InitChainRe
 		return nil, err
 	}
 	cs := &store.Changeset{
+		Version: uint64(req.InitialHeight - 1),
 		Changes: stateChanges,
 	}
-	stateRoot, err := c.store.WorkingHash(cs)
+	stateRoot, err := c.store.Commit(cs)
 	if err != nil {
 		return nil, fmt.Errorf("unable to write the changeset: %w", err)
 	}
@@ -321,7 +373,7 @@ func (c *Consensus[T]) InitChain(ctx context.Context, req *abciproto.InitChainRe
 
 // PrepareProposal implements types.Application.
 // It is called by cometbft to prepare a proposal block.
-func (c *Consensus[T]) PrepareProposal(
+func (c *consensus[T]) PrepareProposal(
 	ctx context.Context,
 	req *abciproto.PrepareProposalRequest,
 ) (resp *abciproto.PrepareProposalResponse, err error) {
@@ -329,17 +381,8 @@ func (c *Consensus[T]) PrepareProposal(
 		return nil, errors.New("PrepareProposal called with invalid height")
 	}
 
-	decodedTxs := make([]T, len(req.Txs))
-	for i, tx := range req.Txs {
-		decTx, err := c.txCodec.Decode(tx)
-		if err != nil {
-			// TODO: vote extension meta data as a custom type to avoid possibly accepting invalid txs
-			// continue even if tx decoding fails
-			c.logger.Error("failed to decode tx", "err", err)
-			continue
-		}
-
-		decodedTxs[i] = decTx
+	if c.prepareProposalHandler == nil {
+		return nil, errors.New("no prepare proposal function was set")
 	}
 
 	ciCtx := contextWithCometInfo(ctx, comet.Info{
@@ -349,7 +392,7 @@ func (c *Consensus[T]) PrepareProposal(
 		LastCommit:      toCoreExtendedCommitInfo(req.LocalLastCommit),
 	})
 
-	txs, err := c.prepareProposalHandler(ciCtx, c.app, decodedTxs, req)
+	txs, err := c.prepareProposalHandler(ciCtx, c.app, c.txCodec, req)
 	if err != nil {
 		return nil, err
 	}
@@ -366,20 +409,16 @@ func (c *Consensus[T]) PrepareProposal(
 
 // ProcessProposal implements types.Application.
 // It is called by cometbft to process/verify a proposal block.
-func (c *Consensus[T]) ProcessProposal(
+func (c *consensus[T]) ProcessProposal(
 	ctx context.Context,
 	req *abciproto.ProcessProposalRequest,
 ) (*abciproto.ProcessProposalResponse, error) {
-	decodedTxs := make([]T, len(req.Txs))
-	for _, tx := range req.Txs {
-		decTx, err := c.txCodec.Decode(tx)
-		if err != nil {
-			// TODO: vote extension meta data as a custom type to avoid possibly accepting invalid txs
-			// continue even if tx decoding fails
-			c.logger.Error("failed to decode tx", "err", err)
-			continue
-		}
-		decodedTxs = append(decodedTxs, decTx)
+	if req.Height < 1 {
+		return nil, errors.New("ProcessProposal called with invalid height")
+	}
+
+	if c.processProposalHandler == nil {
+		return nil, errors.New("no process proposal function was set")
 	}
 
 	ciCtx := contextWithCometInfo(ctx, comet.Info{
@@ -389,7 +428,7 @@ func (c *Consensus[T]) ProcessProposal(
 		LastCommit:      toCoreCommitInfo(req.ProposedLastCommit),
 	})
 
-	err := c.processProposalHandler(ciCtx, c.app, decodedTxs, req)
+	err := c.processProposalHandler(ciCtx, c.app, c.txCodec, req)
 	if err != nil {
 		c.logger.Error("failed to process proposal", "height", req.Height, "time", req.Time, "hash", fmt.Sprintf("%X", req.Hash), "err", err)
 		return &abciproto.ProcessProposalResponse{
@@ -404,7 +443,7 @@ func (c *Consensus[T]) ProcessProposal(
 
 // FinalizeBlock implements types.Application.
 // It is called by cometbft to finalize a block.
-func (c *Consensus[T]) FinalizeBlock(
+func (c *consensus[T]) FinalizeBlock(
 	ctx context.Context,
 	req *abciproto.FinalizeBlockRequest,
 ) (*abciproto.FinalizeBlockResponse, error) {
@@ -414,18 +453,6 @@ func (c *Consensus[T]) FinalizeBlock(
 
 	if err := c.checkHalt(req.Height, req.Time); err != nil {
 		return nil, err
-	}
-
-	// we don't need to deliver the block in the genesis block
-	if req.Height == int64(c.initialHeight) {
-		appHash, err := c.store.Commit(store.NewChangeset())
-		if err != nil {
-			return nil, fmt.Errorf("unable to commit the changeset: %w", err)
-		}
-		c.lastCommittedHeight.Store(req.Height)
-		return &abciproto.FinalizeBlockResponse{
-			AppHash: appHash,
-		}, nil
 	}
 
 	// TODO(tip): can we expect some txs to not decode? if so, what we do in this case? this does not seem to be the case,
@@ -441,7 +468,7 @@ func (c *Consensus[T]) FinalizeBlock(
 		return nil, err
 	}
 
-	blockReq := &coreappmgr.BlockRequest[T]{
+	blockReq := &server.BlockRequest[T]{
 		Height:  uint64(req.Height),
 		Time:    req.Time,
 		Hash:    req.Hash,
@@ -468,7 +495,7 @@ func (c *Consensus[T]) FinalizeBlock(
 	if err != nil {
 		return nil, err
 	}
-	appHash, err := c.store.Commit(&store.Changeset{Changes: stateChanges})
+	appHash, err := c.store.Commit(&store.Changeset{Version: uint64(req.Height), Changes: stateChanges})
 	if err != nil {
 		return nil, fmt.Errorf("unable to commit the changeset: %w", err)
 	}
@@ -488,9 +515,10 @@ func (c *Consensus[T]) FinalizeBlock(
 	}
 
 	// remove txs from the mempool
-	err = c.mempool.Remove(decodedTxs)
-	if err != nil {
-		return nil, fmt.Errorf("unable to remove txs: %w", err)
+	for _, tx := range decodedTxs {
+		if err = c.mempool.Remove(tx); err != nil {
+			return nil, fmt.Errorf("unable to remove tx: %w", err)
+		}
 	}
 
 	c.lastCommittedHeight.Store(req.Height)
@@ -500,12 +528,12 @@ func (c *Consensus[T]) FinalizeBlock(
 		return nil, err
 	}
 
-	return finalizeBlockResponse(resp, cp, appHash, c.indexedEvents)
+	return finalizeBlockResponse(resp, cp, appHash, c.indexedEvents, c.cfg.AppTomlConfig.Trace)
 }
 
 // Commit implements types.Application.
 // It is called by cometbft to notify the application that a block was committed.
-func (c *Consensus[T]) Commit(ctx context.Context, _ *abciproto.CommitRequest) (*abciproto.CommitResponse, error) {
+func (c *consensus[T]) Commit(ctx context.Context, _ *abciproto.CommitRequest) (*abciproto.CommitResponse, error) {
 	lastCommittedHeight := c.lastCommittedHeight.Load()
 
 	c.snapshotManager.SnapshotIfApplicable(lastCommittedHeight)
@@ -523,7 +551,7 @@ func (c *Consensus[T]) Commit(ctx context.Context, _ *abciproto.CommitRequest) (
 // Vote extensions
 
 // VerifyVoteExtension implements types.Application.
-func (c *Consensus[T]) VerifyVoteExtension(
+func (c *consensus[T]) VerifyVoteExtension(
 	ctx context.Context,
 	req *abciproto.VerifyVoteExtensionRequest,
 ) (*abciproto.VerifyVoteExtensionResponse, error) {
@@ -565,7 +593,7 @@ func (c *Consensus[T]) VerifyVoteExtension(
 }
 
 // ExtendVote implements types.Application.
-func (c *Consensus[T]) ExtendVote(ctx context.Context, req *abciproto.ExtendVoteRequest) (*abciproto.ExtendVoteResponse, error) {
+func (c *consensus[T]) ExtendVote(ctx context.Context, req *abciproto.ExtendVoteRequest) (*abciproto.ExtendVoteResponse, error) {
 	// If vote extensions are not enabled, as a safety precaution, we return an
 	// error.
 	cp, err := c.GetConsensusParams(ctx)

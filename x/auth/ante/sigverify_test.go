@@ -4,20 +4,14 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+	"go.uber.org/mock/gomock"
 
 	bankv1beta1 "cosmossdk.io/api/cosmos/bank/v1beta1"
 	"cosmossdk.io/core/gas"
 	"cosmossdk.io/core/header"
 	gastestutil "cosmossdk.io/core/testing/gas"
 	storetypes "cosmossdk.io/store/types"
-	"cosmossdk.io/x/auth/ante"
-	"cosmossdk.io/x/auth/migrations/legacytx"
-	authsign "cosmossdk.io/x/auth/signing"
-	authtx "cosmossdk.io/x/auth/tx"
-	txmodule "cosmossdk.io/x/auth/tx/config"
-	"cosmossdk.io/x/auth/types"
 	txsigning "cosmossdk.io/x/tx/signing"
 
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -30,6 +24,12 @@ import (
 	"github.com/cosmos/cosmos-sdk/testutil/testdata"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
+	"github.com/cosmos/cosmos-sdk/x/auth/ante"
+	"github.com/cosmos/cosmos-sdk/x/auth/migrations/legacytx"
+	authsign "github.com/cosmos/cosmos-sdk/x/auth/signing"
+	authtx "github.com/cosmos/cosmos-sdk/x/auth/tx"
+	txmodule "github.com/cosmos/cosmos-sdk/x/auth/tx/config"
+	"github.com/cosmos/cosmos-sdk/x/auth/types"
 )
 
 func TestConsumeSignatureVerificationGas(t *testing.T) {
@@ -231,7 +231,7 @@ func TestSigVerification(t *testing.T) {
 				if tc.recheck {
 					ctx = ctx.WithExecMode(sdk.ExecModeReCheck)
 				} else {
-					ctx = ctx.WithExecMode(sdk.ExecModeCheck)
+					ctx = ctx.WithExecMode(sdk.ExecModeFinalize)
 				}
 
 				suite.txBuilder = suite.clientCtx.TxConfig.NewTxBuilder() // Create new txBuilder for each test
