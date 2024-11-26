@@ -21,6 +21,7 @@ import (
 	"cosmossdk.io/math"
 	storetypes "cosmossdk.io/store/types"
 
+	topupTypes "github.com/0xPolygon/heimdall-v2/x/topup/types"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/codec/address"
 	"github.com/cosmos/cosmos-sdk/runtime"
@@ -36,7 +37,6 @@ import (
 	banktestutil "github.com/cosmos/cosmos-sdk/x/bank/testutil"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
-	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
 )
 
 const (
@@ -55,7 +55,7 @@ var (
 	holderAcc    = authtypes.NewEmptyModuleAccount(holder)
 	burnerAcc    = authtypes.NewEmptyModuleAccount(authtypes.Burner, authtypes.Burner, authtypes.Staking)
 	minterAcc    = authtypes.NewEmptyModuleAccount(authtypes.Minter, authtypes.Minter)
-	mintAcc      = authtypes.NewEmptyModuleAccount(minttypes.ModuleName, authtypes.Minter)
+	mintAcc      = authtypes.NewEmptyModuleAccount(topupTypes.ModuleName, authtypes.Minter)
 	multiPermAcc = authtypes.NewEmptyModuleAccount(multiPerm, authtypes.Burner, authtypes.Minter, authtypes.Staking)
 
 	addr, _ = address.HexCodec{}.StringToBytes("0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef")
@@ -327,7 +327,7 @@ func (suite *KeeperTestSuite) TestGetAuthority() {
 	tests := map[string]string{
 		"some random account":    "0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef",
 		"gov module account":     authtypes.NewModuleAddress(govtypes.ModuleName).String(),
-		"another module account": authtypes.NewModuleAddress(minttypes.ModuleName).String(),
+		"another module account": authtypes.NewModuleAddress(topupTypes.ModuleName).String(),
 	}
 
 	for name, expected := range tests {
@@ -380,11 +380,11 @@ func (suite *KeeperTestSuite) TestSendCoinsFromModuleToAccount_Blocklist() {
 	keeper := suite.bankKeeper
 
 	suite.mockMintCoins(mintAcc)
-	require.NoError(keeper.MintCoins(ctx, minttypes.ModuleName, initCoins))
+	require.NoError(keeper.MintCoins(ctx, topupTypes.ModuleName, initCoins))
 
 	suite.authKeeper.EXPECT().GetModuleAddress(mintAcc.Name).Return(mintAcc.GetAddress())
 	require.Error(keeper.SendCoinsFromModuleToAccount(
-		ctx, minttypes.ModuleName, accAddrs[4], initCoins,
+		ctx, topupTypes.ModuleName, accAddrs[4], initCoins,
 	))
 }
 
@@ -396,10 +396,10 @@ func (suite *KeeperTestSuite) TestSupply_DelegateUndelegateCoins() {
 
 	// set initial balances
 	suite.mockMintCoins(mintAcc)
-	require.NoError(keeper.MintCoins(ctx, minttypes.ModuleName, initCoins))
+	require.NoError(keeper.MintCoins(ctx, topupTypes.ModuleName, initCoins))
 
 	suite.mockSendCoinsFromModuleToAccount(mintAcc, holderAcc.GetAddress())
-	require.NoError(keeper.SendCoinsFromModuleToAccount(ctx, minttypes.ModuleName, holderAcc.GetAddress(), initCoins))
+	require.NoError(keeper.SendCoinsFromModuleToAccount(ctx, topupTypes.ModuleName, holderAcc.GetAddress(), initCoins))
 
 	authKeeper.EXPECT().GetModuleAddress("").Return(nil)
 	require.Panics(func() {
@@ -457,10 +457,10 @@ func (suite *KeeperTestSuite) TestSupply_SendCoins() {
 
 	// set initial balances
 	suite.mockMintCoins(mintAcc)
-	require.NoError(keeper.MintCoins(ctx, minttypes.ModuleName, initCoins))
+	require.NoError(keeper.MintCoins(ctx, topupTypes.ModuleName, initCoins))
 
 	suite.mockSendCoinsFromModuleToAccount(mintAcc, holderAcc.GetAddress())
-	require.NoError(keeper.SendCoinsFromModuleToAccount(ctx, minttypes.ModuleName, holderAcc.GetAddress(), initCoins))
+	require.NoError(keeper.SendCoinsFromModuleToAccount(ctx, topupTypes.ModuleName, holderAcc.GetAddress(), initCoins))
 
 	authKeeper.EXPECT().GetModuleAddress("").Return(nil)
 	require.Panics(func() {

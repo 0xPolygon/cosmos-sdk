@@ -24,7 +24,7 @@ import (
 )
 
 func TestBeginBlocker(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	t.Skip("skipping test for HV2, because we have own stake module")
 	var (
 		interfaceRegistry codectypes.InterfaceRegistry
 		bankKeeper        bankkeeper.Keeper

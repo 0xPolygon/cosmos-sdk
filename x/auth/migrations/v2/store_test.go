@@ -665,7 +665,7 @@ func TestMigrateVestingAccounts(t *testing.T) {
 			err := accountKeeper.Params.Set(ctx, authtypes.DefaultParams())
 			require.NoError(t, err)
 
-			addrs := simtestutil.AddTestAddrs(bankKeeper, stakingKeeper, ctx, 1, sdkmath.NewInt(tc.tokenAmount))
+			addrs := simtestutil.AddTestAddrs(bankKeeper, ctx, 1, sdkmath.NewInt(tc.tokenAmount))
 			delegatorAddr := addrs[0]
 
 			_, valAddr := createValidator(t, ctx, bankKeeper, stakingKeeper, tc.tokenAmount*2)
@@ -771,7 +771,7 @@ func dirtyTrackingFields(ctx sdk.Context, vesting exported.VestingAccount, accou
 
 func createValidator(t *testing.T, ctx sdk.Context, bankKeeper bankkeeper.Keeper, stakingKeeper *stakingkeeper.Keeper, powers int64) (sdk.AccAddress, sdk.ValAddress) {
 	valTokens := sdk.TokensFromConsensusPower(powers, sdk.DefaultPowerReduction)
-	addrs := simtestutil.AddTestAddrsIncremental(bankKeeper, stakingKeeper, ctx, 1, valTokens)
+	addrs := simtestutil.AddTestAddrsIncremental(bankKeeper, ctx, 1, valTokens)
 	valAddrs := simtestutil.ConvertAddrsToValAddrs(addrs)
 	pks := simtestutil.CreateTestPubKeys(1)
 

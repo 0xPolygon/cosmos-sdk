@@ -58,6 +58,7 @@ func TestUnbondingDelegationString(t *testing.T) {
 }
 
 func TestRedelegationEqual(t *testing.T) {
+	t.Skip("skipping test for HV2, because we have own stake module")
 	r1 := types.NewRedelegation(sdk.AccAddress(valAddr1), valAddr2, valAddr3, 0,
 		time.Unix(0, 0), math.NewInt(0),
 		math.LegacyNewDec(0), 1, addresscodec.NewHexCodec(), addresscodec.NewHexCodec())

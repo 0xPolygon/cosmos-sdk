@@ -217,8 +217,8 @@ github.com/0xPolygon/cosmos-sdk/x/tx v0.13.5 h1:rBfUOwTKHaAz7ZbxiJqbPlKtMNhMwCZo
 github.com/0xPolygon/cosmos-sdk/x/tx v0.13.5/go.mod h1:V6DImnwJMTq5qFjeGWpXNiT/fjgE4HtmclRmTqRVM3w=
 github.com/0xPolygon/cosmos-sdk/x/upgrade v0.1.2-0.20240409091007-84d9b34a8681 h1:SE9k984GgomahjLr4TdND7oZRrTwjWKxdJ+5y09CqNk=
 github.com/0xPolygon/cosmos-sdk/x/upgrade v0.1.2-0.20240409091007-84d9b34a8681/go.mod h1:HhGyxvVd3SlTRqm9hFRl2bobcj7GDXhpTxXiOOs89Fs=
-github.com/0xPolygon/heimdall-v2 v0.0.0-20241121085728-d0b571674757 h1:scPygdpfL32ng1DG9YmBMVMd+crI4rVqaI9y0yN0jXM=
-github.com/0xPolygon/heimdall-v2 v0.0.0-20241121085728-d0b571674757/go.mod h1:2WI8ZAL7xleTjuL5xg4J/shudu8yQEfNx0eqBFyNSR8=
+github.com/0xPolygon/heimdall-v2 v0.0.0-20241122133045-7afed273eb4d h1:JtFWH5L4rpnPAoLfTTMc2tfeBOgZYX++TYvIb1N6mVg=
+github.com/0xPolygon/heimdall-v2 v0.0.0-20241122133045-7afed273eb4d/go.mod h1:2WI8ZAL7xleTjuL5xg4J/shudu8yQEfNx0eqBFyNSR8=
 github.com/99designs/go-keychain v0.0.0-20191008050251-8e49817e8af4 h1:/vQbFIOMbk2FiG/kXiLl8BRyzTWDw7gX/Hz7Dd5eDMs=
 github.com/99designs/go-keychain v0.0.0-20191008050251-8e49817e8af4/go.mod h1:hN7oaIRCjzsZ2dE+yG5k+rsdt3qcwykqK6HVGcKwsw4=
 github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 h1:L/gRVlceqvL25UVaW/CKtUDjefjrs0SPonmDGUVOYP0=

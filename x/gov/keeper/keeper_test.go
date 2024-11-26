@@ -10,6 +10,7 @@ import (
 	"cosmossdk.io/collections"
 	sdkmath "cosmossdk.io/math"
 
+	topupTypes "github.com/0xPolygon/heimdall-v2/x/topup/types"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/codec/address"
@@ -20,7 +21,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/gov/types"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 	"github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
-	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
 )
 
 var address1 = "0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff"
@@ -52,9 +52,9 @@ func (suite *KeeperTestSuite) reset() {
 	// Populate the gov account with some coins, as the TestProposal we have
 	// is a MsgSend from the gov account.
 	coins := sdk.NewCoins(sdk.NewCoin("pol", sdkmath.NewInt(100000000000000000)))
-	err := bankKeeper.MintCoins(suite.ctx, minttypes.ModuleName, coins)
+	err := bankKeeper.MintCoins(suite.ctx, topupTypes.ModuleName, coins)
 	suite.NoError(err)
-	err = bankKeeper.SendCoinsFromModuleToModule(ctx, minttypes.ModuleName, types.ModuleName, coins)
+	err = bankKeeper.SendCoinsFromModuleToModule(ctx, topupTypes.ModuleName, types.ModuleName, coins)
 	suite.NoError(err)
 
 	queryHelper := baseapp.NewQueryServerTestHelper(ctx, encCfg.InterfaceRegistry)
@@ -78,7 +78,7 @@ func (suite *KeeperTestSuite) reset() {
 	suite.legacyMsgSrvr = keeper.NewLegacyMsgServerImpl(govAcct.String(), suite.msgSrvr)
 
 	accAmt := sdkmath.NewIntFromBigInt(new(big.Int).Mul(big.NewInt(10), new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil))).Mul(sdkmath.NewInt(3))
-	suite.addrs = simtestutil.AddTestAddrsIncremental(bankKeeper, stakingKeeper, ctx, 3, accAmt)
+	suite.addrs = simtestutil.AddTestAddrsIncremental(bankKeeper, ctx, 3, accAmt)
 
 	suite.acctKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
 }

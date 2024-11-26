@@ -35,7 +35,7 @@ var (
 )
 
 func TestSlashingMsgs(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	t.Skip("skipping test for HV2, because we have own stake module")
 	genTokens := sdk.TokensFromConsensusPower(42, sdk.DefaultPowerReduction)
 	bondTokens := sdk.TokensFromConsensusPower(10, sdk.DefaultPowerReduction)
 	genCoin := sdk.NewCoin(sdk.DefaultBondDenom, genTokens)

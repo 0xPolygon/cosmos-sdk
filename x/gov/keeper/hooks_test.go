@@ -2,9 +2,10 @@ package keeper_test
 
 import (
 	"context"
-	"github.com/golang/mock/gomock"
 	"testing"
 	"time"
+
+	"github.com/golang/mock/gomock"
 
 	"github.com/stretchr/testify/require"
 
@@ -56,7 +57,7 @@ func (h *MockGovHooksReceiver) AfterProposalVotingPeriodEnded(ctx context.Contex
 func TestHooks(t *testing.T) {
 	minDeposit := v1.DefaultParams().MinDeposit
 	govKeeper, authKeeper, bankKeeper, stakingKeeper, _, _, ctx := setupGovKeeper(t)
-	addrs := simtestutil.AddTestAddrs(bankKeeper, stakingKeeper, ctx, 1, minDeposit[0].Amount)
+	addrs := simtestutil.AddTestAddrs(bankKeeper, ctx, 1, minDeposit[0].Amount)
 
 	authKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
 	stakingKeeper.EXPECT().ValidatorAddressCodec().Return(address.NewHexCodec()).AnyTimes()

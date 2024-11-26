@@ -6,17 +6,12 @@ import (
 	"testing"
 	"time"
 
+	hApp "github.com/0xPolygon/heimdall-v2/app"
 	abci "github.com/cometbft/cometbft/abci/types"
 	"github.com/cosmos/gogoproto/proto"
 	"github.com/stretchr/testify/require"
 
-	"cosmossdk.io/depinject"
-	"cosmossdk.io/log"
-
 	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/cosmos/cosmos-sdk/runtime"
-	"github.com/cosmos/cosmos-sdk/testutil/configurator"
-	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	_ "github.com/cosmos/cosmos-sdk/x/auth"
@@ -89,9 +84,9 @@ func mockWeightedLegacyProposalContent(n int) []simtypes.WeightedProposalContent
 
 // TestWeightedOperations tests the weights of the operations.
 func TestWeightedOperations(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	t.Skip("skipping test for HV2, because we don't support weighted voting")
 
-	suite, ctx := createTestSuite(t, false)
+	suite, ctx := createTestSuite(t)
 	app := suite.App
 	ctx.WithChainID("test-chain")
 	appParams := make(simtypes.AppParams)
@@ -103,7 +98,7 @@ func TestWeightedOperations(t *testing.T) {
 	// setup 3 accounts
 	s := rand.NewSource(1)
 	r := rand.New(s)
-	accs := getTestingAccounts(t, r, suite.AccountKeeper, suite.BankKeeper, suite.StakingKeeper, ctx, 3)
+	accs := getTestingAccounts(t, r, suite.AccountKeeper, suite.BankKeeper, ctx, 3)
 
 	expected := []struct {
 		weight     int
@@ -137,23 +132,16 @@ func TestWeightedOperations(t *testing.T) {
 // TestSimulateMsgSubmitProposal tests the normal scenario of a valid message of type TypeMsgSubmitProposal.
 // Abnormal scenarios, where errors occur, are not tested here.
 func TestSimulateMsgSubmitProposal(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
-
-	suite, ctx := createTestSuite(t, false)
+	suite, ctx := createTestSuite(t)
 	app := suite.App
 
 	// setup 3 accounts
 	s := rand.NewSource(1)
 	r := rand.New(s)
-	accounts := getTestingAccounts(t, r, suite.AccountKeeper, suite.BankKeeper, suite.StakingKeeper, ctx, 3)
-
-	app.FinalizeBlock(&abci.RequestFinalizeBlock{
-		Height: app.LastBlockHeight() + 1,
-		Hash:   app.LastCommitID().Hash,
-	})
+	accounts := getTestingAccounts(t, r, app.AccountKeeper, app.BankKeeper, ctx, 3)
 
 	// execute operation
-	op := simulation.SimulateMsgSubmitProposal(suite.TxConfig, suite.AccountKeeper, suite.BankKeeper, suite.GovKeeper, MockWeightedProposals{3}.MsgSimulatorFn())
+	op := simulation.SimulateMsgSubmitProposal(app.GetTxConfig(), app.AccountKeeper, app.BankKeeper, &app.GovKeeper, MockWeightedProposals{3}.MsgSimulatorFn())
 	operationMsg, _, err := op(r, app.BaseApp, ctx, accounts, "")
 	require.NoError(t, err)
 
@@ -170,23 +158,16 @@ func TestSimulateMsgSubmitProposal(t *testing.T) {
 // TestSimulateMsgSubmitProposal tests the normal scenario of a valid message of type TypeMsgSubmitProposal.
 // Abnormal scenarios, where errors occur, are not tested here.
 func TestSimulateMsgSubmitLegacyProposal(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
-
-	suite, ctx := createTestSuite(t, false)
+	suite, ctx := createTestSuite(t)
 	app := suite.App
 
 	// setup 3 accounts
 	s := rand.NewSource(1)
 	r := rand.New(s)
-	accounts := getTestingAccounts(t, r, suite.AccountKeeper, suite.BankKeeper, suite.StakingKeeper, ctx, 3)
-
-	app.FinalizeBlock(&abci.RequestFinalizeBlock{
-		Height: app.LastBlockHeight() + 1,
-		Hash:   app.LastCommitID().Hash,
-	})
+	accounts := getTestingAccounts(t, r, app.AccountKeeper, app.BankKeeper, ctx, 3)
 
 	// execute operation
-	op := simulation.SimulateMsgSubmitLegacyProposal(suite.TxConfig, suite.AccountKeeper, suite.BankKeeper, suite.GovKeeper, MockWeightedProposals{3}.ContentSimulatorFn())
+	op := simulation.SimulateMsgSubmitLegacyProposal(app.GetTxConfig(), app.AccountKeeper, app.BankKeeper, &app.GovKeeper, MockWeightedProposals{3}.ContentSimulatorFn())
 	operationMsg, _, err := op(r, app.BaseApp, ctx, accounts, "")
 	require.NoError(t, err)
 
@@ -214,9 +195,7 @@ func TestSimulateMsgSubmitLegacyProposal(t *testing.T) {
 // TestSimulateMsgCancelProposal tests the normal scenario of a valid message of type TypeMsgCancelProposal.
 // Abnormal scenarios, where errors occur, are not tested here.
 func TestSimulateMsgCancelProposal(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
-
-	suite, ctx := createTestSuite(t, false)
+	suite, ctx := createTestSuite(t)
 	app := suite.App
 	blockTime := time.Now().UTC()
 	ctx = ctx.WithBlockTime(blockTime)
@@ -224,29 +203,24 @@ func TestSimulateMsgCancelProposal(t *testing.T) {
 	// setup 3 accounts
 	s := rand.NewSource(1)
 	r := rand.New(s)
-	accounts := getTestingAccounts(t, r, suite.AccountKeeper, suite.BankKeeper, suite.StakingKeeper, ctx, 3)
+	accounts := getTestingAccounts(t, r, app.AccountKeeper, app.BankKeeper, ctx, 3)
 	// setup a proposal
 	proposer := accounts[0].Address
 	content := v1beta1.NewTextProposal("Test", "description")
-	contentMsg, err := v1.NewLegacyContent(content, suite.GovKeeper.GetGovernanceAccount(ctx).GetAddress().String())
+	contentMsg, err := v1.NewLegacyContent(content, app.GovKeeper.GetGovernanceAccount(ctx).GetAddress().String())
 	require.NoError(t, err)
 
 	submitTime := ctx.BlockHeader().Time
-	params, _ := suite.GovKeeper.Params.Get(ctx)
+	params, _ := app.GovKeeper.Params.Get(ctx)
 	depositPeriod := params.MaxDepositPeriod
 
 	proposal, err := v1.NewProposal([]sdk.Msg{contentMsg}, 1, submitTime, submitTime.Add(*depositPeriod), "", "title", "summary", proposer, false)
 	require.NoError(t, err)
 
-	suite.GovKeeper.SetProposal(ctx, proposal)
-
-	app.FinalizeBlock(&abci.RequestFinalizeBlock{
-		Height: app.LastBlockHeight() + 1,
-		Hash:   app.LastCommitID().Hash,
-	})
+	app.GovKeeper.SetProposal(ctx, proposal)
 
 	// execute operation
-	op := simulation.SimulateMsgCancelProposal(suite.TxConfig, suite.AccountKeeper, suite.BankKeeper, suite.GovKeeper)
+	op := simulation.SimulateMsgCancelProposal(app.GetTxConfig(), app.AccountKeeper, app.BankKeeper, &app.GovKeeper)
 	operationMsg, _, err := op(r, app.BaseApp, ctx, accounts, "")
 	require.NoError(t, err)
 
@@ -263,9 +237,7 @@ func TestSimulateMsgCancelProposal(t *testing.T) {
 // TestSimulateMsgDeposit tests the normal scenario of a valid message of type TypeMsgDeposit.
 // Abnormal scenarios, where errors occur, are not tested here.
 func TestSimulateMsgDeposit(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
-
-	suite, ctx := createTestSuite(t, false)
+	suite, ctx := createTestSuite(t)
 	app := suite.App
 	blockTime := time.Now().UTC()
 	ctx = ctx.WithBlockTime(blockTime)
@@ -273,15 +245,15 @@ func TestSimulateMsgDeposit(t *testing.T) {
 	// setup 3 accounts
 	s := rand.NewSource(1)
 	r := rand.New(s)
-	accounts := getTestingAccounts(t, r, suite.AccountKeeper, suite.BankKeeper, suite.StakingKeeper, ctx, 3)
+	accounts := getTestingAccounts(t, r, app.AccountKeeper, app.BankKeeper, ctx, 3)
 
 	// setup a proposal
 	content := v1beta1.NewTextProposal("Test", "description")
-	contentMsg, err := v1.NewLegacyContent(content, suite.GovKeeper.GetGovernanceAccount(ctx).GetAddress().String())
+	contentMsg, err := v1.NewLegacyContent(content, app.GovKeeper.GetGovernanceAccount(ctx).GetAddress().String())
 	require.NoError(t, err)
 
 	submitTime := ctx.BlockHeader().Time
-	params, _ := suite.GovKeeper.Params.Get(ctx)
+	params, _ := app.GovKeeper.Params.Get(ctx)
 	depositPeriod := params.MaxDepositPeriod
 
 	proposer, err := sdk.AccAddressFromHex("0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff")
@@ -290,15 +262,10 @@ func TestSimulateMsgDeposit(t *testing.T) {
 	proposal, err := v1.NewProposal([]sdk.Msg{contentMsg}, 1, submitTime, submitTime.Add(*depositPeriod), "", "text proposal", "description", proposer, false)
 	require.NoError(t, err)
 
-	suite.GovKeeper.SetProposal(ctx, proposal)
-
-	app.FinalizeBlock(&abci.RequestFinalizeBlock{
-		Height: app.LastBlockHeight() + 1,
-		Hash:   app.LastCommitID().Hash,
-	})
+	app.GovKeeper.SetProposal(ctx, proposal)
 
 	// execute operation
-	op := simulation.SimulateMsgDeposit(suite.TxConfig, suite.AccountKeeper, suite.BankKeeper, suite.GovKeeper)
+	op := simulation.SimulateMsgDeposit(app.GetTxConfig(), app.AccountKeeper, app.BankKeeper, &app.GovKeeper)
 	operationMsg, _, err := op(r, app.BaseApp, ctx, accounts, "")
 	require.NoError(t, err)
 
@@ -316,25 +283,24 @@ func TestSimulateMsgDeposit(t *testing.T) {
 // TestSimulateMsgVote tests the normal scenario of a valid message of type TypeMsgVote.
 // Abnormal scenarios, where errors occur, are not tested here.
 func TestSimulateMsgVote(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
-
-	suite, ctx := createTestSuite(t, false)
+	suite, ctx := createTestSuite(t)
 	app := suite.App
+
 	blockTime := time.Now().UTC()
 	ctx = ctx.WithBlockTime(blockTime)
 
 	// setup 3 accounts
 	s := rand.NewSource(1)
 	r := rand.New(s)
-	accounts := getTestingAccounts(t, r, suite.AccountKeeper, suite.BankKeeper, suite.StakingKeeper, ctx, 3)
+	accounts := getTestingAccounts(t, r, app.AccountKeeper, app.BankKeeper, ctx, 3)
 
 	// setup a proposal
-	govAcc := suite.GovKeeper.GetGovernanceAccount(ctx).GetAddress().String()
+	govAcc := app.GovKeeper.GetGovernanceAccount(ctx).GetAddress().String()
 	contentMsg, err := v1.NewLegacyContent(v1beta1.NewTextProposal("Test", "description"), govAcc)
 	require.NoError(t, err)
 
 	submitTime := ctx.BlockHeader().Time
-	params, _ := suite.GovKeeper.Params.Get(ctx)
+	params, _ := app.GovKeeper.Params.Get(ctx)
 	depositPeriod := params.MaxDepositPeriod
 
 	proposer, err := sdk.AccAddressFromHex("0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff")
@@ -343,15 +309,10 @@ func TestSimulateMsgVote(t *testing.T) {
 	proposal, err := v1.NewProposal([]sdk.Msg{contentMsg}, 1, submitTime, submitTime.Add(*depositPeriod), "", "text proposal", "description", proposer, false)
 	require.NoError(t, err)
 
-	suite.GovKeeper.ActivateVotingPeriod(ctx, proposal)
-
-	app.FinalizeBlock(&abci.RequestFinalizeBlock{
-		Height: app.LastBlockHeight() + 1,
-		Hash:   app.LastCommitID().Hash,
-	})
+	app.GovKeeper.ActivateVotingPeriod(ctx, proposal)
 
 	// execute operation
-	op := simulation.SimulateMsgVote(suite.TxConfig, suite.AccountKeeper, suite.BankKeeper, suite.GovKeeper)
+	op := simulation.SimulateMsgVote(app.GetTxConfig(), app.AccountKeeper, app.BankKeeper, &app.GovKeeper)
 	operationMsg, _, err := op(r, app.BaseApp, ctx, accounts, "")
 	require.NoError(t, err)
 
@@ -369,7 +330,7 @@ func TestSimulateMsgVote(t *testing.T) {
 // Abnormal scenarios, where errors occur, are not tested here.
 func TestSimulateMsgVoteWeighted(t *testing.T) {
 	t.Skip("skipping test for HV2 (weighted voting not relevant)")
-	suite, ctx := createTestSuite(t, false)
+	suite, ctx := createTestSuite(t)
 	app := suite.App
 	blockTime := time.Now().UTC()
 	ctx = ctx.WithBlockTime(blockTime)
@@ -377,7 +338,7 @@ func TestSimulateMsgVoteWeighted(t *testing.T) {
 	// setup 3 accounts
 	s := rand.NewSource(1)
 	r := rand.New(s)
-	accounts := getTestingAccounts(t, r, suite.AccountKeeper, suite.BankKeeper, suite.StakingKeeper, ctx, 3)
+	accounts := getTestingAccounts(t, r, app.AccountKeeper, app.BankKeeper, ctx, 3)
 
 	// setup a proposal
 	govAcc := suite.GovKeeper.GetGovernanceAccount(ctx).GetAddress().String()
@@ -422,44 +383,30 @@ type suite struct {
 	GovKeeper          *keeper.Keeper
 	StakingKeeper      *stakingkeeper.Keeper
 	DistributionKeeper dk.Keeper
-	App                *runtime.App
+	App                *hApp.HeimdallApp
 }
 
 // returns context and an app with updated mint keeper
-func createTestSuite(t *testing.T, isCheckTx bool) (suite, sdk.Context) {
+func createTestSuite(t *testing.T) (suite, sdk.Context) {
 	res := suite{}
 
-	app, err := simtestutil.Setup(
-		depinject.Configs(
-			configurator.NewAppConfig(
-				configurator.AuthModule(),
-				configurator.TxModule(),
-				configurator.ParamsModule(),
-				configurator.BankModule(),
-				configurator.StakingModule(),
-				configurator.ConsensusModule(),
-				configurator.DistributionModule(),
-				configurator.GovModule(),
-			),
-			depinject.Supply(log.NewNopLogger()),
-		),
-		&res.TxConfig, &res.AccountKeeper, &res.BankKeeper, &res.GovKeeper, &res.StakingKeeper, &res.DistributionKeeper)
-	require.NoError(t, err)
-
-	ctx := app.BaseApp.NewContext(isCheckTx)
+	app, _, _ := hApp.SetupApp(t, 2)
+	hApp.RequestFinalizeBlock(t, app, app.LastBlockHeight()+1)
 
 	res.App = app
+
+	ctx := app.BaseApp.NewContext(false)
+
 	return res, ctx
 }
 
 func getTestingAccounts(
 	t *testing.T, r *rand.Rand,
-	accountKeeper authkeeper.AccountKeeper, bankKeeper bankkeeper.Keeper, stakingKeeper *stakingkeeper.Keeper,
-	ctx sdk.Context, n int,
+	accountKeeper authkeeper.AccountKeeper, bankKeeper bankkeeper.Keeper, ctx sdk.Context, n int,
 ) []simtypes.Account {
 	accounts := simtypes.RandomAccounts(r, n)
 
-	initAmt := stakingKeeper.TokensFromConsensusPower(ctx, 200)
+	initAmt := sdk.TokensFromConsensusPower(200, sdk.DefaultPowerReduction)
 	initCoins := sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, initAmt))
 
 	// add coins to the accounts

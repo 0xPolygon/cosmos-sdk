@@ -44,7 +44,7 @@ func SetupUnbondingTests(t *testing.T, f *fixture, hookCalled *bool, ubdeID *uin
 	mockStackingHooks.EXPECT().BeforeValidatorSlashed(gomock.Any(), gomock.Any(), gomock.Any()).Return(nil).AnyTimes()
 	f.stakingKeeper.SetHooks(types.NewMultiStakingHooks(mockStackingHooks))
 
-	addrDels = simtestutil.AddTestAddrsIncremental(f.bankKeeper, f.stakingKeeper, f.sdkCtx, 2, math.NewInt(10000))
+	addrDels = simtestutil.AddTestAddrsIncremental(f.bankKeeper, f.sdkCtx, 2, math.NewInt(10000))
 	addrVals = simtestutil.ConvertAddrsToValAddrs(addrDels)
 
 	valTokens := f.stakingKeeper.TokensFromConsensusPower(f.sdkCtx, 10)
@@ -170,6 +170,7 @@ func doValidatorUnbonding(
 }
 
 func TestValidatorUnbondingOnHold1(t *testing.T) {
+	t.Skip("skipping test for HV2, because we have own stake module")
 	t.Parallel()
 	f := initFixture(t)
 
@@ -217,6 +218,7 @@ func TestValidatorUnbondingOnHold1(t *testing.T) {
 }
 
 func TestValidatorUnbondingOnHold2(t *testing.T) {
+	t.Skip("skipping test for HV2, because we have own stake module")
 	t.Parallel()
 	f := initFixture(t)
 
@@ -302,7 +304,7 @@ func TestValidatorUnbondingOnHold2(t *testing.T) {
 }
 
 func TestRedelegationOnHold1(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	t.Skip("skipping test for HV2, because we have own stake module")
 	t.Parallel()
 	f := initFixture(t)
 
@@ -336,7 +338,7 @@ func TestRedelegationOnHold1(t *testing.T) {
 }
 
 func TestRedelegationOnHold2(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	t.Skip("skipping test for HV2, because we have own stake module")
 	t.Parallel()
 	f := initFixture(t)
 
@@ -370,7 +372,7 @@ func TestRedelegationOnHold2(t *testing.T) {
 }
 
 func TestUnbondingDelegationOnHold1(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	t.Skip("skipping test for HV2, because we have own stake module")
 	t.Parallel()
 	f := initFixture(t)
 
@@ -410,7 +412,7 @@ func TestUnbondingDelegationOnHold1(t *testing.T) {
 }
 
 func TestUnbondingDelegationOnHold2(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	t.Skip("skipping test for HV2, because we have own stake module")
 	t.Parallel()
 	f := initFixture(t)
 

@@ -5,21 +5,15 @@ import (
 	"fmt"
 	"testing"
 
-	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
-	"github.com/stretchr/testify/suite"
-
-	"cosmossdk.io/depinject"
-	"cosmossdk.io/log"
 	"cosmossdk.io/math"
 	"cosmossdk.io/store/prefix"
-
+	storetypes "cosmossdk.io/store/types"
+	hApp "github.com/0xPolygon/heimdall-v2/app"
+	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
-	"github.com/cosmos/cosmos-sdk/runtime"
-	"github.com/cosmos/cosmos-sdk/testutil/configurator"
-	testutilsims "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/address"
 	"github.com/cosmos/cosmos-sdk/types/query"
@@ -31,6 +25,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/bank/types"
 	_ "github.com/cosmos/cosmos-sdk/x/consensus"
 	_ "github.com/cosmos/cosmos-sdk/x/params"
+	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/suite"
 )
 
 const (
@@ -51,7 +47,7 @@ type paginationTestSuite struct {
 	accountKeeper authkeeper.AccountKeeper
 	cdc           codec.Codec
 	interfaceReg  codectypes.InterfaceRegistry
-	app           *runtime.App
+	app           *hApp.HeimdallApp
 }
 
 func TestPaginationTestSuite(t *testing.T) {
@@ -59,31 +55,12 @@ func TestPaginationTestSuite(t *testing.T) {
 }
 
 func (s *paginationTestSuite) SetupTest() {
-	var (
-		bankKeeper    bankkeeper.Keeper
-		accountKeeper authkeeper.AccountKeeper
-		reg           codectypes.InterfaceRegistry
-		cdc           codec.Codec
-	)
+	app, _, _ := hApp.SetupApp(s.T(), 1)
+	hApp.RequestFinalizeBlock(s.T(), app, app.LastBlockHeight()+1)
 
-	app, err := testutilsims.Setup(
-		depinject.Configs(
-			configurator.NewAppConfig(
-				configurator.AuthModule(),
-				configurator.BankModule(),
-				configurator.ParamsModule(),
-				configurator.ConsensusModule(),
-				configurator.OmitInitGenesis(),
-			),
-			depinject.Supply(log.NewNopLogger()),
-		),
-		&bankKeeper, &accountKeeper, &reg, &cdc)
+	ctx := app.BaseApp.NewContextLegacy(false, cmtproto.Header{Height: app.LastBlockHeight() + 1})
 
-	s.NoError(err)
-
-	ctx := app.BaseApp.NewContextLegacy(false, cmtproto.Header{Height: 1})
-
-	s.ctx, s.bankKeeper, s.accountKeeper, s.cdc, s.app, s.interfaceReg = ctx, bankKeeper, accountKeeper, cdc, app, reg
+	s.ctx, s.bankKeeper, s.accountKeeper, s.cdc, s.app, s.interfaceReg = ctx, app.BankKeeper, app.AccountKeeper, app.AppCodec(), app, app.InterfaceRegistry()
 }
 
 func (s *paginationTestSuite) TestParsePagination() {
@@ -118,9 +95,9 @@ func (s *paginationTestSuite) TestPagination() {
 	}
 
 	balances = balances.Sort()
-	addr1 := sdk.AccAddress(secp256k1.GenPrivKey().PubKey().Address())
-	acc1 := s.accountKeeper.NewAccountWithAddress(s.ctx, addr1)
-	s.accountKeeper.SetAccount(s.ctx, acc1)
+	privKey := secp256k1.GenPrivKey()
+	addr1 := sdk.AccAddress(privKey.PubKey().Address())
+	s.accountKeeper.NewAccountWithAddress(s.ctx, addr1)
 	s.Require().NoError(testutil.FundAccount(s.ctx, s.bankKeeper, addr1, balances))
 
 	s.T().Log("verify empty page request results a max of defaultLimit records and counts total records")
@@ -356,7 +333,8 @@ func (s *paginationTestSuite) TestPaginate() {
 	pageReq := &query.PageRequest{Key: nil, Limit: 1, CountTotal: true}
 	request := types.NewQueryAllBalancesRequest(addr1, pageReq, false)
 	balResult := sdk.NewCoins()
-	authStore := s.ctx.KVStore(s.app.UnsafeFindStoreKey(types.StoreKey))
+	authStore := s.UnsafeFindStoreKey(types.StoreKey)
+	require.NotNil(s.T(), authStore)
 	balancesStore := prefix.NewStore(authStore, types.BalancesPrefix)
 	accountStore := prefix.NewStore(balancesStore, address.MustLengthPrefix(addr1))
 	pageRes, err := query.Paginate(accountStore, request.Pagination, func(key, value []byte) error {
@@ -374,4 +352,13 @@ func (s *paginationTestSuite) TestPaginate() {
 	fmt.Println(&types.QueryAllBalancesResponse{Balances: balResult, Pagination: pageRes})
 	// Output:
 	// balances:<denom:"foo0denom" amount:"100" > pagination:<next_key:"foo1denom" total:2 >
+}
+
+func (s *paginationTestSuite) UnsafeFindStoreKey(name string) storetypes.KVStore {
+	for _, key := range s.app.GetStoreKeys() {
+		if key.Name() == name {
+			return s.ctx.KVStore(key)
+		}
+	}
+	return nil
 }

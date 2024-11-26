@@ -40,6 +40,7 @@ type CLITestSuite struct {
 }
 
 func TestCLITestSuite(t *testing.T) {
+	t.Skip("In HV2, we don't use the distribution module")
 	suite.Run(t, new(CLITestSuite))
 }
 

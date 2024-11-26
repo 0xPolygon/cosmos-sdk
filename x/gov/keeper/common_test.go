@@ -2,10 +2,12 @@ package keeper_test
 
 import (
 	"fmt"
+	"testing"
+
 	borTypes "github.com/0xPolygon/heimdall-v2/x/bor/types"
 	checkpointTypes "github.com/0xPolygon/heimdall-v2/x/checkpoint/types"
 	milestoneTypes "github.com/0xPolygon/heimdall-v2/x/milestone/types"
-	"testing"
+	topupTypes "github.com/0xPolygon/heimdall-v2/x/topup/types"
 
 	chainmanagertypes "github.com/0xPolygon/heimdall-v2/x/chainmanager/types"
 	consensustypes "github.com/cosmos/cosmos-sdk/x/consensus/types"
@@ -34,7 +36,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/gov/types"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 	"github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
-	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
 )
 
 var (
@@ -150,9 +151,9 @@ func trackMockBalances(bankKeeper *govtestutil.MockBankKeeper, distributionKeepe
 	balances[distAcct.String()] = sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, math.NewInt(0)))
 
 	// We don't track module account balances.
-	bankKeeper.EXPECT().MintCoins(gomock.Any(), minttypes.ModuleName, gomock.Any()).AnyTimes()
+	bankKeeper.EXPECT().MintCoins(gomock.Any(), topupTypes.ModuleName, gomock.Any()).AnyTimes()
 	bankKeeper.EXPECT().BurnCoins(gomock.Any(), types.ModuleName, gomock.Any()).AnyTimes()
-	bankKeeper.EXPECT().SendCoinsFromModuleToModule(gomock.Any(), minttypes.ModuleName, types.ModuleName, gomock.Any()).AnyTimes()
+	bankKeeper.EXPECT().SendCoinsFromModuleToModule(gomock.Any(), topupTypes.ModuleName, types.ModuleName, gomock.Any()).AnyTimes()
 
 	// But we do track normal account balances.
 	bankKeeper.EXPECT().SendCoinsFromAccountToModule(gomock.Any(), gomock.Any(), types.ModuleName, gomock.Any()).DoAndReturn(func(_ sdk.Context, sender sdk.AccAddress, _ string, coins sdk.Coins) error {

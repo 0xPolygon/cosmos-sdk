@@ -30,7 +30,7 @@ const chainID = "chain-id-123"
 // It sets up the necessary fixtures and validators, generates vote extensions for each validator,
 // and validates the vote extensions using the baseapp.ValidateVoteExtensions function.
 func TestValidateVoteExtensions(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	t.Skip("skipping test for HV2, because we have own stake module")
 	t.Parallel()
 	f := initFixture(t)
 

@@ -58,14 +58,14 @@ func ValEq(t *testing.T, exp, got types.Validator) (*testing.T, bool, string, ty
 
 // generateAddresses generates numAddrs of normal AccAddrs and ValAddrs
 func generateAddresses(f *fixture, numAddrs int) ([]sdk.AccAddress, []sdk.ValAddress) {
-	addrDels := simtestutil.AddTestAddrsIncremental(f.bankKeeper, f.stakingKeeper, f.sdkCtx, numAddrs, math.NewInt(10000))
+	addrDels := simtestutil.AddTestAddrsIncremental(f.bankKeeper, f.sdkCtx, numAddrs, math.NewInt(10000))
 	addrVals := simtestutil.ConvertAddrsToValAddrs(addrDels)
 
 	return addrDels, addrVals
 }
 
 func createValidators(t *testing.T, f *fixture, powers []int64) ([]sdk.AccAddress, []sdk.ValAddress, []types.Validator) {
-	addrs := simtestutil.AddTestAddrsIncremental(f.bankKeeper, f.stakingKeeper, f.sdkCtx, 5, f.stakingKeeper.TokensFromConsensusPower(f.sdkCtx, 300))
+	addrs := simtestutil.AddTestAddrsIncremental(f.bankKeeper, f.sdkCtx, 5, f.stakingKeeper.TokensFromConsensusPower(f.sdkCtx, 300))
 	valAddrs := simtestutil.ConvertAddrsToValAddrs(addrs)
 	pks := simtestutil.CreateTestPubKeys(5)
 

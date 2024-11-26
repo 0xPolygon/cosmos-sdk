@@ -2,38 +2,26 @@ package baseapp_test
 
 import (
 	"context"
+	"math/big"
 	"testing"
 
 	abci "github.com/cometbft/cometbft/abci/types"
-	dbm "github.com/cosmos/cosmos-db"
 	"github.com/stretchr/testify/require"
 
-	"cosmossdk.io/depinject"
-	"cosmossdk.io/log"
-
+	hApp "github.com/0xPolygon/heimdall-v2/app"
 	"github.com/cosmos/cosmos-sdk/client/tx"
-	"github.com/cosmos/cosmos-sdk/codec"
-	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
-	"github.com/cosmos/cosmos-sdk/runtime"
 	"github.com/cosmos/cosmos-sdk/testutil/testdata"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
 	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
 	authtx "github.com/cosmos/cosmos-sdk/x/auth/tx"
+	authTypes "github.com/cosmos/cosmos-sdk/x/auth/types"
+	"github.com/cosmos/cosmos-sdk/x/bank/testutil"
 )
 
 func TestRegisterMsgService(t *testing.T) {
-	// Setup baseapp.
-	var (
-		appBuilder *runtime.AppBuilder
-		registry   codectypes.InterfaceRegistry
-	)
-	err := depinject.Inject(
-		depinject.Configs(
-			makeMinimalConfig(),
-			depinject.Supply(log.NewTestLogger(t)),
-		), &appBuilder, &registry)
-	require.NoError(t, err)
-	app := appBuilder.Build(dbm.NewMemDB(), nil)
+	app, _, _ := hApp.SetupApp(t, 1)
+	hApp.RequestFinalizeBlock(t, app, app.LastBlockHeight()+1)
 
 	require.Panics(t, func() {
 		testdata.RegisterMsgServer(
@@ -43,7 +31,7 @@ func TestRegisterMsgService(t *testing.T) {
 	})
 
 	// Register testdata Msg services, and rerun `RegisterMsgService`.
-	testdata.RegisterInterfaces(registry)
+	testdata.RegisterInterfaces(app.InterfaceRegistry())
 
 	require.NotPanics(t, func() {
 		testdata.RegisterMsgServer(
@@ -55,19 +43,10 @@ func TestRegisterMsgService(t *testing.T) {
 
 func TestRegisterMsgServiceTwice(t *testing.T) {
 	// Setup baseapp.
-	var (
-		appBuilder *runtime.AppBuilder
-		registry   codectypes.InterfaceRegistry
-	)
-	err := depinject.Inject(
-		depinject.Configs(
-			makeMinimalConfig(),
-			depinject.Supply(log.NewTestLogger(t)),
-		), &appBuilder, &registry)
-	require.NoError(t, err)
-	db := dbm.NewMemDB()
-	app := appBuilder.Build(db, nil)
-	testdata.RegisterInterfaces(registry)
+	app, _, _ := hApp.SetupApp(t, 1)
+	hApp.RequestFinalizeBlock(t, app, app.LastBlockHeight()+1)
+
+	testdata.RegisterInterfaces(app.InterfaceRegistry())
 
 	// First time registering service shouldn't panic.
 	require.NotPanics(t, func() {
@@ -88,19 +67,10 @@ func TestRegisterMsgServiceTwice(t *testing.T) {
 
 func TestHybridHandlerByMsgName(t *testing.T) {
 	// Setup baseapp and router.
-	var (
-		appBuilder *runtime.AppBuilder
-		registry   codectypes.InterfaceRegistry
-	)
-	err := depinject.Inject(
-		depinject.Configs(
-			makeMinimalConfig(),
-			depinject.Supply(log.NewTestLogger(t)),
-		), &appBuilder, &registry)
-	require.NoError(t, err)
-	db := dbm.NewMemDB()
-	app := appBuilder.Build(db, nil)
-	testdata.RegisterInterfaces(registry)
+	app, _, _ := hApp.SetupApp(t, 1)
+	hApp.RequestFinalizeBlock(t, app, app.LastBlockHeight()+1)
+
+	testdata.RegisterInterfaces(app.InterfaceRegistry())
 
 	testdata.RegisterMsgServer(
 		app.MsgServiceRouter(),
@@ -110,10 +80,9 @@ func TestHybridHandlerByMsgName(t *testing.T) {
 	handler := app.MsgServiceRouter().HybridHandlerByMsgName("testpb.MsgCreateDog")
 
 	require.NotNil(t, handler)
-	require.NoError(t, app.Init())
 	ctx := app.NewContext(true)
 	resp := new(testdata.MsgCreateDogResponse)
-	err = handler(ctx, &testdata.MsgCreateDog{
+	err := handler(ctx, &testdata.MsgCreateDog{
 		Dog:   &testdata.Dog{Name: "Spot"},
 		Owner: "me",
 	}, resp)
@@ -124,36 +93,33 @@ func TestHybridHandlerByMsgName(t *testing.T) {
 func TestMsgService(t *testing.T) {
 	priv, _, _ := testdata.KeyTestPubAddr()
 
-	var (
-		appBuilder        *runtime.AppBuilder
-		cdc               codec.Codec
-		interfaceRegistry codectypes.InterfaceRegistry
-	)
-	err := depinject.Inject(
-		depinject.Configs(
-			makeMinimalConfig(),
-			depinject.Supply(log.NewNopLogger()),
-		), &appBuilder, &cdc, &interfaceRegistry)
-	require.NoError(t, err)
-	app := appBuilder.Build(dbm.NewMemDB(), nil)
+	app, _, _ := hApp.SetupApp(t, 1)
+	hApp.RequestFinalizeBlock(t, app, app.LastBlockHeight()+1)
+
+	ctx := app.NewContext(false)
+
+	addr := sdk.AccAddress(priv.PubKey().Address())
+	acc := authTypes.NewBaseAccount(addr, priv.PubKey(), 1337, 0)
+	require.NoError(t, testutil.FundAccount(ctx, app.BankKeeper, addr, sdk.NewCoins(sdk.NewInt64Coin("pol", 43*defaultFeeAmount))))
+
+	app.AccountKeeper.SetAccount(ctx, acc)
 
 	// patch in TxConfig instead of using an output from x/auth/tx
-	txConfig := authtx.NewTxConfig(cdc, authtx.DefaultSignModes)
+	txConfig := authtx.NewTxConfig(app.AppCodec(), authtx.DefaultSignModes)
 	// set the TxDecoder in the BaseApp for minimal tx simulations
 	app.SetTxDecoder(txConfig.TxDecoder())
 
 	defaultSignMode, err := authsigning.APISignModeToInternal(txConfig.SignModeHandler().DefaultMode())
 	require.NoError(t, err)
 
-	testdata.RegisterInterfaces(interfaceRegistry)
+	testdata.RegisterInterfaces(app.InterfaceRegistry())
 	testdata.RegisterMsgServer(
 		app.MsgServiceRouter(),
 		testdata.MsgServerImpl{},
 	)
-	_, err = app.FinalizeBlock(&abci.RequestFinalizeBlock{Height: 1})
-	require.NoError(t, err)
 
-	_, _, addr := testdata.KeyTestPubAddr()
+	hApp.RequestFinalizeBlock(t, app, app.LastBlockHeight()+1)
+
 	msg := testdata.MsgCreateDog{
 		Dog:   &testdata.Dog{Name: "Spot"},
 		Owner: addr.String(),
@@ -181,8 +147,8 @@ func TestMsgService(t *testing.T) {
 
 	// Second round: all signer infos are set, so each signer can sign.
 	signerData := authsigning.SignerData{
-		ChainID:       "test",
-		AccountNumber: 0,
+		ChainID:       "",
+		AccountNumber: 1337,
 		Sequence:      0,
 		PubKey:        priv.PubKey(),
 	}
@@ -196,7 +162,8 @@ func TestMsgService(t *testing.T) {
 	// Send the tx to the app
 	txBytes, err := txConfig.TxEncoder()(txBuilder.GetTx())
 	require.NoError(t, err)
-	res, err := app.FinalizeBlock(&abci.RequestFinalizeBlock{Height: 1, Txs: [][]byte{txBytes}})
-	require.NoError(t, err)
-	require.Equal(t, abci.CodeTypeOK, res.TxResults[0].Code, "res=%+v", res)
+	res := hApp.RequestFinalizeBlockWithTxs(t, app, app.LastBlockHeight()+1, txBytes)
+	require.Equal(t, abci.CodeTypeOK, res.TxResults[1].Code, "res=%+v", res)
 }
+
+var defaultFeeAmount = big.NewInt(10).Exp(big.NewInt(10), big.NewInt(15), nil).Int64()

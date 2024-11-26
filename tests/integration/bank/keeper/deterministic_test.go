@@ -3,14 +3,14 @@ package keeper_test
 import (
 	"testing"
 
-	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
-	"gotest.tools/v3/assert"
-	"pgregory.net/rapid"
-
 	"cosmossdk.io/core/appmodule"
 	"cosmossdk.io/log"
 	"cosmossdk.io/math"
 	storetypes "cosmossdk.io/store/types"
+	topupTypes "github.com/0xPolygon/heimdall-v2/x/topup/types"
+	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
+	"gotest.tools/v3/assert"
+	"pgregory.net/rapid"
 
 	addresscodec "github.com/cosmos/cosmos-sdk/codec/address"
 	"github.com/cosmos/cosmos-sdk/runtime"
@@ -28,7 +28,6 @@ import (
 	banktestutil "github.com/cosmos/cosmos-sdk/x/bank/testutil"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	_ "github.com/cosmos/cosmos-sdk/x/consensus"
-	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
 	_ "github.com/cosmos/cosmos-sdk/x/params"
 	_ "github.com/cosmos/cosmos-sdk/x/staking"
 )
@@ -74,7 +73,7 @@ func initDeterministicFixture(t *testing.T) *deterministicFixture {
 	authority := authtypes.NewModuleAddress("gov")
 
 	maccPerms := map[string][]string{
-		minttypes.ModuleName: {authtypes.Minter},
+		topupTypes.ModuleName: {authtypes.Minter},
 	}
 
 	accountKeeper := authkeeper.NewAccountKeeper(
@@ -248,7 +247,7 @@ func TestGRPCQueryTotalSupply(t *testing.T) {
 			coins = coins.Add(coin)
 		}
 
-		assert.NilError(t, f.bankKeeper.MintCoins(f.ctx, minttypes.ModuleName, coins))
+		assert.NilError(t, f.bankKeeper.MintCoins(f.ctx, topupTypes.ModuleName, coins))
 
 		initialSupply = initialSupply.Add(coins...)
 
@@ -266,7 +265,7 @@ func TestGRPCQueryTotalSupply(t *testing.T) {
 		sdk.NewCoin("bar", math.NewInt(100)),
 	)
 
-	assert.NilError(t, f.bankKeeper.MintCoins(f.ctx, minttypes.ModuleName, coins))
+	assert.NilError(t, f.bankKeeper.MintCoins(f.ctx, topupTypes.ModuleName, coins))
 
 	req := &banktypes.QueryTotalSupplyRequest{}
 	testdata.DeterministicIterations(f.ctx, t, req, f.queryClient.TotalSupply, 150, false)
@@ -282,7 +281,7 @@ func TestGRPCQueryTotalSupplyOf(t *testing.T) {
 			math.NewInt(rapid.Int64Min(1).Draw(rt, "amount")),
 		)
 
-		assert.NilError(t, f.bankKeeper.MintCoins(f.ctx, minttypes.ModuleName, sdk.NewCoins(coin)))
+		assert.NilError(t, f.bankKeeper.MintCoins(f.ctx, topupTypes.ModuleName, sdk.NewCoins(coin)))
 
 		req := &banktypes.QuerySupplyOfRequest{Denom: coin.GetDenom()}
 		testdata.DeterministicIterations(f.ctx, t, req, f.queryClient.SupplyOf, 0, true)
@@ -290,7 +289,7 @@ func TestGRPCQueryTotalSupplyOf(t *testing.T) {
 
 	coin := sdk.NewCoin("bar", math.NewInt(100))
 
-	assert.NilError(t, f.bankKeeper.MintCoins(f.ctx, minttypes.ModuleName, sdk.NewCoins(coin)))
+	assert.NilError(t, f.bankKeeper.MintCoins(f.ctx, topupTypes.ModuleName, sdk.NewCoins(coin)))
 	req := &banktypes.QuerySupplyOfRequest{Denom: coin.GetDenom()}
 	testdata.DeterministicIterations(f.ctx, t, req, f.queryClient.SupplyOf, 1021, false)
 }

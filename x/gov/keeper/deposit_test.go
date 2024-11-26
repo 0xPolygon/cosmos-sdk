@@ -51,7 +51,7 @@ func TestDeposits(t *testing.T) {
 			}
 
 			accAmt := sdkmath.NewIntFromBigInt(new(big.Int).Mul(big.NewInt(10), new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil)))
-			TestAddrs := simtestutil.AddTestAddrsIncremental(bankKeeper, stakingKeeper, ctx, 2, accAmt.Mul(sdkmath.NewInt(depositMultiplier)))
+			TestAddrs := simtestutil.AddTestAddrsIncremental(bankKeeper, ctx, 2, accAmt.Mul(sdkmath.NewInt(depositMultiplier)))
 			authKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
 
 			tp := TestProposal
@@ -212,11 +212,11 @@ func TestDepositAmount(t *testing.T) {
 
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
-			govKeeper, authKeeper, bankKeeper, stakingKeeper, distrKeeper, _, ctx := setupGovKeeper(t)
+			govKeeper, authKeeper, bankKeeper, _, distrKeeper, _, ctx := setupGovKeeper(t)
 			trackMockBalances(bankKeeper, distrKeeper)
 
 			accAmt := sdkmath.NewIntFromBigInt(new(big.Int).Mul(big.NewInt(10), new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil)))
-			testAddrs := simtestutil.AddTestAddrsIncremental(bankKeeper, stakingKeeper, ctx, 2, accAmt)
+			testAddrs := simtestutil.AddTestAddrsIncremental(bankKeeper, ctx, 2, accAmt)
 			authKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
 
 			params, _ := govKeeper.Params.Get(ctx)
@@ -397,7 +397,7 @@ func TestChargeDeposit(t *testing.T) {
 				params.ProposalCancelRatio = tc.proposalCancelRatio
 
 				accAmt := sdkmath.NewIntFromBigInt(new(big.Int).Mul(big.NewInt(10), new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil)))
-				TestAddrs := simtestutil.AddTestAddrsIncremental(bankKeeper, stakingKeeper, ctx, 2, accAmt)
+				TestAddrs := simtestutil.AddTestAddrsIncremental(bankKeeper, ctx, 2, accAmt)
 				authKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
 
 				switch i {
