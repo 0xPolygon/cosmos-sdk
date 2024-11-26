@@ -16,7 +16,7 @@ import (
 )
 
 func TestItCreatesModuleAccountOnInitBlock(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	t.Skip("In HV2 we dont use distribution module")
 	var accountKeeper authkeeper.AccountKeeper
 
 	app, err := simtestutil.SetupAtGenesis(
