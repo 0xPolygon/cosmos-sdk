@@ -5,8 +5,8 @@ go 1.23.2
 require (
 	cosmossdk.io/errors v1.0.0
 	cosmossdk.io/log v1.4.1
-	cosmossdk.io/math v1.3.0
-	github.com/cometbft/cometbft v0.38.12
+	cosmossdk.io/math v1.4.0
+	github.com/cometbft/cometbft v0.38.15
 	github.com/cosmos/cosmos-db v1.0.2
 	github.com/cosmos/gogoproto v1.7.0
 	github.com/cosmos/iavl v1.2.0
@@ -85,9 +85,9 @@ require (
 replace (
 	cosmossdk.io/errors => github.com/0xPolygon/cosmos-sdk/errors v1.0.0
 	cosmossdk.io/log => github.com/0xPolygon/cosmos-sdk/log v1.4.1
-	cosmossdk.io/math => github.com/0xPolygon/cosmos-sdk/math v1.3.0
+	cosmossdk.io/math => github.com/0xPolygon/cosmos-sdk/math v1.4.0
 
-	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.1-beta-polygon.0.20241122134501-62005f3af9eb
+	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.2-beta-polygon
 
 	github.com/ethereum/go-ethereum => github.com/maticnetwork/bor v1.5.2
 )

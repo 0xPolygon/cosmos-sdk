@@ -4,8 +4,8 @@ github.com/0xPolygon/cosmos-sdk/core v0.11.0 h1:pzMSad7v7lEO1LxQzOP0NkG/ZKlAgWLl
 github.com/0xPolygon/cosmos-sdk/core v0.11.0/go.mod h1:LaTtayWBSoacF5xNzoF8tmLhehqlA9z1SWiPuNC6X1w=
 github.com/0xPolygon/cosmos-sdk/errors v1.0.1 h1:DZTVRlVhG3w+ZV5400HWyFsxZooz93qjx6BEJmGVO24=
 github.com/0xPolygon/cosmos-sdk/errors v1.0.1/go.mod h1:MeelVSZThMi4bEakzhhhE/CKqVv3nOJDA25bIqRDu/U=
-github.com/0xPolygon/cosmos-sdk/math v1.3.0 h1:gx3XOFPw47Z3sd6vv+MUSWPi0cY6/lBTLr9hPvivyzw=
-github.com/0xPolygon/cosmos-sdk/math v1.3.0/go.mod h1:vnRTxewy+M7BtXBNFybkuhSH4WfedVAAnERHgVFhp3k=
+github.com/0xPolygon/cosmos-sdk/math v1.4.0 h1:2cXVfURXPAzOvuWbhJseo28QLCnZYnUz9X/LfxBmfGM=
+github.com/0xPolygon/cosmos-sdk/math v1.4.0/go.mod h1:O5PkD4apz2jZs4zqFdTr16e1dcaQCc5z6lkEnrrppuk=
 github.com/cosmos/cosmos-proto v1.0.0-beta.5 h1:eNcayDLpip+zVLRLYafhzLvQlSmyab+RC5W7ZfmxJLA=
 github.com/cosmos/cosmos-proto v1.0.0-beta.5/go.mod h1:hQGLpiIUloJBMdQMMWb/4wRApmI9hjHH05nefC0Ojec=
 github.com/cosmos/gogoproto v1.7.0 h1:79USr0oyXAbxg3rspGh/m4SWNyoz/GLaAh0QlCe2fro=

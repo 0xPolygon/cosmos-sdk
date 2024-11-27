@@ -7,12 +7,12 @@ require (
 	cosmossdk.io/client/v2 v2.0.0-beta.4.0.20240918122632-1879050ca719
 	cosmossdk.io/errors v1.0.1
 	github.com/cockroachdb/errors v1.11.3
-	github.com/cosmos/cosmos-sdk v0.50.6
+	github.com/cosmos/cosmos-sdk v0.50.10
 	github.com/manifoldco/promptui v0.9.0
 	github.com/pelletier/go-toml/v2 v2.2.2
 	github.com/spf13/cobra v1.8.1
 	google.golang.org/grpc v1.67.1
-	google.golang.org/protobuf v1.35.1
+	google.golang.org/protobuf v1.35.2
 )
 
 require (
@@ -20,9 +20,9 @@ require (
 	cosmossdk.io/core v0.11.1 // indirect
 	cosmossdk.io/depinject v1.0.0 // indirect
 	cosmossdk.io/log v1.4.1 // indirect
-	cosmossdk.io/math v1.3.0 // indirect
+	cosmossdk.io/math v1.4.0 // indirect
 	cosmossdk.io/store v1.1.1 // indirect
-	cosmossdk.io/x/tx v0.13.5 // indirect
+	cosmossdk.io/x/tx v0.13.6 // indirect
 	filippo.io/edwards25519 v1.0.0 // indirect
 	github.com/99designs/go-keychain v0.0.0-20191008050251-8e49817e8af4 // indirect
 	github.com/99designs/keyring v1.2.1 // indirect
@@ -39,7 +39,7 @@ require (
 	github.com/cockroachdb/pebble v1.1.2 // indirect
 	github.com/cockroachdb/redact v1.1.5 // indirect
 	github.com/cockroachdb/tokenbucket v0.0.0-20230807174530-cc333fc44b06 // indirect
-	github.com/cometbft/cometbft v0.38.12 // indirect
+	github.com/cometbft/cometbft v0.38.15 // indirect
 	github.com/cometbft/cometbft-db v0.14.1 // indirect
 	github.com/cosmos/cosmos-db v1.0.2 // indirect
 	github.com/cosmos/cosmos-proto v1.0.0-beta.5 // indirect
@@ -169,12 +169,11 @@ replace (
 	cosmossdk.io/depinject => github.com/0xPolygon/cosmos-sdk/depinject v1.0.0
 	cosmossdk.io/errors => github.com/0xPolygon/cosmos-sdk/errors v1.0.1
 	cosmossdk.io/log => github.com/0xPolygon/cosmos-sdk/log v1.4.1
-	cosmossdk.io/math => github.com/0xPolygon/cosmos-sdk/math v1.3.0
+	cosmossdk.io/math => github.com/0xPolygon/cosmos-sdk/math v1.4.0
 	cosmossdk.io/store => github.com/0xPolygon/cosmos-sdk/store v1.1.1
 	cosmossdk.io/x/tx => github.com/0xPolygon/cosmos-sdk/x/tx v0.13.5
-	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.1-beta-polygon.0.20241122134501-62005f3af9eb
+	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.2-beta-polygon
 
-	// TODO HV2: replace with a release version once development is completed
 	github.com/cosmos/cosmos-sdk => ./../../
 
 	github.com/ethereum/go-ethereum => github.com/maticnetwork/bor v1.5.2

@@ -1,11 +1,11 @@
-github.com/0xPolygon/cometbft v0.1.1-beta-polygon.0.20241122134501-62005f3af9eb h1:z1C8SHjSChVqudUG/tIKm7/TTc7RXuNGipvBM1T+GUo=
-github.com/0xPolygon/cometbft v0.1.1-beta-polygon.0.20241122134501-62005f3af9eb/go.mod h1:lixtaAtgMJY6x8w4X2/rtQiLC0bdtzHgPbyHg8ggBJs=
+github.com/0xPolygon/cometbft v0.1.2-beta-polygon h1:RCqznvAI7UA7jrsaTuGhxpAudFN1k5vpFDViHxCZ8rQ=
+github.com/0xPolygon/cometbft v0.1.2-beta-polygon/go.mod h1:lixtaAtgMJY6x8w4X2/rtQiLC0bdtzHgPbyHg8ggBJs=
 github.com/0xPolygon/cosmos-sdk/errors v1.0.0 h1:17cbZ91UK+FIm+vQwzwk++hqDQl92Q4EpL+gvV34Tz4=
 github.com/0xPolygon/cosmos-sdk/errors v1.0.0/go.mod h1:+hJZLuhdDE0pYN8HkOrVNwrIOYvUGnn6+4fjnJs/oV0=
 github.com/0xPolygon/cosmos-sdk/log v1.4.1 h1:sJcqdAqfVCEhsToiZFStWG8ENgyBVvMlFrWXw9Vmx6I=
 github.com/0xPolygon/cosmos-sdk/log v1.4.1/go.mod h1:k08v0Pyq+gCP6phvdI6RCGhLf/r425UT6Rk/m+o74rU=
-github.com/0xPolygon/cosmos-sdk/math v1.3.0 h1:gx3XOFPw47Z3sd6vv+MUSWPi0cY6/lBTLr9hPvivyzw=
-github.com/0xPolygon/cosmos-sdk/math v1.3.0/go.mod h1:vnRTxewy+M7BtXBNFybkuhSH4WfedVAAnERHgVFhp3k=
+github.com/0xPolygon/cosmos-sdk/math v1.4.0 h1:2cXVfURXPAzOvuWbhJseo28QLCnZYnUz9X/LfxBmfGM=
+github.com/0xPolygon/cosmos-sdk/math v1.4.0/go.mod h1:O5PkD4apz2jZs4zqFdTr16e1dcaQCc5z6lkEnrrppuk=
 github.com/DataDog/datadog-go v3.2.0+incompatible/go.mod h1:LButxg5PwREeZtORoXG3tL4fMGNddJ+vMq1mwgfaqoQ=
 github.com/DataDog/zstd v1.5.5 h1:oWf5W7GtOLgp6bciQYDmhHHjdhYkALu6S/5Ni9ZgSvQ=
 github.com/DataDog/zstd v1.5.5/go.mod h1:g4AWEaM3yOg3HYfnJ3YIawPnVdXJh9QME85blwSAmyw=

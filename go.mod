@@ -9,18 +9,18 @@ require (
 	cosmossdk.io/depinject v1.0.0
 	cosmossdk.io/errors v1.0.1
 	cosmossdk.io/log v1.4.1
-	cosmossdk.io/math v1.3.0
+	cosmossdk.io/math v1.4.0
 	cosmossdk.io/simapp v0.0.0-20230620040119-e078f1a49e8b
 	cosmossdk.io/store v1.1.1
 	cosmossdk.io/x/tx v0.13.5
-	github.com/0xPolygon/heimdall-v2 v0.0.0-20241122133045-7afed273eb4d
+	github.com/0xPolygon/heimdall-v2 v0.0.0-20241127081910-7dda9dcd7b83
 	github.com/99designs/keyring v1.2.1
 	github.com/bgentry/speakeasy v0.1.1-0.20220910012023-760eaf8b6816
 	github.com/bits-and-blooms/bitset v1.10.0
 	github.com/chzyer/readline v1.5.1
 	github.com/cockroachdb/apd/v2 v2.0.2
 	github.com/cockroachdb/errors v1.11.3
-	github.com/cometbft/cometbft v0.38.12
+	github.com/cometbft/cometbft v0.38.15
 	github.com/cosmos/btcutil v1.0.5
 	github.com/cosmos/cosmos-db v1.0.2
 	github.com/cosmos/cosmos-proto v1.0.0-beta.5
@@ -61,7 +61,7 @@ require (
 	golang.org/x/sync v0.8.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20240822170219-fc7c04adadcd
 	google.golang.org/grpc v1.67.1
-	google.golang.org/protobuf v1.35.1
+	google.golang.org/protobuf v1.35.2
 	gotest.tools/v3 v3.5.1
 	pgregory.net/rapid v1.1.0
 	sigs.k8s.io/yaml v1.4.0
@@ -230,42 +230,29 @@ require (
 replace (
 	// use cosmos fork of keyring
 	github.com/99designs/keyring => github.com/cosmos/keyring v1.2.0
-	// dgrijalva/jwt-go is deprecated and doesn't receive security updates.
-	// TODO: remove it: https://github.com/cosmos/cosmos-sdk/issues/13134
-	github.com/dgrijalva/jwt-go => github.com/golang-jwt/jwt/v4 v4.4.2
-	// Fix upstream GHSA-h395-qcrw-5vmq and GHSA-3vp4-m3rf-835h vulnerabilities.
-	// TODO Remove it: https://github.com/cosmos/cosmos-sdk/issues/10409
-	github.com/gin-gonic/gin => github.com/gin-gonic/gin v1.9.1
 	// replace broken goleveldb
 	github.com/syndtr/goleveldb => github.com/syndtr/goleveldb v1.0.1-0.20210819022825-2ae1ddf74ef7
 )
 
 // HV2 related packages
 replace (
-	// same versions tagged on our fork
 	cosmossdk.io/api => github.com/0xPolygon/cosmos-sdk/api v0.7.5
-	//cosmossdk.io/client/v2 => github.com/0xPolygon/cosmos-sdk/client/v2 v2.0.0-beta.1
+	cosmossdk.io/client/v2 => github.com/0xPolygon/cosmos-sdk/client/v2 v2.0.0-beta.4
 	cosmossdk.io/collections => github.com/0xPolygon/cosmos-sdk/collections v0.4.0
 	cosmossdk.io/core => github.com/0xPolygon/cosmos-sdk/core v0.11.1
 	cosmossdk.io/depinject => github.com/0xPolygon/cosmos-sdk/depinject v1.0.0
 	cosmossdk.io/errors => github.com/0xPolygon/cosmos-sdk/errors v1.0.1
 	cosmossdk.io/log => github.com/0xPolygon/cosmos-sdk/log v1.4.1
-	cosmossdk.io/math => github.com/0xPolygon/cosmos-sdk/math v1.3.0
+	cosmossdk.io/math => github.com/0xPolygon/cosmos-sdk/math v1.4.0
 	cosmossdk.io/simapp => ./simapp
 	cosmossdk.io/store => github.com/0xPolygon/cosmos-sdk/store v1.1.1
-
-	// latest versions on our fork
-	cosmossdk.io/x/circuit => github.com/0xPolygon/cosmos-sdk/x/circuit v0.1.1-0.20240409091007-84d9b34a8681
-	cosmossdk.io/x/evidence => github.com/0xPolygon/cosmos-sdk/x/evidence v0.1.1-0.20240409091007-84d9b34a8681
-	cosmossdk.io/x/feegrant => github.com/0xPolygon/cosmos-sdk/x/feegrant v0.1.1-0.20240409091007-84d9b34a8681
-	cosmossdk.io/x/nft => github.com/0xPolygon/cosmos-sdk/x/nft v0.1.1-0.20240409091007-84d9b34a8681
-	cosmossdk.io/x/tx => github.com/0xPolygon/cosmos-sdk/x/tx v0.13.5
-	cosmossdk.io/x/upgrade => github.com/0xPolygon/cosmos-sdk/x/upgrade v0.1.2-0.20240409091007-84d9b34a8681
-
-	// our tagged forks
-	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.1-beta-polygon.0.20241122134501-62005f3af9eb
-	// TODO HV2: replace with a release version once development is completed
-	github.com/cosmos/cosmos-sdk => ./../
+	cosmossdk.io/x/circuit => github.com/0xPolygon/cosmos-sdk/x/circuit v0.1.2-0.20241126102051-89dc71d02611
+	cosmossdk.io/x/evidence => github.com/0xPolygon/cosmos-sdk/x/evidence v0.1.2-0.20241126102051-89dc71d02611
+	cosmossdk.io/x/feegrant => github.com/0xPolygon/cosmos-sdk/x/feegrant v0.1.2-0.20241126102051-89dc71d02611
+	cosmossdk.io/x/nft => github.com/0xPolygon/cosmos-sdk/x/nft v0.1.2-0.20241126102051-89dc71d02611
+	cosmossdk.io/x/tx => github.com/0xPolygon/cosmos-sdk/x/tx v0.13.6-0.20241126102051-89dc71d02611
+	cosmossdk.io/x/upgrade => github.com/0xPolygon/cosmos-sdk/x/upgrade v0.1.5-0.20241126102051-89dc71d02611
+	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.2-beta-polygon
 	github.com/ethereum/go-ethereum => github.com/maticnetwork/bor v1.5.2
 )
 

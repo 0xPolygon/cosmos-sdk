@@ -6,7 +6,7 @@ require (
 	cosmossdk.io/api v0.7.4
 	cosmossdk.io/core v0.11.0
 	cosmossdk.io/errors v1.0.1
-	cosmossdk.io/math v1.3.0
+	cosmossdk.io/math v1.4.0
 	github.com/cosmos/cosmos-proto v1.0.0-beta.5
 	github.com/cosmos/gogoproto v1.7.0
 	github.com/ethereum/go-ethereum v1.14.11
@@ -45,7 +45,7 @@ replace (
 	cosmossdk.io/api => github.com/0xPolygon/cosmos-sdk/api v0.7.4
 	cosmossdk.io/core => github.com/0xPolygon/cosmos-sdk/core v0.11.0
 	cosmossdk.io/errors => github.com/0xPolygon/cosmos-sdk/errors v1.0.1
-	cosmossdk.io/math => github.com/0xPolygon/cosmos-sdk/math v1.3.0
+	cosmossdk.io/math => github.com/0xPolygon/cosmos-sdk/math v1.4.0
 
 	github.com/ethereum/go-ethereum => github.com/maticnetwork/bor v1.5.2
 )
