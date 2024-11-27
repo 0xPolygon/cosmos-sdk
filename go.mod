@@ -237,15 +237,15 @@ replace (
 // HV2 related packages
 replace (
 	cosmossdk.io/api => github.com/0xPolygon/cosmos-sdk/api v0.7.5
-	cosmossdk.io/client/v2 => github.com/0xPolygon/cosmos-sdk/client/v2 v2.0.0-beta.4
+	cosmossdk.io/client/v2 => github.com/0xPolygon/cosmos-sdk/client/v2 v2.0.0-beta.5.0.20241126102051-89dc71d02611
 	cosmossdk.io/collections => github.com/0xPolygon/cosmos-sdk/collections v0.4.0
-	cosmossdk.io/core => github.com/0xPolygon/cosmos-sdk/core v0.11.1
+	cosmossdk.io/core => github.com/0xPolygon/cosmos-sdk/core v0.11.3-0.20241126102051-89dc71d02611
 	cosmossdk.io/depinject => github.com/0xPolygon/cosmos-sdk/depinject v1.0.0
-	cosmossdk.io/errors => github.com/0xPolygon/cosmos-sdk/errors v1.0.1
+	cosmossdk.io/errors => github.com/0xPolygon/cosmos-sdk/errors v1.0.0-beta.7.0.20241126102051-89dc71d02611
 	cosmossdk.io/log => github.com/0xPolygon/cosmos-sdk/log v1.4.1
 	cosmossdk.io/math => github.com/0xPolygon/cosmos-sdk/math v1.4.0
 	cosmossdk.io/simapp => ./simapp
-	cosmossdk.io/store => github.com/0xPolygon/cosmos-sdk/store v1.1.1
+	cosmossdk.io/store => github.com/0xPolygon/cosmos-sdk/store v1.1.2-0.20241126102051-89dc71d02611
 	cosmossdk.io/x/circuit => github.com/0xPolygon/cosmos-sdk/x/circuit v0.1.2-0.20241126102051-89dc71d02611
 	cosmossdk.io/x/evidence => github.com/0xPolygon/cosmos-sdk/x/evidence v0.1.2-0.20241126102051-89dc71d02611
 	cosmossdk.io/x/feegrant => github.com/0xPolygon/cosmos-sdk/x/feegrant v0.1.2-0.20241126102051-89dc71d02611

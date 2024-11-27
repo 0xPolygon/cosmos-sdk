@@ -83,11 +83,9 @@ require (
 
 // HV2 related packages
 replace (
-	cosmossdk.io/errors => github.com/0xPolygon/cosmos-sdk/errors v1.0.0
+	cosmossdk.io/errors => github.com/0xPolygon/cosmos-sdk/errors v1.0.0-beta.7.0.20241126102051-89dc71d02611
 	cosmossdk.io/log => github.com/0xPolygon/cosmos-sdk/log v1.4.1
 	cosmossdk.io/math => github.com/0xPolygon/cosmos-sdk/math v1.4.0
-
 	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.2-beta-polygon
-
 	github.com/ethereum/go-ethereum => github.com/maticnetwork/bor v1.5.2
 )
