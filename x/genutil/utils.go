@@ -37,6 +37,7 @@ func ExportGenesisFileWithTime(genFile, chainID string, validators []cmttypes.Ge
 	appGenesis := types.NewAppGenesisWithVersion(chainID, appState)
 	appGenesis.GenesisTime = genTime
 	appGenesis.Consensus.Validators = validators
+	appGenesis.Consensus.Params = cmttypes.DefaultConsensusParams()
 	appGenesis.Consensus.Params.ABCI.VoteExtensionsEnableHeight = DefaultVEenabledHeight
 
 	if err := appGenesis.ValidateAndComplete(); err != nil {
