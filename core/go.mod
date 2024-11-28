@@ -56,9 +56,9 @@ require (
 
 // HV2 related packages
 replace (
-	cosmossdk.io/api => github.com/0xPolygon/cosmos-sdk/api v0.7.0
+	cosmossdk.io/api => github.com/0xPolygon/cosmos-sdk/api v0.7.5
 	cosmossdk.io/depinject => github.com/0xPolygon/cosmos-sdk/depinject v1.0.0
-	cosmossdk.io/math => github.com/0xPolygon/cosmos-sdk/math v1.1.2
+	cosmossdk.io/math => github.com/0xPolygon/cosmos-sdk/math v1.4.0
 )
 
 // Version tagged too early and incompatible with v0.50 (latest at the time of tagging)

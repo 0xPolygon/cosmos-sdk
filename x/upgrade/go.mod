@@ -9,10 +9,10 @@ require (
 	cosmossdk.io/errors v1.0.1
 	cosmossdk.io/log v1.4.1
 	cosmossdk.io/store v1.1.1
-	github.com/cometbft/cometbft v0.38.12
+	github.com/cometbft/cometbft v0.38.15
 	github.com/cosmos/cosmos-db v1.0.2
 	github.com/cosmos/cosmos-proto v1.0.0-beta.5
-	github.com/cosmos/cosmos-sdk v0.50.6
+	github.com/cosmos/cosmos-sdk v0.50.10
 	github.com/cosmos/gogoproto v1.7.0
 	github.com/golang/protobuf v1.5.4
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
@@ -26,7 +26,7 @@ require (
 	github.com/stretchr/testify v1.9.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20240822170219-fc7c04adadcd
 	google.golang.org/grpc v1.67.1
-	google.golang.org/protobuf v1.35.1
+	google.golang.org/protobuf v1.35.2
 )
 
 require (
@@ -35,10 +35,10 @@ require (
 	cloud.google.com/go/iam v1.1.6 // indirect
 	cloud.google.com/go/storage v1.38.0 // indirect
 	cosmossdk.io/collections v0.4.0 // indirect
-	cosmossdk.io/math v1.3.0 // indirect
-	cosmossdk.io/x/tx v0.13.5 // indirect
+	cosmossdk.io/math v1.4.0 // indirect
+	cosmossdk.io/x/tx v0.13.6 // indirect
 	filippo.io/edwards25519 v1.0.0 // indirect
-	github.com/0xPolygon/heimdall-v2 v0.0.0-20241122133045-7afed273eb4d // indirect
+	github.com/0xPolygon/heimdall-v2 v0.0.0-20241127081910-7dda9dcd7b83 // indirect
 	github.com/99designs/go-keychain v0.0.0-20191008050251-8e49817e8af4 // indirect
 	github.com/99designs/keyring v1.2.1 // indirect
 	github.com/BurntSushi/toml v1.4.0 // indirect
@@ -208,25 +208,18 @@ require (
 	sigs.k8s.io/yaml v1.4.0 // indirect
 )
 
-// Fix upstream GHSA-h395-qcrw-5vmq and GHSA-3vp4-m3rf-835h vulnerabilities.
-// TODO Remove it: https://github.com/cosmos/cosmos-sdk/issues/10409
-replace github.com/gin-gonic/gin => github.com/gin-gonic/gin v1.9.1
-
 // HV2 related packages
 replace (
 	cosmossdk.io/api => github.com/0xPolygon/cosmos-sdk/api v0.7.5
 	cosmossdk.io/collections => github.com/0xPolygon/cosmos-sdk/collections v0.4.0
-	cosmossdk.io/core => github.com/0xPolygon/cosmos-sdk/core v0.11.1
+	cosmossdk.io/core => github.com/0xPolygon/cosmos-sdk/core v0.11.3-0.20241126102051-89dc71d02611
 	cosmossdk.io/depinject => github.com/0xPolygon/cosmos-sdk/depinject v1.0.0
-	cosmossdk.io/errors => github.com/0xPolygon/cosmos-sdk/errors v1.0.1
+	cosmossdk.io/errors => github.com/0xPolygon/cosmos-sdk/errors v1.0.0-beta.7.0.20241126102051-89dc71d02611
 	cosmossdk.io/log => github.com/0xPolygon/cosmos-sdk/log v1.4.1
-	cosmossdk.io/math => github.com/0xPolygon/cosmos-sdk/math v1.3.0
-	cosmossdk.io/store => github.com/0xPolygon/cosmos-sdk/store v1.1.1
-	cosmossdk.io/x/tx => github.com/0xPolygon/cosmos-sdk/x/tx v0.13.5
-	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.1-beta-polygon.0.20241122134501-62005f3af9eb
-
-	// TODO HV2: replace with a release version once development is completed
+	cosmossdk.io/math => github.com/0xPolygon/cosmos-sdk/math v1.4.0
+	cosmossdk.io/store => github.com/0xPolygon/cosmos-sdk/store v1.1.2-0.20241126102051-89dc71d02611
+	cosmossdk.io/x/tx => github.com/0xPolygon/cosmos-sdk/x/tx v0.13.6-0.20241126102051-89dc71d02611
+	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.2-beta-polygon
 	github.com/cosmos/cosmos-sdk => ./../../
-
 	github.com/ethereum/go-ethereum => github.com/maticnetwork/bor v1.5.2
 )

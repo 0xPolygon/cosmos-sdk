@@ -3,7 +3,7 @@ module cosmossdk.io/tools/confix
 go 1.23.2
 
 require (
-	github.com/cosmos/cosmos-sdk v0.50.6
+	github.com/cosmos/cosmos-sdk v0.50.10
 	github.com/creachadair/atomicfile v0.3.1
 	github.com/creachadair/tomledit v0.0.24
 	github.com/pelletier/go-toml/v2 v2.2.2
@@ -20,11 +20,11 @@ require (
 	cosmossdk.io/depinject v1.0.0 // indirect
 	cosmossdk.io/errors v1.0.1 // indirect
 	cosmossdk.io/log v1.4.1 // indirect
-	cosmossdk.io/math v1.3.0 // indirect
+	cosmossdk.io/math v1.4.0 // indirect
 	cosmossdk.io/store v1.1.1 // indirect
-	cosmossdk.io/x/tx v0.13.5 // indirect
+	cosmossdk.io/x/tx v0.13.6 // indirect
 	filippo.io/edwards25519 v1.0.0 // indirect
-	github.com/0xPolygon/heimdall-v2 v0.0.0-20241122133045-7afed273eb4d // indirect
+	github.com/0xPolygon/heimdall-v2 v0.0.0-20241127081910-7dda9dcd7b83 // indirect
 	github.com/99designs/go-keychain v0.0.0-20191008050251-8e49817e8af4 // indirect
 	github.com/99designs/keyring v1.2.1 // indirect
 	github.com/BurntSushi/toml v1.4.0 // indirect
@@ -45,7 +45,7 @@ require (
 	github.com/cockroachdb/pebble v1.1.2 // indirect
 	github.com/cockroachdb/redact v1.1.5 // indirect
 	github.com/cockroachdb/tokenbucket v0.0.0-20230807174530-cc333fc44b06 // indirect
-	github.com/cometbft/cometbft v0.38.12 // indirect
+	github.com/cometbft/cometbft v0.38.15 // indirect
 	github.com/cometbft/cometbft-db v0.14.1 // indirect
 	github.com/consensys/bavard v0.1.13 // indirect
 	github.com/consensys/gnark-crypto v0.12.1 // indirect
@@ -173,7 +173,7 @@ require (
 	google.golang.org/genproto/googleapis/api v0.0.0-20240822170219-fc7c04adadcd // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240822170219-fc7c04adadcd // indirect
 	google.golang.org/grpc v1.67.1 // indirect
-	google.golang.org/protobuf v1.35.1 // indirect
+	google.golang.org/protobuf v1.35.2 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	nhooyr.io/websocket v1.8.7 // indirect
@@ -185,18 +185,16 @@ require (
 // HV2 related packages
 replace (
 	cosmossdk.io/api => github.com/0xPolygon/cosmos-sdk/api v0.7.5
+	cosmossdk.io/client/v2 => github.com/0xPolygon/cosmos-sdk/client/v2 v2.0.0-beta.5.0.20241126102051-89dc71d02611
 	cosmossdk.io/collections => github.com/0xPolygon/cosmos-sdk/collections v0.4.0
-	cosmossdk.io/core => github.com/0xPolygon/cosmos-sdk/core v0.11.1
+	cosmossdk.io/core => github.com/0xPolygon/cosmos-sdk/core v0.11.3-0.20241126102051-89dc71d02611
 	cosmossdk.io/depinject => github.com/0xPolygon/cosmos-sdk/depinject v1.0.0
-	cosmossdk.io/errors => github.com/0xPolygon/cosmos-sdk/errors v1.0.1
+	cosmossdk.io/errors => github.com/0xPolygon/cosmos-sdk/errors v1.0.0-beta.7.0.20241126102051-89dc71d02611
 	cosmossdk.io/log => github.com/0xPolygon/cosmos-sdk/log v1.4.1
-	cosmossdk.io/math => github.com/0xPolygon/cosmos-sdk/math v1.3.0
-	cosmossdk.io/store => github.com/0xPolygon/cosmos-sdk/store v1.1.1
-	cosmossdk.io/x/tx => github.com/0xPolygon/cosmos-sdk/x/tx v0.13.5
-	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.1-beta-polygon.0.20241122134501-62005f3af9eb
-
-	// TODO HV2: replace with a release version once development is completed
+	cosmossdk.io/math => github.com/0xPolygon/cosmos-sdk/math v1.4.0
+	cosmossdk.io/store => github.com/0xPolygon/cosmos-sdk/store v1.1.2-0.20241126102051-89dc71d02611
+	cosmossdk.io/x/tx => github.com/0xPolygon/cosmos-sdk/x/tx v0.13.6-0.20241126102051-89dc71d02611
+	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.2-beta-polygon
 	github.com/cosmos/cosmos-sdk => ./../../
-
 	github.com/ethereum/go-ethereum => github.com/maticnetwork/bor v1.5.2
 )
