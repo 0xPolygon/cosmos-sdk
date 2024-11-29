@@ -19,7 +19,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/genutil/types"
 )
 
-const DefaultVEenabledHeight = 1
+const DefaultVEsEnabledHeight = 1
 
 // ExportGenesisFile creates and writes the genesis configuration to disk. An
 // error is returned if building or writing the configuration to file fails.
@@ -38,7 +38,7 @@ func ExportGenesisFileWithTime(genFile, chainID string, validators []cmttypes.Ge
 	appGenesis.GenesisTime = genTime
 	appGenesis.Consensus.Validators = validators
 	appGenesis.Consensus.Params = cmttypes.DefaultConsensusParams()
-	appGenesis.Consensus.Params.ABCI.VoteExtensionsEnableHeight = DefaultVEenabledHeight
+	appGenesis.Consensus.Params.ABCI.VoteExtensionsEnableHeight = DefaultVEsEnabledHeight
 
 	if err := appGenesis.ValidateAndComplete(); err != nil {
 		return err
