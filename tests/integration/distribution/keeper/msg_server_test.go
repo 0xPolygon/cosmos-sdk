@@ -150,7 +150,7 @@ func initFixture(t testing.TB) *fixture {
 }
 
 func TestMsgWithdrawDelegatorReward(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	t.Skip("In HV2 we dont use distribution module")
 	t.Parallel()
 	f := initFixture(t)
 
@@ -880,7 +880,7 @@ func TestMsgCommunityPoolSpend(t *testing.T) {
 }
 
 func TestMsgDepositValidatorRewardsPool(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	t.Skip("In HV2 we dont use distribution module")
 	t.Parallel()
 	f := initFixture(t)
 

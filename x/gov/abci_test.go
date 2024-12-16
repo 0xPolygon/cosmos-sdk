@@ -102,7 +102,7 @@ func TestTickExpiredDepositPeriod(t *testing.T) {
 
 	newProposalMsg, err := v1.NewMsgSubmitProposal(
 		[]sdk.Msg{mkTestLegacyContent(t)},
-		sdk.Coins{sdk.NewInt64Coin(sdk.DefaultBondDenom, 100000000000000000)},
+		sdk.Coins{sdk.NewInt64Coin(sdk.DefaultBondDenom, 1000000000000000000)},
 		addrs[0].String(),
 		"",
 		"Proposal",
@@ -148,7 +148,7 @@ func TestTickMultipleExpiredDepositPeriod(t *testing.T) {
 
 	newProposalMsg, err := v1.NewMsgSubmitProposal(
 		[]sdk.Msg{mkTestLegacyContent(t)},
-		sdk.Coins{sdk.NewInt64Coin(sdk.DefaultBondDenom, 100000000000000000)},
+		sdk.Coins{sdk.NewInt64Coin(sdk.DefaultBondDenom, 1000000000000000000)},
 		addrs[0].String(),
 		"",
 		"Proposal",
@@ -171,7 +171,7 @@ func TestTickMultipleExpiredDepositPeriod(t *testing.T) {
 
 	newProposalMsg2, err := v1.NewMsgSubmitProposal(
 		[]sdk.Msg{mkTestLegacyContent(t)},
-		sdk.Coins{sdk.NewInt64Coin(sdk.DefaultBondDenom, 100000000000000000)},
+		sdk.Coins{sdk.NewInt64Coin(sdk.DefaultBondDenom, 1000000000000000000)},
 		addrs[0].String(),
 		"",
 		"Proposal",
@@ -212,7 +212,7 @@ func TestTickPassedDepositPeriod(t *testing.T) {
 
 	newProposalMsg, err := v1.NewMsgSubmitProposal(
 		[]sdk.Msg{mkTestLegacyContent(t)},
-		sdk.Coins{sdk.NewInt64Coin(sdk.DefaultBondDenom, 100000000000000000)},
+		sdk.Coins{sdk.NewCoin(sdk.DefaultBondDenom, v1beta1.DefaultMinDepositTokens)},
 		addrs[0].String(),
 		"",
 		"Proposal",
@@ -235,7 +235,7 @@ func TestTickPassedDepositPeriod(t *testing.T) {
 
 	checkInactiveProposalsQueue(t, ctx, &app.GovKeeper)
 
-	newDepositMsg := v1.NewMsgDeposit(addrs[1], proposalID, sdk.Coins{sdk.NewInt64Coin(sdk.DefaultBondDenom, 100000000000000000)})
+	newDepositMsg := v1.NewMsgDeposit(addrs[1], proposalID, sdk.Coins{sdk.NewCoin(sdk.DefaultBondDenom, v1beta1.DefaultMinDepositTokens)})
 
 	res1, err := govMsgSvr.Deposit(ctx, newDepositMsg)
 	require.NoError(t, err)
@@ -273,7 +273,7 @@ func TestTickPassedVotingPeriod(t *testing.T) {
 			checkInactiveProposalsQueue(t, ctx, &app.GovKeeper)
 			checkActiveProposalsQueue(t, ctx, &app.GovKeeper)
 
-			proposalCoins := sdk.Coins{sdk.NewCoin(sdk.DefaultBondDenom, sdk.TokensFromConsensusPower(5*depositMultiplier, sdk.DefaultPowerReduction))}
+			proposalCoins := sdk.Coins{sdk.NewCoin(sdk.DefaultBondDenom, sdk.TokensFromConsensusPower(50*depositMultiplier, sdk.DefaultPowerReduction))}
 			newProposalMsg, err := v1.NewMsgSubmitProposal([]sdk.Msg{mkTestLegacyContent(t)}, proposalCoins, addrs[0].String(), "", "Proposal", "description of proposal", tc.expedited)
 			require.NoError(t, err)
 
@@ -368,7 +368,7 @@ func TestProposalPassedEndblocker(t *testing.T) {
 			proposal, err := app.GovKeeper.SubmitProposal(ctx, []sdk.Msg{mkTestLegacyContent(t)}, "", "title", "summary", proposer, tc.expedited)
 			require.NoError(t, err)
 
-			proposalCoins := sdk.Coins{sdk.NewCoin(sdk.DefaultBondDenom, sdk.TokensFromConsensusPower(10*depositMultiplier, sdk.DefaultPowerReduction))}
+			proposalCoins := sdk.Coins{sdk.NewCoin(sdk.DefaultBondDenom, sdk.TokensFromConsensusPower(100*depositMultiplier, sdk.DefaultPowerReduction))}
 			newDepositMsg := v1.NewMsgDeposit(addrs[0], proposal.Id, proposalCoins)
 
 			res, err := govMsgSvr.Deposit(ctx, newDepositMsg)
@@ -424,7 +424,7 @@ func TestEndBlockerProposalHandlerFailed(t *testing.T) {
 	proposal, err := app.GovKeeper.SubmitProposal(ctx, msg, "", "title", "summary", proposer, false)
 	require.NoError(t, err)
 
-	proposalCoins := sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, sdk.TokensFromConsensusPower(10, sdk.DefaultPowerReduction)))
+	proposalCoins := sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, v1beta1.DefaultMinDepositTokens))
 	newDepositMsg := v1.NewMsgDeposit(addrs[0], proposal.Id, proposalCoins)
 
 	govMsgSvr := keeper.NewMsgServerImpl(&app.GovKeeper)

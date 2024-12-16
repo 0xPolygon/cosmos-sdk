@@ -10,7 +10,6 @@ import (
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
-	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 )
 
 func TestTallyNoOneVotes(t *testing.T) {
@@ -270,8 +269,9 @@ func TestTallyOnlyValidatorsNonVoter(t *testing.T) {
 	assert.Assert(t, tallyResults.Equals(v1.EmptyTallyResult()) == true)
 }
 
+// Actions below are unsupported by HV2
+/*
 func TestTallyDelgatorOverride(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	t.Parallel()
 
 	f := initFixture(t)
@@ -311,7 +311,6 @@ func TestTallyDelgatorOverride(t *testing.T) {
 }
 
 func TestTallyDelgatorInherit(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	t.Parallel()
 
 	f := initFixture(t)
@@ -350,7 +349,6 @@ func TestTallyDelgatorInherit(t *testing.T) {
 }
 
 func TestTallyDelgatorMultipleOverride(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	t.Parallel()
 
 	f := initFixture(t)
@@ -394,7 +392,6 @@ func TestTallyDelgatorMultipleOverride(t *testing.T) {
 }
 
 func TestTallyDelgatorMultipleInherit(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	t.Parallel()
 
 	f := initFixture(t)
@@ -439,7 +436,6 @@ func TestTallyDelgatorMultipleInherit(t *testing.T) {
 }
 
 func TestTallyJailedValidator(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	t.Parallel()
 
 	f := initFixture(t)
@@ -486,7 +482,6 @@ func TestTallyJailedValidator(t *testing.T) {
 }
 
 func TestTallyValidatorMultipleDelegations(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	t.Parallel()
 
 	f := initFixture(t)
@@ -528,3 +523,4 @@ func TestTallyValidatorMultipleDelegations(t *testing.T) {
 
 	assert.Assert(t, tallyResults.Equals(expectedTallyResult))
 }
+*/

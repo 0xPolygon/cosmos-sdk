@@ -50,7 +50,7 @@ func TestDeposits(t *testing.T) {
 				depositMultiplier = v1.DefaultMinExpeditedDepositTokensRatio
 			}
 
-			accAmt := sdkmath.NewIntFromBigInt(new(big.Int).Mul(big.NewInt(10), new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil)))
+			accAmt := sdkmath.NewIntFromBigInt(new(big.Int).Mul(big.NewInt(100), new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil)))
 			TestAddrs := simtestutil.AddTestAddrsIncremental(bankKeeper, ctx, 2, accAmt.Mul(sdkmath.NewInt(depositMultiplier)))
 			authKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
 
@@ -59,8 +59,8 @@ func TestDeposits(t *testing.T) {
 			require.NoError(t, err)
 			proposalID := proposal.Id
 
-			fourStake := sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, stakingKeeper.TokensFromConsensusPower(ctx, 4*depositMultiplier)))
-			fiveStake := sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, stakingKeeper.TokensFromConsensusPower(ctx, 5*depositMultiplier)))
+			fourStake := sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, stakingKeeper.TokensFromConsensusPower(ctx, 40*depositMultiplier)))
+			fiveStake := sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, stakingKeeper.TokensFromConsensusPower(ctx, 50*depositMultiplier)))
 
 			addr0Initial := bankKeeper.GetAllBalances(ctx, TestAddrs[0])
 			addr1Initial := bankKeeper.GetAllBalances(ctx, TestAddrs[1])
@@ -170,12 +170,12 @@ func TestDepositAmount(t *testing.T) {
 	}{
 		{
 			name:            "good amount and denoms",
-			deposit:         sdk.NewCoins(sdk.NewInt64Coin("pol", 10000000000000000)),
+			deposit:         sdk.NewCoins(sdk.NewInt64Coin("pol", 100000000000000000)),
 			minDepositRatio: "0.001",
 		},
 		{
 			name:            "good amount and denoms but not enough balance for zcoin",
-			deposit:         sdk.NewCoins(sdk.NewInt64Coin("pol", 10000000000000000), sdk.NewInt64Coin("zcoin", 1)),
+			deposit:         sdk.NewCoins(sdk.NewInt64Coin("pol", 100000000000000000), sdk.NewInt64Coin("zcoin", 1)),
 			minDepositRatio: "0.001",
 			err:             "not enough balance",
 		},
@@ -183,13 +183,13 @@ func TestDepositAmount(t *testing.T) {
 			name:            "too small amount",
 			deposit:         sdk.NewCoins(sdk.NewInt64Coin("pol", 10)),
 			minDepositRatio: "0.001",
-			err:             "received 10pol but need at least one of the following: 10000000000000000pol,10zcoin: minimum deposit is too small",
+			err:             "received 10pol but need at least one of the following: 100000000000000000pol,10zcoin: minimum deposit is too small",
 		},
 		{
 			name:            "too small amount with another coin",
 			deposit:         sdk.NewCoins(sdk.NewInt64Coin("zcoin", 1)),
 			minDepositRatio: "0.001",
-			err:             "received 1zcoin but need at least one of the following: 10000000000000000pol,10zcoin: minimum deposit is too small",
+			err:             "received 1zcoin but need at least one of the following: 100000000000000000pol,10zcoin: minimum deposit is too small",
 		},
 		{
 			name:            "bad denom",

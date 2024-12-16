@@ -960,7 +960,7 @@ func TestCalculateRewardsMultiDelegatorMultWithdraw(t *testing.T) {
 }
 
 func Test100PercentCommissionReward(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	t.Skip("In HV2 we dont use distribution module")
 	ctrl := gomock.NewController(t)
 	key := storetypes.NewKVStoreKey(disttypes.StoreKey)
 	storeService := runtime.NewKVStoreService(key)

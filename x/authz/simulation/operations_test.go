@@ -45,7 +45,7 @@ type SimTestSuite struct {
 }
 
 func (suite *SimTestSuite) SetupTest() {
-	suite.T().Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	suite.T().Skip("In HV2 we dont use authz module")
 	app, err := simtestutil.Setup(
 		depinject.Configs(
 			testutil.AppConfig,
@@ -118,7 +118,7 @@ func (suite *SimTestSuite) getTestingAccounts(r *rand.Rand, n int) []simtypes.Ac
 }
 
 func (suite *SimTestSuite) TestSimulateGrant() {
-	suite.T().Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	suite.T().Skip("In HV2 we dont use authz module")
 	s := rand.NewSource(1)
 	r := rand.New(s)
 	accounts := suite.getTestingAccounts(r, 2)
@@ -148,7 +148,7 @@ func (suite *SimTestSuite) TestSimulateGrant() {
 }
 
 func (suite *SimTestSuite) TestSimulateRevoke() {
-	suite.T().Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	suite.T().Skip("In HV2 we dont use authz module")
 	// setup 3 accounts
 	s := rand.NewSource(2)
 	r := rand.New(s)
@@ -186,7 +186,7 @@ func (suite *SimTestSuite) TestSimulateRevoke() {
 }
 
 func (suite *SimTestSuite) TestSimulateExec() {
-	suite.T().Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	suite.T().Skip("In HV2 we dont use authz module")
 	// setup 3 accounts
 	s := rand.NewSource(1)
 	r := rand.New(s)

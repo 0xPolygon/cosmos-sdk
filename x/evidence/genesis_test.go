@@ -168,6 +168,6 @@ func (suite *GenesisTestSuite) TestExportGenesis() {
 }
 
 func TestGenesisTestSuite(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	t.Skip("In HV2 we dont use evidence module")
 	suite.Run(t, new(GenesisTestSuite))
 }

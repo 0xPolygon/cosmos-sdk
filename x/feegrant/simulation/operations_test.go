@@ -212,6 +212,6 @@ func (suite *SimTestSuite) TestSimulateMsgRevokeAllowance() {
 }
 
 func TestSimTestSuite(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	t.Skip("In HV2 we don't use feegrant module")
 	suite.Run(t, new(SimTestSuite))
 }

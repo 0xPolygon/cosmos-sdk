@@ -6,11 +6,10 @@ import (
 	"testing"
 	"time"
 
-	types2 "github.com/cometbft/cometbft/abci/types"
-	"github.com/cometbft/cometbft/proto/tendermint/types"
 	"github.com/stretchr/testify/require"
 
 	"cosmossdk.io/errors"
+	abci "github.com/cometbft/cometbft/abci/types"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
@@ -93,7 +92,7 @@ func GenSignedMockTx(r *rand.Rand, txConfig client.TxConfig, msgs []sdk.Msg, fee
 // the parameter 'expPass' against the result. A corresponding result is
 // returned.
 func SignCheckDeliver(
-	t *testing.T, txCfg client.TxConfig, app *baseapp.BaseApp, header types.Header, msgs []sdk.Msg,
+	t *testing.T, txCfg client.TxConfig, app *baseapp.BaseApp, rfb RequestFinalizeBlockWithTxsFunc, msgs []sdk.Msg,
 	chainID string, accNums, accSeqs []uint64, expSimPass, expPass bool, priv ...cryptotypes.PrivKey,
 ) (sdk.GasInfo, *sdk.Result, error) {
 	tx, err := GenSignedMockTx(
@@ -125,14 +124,10 @@ func SignCheckDeliver(
 	bz, err := txCfg.TxEncoder()(tx)
 	require.NoError(t, err)
 
-	resBlock, err := app.FinalizeBlock(&types2.RequestFinalizeBlock{
-		Height: header.Height,
-		Txs:    [][]byte{bz},
-	})
-	require.NoError(t, err)
+	resBlock := rfb(t, app.LastBlockHeight()+1, bz)
 
-	require.Equal(t, 1, len(resBlock.TxResults))
-	txResult := resBlock.TxResults[0]
+	require.Equal(t, 2, len(resBlock.TxResults))
+	txResult := resBlock.TxResults[1]
 	finalizeSuccess := txResult.Code == 0
 	if expPass {
 		require.True(t, finalizeSuccess)
@@ -140,7 +135,8 @@ func SignCheckDeliver(
 		require.False(t, finalizeSuccess)
 	}
 
-	app.Commit()
+	_, err = app.Commit()
+	require.NoError(t, err)
 
 	gInfo := sdk.GasInfo{GasWanted: uint64(txResult.GasWanted), GasUsed: uint64(txResult.GasUsed)}
 	txRes := sdk.Result{Data: txResult.Data, Log: txResult.Log, Events: txResult.Events}
@@ -152,3 +148,6 @@ func SignCheckDeliver(
 
 	return gInfo, &txRes, err
 }
+
+// RequestFinalizeBlockWithTxsFunc defines the function signature for a simplified requestFinalizeBlockWithTxs function.
+type RequestFinalizeBlockWithTxsFunc func(t *testing.T, height int64, txs ...[]byte) *abci.ResponseFinalizeBlock

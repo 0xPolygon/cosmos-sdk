@@ -5,12 +5,11 @@ import (
 	"testing"
 
 	abci "github.com/cometbft/cometbft/abci/types"
-	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
-	"github.com/stretchr/testify/assert"
+	govv1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 	"github.com/stretchr/testify/require"
+	"gotest.tools/assert"
 
-	sdkmath "cosmossdk.io/math"
-	"cosmossdk.io/simapp"
+	hApp "github.com/0xPolygon/heimdall-v2/app"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
@@ -26,9 +25,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/bank/types"
 	_ "github.com/cosmos/cosmos-sdk/x/consensus"
 	_ "github.com/cosmos/cosmos-sdk/x/distribution"
-	distrkeeper "github.com/cosmos/cosmos-sdk/x/distribution/keeper"
 	_ "github.com/cosmos/cosmos-sdk/x/gov"
-	govv1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 	_ "github.com/cosmos/cosmos-sdk/x/params"
 	_ "github.com/cosmos/cosmos-sdk/x/staking"
 )
@@ -97,28 +94,20 @@ var (
 )
 
 type suite struct {
-	BankKeeper         bankkeeper.Keeper
-	AccountKeeper      types.AccountKeeper
-	DistributionKeeper distrkeeper.Keeper
-	App                *simapp.SimApp // use simapp instead for tests since depinject is not supported yet for heimdall app initialization
+	BankKeeper    bankkeeper.Keeper
+	AccountKeeper types.AccountKeeper
+	App           *hApp.HeimdallApp
 }
 
 func createTestSuite(t *testing.T, genesisAccounts []authtypes.GenesisAccount) suite {
 	res := suite{}
 
-	var genAccounts []authtypes.GenesisAccount
-	for _, acc := range genesisAccounts {
-		genAccounts = append(genAccounts, acc)
-	}
+	app, _, _ := hApp.SetupApp(t, 1)
+	hApp.RequestFinalizeBlock(t, app, app.LastBlockHeight()+1)
 
-	// create validator set with single validator
-	valSet, err := simtestutil.CreateRandomValidatorSet()
-	require.NoError(t, err)
-	app := simapp.SetupWithGenesisValSet(t, valSet, genAccounts)
 	res.App = app
 	res.AccountKeeper = app.AccountKeeper
 	res.BankKeeper = app.BankKeeper
-	res.DistributionKeeper = app.DistrKeeper
 
 	return res
 }
@@ -131,8 +120,6 @@ func checkBalance(t *testing.T, baseApp *baseapp.BaseApp, addr sdk.AccAddress, b
 }
 
 func TestSendNotEnoughBalance(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
-
 	acc1 := &authtypes.BaseAccount{
 		Address: addr1.String(),
 	}
@@ -142,14 +129,13 @@ func TestSendNotEnoughBalance(t *testing.T) {
 	}
 	genAccs := []authtypes.GenesisAccount{acc1, acc3}
 	s := createTestSuite(t, genAccs)
-	baseApp := s.App.BaseApp
-	ctx := baseApp.NewContext(false)
+	app := s.App
+	ctx := app.NewContext(false)
 
 	require.NoError(t, testutil.FundAccount(ctx, s.BankKeeper, addr1, sdk.NewCoins(sdk.NewInt64Coin("pol", 67*defaultFeeAmount))))
 	require.NoError(t, testutil.FundAccount(ctx, s.BankKeeper, addr3, sdk.NewCoins(sdk.NewInt64Coin("pol", defaultFeeAmount-1))))
-	_, err := baseApp.FinalizeBlock(&abci.RequestFinalizeBlock{Height: baseApp.LastBlockHeight() + 1})
-	require.NoError(t, err)
-	_, err = baseApp.Commit()
+	hApp.RequestFinalizeBlock(t, app, app.LastBlockHeight()+1)
+	_, err := app.Commit()
 	require.NoError(t, err)
 
 	testCases := []struct {
@@ -178,12 +164,7 @@ func TestSendNotEnoughBalance(t *testing.T) {
 			acc3,
 			[]expectedBalance{
 				{addr3, sdk.Coins{sdk.NewInt64Coin("pol", defaultFeeAmount-1)}},
-
-				// TODO HV2: https://polygon.atlassian.net/browse/POS-2540
-				//  fee_collector's balance should be 2*defaultFeeAmount but since distribution module
-				//  flushes the fees to the its module account at beginning of the block,
-				//  the fee_collector's balance is 0.
-				{s.AccountKeeper.GetModuleAddress(authtypes.FeeCollectorName), sdk.Coins{}},
+				{s.AccountKeeper.GetModuleAddress(authtypes.FeeCollectorName), sdk.Coins{sdk.NewInt64Coin("pol", defaultFeeAmount)}},
 			},
 			false,
 		},
@@ -200,9 +181,9 @@ func TestSendNotEnoughBalance(t *testing.T) {
 			origSeq := res1.GetSequence()
 
 			sendMsg := types.NewMsgSend(tc.sender, addr2, sdk.Coins{sdk.NewInt64Coin("pol", 100*defaultFeeAmount)})
-			header := cmtproto.Header{Height: baseApp.LastBlockHeight() + 1}
 			txConfig := moduletestutil.MakeTestTxConfig()
-			_, _, err := simtestutil.SignCheckDeliver(t, txConfig, baseApp, header, []sdk.Msg{sendMsg}, "", []uint64{origAccNum}, []uint64{origSeq}, false, false, tc.privKey)
+			baseApp := app.GetBaseApp()
+			_, _, err := simtestutil.SignCheckDeliver(t, txConfig, baseApp, wrapRequestFinalizeBlock(app), []sdk.Msg{sendMsg}, "", []uint64{origAccNum}, []uint64{origSeq}, false, false, tc.privKey)
 			require.Error(t, err)
 
 			ctx2 := baseApp.NewContext(true)
@@ -225,21 +206,20 @@ func TestSendNotEnoughBalance(t *testing.T) {
 }
 
 func TestMsgMultiSendWithAccounts(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
-
 	acc := &authtypes.BaseAccount{
-		Address: addr1.String(),
+		Address:       addr1.String(),
+		AccountNumber: 4,
 	}
 
 	genAccs := []authtypes.GenesisAccount{acc}
 	s := createTestSuite(t, genAccs)
-	baseApp := s.App.BaseApp
+	app := s.App
+	baseApp := app.GetBaseApp()
 	ctx := baseApp.NewContext(false)
 
 	require.NoError(t, testutil.FundAccount(ctx, s.BankKeeper, addr1, sdk.NewCoins(sdk.NewInt64Coin("pol", 68*defaultFeeAmount))))
-	_, err := baseApp.FinalizeBlock(&abci.RequestFinalizeBlock{Height: baseApp.LastBlockHeight() + 1})
-	require.NoError(t, err)
-	_, err = baseApp.Commit()
+	hApp.RequestFinalizeBlock(t, app, app.LastBlockHeight()+1)
+	_, err := baseApp.Commit()
 	require.NoError(t, err)
 
 	res1 := s.AccountKeeper.GetAccount(ctx, addr1)
@@ -250,7 +230,7 @@ func TestMsgMultiSendWithAccounts(t *testing.T) {
 		{
 			desc:       "make a valid tx",
 			msgs:       []sdk.Msg{multiSendMsg1},
-			accNums:    []uint64{0},
+			accNums:    []uint64{4},
 			accSeqs:    []uint64{0},
 			expSimPass: true,
 			expPass:    true,
@@ -273,12 +253,7 @@ func TestMsgMultiSendWithAccounts(t *testing.T) {
 				{addr1, sdk.Coins{sdk.NewInt64Coin("pol", 57*defaultFeeAmount)}},
 				{addr2, sdk.Coins{sdk.NewInt64Coin("pol", 10*defaultFeeAmount)}},
 				{addr3, sdk.Coins{}},
-
-				// TODO HV2: https://polygon.atlassian.net/browse/POS-2540:
-				//  fee_collector's balance should be defaultFeeAmount but since distribution module
-				//  flushes the fees to the its module account at beginning of the block,
-				//  the fee_collector's balance is 0.
-				{s.AccountKeeper.GetModuleAddress(authtypes.FeeCollectorName), sdk.Coins{}},
+				{s.AccountKeeper.GetModuleAddress(authtypes.FeeCollectorName), sdk.Coins{sdk.NewInt64Coin("pol", defaultFeeAmount)}},
 			},
 		},
 		{
@@ -291,11 +266,7 @@ func TestMsgMultiSendWithAccounts(t *testing.T) {
 			privKeys:   []cryptotypes.PrivKey{priv1},
 			expectedBalances: []expectedBalance{
 				{addr1, sdk.Coins{sdk.NewInt64Coin("pol", 57*defaultFeeAmount)}},
-				// TODO HV2: https://polygon.atlassian.net/browse/POS-2540
-				//  fee_collector's balance should be defaultFeeAmount but since distribution module
-				//  flushes the fees to the distribution module account at beginning of the block,
-				//  the fee_collector's balance is 0.
-				{s.AccountKeeper.GetModuleAddress(authtypes.FeeCollectorName), sdk.Coins{}},
+				{s.AccountKeeper.GetModuleAddress(authtypes.FeeCollectorName), sdk.Coins{sdk.NewInt64Coin("pol", defaultFeeAmount)}},
 			},
 		},
 		{
@@ -309,21 +280,15 @@ func TestMsgMultiSendWithAccounts(t *testing.T) {
 			expectedBalances: []expectedBalance{
 				{addr1, sdk.Coins{sdk.NewInt64Coin("pol", 57*defaultFeeAmount)}},
 				{addr2, sdk.Coins{sdk.NewInt64Coin("pol", 10*defaultFeeAmount)}},
-
-				// TODO HV2: https://polygon.atlassian.net/browse/POS-2540
-				//  fee_collector's balance should be defaultFeeAmount but since distribution module
-				//  flushes the fees to the distribution module account at beginning of the block,
-				//  the fee_collector's balance is 0.
-				{s.AccountKeeper.GetModuleAddress(authtypes.FeeCollectorName), sdk.Coins{}},
+				{s.AccountKeeper.GetModuleAddress(authtypes.FeeCollectorName), sdk.Coins{sdk.NewInt64Coin("pol", defaultFeeAmount)}},
 			},
 		},
 	}
 
 	for _, tc := range testCases {
 		t.Logf("testing %s", tc.desc)
-		header := cmtproto.Header{Height: baseApp.LastBlockHeight() + 1}
 		txConfig := moduletestutil.MakeTestTxConfig()
-		_, _, err := simtestutil.SignCheckDeliver(t, txConfig, baseApp, header, tc.msgs, "", tc.accNums, tc.accSeqs, tc.expSimPass, tc.expPass, tc.privKeys...)
+		_, _, err := simtestutil.SignCheckDeliver(t, txConfig, baseApp, wrapRequestFinalizeBlock(s.App), tc.msgs, "", tc.accNums, tc.accSeqs, tc.expSimPass, tc.expPass, tc.privKeys...)
 		if tc.expPass {
 			require.NoError(t, err)
 		} else {
@@ -337,8 +302,6 @@ func TestMsgMultiSendWithAccounts(t *testing.T) {
 }
 
 func TestMsgMultiSendMultipleOut(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
-
 	acc1 := &authtypes.BaseAccount{
 		Address: addr1.String(),
 	}
@@ -348,20 +311,20 @@ func TestMsgMultiSendMultipleOut(t *testing.T) {
 
 	genAccs := []authtypes.GenesisAccount{acc1, acc2}
 	s := createTestSuite(t, genAccs)
-	baseApp := s.App.BaseApp
+	app := s.App
+	baseApp := app.GetBaseApp()
 	ctx := baseApp.NewContext(false)
 
 	require.NoError(t, testutil.FundAccount(ctx, s.BankKeeper, addr1, sdk.NewCoins(sdk.NewInt64Coin("pol", 43*defaultFeeAmount))))
 	require.NoError(t, testutil.FundAccount(ctx, s.BankKeeper, addr2, sdk.NewCoins(sdk.NewInt64Coin("pol", 42*defaultFeeAmount))))
-	_, err := baseApp.FinalizeBlock(&abci.RequestFinalizeBlock{Height: baseApp.LastBlockHeight() + 1})
-	require.NoError(t, err)
-	_, err = baseApp.Commit()
+	hApp.RequestFinalizeBlock(t, app, app.LastBlockHeight()+1)
+	_, err := baseApp.Commit()
 	require.NoError(t, err)
 
 	testCases := []appTestCase{
 		{
 			msgs:       []sdk.Msg{multiSendMsg2},
-			accNums:    []uint64{0},
+			accNums:    []uint64{4},
 			accSeqs:    []uint64{0},
 			expSimPass: true,
 			expPass:    true,
@@ -376,9 +339,8 @@ func TestMsgMultiSendMultipleOut(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		header := cmtproto.Header{Height: baseApp.LastBlockHeight() + 1}
 		txConfig := moduletestutil.MakeTestTxConfig()
-		_, _, err := simtestutil.SignCheckDeliver(t, txConfig, baseApp, header, tc.msgs, "", tc.accNums, tc.accSeqs, tc.expSimPass, tc.expPass, tc.privKeys...)
+		_, _, err := simtestutil.SignCheckDeliver(t, txConfig, baseApp, wrapRequestFinalizeBlock(app), tc.msgs, "", tc.accNums, tc.accSeqs, tc.expSimPass, tc.expPass, tc.privKeys...)
 		require.NoError(t, err)
 
 		for _, eb := range tc.expectedBalances {
@@ -388,8 +350,6 @@ func TestMsgMultiSendMultipleOut(t *testing.T) {
 }
 
 func TestMsgMultiSendDependent(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
-
 	acc1 := authtypes.NewBaseAccountWithAddress(addr1)
 	acc2 := authtypes.NewBaseAccountWithAddress(addr2)
 	err := acc2.SetAccountNumber(1)
@@ -397,20 +357,20 @@ func TestMsgMultiSendDependent(t *testing.T) {
 
 	genAccs := []authtypes.GenesisAccount{acc1, acc2}
 	s := createTestSuite(t, genAccs)
-	baseApp := s.App.BaseApp
+	app := s.App
+	baseApp := app.GetBaseApp()
 	ctx := baseApp.NewContext(false)
 
 	require.NoError(t, testutil.FundAccount(ctx, s.BankKeeper, addr1, sdk.NewCoins(sdk.NewInt64Coin("pol", 43*defaultFeeAmount))))
 	require.NoError(t, testutil.FundAccount(ctx, s.BankKeeper, addr2, sdk.NewCoins(sdk.NewInt64Coin("pol", defaultFeeAmount))))
-	_, err = baseApp.FinalizeBlock(&abci.RequestFinalizeBlock{Height: baseApp.LastBlockHeight() + 1})
-	require.NoError(t, err)
+	hApp.RequestFinalizeBlock(t, app, app.LastBlockHeight()+1)
 	_, err = baseApp.Commit()
 	require.NoError(t, err)
 
 	testCases := []appTestCase{
 		{
 			msgs:       []sdk.Msg{multiSendMsg1},
-			accNums:    []uint64{0},
+			accNums:    []uint64{4},
 			accSeqs:    []uint64{0},
 			expSimPass: true,
 			expPass:    true,
@@ -423,7 +383,7 @@ func TestMsgMultiSendDependent(t *testing.T) {
 		},
 		{
 			msgs:       []sdk.Msg{multiSendMsg3},
-			accNums:    []uint64{1},
+			accNums:    []uint64{5},
 			accSeqs:    []uint64{0},
 			expSimPass: true,
 			expPass:    true,
@@ -431,20 +391,14 @@ func TestMsgMultiSendDependent(t *testing.T) {
 			expectedBalances: []expectedBalance{
 				{addr1, sdk.Coins{sdk.NewInt64Coin("pol", 42*defaultFeeAmount)}},
 				{addr2, sdk.Coins{}},
-
-				// TODO HV2: https://polygon.atlassian.net/browse/POS-2540
-				//  fee_collector's balance should be 2*defaultFeeAmount but since distribution module
-				//  flushes the fees to the distribution module account at beginning of the block,
-				//  the fee_collector's balance is 0.
-				{s.AccountKeeper.GetModuleAddress(authtypes.FeeCollectorName), sdk.Coins{sdk.NewInt64Coin("pol", defaultFeeAmount)}},
+				{s.AccountKeeper.GetModuleAddress(authtypes.FeeCollectorName), sdk.Coins{sdk.NewInt64Coin("pol", 2*defaultFeeAmount)}},
 			},
 		},
 	}
 
 	for _, tc := range testCases {
-		header := cmtproto.Header{Height: baseApp.LastBlockHeight() + 1}
 		txConfig := moduletestutil.MakeTestTxConfig()
-		_, _, err := simtestutil.SignCheckDeliver(t, txConfig, baseApp, header, tc.msgs, "", tc.accNums, tc.accSeqs, tc.expSimPass, tc.expPass, tc.privKeys...)
+		_, _, err := simtestutil.SignCheckDeliver(t, txConfig, baseApp, wrapRequestFinalizeBlock(app), tc.msgs, "", tc.accNums, tc.accSeqs, tc.expSimPass, tc.expPass, tc.privKeys...)
 		require.NoError(t, err)
 
 		for _, eb := range tc.expectedBalances {
@@ -469,7 +423,9 @@ func TestMsgSetSendEnabled(t *testing.T) {
 		[]sdk.Msg{
 			types.NewMsgSetSendEnabled(govAddr, nil, nil),
 		},
-		sdk.Coins{{Denom: "pol", Amount: sdkmath.NewInt(100000)}},
+		sdk.Coins{
+			sdk.NewInt64Coin("pol", 100000),
+		},
 		addr1Str,
 		"set default send enabled to true",
 		"Change send enabled",
@@ -523,9 +479,8 @@ func TestMsgSetSendEnabled(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.desc, func(tt *testing.T) {
-			header := cmtproto.Header{Height: s.App.LastBlockHeight() + 1}
 			txGen := moduletestutil.MakeTestTxConfig()
-			_, _, err = simtestutil.SignCheckDeliver(tt, txGen, s.App.BaseApp, header, tc.msgs, "", []uint64{0}, tc.accSeqs, tc.expSimPass, tc.expPass, priv1)
+			_, _, err = simtestutil.SignCheckDeliver(tt, txGen, s.App.BaseApp, wrapRequestFinalizeBlock(s.App), tc.msgs, "", []uint64{0}, tc.accSeqs, tc.expSimPass, tc.expPass, priv1)
 			if len(tc.expInError) > 0 {
 				require.Error(tt, err)
 				for _, exp := range tc.expInError {
@@ -535,5 +490,11 @@ func TestMsgSetSendEnabled(t *testing.T) {
 				require.NoError(tt, err)
 			}
 		})
+	}
+}
+
+func wrapRequestFinalizeBlock(app *hApp.HeimdallApp) simtestutil.RequestFinalizeBlockWithTxsFunc {
+	return func(t *testing.T, height int64, txs ...[]byte) *abci.ResponseFinalizeBlock {
+		return hApp.RequestFinalizeBlockWithTxs(t, app, height, txs...)
 	}
 }

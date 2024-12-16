@@ -16,8 +16,8 @@ const (
 
 // Default governance params
 var (
-	CoinDecimals            = new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil)                 // HV2: defined in heimdall
-	DefaultMinDepositTokens = math.NewIntFromBigInt(new(big.Int).Mul(big.NewInt(10), CoinDecimals)) // HV2: defined in heimdall
+	CoinDecimals            = new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil)                  // HV2: defined in heimdall
+	DefaultMinDepositTokens = math.NewIntFromBigInt(new(big.Int).Mul(big.NewInt(100), CoinDecimals)) // HV2: defined in heimdall
 	DefaultQuorum           = math.LegacyNewDecWithPrec(334, 3)
 	DefaultThreshold        = math.LegacyNewDecWithPrec(5, 1)
 	DefaultVetoThreshold    = math.LegacyNewDecWithPrec(334, 3)
