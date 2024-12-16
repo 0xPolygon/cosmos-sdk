@@ -96,9 +96,6 @@ func init() {
 	}
 }
 
-// TODO HV2: To fix many tests, we need to implement https://polygon.atlassian.net/browse/POS-2540
-//  and change NewSimApp function accordingly
-
 // NewSimApp returns a reference to an initialized SimApp.
 func NewSimApp(
 	logger log.Logger,

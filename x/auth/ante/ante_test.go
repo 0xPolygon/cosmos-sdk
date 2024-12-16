@@ -26,8 +26,6 @@ import (
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 )
 
-// TODO HV2: reconcile this file with heimdall's `auth/ante_test.go` (e.g. implement heimdall specific tests like `TestCheckpointGasLimit` and milestones related tests)
-
 // Test that simulate transaction accurately estimates gas cost
 func TestSimulateGasCost(t *testing.T) {
 	// This test has a test case that uses another's output.

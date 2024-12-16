@@ -459,7 +459,7 @@ func TestMsgSetWithdrawAddress(t *testing.T) {
 }
 
 func TestMsgWithdrawValidatorCommission(t *testing.T) {
-	t.Skip("TODO HV2: fix and enable this test?")
+	t.Skip("TODO HV2: fix and enable this test")
 	t.Parallel()
 	f := initFixture(t)
 

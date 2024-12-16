@@ -187,7 +187,7 @@ func TestGRPCQueryAllBalances(t *testing.T) {
 }
 
 func TestGRPCQuerySpendableBalances(t *testing.T) {
-	t.Skip("TODO HV2: fix and enable this test?")
+	t.Skip("TODO HV2: fix and enable this test")
 	t.Parallel()
 	f := initDeterministicFixture(t)
 

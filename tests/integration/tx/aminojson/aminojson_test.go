@@ -234,9 +234,7 @@ func TestAminoJSON_LegacyParity(t *testing.T) {
 			},
 			roundTripUnequal: true,
 		},
-		/* TODO HV2: this fails because `keys.pulsar.go` doesn't have the new key changes
-		    from https://github.com/0xPolygon/cosmos-sdk/commits/mardizzone/POS-2511-auth/api/cosmos/crypto/secp256k1/keys.pulsar.go.
-		    Fix the tests based on https://polygon.atlassian.net/browse/POS-2730
+		/* TODO HV2: https://polygon.atlassian.net/browse/POS-2756
 		"auth/base_account": {
 			gogo:   &authtypes.BaseAccount{Address: addr1Str, PubKey: pubkeyAny},
 			pulsar: &authapi.BaseAccount{Address: addr1Str, PubKey: pubkeyAnyPulsar},
@@ -283,10 +281,7 @@ func TestAminoJSON_LegacyParity(t *testing.T) {
 			gogo:   &ed25519types.PubKey{Key: []byte("key")},
 			pulsar: &ed25519.PubKey{Key: []byte("key")},
 		},
-		/* TODO HV2: this succeeds because `keys.pulsar.go` doesn't have the new key changes
-		   from https://github.com/0xPolygon/cosmos-sdk/commits/mardizzone/POS-2511-auth/api/cosmos/crypto/secp256k1/keys.pulsar.go.
-		   Update the deps and fix the tests based on https://polygon.atlassian.net/browse/POS-2730
-		*/
+		// TODO HV2: https://polygon.atlassian.net/browse/POS-2756
 		"crypto/secp256k1": {
 			gogo:   &secp256k1types.PubKeyOld{Key: []byte("key")},
 			pulsar: &secp256k1.PubKey{Key: []byte("key")},
