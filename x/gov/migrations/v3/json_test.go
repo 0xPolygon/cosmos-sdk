@@ -80,7 +80,7 @@ func TestMigrateJSON(t *testing.T) {
 		"max_deposit_period": "172800s",
 		"min_deposit": [
 			{
-				"amount": "10000000000000000000",
+				"amount": "100000000000000000000",
 				"denom": "pol"
 			}
 		]

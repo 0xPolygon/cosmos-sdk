@@ -18,7 +18,7 @@ require (
 	cosmossdk.io/x/nft v0.1.1
 	cosmossdk.io/x/tx v0.13.5
 	cosmossdk.io/x/upgrade v0.1.4
-	github.com/0xPolygon/heimdall-v2 v0.0.0-20241127081910-7dda9dcd7b83
+	github.com/0xPolygon/heimdall-v2 v0.0.0-20241216112156-6a9cfc1a1411
 	github.com/cometbft/cometbft v0.38.15
 	github.com/cosmos/cosmos-db v1.0.2
 	// this version is not used as it is always replaced by the latest Cosmos SDK version

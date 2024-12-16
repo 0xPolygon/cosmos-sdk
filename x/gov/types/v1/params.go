@@ -2,9 +2,10 @@ package v1
 
 import (
 	"fmt"
-	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"math/big"
 	"time"
+
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 
 	sdkmath "cosmossdk.io/math"
 
@@ -20,8 +21,8 @@ const (
 
 // Default governance params
 var (
-	CoinDecimals                     = new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil)                    // HV2: defined in heimdall
-	DefaultMinDepositTokens          = sdkmath.NewIntFromBigInt(new(big.Int).Mul(big.NewInt(10), CoinDecimals)) // // HV2: defined in heimdall
+	CoinDecimals                     = new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil)                     // HV2: defined in heimdall
+	DefaultMinDepositTokens          = sdkmath.NewIntFromBigInt(new(big.Int).Mul(big.NewInt(100), CoinDecimals)) // // HV2: defined in heimdall
 	DefaultMinExpeditedDepositTokens = DefaultMinDepositTokens.Mul(sdkmath.NewInt(DefaultMinExpeditedDepositTokensRatio))
 	DefaultQuorum                    = sdkmath.LegacyNewDecWithPrec(334, 3)
 	DefaultThreshold                 = sdkmath.LegacyNewDecWithPrec(5, 1)
