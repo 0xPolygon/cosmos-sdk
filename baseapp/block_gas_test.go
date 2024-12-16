@@ -55,7 +55,7 @@ func (m BlockGasImpl) Set(ctx context.Context, msg *baseapptestutil.MsgKeyValue)
 }
 
 func TestBaseApp_BlockGas(t *testing.T) {
-	t.Skip("TODO HV2: fix and enable this test?")
+	t.Skip("TODO HV2: fix and enable this test")
 	testcases := []struct {
 		name         string
 		gasToConsume uint64 // gas to consume in the msg execution

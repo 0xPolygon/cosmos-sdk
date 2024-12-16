@@ -110,43 +110,6 @@ func (spkd SetPubKeyDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate b
 			return ctx, errorsmod.Wrap(sdkerrors.ErrInvalidPubKey, err.Error())
 		}
 
-		/* TODO HV2: The following code is intended to comply with heimdall v1 (see https://polygon.atlassian.net/browse/POS-2492).
-		    There, `RecoverPubKey` is used to obtain the public key according to the eth-go library.
-		    This was done in x/auth/ante.go `processSig` method, which is now part of the `SigVerificationDecorator`.
-		    However, in v0.50.x, the `SigVerificationDecorator` expects the pubKey to be already set in `SetPubKeyDecorator`.
-		    So, this logic is now moved under `SetPubKeyDecorator`, which also requires a `signModeHandler` to invoke the `VerifySignature`.
-		    Such `VerifySignature` method has been modified to return the recovered public key, which is then set in the account.
-		    This code is hit every time pubKeys are set and txs (in `SigVerificationDecorator`) are verified, so it is very frequent.
-		    The code is currently disabled, because - if it was needed - secp256k1 pubkey.VerifySignature would return false already.
-		    If something breaks very early on in the game, we might need to revisit enable this code.
-		    More context: 	https://github.com/0xPolygon/cosmos-sdk/pull/3/#discussion_r1497996133
-		                    https://github.com/0xPolygon/cosmos-sdk/pull/3/#discussion_r1498023925
-
-		anyPk, _ := codectypes.NewAnyWithValue(pk)
-
-		signerData := txsigning.SignerData{
-			Address:       acc.GetAddress().String(),
-			ChainID:       ctx.ChainID(),
-			AccountNumber: acc.GetAccountNumber(),
-			Sequence:      acc.GetSequence(),
-			PubKey: &anypb.Any{
-				TypeUrl: anyPk.TypeUrl,
-				Value:   anyPk.Value,
-			},
-		}
-
-		adaptableTx, ok := tx.(authsigning.V2AdaptableTx)
-		if !ok {
-			return ctx, fmt.Errorf("expected tx to implement V2AdaptableTx, got %T", tx)
-		}
-		txData := adaptableTx.GetSigningTxData()
-		recoveredPubKey, err := authsigning.VerifySignature(ctx, pk, signerData, sigs[i].Data, spkd.signModeHandler, txData)
-		err = acc.SetPubKey(recoveredPubKey)
-		if err != nil {
-			return ctx, errorsmod.Wrap(sdkerrors.ErrInvalidPubKey, err.Error())
-		}
-		*/
-
 		spkd.ak.SetAccount(ctx, acc)
 	}
 
@@ -370,7 +333,7 @@ func (svd SigVerificationDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simul
 				return ctx, fmt.Errorf("expected tx to implement V2AdaptableTx, got %T", tx)
 			}
 			txData := adaptableTx.GetSigningTxData()
-			_, err := authsigning.VerifySignature(ctx, pubKey, signerData, sig.Data, svd.signModeHandler, txData)
+			err := authsigning.VerifySignature(ctx, pubKey, signerData, sig.Data, svd.signModeHandler, txData)
 
 			if err != nil {
 				var errMsg string

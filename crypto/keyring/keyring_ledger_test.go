@@ -56,7 +56,7 @@ func TestInMemoryCreateLedger(t *testing.T) {
 // TestSignVerify does some detailed checks on how we sign and validate
 // signatures
 func TestSignVerifyKeyRingWithLedger(t *testing.T) {
-	t.Skip("TODO HV2: fix and enable this test? Is ledger supported?")
+	t.Skip("TODO HV2: fix and enable this test")
 	dir := t.TempDir()
 	cdc := getCodec()
 
@@ -140,7 +140,7 @@ func TestAltKeyring_SaveLedgerKey(t *testing.T) {
 }
 
 func TestSignWithLedger(t *testing.T) {
-	t.Skip("TODO HV2: fix and enable this test? Is ledger supported?")
+	t.Skip("TODO HV2: fix and enable this test")
 	// Create two distinct Ledger records: recordA and recordB.
 	// RecordA is added to the Ledger but recordB is not added.
 	pathA := hd.NewFundraiserParams(0, types.CoinType, 0)
