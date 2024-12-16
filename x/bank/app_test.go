@@ -179,7 +179,7 @@ func TestSendNotEnoughBalance(t *testing.T) {
 			[]expectedBalance{
 				{addr3, sdk.Coins{sdk.NewInt64Coin("pol", defaultFeeAmount-1)}},
 
-				// TODO HV2 https://polygon.atlassian.net/browse/POS-2540
+				// TODO HV2: https://polygon.atlassian.net/browse/POS-2540
 				//  fee_collector's balance should be 2*defaultFeeAmount but since distribution module
 				//  flushes the fees to the its module account at beginning of the block,
 				//  the fee_collector's balance is 0.
@@ -274,7 +274,7 @@ func TestMsgMultiSendWithAccounts(t *testing.T) {
 				{addr2, sdk.Coins{sdk.NewInt64Coin("pol", 10*defaultFeeAmount)}},
 				{addr3, sdk.Coins{}},
 
-				// TODO HV2 https://polygon.atlassian.net/browse/POS-2540:
+				// TODO HV2: https://polygon.atlassian.net/browse/POS-2540:
 				//  fee_collector's balance should be defaultFeeAmount but since distribution module
 				//  flushes the fees to the its module account at beginning of the block,
 				//  the fee_collector's balance is 0.
@@ -291,7 +291,7 @@ func TestMsgMultiSendWithAccounts(t *testing.T) {
 			privKeys:   []cryptotypes.PrivKey{priv1},
 			expectedBalances: []expectedBalance{
 				{addr1, sdk.Coins{sdk.NewInt64Coin("pol", 57*defaultFeeAmount)}},
-				// TODO HV2 https://polygon.atlassian.net/browse/POS-2540
+				// TODO HV2: https://polygon.atlassian.net/browse/POS-2540
 				//  fee_collector's balance should be defaultFeeAmount but since distribution module
 				//  flushes the fees to the distribution module account at beginning of the block,
 				//  the fee_collector's balance is 0.
@@ -310,7 +310,7 @@ func TestMsgMultiSendWithAccounts(t *testing.T) {
 				{addr1, sdk.Coins{sdk.NewInt64Coin("pol", 57*defaultFeeAmount)}},
 				{addr2, sdk.Coins{sdk.NewInt64Coin("pol", 10*defaultFeeAmount)}},
 
-				// TODO HV2 https://polygon.atlassian.net/browse/POS-2540
+				// TODO HV2: https://polygon.atlassian.net/browse/POS-2540
 				//  fee_collector's balance should be defaultFeeAmount but since distribution module
 				//  flushes the fees to the distribution module account at beginning of the block,
 				//  the fee_collector's balance is 0.
@@ -432,7 +432,7 @@ func TestMsgMultiSendDependent(t *testing.T) {
 				{addr1, sdk.Coins{sdk.NewInt64Coin("pol", 42*defaultFeeAmount)}},
 				{addr2, sdk.Coins{}},
 
-				// TODO HV2 https://polygon.atlassian.net/browse/POS-2540
+				// TODO HV2: https://polygon.atlassian.net/browse/POS-2540
 				//  fee_collector's balance should be 2*defaultFeeAmount but since distribution module
 				//  flushes the fees to the distribution module account at beginning of the block,
 				//  the fee_collector's balance is 0.
