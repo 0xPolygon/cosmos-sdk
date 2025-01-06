@@ -31,8 +31,8 @@ const (
 	keyType        = "secp256k1"
 	PrivKeyNameOld = "tendermint/PrivKeySecp256k1"
 	PubKeyNameOld  = "tendermint/PubKeySecp256k1"
-	PrivKeyName    = "comet/PrivKeySecp256k1Uncompressed"
-	PubKeyName     = "comet/PubKeySecp256k1Uncompressed"
+	PrivKeyName    = "cometbft/PrivKeySecp256k1eth"
+	PubKeyName     = "cometbft/PubKeySecp256k1eth"
 )
 
 func (privKey *PrivKeyOld) Bytes() []byte {

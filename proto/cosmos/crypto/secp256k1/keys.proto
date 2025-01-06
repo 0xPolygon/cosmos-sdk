@@ -29,7 +29,7 @@ message PubKeyOld {
 // PubKey defines a comet uncompressed secp256k1 public key
 // Key is the uncompressed form of the pubkey.
 message PubKey {
-  option (amino.name) = "comet/PubKeySecp256k1Uncompressed";
+  option (amino.name) = "cometbft/PubKeySecp256k1eth";
   // The Amino encoding is simply the inner bytes field, and not the Amino
   // encoding of the whole PubKey struct.
   //
@@ -56,7 +56,7 @@ message PrivKeyOld {
 
 // PrivKey defines a comet secp256k1 private key.
 message PrivKey {
-  option (amino.name)             = "comet/PrivKeySecp256k1Uncompressed";
+  option (amino.name)             = "cometbft/PrivKeySecp256k1eth";
   option (amino.message_encoding) = "key_field";
 
   bytes key = 1;
