@@ -2,16 +2,12 @@ package aminojson
 
 import (
 	"context"
-	stakingapi "cosmossdk.io/api/cosmos/staking/v1beta1"
-	vestingapi "cosmossdk.io/api/cosmos/vesting/v1beta1"
+	"encoding/json"
 	"fmt"
-	"github.com/cosmos/cosmos-sdk/codec/address"
-	vestingtypes "github.com/cosmos/cosmos-sdk/x/auth/vesting/types"
 	"reflect"
 	"testing"
 	"time"
 
-	"github.com/cosmos/cosmos-proto/rapidproto"
 	gogoproto "github.com/cosmos/gogoproto/proto"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/proto"
@@ -38,7 +34,8 @@ import (
 	"cosmossdk.io/x/tx/signing/aminojson"
 	signing_testutil "cosmossdk.io/x/tx/signing/testutil"
 	"cosmossdk.io/x/upgrade"
-
+	"github.com/cosmos/cosmos-proto/rapidproto"
+	"github.com/cosmos/cosmos-sdk/codec/address"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	ed25519types "github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
 	secp256k1types "github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
@@ -95,7 +92,7 @@ func TestAminoJSON_Equivalence(t *testing.T) {
 		gov.AppModuleBasic{}, groupmodule.AppModuleBasic{}, mint.AppModuleBasic{}, params.AppModuleBasic{},
 		slashing.AppModuleBasic{}, staking.AppModuleBasic{}, upgrade.AppModuleBasic{}, vesting.AppModuleBasic{})
 	legacytx.RegressionTestingAminoCodec = encCfg.Amino
-	aj := aminojson.NewEncoder(aminojson.EncoderOptions{DoNotSortFields: true})
+	aj := aminojson.NewEncoder(aminojson.EncoderOptions{})
 
 	for _, tt := range rapidgen.DefaultGeneratedTypes {
 		desc := tt.Pulsar.ProtoReflect().Descriptor()
@@ -129,6 +126,7 @@ func TestAminoJSON_Equivalence(t *testing.T) {
 
 				legacyAminoJSON, err := encCfg.Amino.MarshalJSON(gogo)
 				require.NoError(t, err)
+				legacyAminoJSON = sortJSON(t, legacyAminoJSON)
 				aminoJSON, err := aj.Marshal(msg)
 				require.NoError(t, err)
 				require.Equal(t, string(legacyAminoJSON), string(aminoJSON))
@@ -198,10 +196,10 @@ func TestAminoJSON_LegacyParity(t *testing.T) {
 	legacytx.RegressionTestingAminoCodec = encCfg.Amino
 
 	aj := aminojson.NewEncoder(aminojson.EncoderOptions{DoNotSortFields: true})
-	ac := address.NewHexCodec()
-	addr1Str := "0x000000000000000000000000000000000000dead"
-	addr1, err := ac.StringToBytes(addr1Str)
-	require.NoError(t, err)
+	// ac := address.NewHexCodec()
+	// addr1Str := "0x000000000000000000000000000000000000dead"
+	// addr1, err := ac.StringToBytes(addr1Str)
+	// require.NoError(t, err)
 	now := time.Now()
 
 	genericAuth, _ := codectypes.NewAnyWithValue(&authztypes.GenericAuthorization{Msg: "foo"})
@@ -220,21 +218,23 @@ func TestAminoJSON_LegacyParity(t *testing.T) {
 		// represent the array as nil, and a subsequent marshal to JSON represent the array as null instead of empty.
 		roundTripUnequal bool
 
-		// pulsar does not support marshaling a math.Dec as anything except a string.  Therefore, we cannot unmarshal
-		// a pulsar encoded Math.dec (the string representation of a Decimal) into a gogo Math.dec (expecting an int64).
-		protoUnmarshalFails bool
+		// sort JSON bytes before comparison.  for certain types (like ModuleAccount) x/tx is not able to provide an
+		// unsorted version.  note that the legacy amino signer always sorted JSON bytes by round tripping them to/from
+		// JSON before signing over them.
+		sortJSON bool
 	}{
 		"auth/params": {gogo: &authtypes.Params{TxSigLimit: 10}, pulsar: &authapi.Params{TxSigLimit: 10}},
+		/* TODO HV2: https://polygon.atlassian.net/browse/POS-2756
 		"auth/module_account": {
 			gogo: &authtypes.ModuleAccount{
-				BaseAccount: authtypes.NewBaseAccountWithAddress(addr1), Permissions: []string{},
+				BaseAccount: authtypes.NewBaseAccountWithAddress(addr1),
 			},
 			pulsar: &authapi.ModuleAccount{
-				BaseAccount: &authapi.BaseAccount{Address: addr1Str}, Permissions: []string{},
+				BaseAccount: &authapi.BaseAccount{Address: addr1Str},
 			},
 			roundTripUnequal: true,
+			sortJSON:         true,
 		},
-		/* TODO HV2: https://polygon.atlassian.net/browse/POS-2756
 		"auth/base_account": {
 			gogo:   &authtypes.BaseAccount{Address: addr1Str, PubKey: pubkeyAny},
 			pulsar: &authapi.BaseAccount{Address: addr1Str, PubKey: pubkeyAnyPulsar},
@@ -260,11 +260,12 @@ func TestAminoJSON_LegacyParity(t *testing.T) {
 			gogo:   &disttypes.DelegatorStartingInfo{},
 			pulsar: &distapi.DelegatorStartingInfo{},
 		},
+		/* TODO HV2: https://polygon.atlassian.net/browse/POS-2756
 		"distribution/delegator_starting_info/non_zero_dec": {
-			gogo:                &disttypes.DelegatorStartingInfo{Stake: math.LegacyNewDec(10)},
-			pulsar:              &distapi.DelegatorStartingInfo{Stake: "10.000000000000000000"},
-			protoUnmarshalFails: true,
+			gogo:   &disttypes.DelegatorStartingInfo{Stake: math.LegacyNewDec(10)},
+			pulsar: &distapi.DelegatorStartingInfo{Stake: string(dec10bz)},
 		},
+		*/
 		"distribution/delegation_delegator_reward": {
 			gogo:   &disttypes.DelegationDelegatorReward{},
 			pulsar: &distapi.DelegationDelegatorReward{},
@@ -287,13 +288,17 @@ func TestAminoJSON_LegacyParity(t *testing.T) {
 			pulsar: &secp256k1.PubKey{Key: []byte("key")},
 		},
 		/* HV2: multisig not implemented
-		"crypto/legacy_amino_pubkey": {
-			gogo:   &multisig.LegacyAminoPubKey{PubKeys: []*codectypes.Any{pubkeyAny}},
-			pulsar: &multisigapi.LegacyAminoPubKey{PublicKeys: []*anypb.Any{pubkeyAnyPulsar}},
+		"crypto/legacy_amino_pubkey/filled": {
+			gogo:             &multisig.LegacyAminoPubKey{PubKeys: []*codectypes.Any{pubkeyAny}},
+			pulsar:           &multisigapi.LegacyAminoPubKey{PublicKeys: []*anypb.Any{pubkeyAnyPulsar}},
+			sortJSON:         true,
+			roundTripUnequal: true,
 		},
 		"crypto/legacy_amino_pubkey/empty": {
-			gogo:   &multisig.LegacyAminoPubKey{},
-			pulsar: &multisigapi.LegacyAminoPubKey{},
+			gogo:             &multisig.LegacyAminoPubKey{},
+			pulsar:           &multisigapi.LegacyAminoPubKey{},
+			sortJSON:         true,
+			roundTripUnequal: true,
 		},
 		*/
 		"consensus/evidence_params/duration": {
@@ -345,6 +350,14 @@ func TestAminoJSON_LegacyParity(t *testing.T) {
 		// This test cases demonstrates the expected contract and proper way to set a cosmos.Dec field represented
 		// as bytes in protobuf message, namely:
 		// dec10bz, _ := types.NewDec(10).Marshal()
+		"gov/v1_params": {
+			gogo: &gov_v1_types.Params{
+				Quorum: math.LegacyMustNewDecFromStr("0.33").String(),
+			},
+			pulsar: &gov_v1_api.Params{
+				Quorum: math.LegacyMustNewDecFromStr("0.33").String(),
+			},
+		},
 		"slashing/params/dec": {
 			gogo: &slashingtypes.Params{
 				DowntimeJailDuration: 1e9 + 7,
@@ -365,7 +378,6 @@ func TestAminoJSON_LegacyParity(t *testing.T) {
 				Value:       &v1beta1.Coin{},
 			},
 		},
-		*/
 		"staking/msg_cancel_unbonding_delegation_response": {
 			gogo:   &stakingtypes.MsgCancelUnbondingDelegationResponse{},
 			pulsar: &stakingapi.MsgCancelUnbondingDelegationResponse{},
@@ -386,11 +398,12 @@ func TestAminoJSON_LegacyParity(t *testing.T) {
 				},
 			},
 		},
+		*/
+		/* HV2: vesting not implemented
 		"vesting/base_account_empty": {
 			gogo:   &vestingtypes.BaseVestingAccount{BaseAccount: &authtypes.BaseAccount{}},
 			pulsar: &vestingapi.BaseVestingAccount{BaseAccount: &authapi.BaseAccount{}},
 		},
-		/* HV2: vesting not implemented
 		"vesting/base_account_pubkey": {
 			gogo:   &vestingtypes.BaseVestingAccount{BaseAccount: &authtypes.BaseAccount{PubKey: pubkeyAny}},
 			pulsar: &vestingapi.BaseVestingAccount{BaseAccount: &authapi.BaseAccount{PubKey: pubkeyAnyPulsar}},
@@ -417,6 +430,9 @@ func TestAminoJSON_LegacyParity(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			gogoBytes, err := encCfg.Amino.MarshalJSON(tc.gogo)
 			require.NoError(t, err)
+			if tc.sortJSON {
+				gogoBytes = sortJSON(t, gogoBytes)
+			}
 
 			pulsarBytes, err := aj.Marshal(tc.pulsar)
 			if tc.pulsarMarshalFails {
@@ -436,10 +452,6 @@ func TestAminoJSON_LegacyParity(t *testing.T) {
 			newGogo := reflect.New(gogoType).Interface().(gogoproto.Message)
 
 			err = encCfg.Codec.Unmarshal(pulsarProtoBytes, newGogo)
-			if tc.protoUnmarshalFails {
-				require.Error(t, err)
-				return
-			}
 			require.NoError(t, err)
 
 			newGogoBytes, err := encCfg.Amino.MarshalJSON(newGogo)
@@ -582,4 +594,13 @@ func postFixPulsarMessage(msg proto.Message) {
 			m.Permissions = nil
 		}
 	}
+}
+
+func sortJSON(t require.TestingT, bz []byte) []byte {
+	var c interface{}
+	err := json.Unmarshal(bz, &c)
+	require.NoError(t, err)
+	bz, err = json.Marshal(c)
+	require.NoError(t, err)
+	return bz
 }

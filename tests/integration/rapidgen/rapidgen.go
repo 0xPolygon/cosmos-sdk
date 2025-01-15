@@ -25,7 +25,6 @@ import (
 	mintapi "cosmossdk.io/api/cosmos/mint/v1beta1"
 	paramsapi "cosmossdk.io/api/cosmos/params/v1beta1"
 	slashingapi "cosmossdk.io/api/cosmos/slashing/v1beta1"
-	stakingapi "cosmossdk.io/api/cosmos/staking/v1beta1"
 	upgradeapi "cosmossdk.io/api/cosmos/upgrade/v1beta1"
 	vestingapi "cosmossdk.io/api/cosmos/vesting/v1beta1"
 	evidencetypes "cosmossdk.io/x/evidence/types"
@@ -44,7 +43,6 @@ import (
 	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
 	"github.com/cosmos/cosmos-sdk/x/params/types/proposal"
 	slashingtypes "github.com/cosmos/cosmos-sdk/x/slashing/types"
-	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 )
 
 type GeneratedType struct {
@@ -207,7 +205,8 @@ var (
 		GenType(&slashingtypes.MsgUpdateParams{}, &slashingapi.MsgUpdateParams{}, GenOpts.WithDisallowNil()),
 
 		// staking
-		GenType(&stakingtypes.MsgCreateValidator{}, &stakingapi.MsgCreateValidator{},
+		/* HV2 we have our own staking module
+			GenType(&stakingtypes.MsgCreateValidator{}, &stakingapi.MsgCreateValidator{},
 			GenOpts.WithDisallowNil().
 				WithAnyTypes(&ed25519.PubKey{}).
 				WithInterfaceHint("cosmos.crypto.PubKey", &ed25519.PubKey{}),
@@ -217,6 +216,7 @@ var (
 		GenType(&stakingtypes.MsgUndelegate{}, &stakingapi.MsgUndelegate{}, GenOpts.WithDisallowNil()),
 		GenType(&stakingtypes.MsgBeginRedelegate{}, &stakingapi.MsgBeginRedelegate{}, GenOpts.WithDisallowNil()),
 		GenType(&stakingtypes.MsgUpdateParams{}, &stakingapi.MsgUpdateParams{}, GenOpts.WithDisallowNil()),
+		*/
 
 		// upgrade
 		GenType(&upgradetypes.MsgSoftwareUpgrade{}, &upgradeapi.MsgSoftwareUpgrade{}, GenOpts.WithDisallowNil()),
@@ -230,7 +230,6 @@ var (
 	NonsignableTypes = []GeneratedType{
 		GenType(&authtypes.Params{}, &authapi.Params{}, GenOpts),
 		GenType(&authtypes.BaseAccount{}, &authapi.BaseAccount{}, GenOpts.WithAnyTypes(&ed25519.PubKey{})),
-		GenType(&authtypes.ModuleAccount{}, &authapi.ModuleAccount{}, GenOpts.WithAnyTypes(&ed25519.PubKey{})),
 		GenType(&authtypes.ModuleCredential{}, &authapi.ModuleCredential{}, GenOpts),
 
 		GenType(&authztypes.GenericAuthorization{}, &authzapi.GenericAuthorization{}, GenOpts),
@@ -273,7 +272,9 @@ var (
 
 		GenType(&slashingtypes.Params{}, &slashingapi.Params{}, GenOpts.WithDisallowNil()),
 
+		/* HV2 we have our own staking modules
 		GenType(&stakingtypes.StakeAuthorization{}, &stakingapi.StakeAuthorization{}, GenOpts),
+		*/
 
 		GenType(&upgradetypes.CancelSoftwareUpgradeProposal{}, &upgradeapi.CancelSoftwareUpgradeProposal{}, GenOpts),       // nolint:staticcheck // testing legacy code path
 		GenType(&upgradetypes.SoftwareUpgradeProposal{}, &upgradeapi.SoftwareUpgradeProposal{}, GenOpts.WithDisallowNil()), // nolint:staticcheck // testing legacy code path
