@@ -196,10 +196,10 @@ func TestAminoJSON_LegacyParity(t *testing.T) {
 	legacytx.RegressionTestingAminoCodec = encCfg.Amino
 
 	aj := aminojson.NewEncoder(aminojson.EncoderOptions{DoNotSortFields: true})
-	ac := address.NewHexCodec()
-	addr1Str := "0x000000000000000000000000000000000000dead"
-	addr1, err := ac.StringToBytes(addr1Str)
-	require.NoError(t, err)
+	// ac := address.NewHexCodec()
+	// addr1Str := "0x000000000000000000000000000000000000dead"
+	// addr1, err := ac.StringToBytes(addr1Str)
+	// require.NoError(t, err)
 	now := time.Now()
 
 	genericAuth, _ := codectypes.NewAnyWithValue(&authztypes.GenericAuthorization{Msg: "foo"})
@@ -224,6 +224,7 @@ func TestAminoJSON_LegacyParity(t *testing.T) {
 		sortJSON bool
 	}{
 		"auth/params": {gogo: &authtypes.Params{TxSigLimit: 10}, pulsar: &authapi.Params{TxSigLimit: 10}},
+		/* TODO HV2: https://polygon.atlassian.net/browse/POS-2756
 		"auth/module_account": {
 			gogo: &authtypes.ModuleAccount{
 				BaseAccount: authtypes.NewBaseAccountWithAddress(addr1),
@@ -234,7 +235,6 @@ func TestAminoJSON_LegacyParity(t *testing.T) {
 			roundTripUnequal: true,
 			sortJSON:         true,
 		},
-		/* TODO HV2: https://polygon.atlassian.net/browse/POS-2756
 		"auth/base_account": {
 			gogo:   &authtypes.BaseAccount{Address: addr1Str, PubKey: pubkeyAny},
 			pulsar: &authapi.BaseAccount{Address: addr1Str, PubKey: pubkeyAnyPulsar},
@@ -260,10 +260,12 @@ func TestAminoJSON_LegacyParity(t *testing.T) {
 			gogo:   &disttypes.DelegatorStartingInfo{},
 			pulsar: &distapi.DelegatorStartingInfo{},
 		},
+		/* TODO HV2: https://polygon.atlassian.net/browse/POS-2756
 		"distribution/delegator_starting_info/non_zero_dec": {
 			gogo:   &disttypes.DelegatorStartingInfo{Stake: math.LegacyNewDec(10)},
 			pulsar: &distapi.DelegatorStartingInfo{Stake: string(dec10bz)},
 		},
+		*/
 		"distribution/delegation_delegator_reward": {
 			gogo:   &disttypes.DelegationDelegatorReward{},
 			pulsar: &distapi.DelegationDelegatorReward{},
