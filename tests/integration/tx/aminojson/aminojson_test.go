@@ -27,9 +27,7 @@ import (
 	gov_v1beta1_api "cosmossdk.io/api/cosmos/gov/v1beta1"
 	msgv1 "cosmossdk.io/api/cosmos/msg/v1"
 	slashingapi "cosmossdk.io/api/cosmos/slashing/v1beta1"
-	stakingapi "cosmossdk.io/api/cosmos/staking/v1beta1"
 	txv1beta1 "cosmossdk.io/api/cosmos/tx/v1beta1"
-	vestingapi "cosmossdk.io/api/cosmos/vesting/v1beta1"
 	"cosmossdk.io/math"
 	"cosmossdk.io/x/evidence"
 	feegrantmodule "cosmossdk.io/x/feegrant/module"
@@ -54,7 +52,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth/tx"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/vesting"
-	vestingtypes "github.com/cosmos/cosmos-sdk/x/auth/vesting/types"
 	authztypes "github.com/cosmos/cosmos-sdk/x/authz"
 	authzmodule "github.com/cosmos/cosmos-sdk/x/authz/module"
 	"github.com/cosmos/cosmos-sdk/x/bank"
@@ -265,7 +262,7 @@ func TestAminoJSON_LegacyParity(t *testing.T) {
 		},
 		"distribution/delegator_starting_info/non_zero_dec": {
 			gogo:   &disttypes.DelegatorStartingInfo{Stake: math.LegacyNewDec(10)},
-			pulsar: &distapi.DelegatorStartingInfo{Stake: "10.000000000000000000"},
+			pulsar: &distapi.DelegatorStartingInfo{Stake: string(dec10bz)},
 		},
 		"distribution/delegation_delegator_reward": {
 			gogo:   &disttypes.DelegationDelegatorReward{},
@@ -379,7 +376,6 @@ func TestAminoJSON_LegacyParity(t *testing.T) {
 				Value:       &v1beta1.Coin{},
 			},
 		},
-		*/
 		"staking/msg_cancel_unbonding_delegation_response": {
 			gogo:   &stakingtypes.MsgCancelUnbondingDelegationResponse{},
 			pulsar: &stakingapi.MsgCancelUnbondingDelegationResponse{},
@@ -400,11 +396,12 @@ func TestAminoJSON_LegacyParity(t *testing.T) {
 				},
 			},
 		},
+		*/
+		/* HV2: vesting not implemented
 		"vesting/base_account_empty": {
 			gogo:   &vestingtypes.BaseVestingAccount{BaseAccount: &authtypes.BaseAccount{}},
 			pulsar: &vestingapi.BaseVestingAccount{BaseAccount: &authapi.BaseAccount{}},
 		},
-		/* HV2: vesting not implemented
 		"vesting/base_account_pubkey": {
 			gogo:   &vestingtypes.BaseVestingAccount{BaseAccount: &authtypes.BaseAccount{PubKey: pubkeyAny}},
 			pulsar: &vestingapi.BaseVestingAccount{BaseAccount: &authapi.BaseAccount{PubKey: pubkeyAnyPulsar}},
