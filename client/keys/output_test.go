@@ -41,7 +41,7 @@ func TestBech32KeysOutput(t *testing.T) {
 	out, err := MkAccKeyOutput(k)
 	require.NoError(t, err)
 	require.Equal(t, expectedOutput, out)
-	require.Equal(t, "{Name:multisig Type:multi Address:0x16a035adce9fe233cec9cd50699922c90618bc7a PubKey:{\"@type\":\"/cosmos.crypto.multisig.LegacyAminoPubKey\",\"threshold\":1,\"public_keys\":[{\"@type\":\"/cosmos.crypto.secp256k1.PubKey\",\"key\":\"BOrroA7jvfPd1AadmmOvWM2rJSwipXfRf8yD6pLbA2DJRBvMr2v1o7/Tt5MFOm9RcJhxfM8axlq8SseN3Dl07xg=\"}]} Mnemonic:}", fmt.Sprintf("%+v", out))
+	require.Equal(t, "{Name:multisig Type:multi Address:0xe7e1add937d6cd091d6a0db2ea44eef5c1613c72 PubKey:{\"@type\":\"/cosmos.crypto.multisig.LegacyAminoPubKey\",\"threshold\":1,\"public_keys\":[{\"@type\":\"/cosmos.crypto.secp256k1.PubKey\",\"key\":\"BOrroA7jvfPd1AadmmOvWM2rJSwipXfRf8yD6pLbA2DJRBvMr2v1o7/Tt5MFOm9RcJhxfM8axlq8SseN3Dl07xg=\"}]} Mnemonic:}", fmt.Sprintf("%+v", out))
 }
 
 // TestBech32KeysOutputNestedMsig tests that the output of a nested multisig key is correct
@@ -65,7 +65,7 @@ func TestBech32KeysOutputNestedMsig(t *testing.T) {
 	require.NoError(t, err)
 
 	require.Equal(t, expectedOutput, out)
-	require.Equal(t, "{Name:multisig Type:multi Address:0xf03f3dfbd4f8973f5c48ef53297d746e141983c2 PubKey:{\"@type\":\"/cosmos.crypto.multisig.LegacyAminoPubKey\",\"threshold\":2,\"public_keys\":[{\"@type\":\"/cosmos.crypto.secp256k1.PubKey\",\"key\":\"BOrroA7jvfPd1AadmmOvWM2rJSwipXfRf8yD6pLbA2DJRBvMr2v1o7/Tt5MFOm9RcJhxfM8axlq8SseN3Dl07xg=\"},{\"@type\":\"/cosmos.crypto.multisig.LegacyAminoPubKey\",\"threshold\":1,\"public_keys\":[{\"@type\":\"/cosmos.crypto.secp256k1.PubKey\",\"key\":\"BOrroA7jvfPd1AadmmOvWM2rJSwipXfRf8yD6pLbA2DJRBvMr2v1o7/Tt5MFOm9RcJhxfM8axlq8SseN3Dl07xg=\"}]}]} Mnemonic:}", fmt.Sprintf("%+v", out))
+	require.Equal(t, "{Name:multisig Type:multi Address:0x7d1c3ef842dcc796df25d46a0716005d30de5a9a PubKey:{\"@type\":\"/cosmos.crypto.multisig.LegacyAminoPubKey\",\"threshold\":2,\"public_keys\":[{\"@type\":\"/cosmos.crypto.secp256k1.PubKey\",\"key\":\"BOrroA7jvfPd1AadmmOvWM2rJSwipXfRf8yD6pLbA2DJRBvMr2v1o7/Tt5MFOm9RcJhxfM8axlq8SseN3Dl07xg=\"},{\"@type\":\"/cosmos.crypto.multisig.LegacyAminoPubKey\",\"threshold\":1,\"public_keys\":[{\"@type\":\"/cosmos.crypto.secp256k1.PubKey\",\"key\":\"BOrroA7jvfPd1AadmmOvWM2rJSwipXfRf8yD6pLbA2DJRBvMr2v1o7/Tt5MFOm9RcJhxfM8axlq8SseN3Dl07xg=\"}]}]} Mnemonic:}", fmt.Sprintf("%+v", out))
 }
 
 func TestProtoMarshalJSON(t *testing.T) {

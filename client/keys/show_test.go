@@ -33,11 +33,11 @@ func Test_multiSigKey_Properties(t *testing.T) {
 
 	pub, err := k.GetPubKey()
 	require.NoError(t, err)
-	require.Equal(t, "D2B8E5992CF6A3F5904E537F65F27B8FE85DDD38", pub.Address().String())
+	require.Equal(t, "8F86E3DB26D754696569401A2933FD740C1389EA", pub.Address().String())
 
 	addr, err := k.GetAddress()
 	require.NoError(t, err)
-	require.Equal(t, "0xd2b8e5992cf6a3f5904e537f65f27b8fe85ddd38", sdk.MustHexifyAddressBytes(addr))
+	require.Equal(t, "0x8f86e3db26d754696569401a2933fd740c1389ea", sdk.MustHexifyAddressBytes(addr))
 }
 
 func Test_showKeysCmd(t *testing.T) {
