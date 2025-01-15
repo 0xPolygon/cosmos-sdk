@@ -431,7 +431,7 @@ func (app *BaseApp) PrepareProposal(req *abci.RequestPrepareProposal) (resp *abc
 	resp, err = app.prepareProposal(app.prepareProposalState.Context(), req)
 	if err != nil {
 		app.logger.Error("failed to prepare proposal", "height", req.Height, "time", req.Time, "err", err)
-		return &abci.ResponsePrepareProposal{Txs: req.Txs}, nil
+		return nil, err
 	}
 
 	return resp, nil
@@ -609,7 +609,8 @@ func (app *BaseApp) ExtendVote(_ context.Context, req *abci.RequestExtendVote) (
 	resp, err = app.extendVote(ctx, req)
 	if err != nil {
 		app.logger.Error("failed to extend vote", "height", req.Height, "hash", fmt.Sprintf("%X", req.Hash), "err", err)
-		return &abci.ResponseExtendVote{VoteExtension: []byte{}}, nil
+		//return &abci.ResponseExtendVote{VoteExtension: []byte{}}, nil
+		return nil, err
 	}
 
 	return resp, err
