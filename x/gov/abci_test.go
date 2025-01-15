@@ -394,7 +394,10 @@ func TestProposalPassedEndblocker(t *testing.T) {
 
 			macc = app.GovKeeper.GetGovernanceAccount(ctx)
 			require.NotNil(t, macc)
-			require.True(t, app.BankKeeper.GetAllBalances(ctx, macc.GetAddress()).Equal(initialModuleAccCoins))
+
+			// This happens because of truncation in division in DistributeAndDeleteDeposits
+			// 1 pol is left at the end
+			require.True(t, app.BankKeeper.GetAllBalances(ctx, macc.GetAddress()).Equal(sdk.NewCoins(sdk.NewCoin("pol", math.NewInt(1)))))
 		})
 	}
 }

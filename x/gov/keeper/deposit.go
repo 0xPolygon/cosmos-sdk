@@ -8,7 +8,7 @@ import (
 	"cosmossdk.io/collections"
 	"cosmossdk.io/errors"
 	sdkmath "cosmossdk.io/math"
-
+	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	disttypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
@@ -283,6 +283,64 @@ func (keeper Keeper) RefundAndDeleteDeposits(ctx context.Context, proposalID uin
 		err = keeper.Deposits.Remove(ctx, key)
 		return false, err
 	})
+}
+
+// DistributeAndDeleteDeposits distributes the deposits evenly among all the active validators and deletes the deposits on a specific proposal.
+func (keeper Keeper) DistributeAndDeleteDeposits(ctx context.Context, proposalID uint64) error {
+	var validatorAddresses []sdk.AccAddress
+
+	err := keeper.sk.IterateCurrentValidatorsAndApplyFn(ctx, func(validator stakeTypes.Validator) bool {
+		validatorAddr, err := sdk.AccAddressFromHex(validator.Signer)
+		if err != nil {
+			return true
+		}
+		validatorAddresses = append(validatorAddresses, validatorAddr)
+		return false
+	})
+	if err != nil {
+		return err
+	}
+	if len(validatorAddresses) == 0 {
+		return fmt.Errorf("no current validators available")
+	}
+
+	deposits, err := keeper.GetDeposits(ctx, proposalID)
+	if err != nil {
+		return err
+	}
+
+	var amountPerValidator sdk.Coins
+
+	for _, deposit := range deposits {
+		depositerAddress, err := keeper.authKeeper.AddressCodec().StringToBytes(deposit.Depositor)
+		if err != nil {
+			return err
+		}
+
+		for _, coin := range deposit.Amount {
+			amountPerValidatorPerCoin := sdkmath.LegacyNewDecFromInt(coin.Amount).QuoInt64(int64(len(validatorAddresses))).TruncateInt()
+			amountPerValidator = amountPerValidator.Add(
+				sdk.NewCoin(
+					coin.Denom,
+					amountPerValidatorPerCoin,
+				),
+			)
+		}
+
+		err = keeper.Deposits.Remove(ctx, collections.Join(deposit.ProposalId, sdk.AccAddress(depositerAddress)))
+		if err != nil {
+			return err
+		}
+	}
+
+	for _, validator := range validatorAddresses {
+		err = keeper.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, validator, amountPerValidator)
+		if err != nil {
+			return err
+		}
+	}
+
+	return err
 }
 
 // validateInitialDeposit validates if initial deposit is greater than or equal to the minimum
