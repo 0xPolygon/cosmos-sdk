@@ -231,16 +231,11 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 	// AccountKeeper's module account permissions as blocked.
 	blockedAddresses := make(map[string]bool)
 	if len(in.Config.BlockedModuleAccountsOverride) > 0 {
-		fmt.Println("Will try to get blocked module accounts")
 		for _, moduleName := range in.Config.BlockedModuleAccountsOverride {
 			blockedAddresses[authtypes.NewModuleAddress(moduleName).String()] = true
 		}
 	} else {
-		fmt.Println("Will try to get account keeper permissions")
-		fmt.Printf("%v\n", in.AccountKeeper.GetModulePermissions())
 		for _, permission := range in.AccountKeeper.GetModulePermissions() {
-			fmt.Println(permission.GetPermissions())
-			fmt.Println(permission.GetAddress().String())
 			blockedAddresses[permission.GetAddress().String()] = true
 		}
 	}
