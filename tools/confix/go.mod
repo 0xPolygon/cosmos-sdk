@@ -24,7 +24,7 @@ require (
 	cosmossdk.io/store v1.1.1 // indirect
 	cosmossdk.io/x/tx v0.13.6 // indirect
 	filippo.io/edwards25519 v1.0.0 // indirect
-	github.com/0xPolygon/heimdall-v2 v0.0.0-20241127081910-7dda9dcd7b83 // indirect
+	github.com/0xPolygon/heimdall-v2 v0.0.0-20241216112156-6a9cfc1a1411 // indirect
 	github.com/99designs/go-keychain v0.0.0-20191008050251-8e49817e8af4 // indirect
 	github.com/99designs/keyring v1.2.1 // indirect
 	github.com/BurntSushi/toml v1.4.0 // indirect

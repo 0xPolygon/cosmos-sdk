@@ -71,15 +71,15 @@ func TestExportCmd_Height(t *testing.T) {
 			"should export correct height",
 			[]string{},
 			5,
-			106,
+			8,
 		},
 		{
 			"should export correct height with --height",
 			[]string{
-				fmt.Sprintf("--%s=%d", server.FlagHeight, 103),
+				fmt.Sprintf("--%s=%d", server.FlagHeight, 3),
 			},
 			5,
-			104,
+			4,
 		},
 		{
 			"should export height 0 with --for-zero-height",
@@ -87,7 +87,7 @@ func TestExportCmd_Height(t *testing.T) {
 				fmt.Sprintf("--%s=%s", server.FlagForZeroHeight, "true"),
 			},
 			2,
-			103,
+			5,
 		},
 	}
 

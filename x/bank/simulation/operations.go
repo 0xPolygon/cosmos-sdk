@@ -10,9 +10,9 @@ import (
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/cosmos/cosmos-sdk/x/bank/keeper"
 	"github.com/cosmos/cosmos-sdk/x/bank/types"
-	disttypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
 )
 
@@ -428,7 +428,7 @@ func getModuleAccounts(ak types.AccountKeeper, ctx sdk.Context, moduleAccCount i
 	moduleAccounts := make([]simtypes.Account, moduleAccCount)
 
 	for i := 0; i < moduleAccCount; i++ {
-		acc := ak.GetModuleAccount(ctx, disttypes.ModuleName)
+		acc := ak.GetModuleAccount(ctx, authtypes.FeeCollectorName)
 		mAcc := simtypes.Account{
 			Address: acc.GetAddress(),
 			PrivKey: nil,

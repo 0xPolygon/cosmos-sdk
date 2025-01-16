@@ -4,18 +4,12 @@ import (
 	"math/rand"
 	"testing"
 
-	abci "github.com/cometbft/cometbft/abci/types"
+	hApp "github.com/0xPolygon/heimdall-v2/app"
 	"github.com/cosmos/gogoproto/proto"
 	"github.com/stretchr/testify/suite"
 
-	"cosmossdk.io/depinject"
-	"cosmossdk.io/log"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
-	"github.com/cosmos/cosmos-sdk/runtime"
-	"github.com/cosmos/cosmos-sdk/testutil/configurator"
-	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	_ "github.com/cosmos/cosmos-sdk/x/auth"
@@ -38,34 +32,25 @@ type SimTestSuite struct {
 	bankKeeper    keeper.Keeper
 	cdc           codec.Codec
 	txConfig      client.TxConfig
-	app           *runtime.App
+	app           *hApp.HeimdallApp
 }
 
 func (suite *SimTestSuite) SetupTest() {
-	var (
-		appBuilder *runtime.AppBuilder
-		err        error
-	)
-	suite.app, err = simtestutil.Setup(
-		depinject.Configs(
-			configurator.NewAppConfig(
-				configurator.AuthModule(),
-				configurator.ParamsModule(),
-				configurator.BankModule(),
-				configurator.StakingModule(),
-				configurator.ConsensusModule(),
-				configurator.TxModule(),
-			),
-			depinject.Supply(log.NewNopLogger()),
-		), &suite.accountKeeper, &suite.bankKeeper, &suite.cdc, &suite.txConfig, &appBuilder)
+	app, _, _ := hApp.SetupApp(suite.T(), 1)
+	hApp.RequestFinalizeBlock(suite.T(), app, app.LastBlockHeight()+1)
 
-	suite.NoError(err)
+	suite.app = app
+	suite.accountKeeper = app.AccountKeeper
+	suite.bankKeeper = app.BankKeeper
+	suite.cdc = app.AppCodec()
+	suite.txConfig = app.GetTxConfig()
+	suite.ctx = suite.app.NewContext(false)
 
-	suite.ctx = suite.app.BaseApp.NewContext(false)
 }
 
 // TestWeightedOperations tests the weights of the operations.
 func (suite *SimTestSuite) TestWeightedOperations() {
+	suite.T().Skip("skipping test for HV2 (weighted operations not relevant)")
 	cdc := suite.cdc
 	appParams := make(simtypes.AppParams)
 
@@ -106,10 +91,7 @@ func (suite *SimTestSuite) TestSimulateMsgSend() {
 	r := rand.New(s)
 	accounts := suite.getTestingAccounts(r, 3)
 
-	suite.app.FinalizeBlock(&abci.RequestFinalizeBlock{
-		Height: suite.app.LastBlockHeight() + 1,
-		Hash:   suite.app.LastCommitID().Hash,
-	})
+	hApp.RequestFinalizeBlock(suite.T(), suite.app, suite.app.LastBlockHeight()+1)
 
 	// execute operation
 	op := simulation.SimulateMsgSend(suite.txConfig, suite.accountKeeper, suite.bankKeeper)
@@ -120,9 +102,9 @@ func (suite *SimTestSuite) TestSimulateMsgSend() {
 	err = proto.Unmarshal(operationMsg.Msg, &msg)
 	suite.Require().NoError(err)
 	suite.Require().True(operationMsg.OK)
-	suite.Require().Equal("65337742stake", msg.Amount.String())
-	suite.Require().Equal("cosmos1ghekyjucln7y67ntx7cf27m9dpuxxemn4c8g4r", msg.FromAddress)
-	suite.Require().Equal("cosmos1p8wcgrjr4pjju90xg6u9cgq55dxwq8j7u4x9a0", msg.ToAddress)
+	suite.Require().Equal("141355010409597679621128881pol", msg.Amount.String())
+	suite.Require().Equal("0xd4bfb1cb895840ca474b0d15abb11cf0f26bc88a", msg.FromAddress)
+	suite.Require().Equal("0x6b11ea2af9b83c6e0bbce6254d776f82bb6b6c13", msg.ToAddress)
 	suite.Require().Equal(sdk.MsgTypeURL(&types.MsgSend{}), sdk.MsgTypeURL(&msg))
 	suite.Require().Len(futureOperations, 0)
 }
@@ -135,10 +117,7 @@ func (suite *SimTestSuite) TestSimulateMsgMultiSend() {
 	r := rand.New(s)
 	accounts := suite.getTestingAccounts(r, 3)
 
-	suite.app.FinalizeBlock(&abci.RequestFinalizeBlock{
-		Height: suite.app.LastBlockHeight() + 1,
-		Hash:   suite.app.LastCommitID().Hash,
-	})
+	hApp.RequestFinalizeBlock(suite.T(), suite.app, suite.app.LastBlockHeight()+1)
 
 	// execute operation
 	op := simulation.SimulateMsgMultiSend(suite.txConfig, suite.accountKeeper, suite.bankKeeper)
@@ -151,11 +130,11 @@ func (suite *SimTestSuite) TestSimulateMsgMultiSend() {
 	suite.Require().NoError(err)
 	require.True(operationMsg.OK)
 	require.Len(msg.Inputs, 1)
-	require.Equal("cosmos1tnh2q55v8wyygtt9srz5safamzdengsnqeycj3", msg.Inputs[0].Address)
-	require.Equal("114949958stake", msg.Inputs[0].Coins.String())
+	require.Equal("0x520ecc4903a9f355246c1ff384e694b6dffce2ec", msg.Inputs[0].Address)
+	require.Equal("440363928176437140680998726pol", msg.Inputs[0].Coins.String())
 	require.Len(msg.Outputs, 2)
-	require.Equal("cosmos1ghekyjucln7y67ntx7cf27m9dpuxxemn4c8g4r", msg.Outputs[1].Address)
-	require.Equal("107287087stake", msg.Outputs[1].Coins.String())
+	require.Equal("0xd4bfb1cb895840ca474b0d15abb11cf0f26bc88a", msg.Outputs[1].Address)
+	require.Equal("435461554333304008443265275pol", msg.Outputs[1].Coins.String())
 	suite.Require().Equal(sdk.MsgTypeURL(&types.MsgMultiSend{}), sdk.MsgTypeURL(&msg))
 	require.Len(futureOperations, 0)
 }
@@ -170,11 +149,7 @@ func (suite *SimTestSuite) TestSimulateModuleAccountMsgSend() {
 	r := rand.New(s)
 	accounts := suite.getTestingAccounts(r, accCount)
 
-	suite.app.FinalizeBlock(&abci.RequestFinalizeBlock{
-		Height: suite.app.LastBlockHeight() + 1,
-		Hash:   suite.app.LastCommitID().Hash,
-	},
-	)
+	hApp.RequestFinalizeBlock(suite.T(), suite.app, suite.app.LastBlockHeight()+1)
 
 	// execute operation
 	op := simulation.SimulateMsgSendToModuleAccount(suite.txConfig, suite.accountKeeper, suite.bankKeeper, moduleAccCount)
@@ -204,10 +179,7 @@ func (suite *SimTestSuite) TestSimulateMsgMultiSendToModuleAccount() {
 	r := rand.New(s)
 	accounts := suite.getTestingAccounts(r, accCount)
 
-	suite.app.FinalizeBlock(&abci.RequestFinalizeBlock{
-		Height: suite.app.LastBlockHeight() + 1,
-		Hash:   suite.app.LastCommitID().Hash,
-	})
+	hApp.RequestFinalizeBlock(suite.T(), suite.app, suite.app.LastBlockHeight()+1)
 
 	// execute operation
 	op := simulation.SimulateMsgMultiSendToModuleAccount(suite.txConfig, suite.accountKeeper, suite.bankKeeper, mAccCount)
@@ -227,7 +199,7 @@ func (suite *SimTestSuite) TestSimulateMsgMultiSendToModuleAccount() {
 func (suite *SimTestSuite) getTestingAccounts(r *rand.Rand, n int) []simtypes.Account {
 	accounts := simtypes.RandomAccounts(r, n)
 
-	initAmt := sdk.TokensFromConsensusPower(200, sdk.DefaultPowerReduction)
+	initAmt := sdk.TokensFromConsensusPower(2000000000, sdk.DefaultPowerReduction)
 	initCoins := sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, initAmt))
 
 	// add coins to the accounts
@@ -241,6 +213,5 @@ func (suite *SimTestSuite) getTestingAccounts(r *rand.Rand, n int) []simtypes.Ac
 }
 
 func TestSimTestSuite(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	suite.Run(t, new(SimTestSuite))
 }

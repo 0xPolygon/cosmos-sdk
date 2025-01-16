@@ -46,7 +46,7 @@ import (
 )
 
 func TestSimAppExportAndBlockedAddrs(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	t.Skip("Instead of SimApp we use HV2 app for tests")
 	db := dbm.NewMemDB()
 	logger := log.NewTestLogger(t)
 	app := NewSimappWithCustomOptions(t, false, SetupOptions{
@@ -270,7 +270,7 @@ func TestInitGenesisOnMigration(t *testing.T) {
 }
 
 func TestUpgradeStateOnGenesis(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	t.Skip("Instead of SimApp we use HV2 app for tests")
 	db := dbm.NewMemDB()
 	app := NewSimappWithCustomOptions(t, false, SetupOptions{
 		Logger:  log.NewTestLogger(t),

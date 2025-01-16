@@ -46,7 +46,7 @@ func (ms mockSubspace) GetParamSet(ctx sdk.Context, ps authexported.ParamSet) {
 }
 
 func TestMigrateVestingAccounts(t *testing.T) {
-	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
+	t.Skip("In HV2 we dont support vesting accounts")
 	encCfg := moduletestutil.MakeTestEncodingConfig(auth.AppModuleBasic{})
 	cdc := encCfg.Codec
 

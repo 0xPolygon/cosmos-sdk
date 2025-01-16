@@ -7,13 +7,13 @@ import (
 
 	"cosmossdk.io/math"
 
+	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/cosmos/cosmos-sdk/x/gov/types"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 	"github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
-	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 )
 
 var TestProposal = getTestProposal()
@@ -36,30 +36,21 @@ func getTestProposal() []sdk.Msg {
 }
 
 func createValidators(t *testing.T, f *fixture, powers []int64) ([]sdk.AccAddress, []sdk.ValAddress) {
-	addrs := simtestutil.AddTestAddrsIncremental(f.bankKeeper, f.ctx, 5, math.NewInt(30000000))
+	amount := math.NewInt(30000000)
+	addrs := simtestutil.AddTestAddrsIncremental(f.bankKeeper, f.ctx, 5, amount)
 	valAddrs := simtestutil.ConvertAddrsToValAddrs(addrs)
 	pks := simtestutil.CreateTestPubKeys(5)
 
-	val1, err := stakingtypes.NewValidator(valAddrs[0].String(), pks[0], stakingtypes.Description{})
-	assert.NilError(t, err)
-	val2, err := stakingtypes.NewValidator(valAddrs[1].String(), pks[1], stakingtypes.Description{})
-	assert.NilError(t, err)
-	val3, err := stakingtypes.NewValidator(valAddrs[2].String(), pks[2], stakingtypes.Description{})
-	assert.NilError(t, err)
+	if len(pks) < len(valAddrs) {
+		t.Fatal("PubKeys length is less than ValAddrs length")
+	}
 
-	f.stakingKeeper.SetValidator(f.ctx, val1)
-	f.stakingKeeper.SetValidator(f.ctx, val2)
-	f.stakingKeeper.SetValidator(f.ctx, val3)
-	f.stakingKeeper.SetValidatorByConsAddr(f.ctx, val1)
-	f.stakingKeeper.SetValidatorByConsAddr(f.ctx, val2)
-	f.stakingKeeper.SetValidatorByConsAddr(f.ctx, val3)
-	f.stakingKeeper.SetNewValidatorByPowerIndex(f.ctx, val1)
-	f.stakingKeeper.SetNewValidatorByPowerIndex(f.ctx, val2)
-	f.stakingKeeper.SetNewValidatorByPowerIndex(f.ctx, val3)
-
-	_, _ = f.stakingKeeper.Delegate(f.ctx, addrs[0], f.stakingKeeper.TokensFromConsensusPower(f.ctx, powers[0]), stakingtypes.Unbonded, val1, true)
-	_, _ = f.stakingKeeper.Delegate(f.ctx, addrs[1], f.stakingKeeper.TokensFromConsensusPower(f.ctx, powers[1]), stakingtypes.Unbonded, val2, true)
-	_, _ = f.stakingKeeper.Delegate(f.ctx, addrs[2], f.stakingKeeper.TokensFromConsensusPower(f.ctx, powers[2]), stakingtypes.Unbonded, val3, true)
+	for i := 0; i < len(valAddrs); i++ {
+		val, err := stakeTypes.NewValidator(uint64(i+1), 0, 0, 0, sdk.TokensToConsensusPower(amount, sdk.DefaultPowerReduction), pks[0], valAddrs[0].String())
+		assert.NilError(t, err)
+		err = f.stakingKeeper.AddValidator(f.ctx, *val)
+		assert.NilError(t, err)
+	}
 
 	f.stakingKeeper.EndBlocker(f.ctx)
 
