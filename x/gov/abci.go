@@ -46,8 +46,8 @@ func EndBlocker(ctx sdk.Context, keeper *keeper.Keeper) error {
 			return false, err
 		}
 
-		// TODO HV2: https://polygon.atlassian.net/browse/POS-2755
-		err = keeper.RefundAndDeleteDeposits(ctx, proposal.Id) // refund deposit if proposal got removed without getting 100% of the proposal
+		// Distribute the deposits if the proposal got removed without getting 100% of the proposal
+		err = keeper.DistributeAndDeleteDeposits(ctx, proposal.Id)
 		if err != nil {
 			return false, err
 		}
@@ -135,10 +135,17 @@ func EndBlocker(ctx sdk.Context, keeper *keeper.Keeper) error {
 			return false, err
 		}
 
-		// HV2: heimdall refunds and deletes deposits in all cases of proposal failures, without caring about burnDeposits
-		err = keeper.RefundAndDeleteDeposits(ctx, proposal.Id)
-		if err != nil {
-			return false, err
+		// HV2: heimdall distributes and deletes deposits in all cases of proposal failures, without caring about burnDeposits
+		if passes {
+			err = keeper.RefundAndDeleteDeposits(ctx, proposal.Id)
+			if err != nil {
+				return false, err
+			}
+		} else {
+			err = keeper.DistributeAndDeleteDeposits(ctx, proposal.Id)
+			if err != nil {
+				return false, err
+			}
 		}
 
 		// If an expedited proposal fails, we do not want to update
@@ -315,7 +322,7 @@ func failUnsupportedProposal(
 		return err
 	}
 
-	if err := keeper.RefundAndDeleteDeposits(ctx, proposal.Id); err != nil {
+	if err := keeper.DistributeAndDeleteDeposits(ctx, proposal.Id); err != nil {
 		return err
 	}
 

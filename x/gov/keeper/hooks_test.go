@@ -16,6 +16,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/gov/keeper"
 	"github.com/cosmos/cosmos-sdk/x/gov/types"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
+
+	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 )
 
 var _ types.GovHooks = &MockGovHooksReceiver{}
@@ -61,7 +63,22 @@ func TestHooks(t *testing.T) {
 
 	authKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
 	stakingKeeper.EXPECT().ValidatorAddressCodec().Return(address.NewHexCodec()).AnyTimes()
-	stakingKeeper.EXPECT().IterateCurrentValidatorsAndApplyFn(gomock.Any(), gomock.Any()).AnyTimes()
+
+	mockValidators := []stakeTypes.Validator{
+		{Signer: "0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff"},
+		{Signer: "0xb316fa9fa91700d7084d377bfdc81eb9f232f5fd"},
+	}
+
+	stakingKeeper.EXPECT().IterateCurrentValidatorsAndApplyFn(gomock.Any(), gomock.Any()).DoAndReturn(
+		func(ctx context.Context, fn func(stakeTypes.Validator) bool) error {
+			for _, validator := range mockValidators {
+				if stop := fn(validator); stop {
+					break
+				}
+			}
+			return nil
+		},
+	).AnyTimes()
 
 	govHooksReceiver := MockGovHooksReceiver{}
 
