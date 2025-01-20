@@ -160,7 +160,9 @@ func setupApp(t *testing.T, tempDir string) (*hApp.HeimdallApp, context.Context,
 	err := createConfigFolder(tempDir)
 	assert.NilError(t, err)
 
-	app, db, _ := hApp.SetupApp(t, 1)
+	setupAppResult := hApp.SetupApp(t, 1)
+	app := setupAppResult.App
+	db := setupAppResult.DB
 
 	genesisState := simapp.GenesisStateWithSingleValidator(t, app)
 	stateBytes, err := json.MarshalIndent(genesisState, "", " ")
