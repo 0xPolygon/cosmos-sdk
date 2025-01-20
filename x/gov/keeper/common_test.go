@@ -5,16 +5,15 @@ import (
 	"testing"
 
 	borTypes "github.com/0xPolygon/heimdall-v2/x/bor/types"
+	chainmanagertypes "github.com/0xPolygon/heimdall-v2/x/chainmanager/types"
 	checkpointTypes "github.com/0xPolygon/heimdall-v2/x/checkpoint/types"
 	milestoneTypes "github.com/0xPolygon/heimdall-v2/x/milestone/types"
+	stakingtypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 	topupTypes "github.com/0xPolygon/heimdall-v2/x/topup/types"
-
-	chainmanagertypes "github.com/0xPolygon/heimdall-v2/x/chainmanager/types"
-	consensustypes "github.com/cosmos/cosmos-sdk/x/consensus/types"
-	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 
 	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	cmttime "github.com/cometbft/cometbft/types/time"
+
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 
@@ -30,6 +29,7 @@ import (
 	moduletestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+	consensustypes "github.com/cosmos/cosmos-sdk/x/consensus/types"
 	disttypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	"github.com/cosmos/cosmos-sdk/x/gov/keeper"
 	govtestutil "github.com/cosmos/cosmos-sdk/x/gov/testutil"
@@ -111,7 +111,6 @@ func setupGovKeeper(t *testing.T) (
 	}).AnyTimes()
 
 	stakingKeeper.EXPECT().BondDenom(ctx).Return("pol", nil).AnyTimes()
-	stakingKeeper.EXPECT().IterateCurrentValidatorsAndApplyFn(gomock.Any(), gomock.Any()).AnyTimes()
 	stakingKeeper.EXPECT().TokensFromConsensusPower(gomock.Any(), gomock.Any()).AnyTimes()
 	stakingKeeper.EXPECT().ValidatorAddressCodec().Return(address.NewHexCodec()).AnyTimes()
 	distributionKeeper.EXPECT().FundCommunityPool(gomock.Any(), gomock.Any(), gomock.Any()).Return(nil).AnyTimes()

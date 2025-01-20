@@ -1,9 +1,12 @@
 package keeper_test
 
 import (
+	"context"
 	"fmt"
 	"math/big"
 	"testing"
+
+	"github.com/golang/mock/gomock"
 
 	"github.com/stretchr/testify/require"
 
@@ -16,6 +19,8 @@ import (
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	disttypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
+
+	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 )
 
 const (
@@ -459,5 +464,143 @@ func TestChargeDeposit(t *testing.T) {
 				}
 			})
 		}
+	}
+}
+
+func TestDistributeAndDeleteDeposits(t *testing.T) {
+	testcases := []struct {
+		name          string
+		numValidators uint64
+	}{
+		{
+			name:          "Single validator case",
+			numValidators: 1,
+		},
+		{
+			name:          "Equal distribution case",
+			numValidators: 2,
+		},
+		{
+			name:          "Edge case: Distribution of the remaining amount to a random validator",
+			numValidators: 3,
+		},
+	}
+
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+			govKeeper, authKeeper, bankKeeper, stakingKeeper, distKeeper, _, ctx := setupGovKeeper(t)
+			trackMockBalances(bankKeeper, distKeeper)
+
+			accAmt := sdkmath.NewIntFromBigInt(new(big.Int).Mul(big.NewInt(10), new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil)))
+			TestAddrs := simtestutil.AddTestAddrsIncremental(bankKeeper, ctx, 5, accAmt.Mul(sdkmath.NewInt(1)))
+			authKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
+
+			var mockValidators []stakeTypes.Validator
+
+			switch {
+			case tc.numValidators == 1:
+				mockValidators = []stakeTypes.Validator{
+					{Signer: TestAddrs[2].String()},
+				}
+			case tc.numValidators == 2:
+				mockValidators = []stakeTypes.Validator{
+					{Signer: TestAddrs[2].String()},
+					{Signer: TestAddrs[3].String()},
+				}
+			case tc.numValidators == 3:
+				mockValidators = []stakeTypes.Validator{
+					{Signer: TestAddrs[2].String()},
+					{Signer: TestAddrs[3].String()},
+					{Signer: TestAddrs[4].String()},
+				}
+			}
+
+			stakingKeeper.EXPECT().IterateCurrentValidatorsAndApplyFn(gomock.Any(), gomock.Any()).DoAndReturn(
+				func(ctx context.Context, fn func(stakeTypes.Validator) bool) error {
+					for _, validator := range mockValidators {
+						if stop := fn(validator); stop {
+							break
+						}
+					}
+					return nil
+				},
+			).AnyTimes()
+
+			tp := TestProposal
+			proposal, err := govKeeper.SubmitProposal(ctx, tp, "", "title", "summary", TestAddrs[0], false)
+			require.NoError(t, err)
+			proposalID := proposal.Id
+
+			stakeAmount := sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, stakingKeeper.TokensFromConsensusPower(ctx, 5)))
+
+			addr0Initial := bankKeeper.GetAllBalances(ctx, TestAddrs[0])
+			addr1Initial := bankKeeper.GetAllBalances(ctx, TestAddrs[1])
+
+			addr2Initial := bankKeeper.GetAllBalances(ctx, TestAddrs[2])
+			addr3Initial := bankKeeper.GetAllBalances(ctx, TestAddrs[3])
+			addr4Initial := bankKeeper.GetAllBalances(ctx, TestAddrs[4])
+
+			// 1st deposit from TestAddrs[0]
+			_, err = govKeeper.AddDeposit(ctx, proposalID, TestAddrs[0], stakeAmount)
+			require.NoError(t, err)
+
+			// 2nd deposit from TestAddrs[1]
+			_, err = govKeeper.AddDeposit(ctx, proposalID, TestAddrs[1], stakeAmount)
+			require.NoError(t, err)
+
+			// Check deposits length
+			deposits, _ := govKeeper.GetDeposits(ctx, proposalID)
+			require.Len(t, deposits, 2)
+
+			// Check TestAddrs[0] and TestAddrs[1] balances
+			require.Equal(t, addr0Initial.Sub(stakeAmount...), bankKeeper.GetAllBalances(ctx, TestAddrs[0]))
+			require.Equal(t, addr1Initial.Sub(stakeAmount...), bankKeeper.GetAllBalances(ctx, TestAddrs[1]))
+
+			addr0After := bankKeeper.GetAllBalances(ctx, TestAddrs[0])
+			addr1After := bankKeeper.GetAllBalances(ctx, TestAddrs[1])
+
+			// 10 pol deposited in total from TestAddrs[0] and TestAddrs[1]
+
+			// Test DistributeAndDeleteDeposits
+			err = govKeeper.DistributeAndDeleteDeposits(ctx, proposalID)
+			require.NoError(t, err)
+
+			// Check balances
+
+			// Balances of TestAddrs[0] and TestAddrs[1] should be the same
+			// as the deposits will be distributed to the validators
+			require.Equal(t, addr0After, bankKeeper.GetAllBalances(ctx, TestAddrs[0]))
+			require.Equal(t, addr1After, bankKeeper.GetAllBalances(ctx, TestAddrs[1]))
+
+			// Balances of validators will be dependent on numValidators
+			switch {
+			case tc.numValidators == 1:
+				// All the deposits will be transferred to the single validator
+				require.Equal(t, addr2Initial.Add(stakeAmount...).Add(stakeAmount...), bankKeeper.GetAllBalances(ctx, TestAddrs[2]))
+			case tc.numValidators == 2:
+				// Equal distribution of deposits among validators
+				require.Equal(t, addr2Initial.Add(stakeAmount...), bankKeeper.GetAllBalances(ctx, TestAddrs[2]))
+				require.Equal(t, addr3Initial.Add(stakeAmount...), bankKeeper.GetAllBalances(ctx, TestAddrs[3]))
+			case tc.numValidators == 3:
+				// A random validator will get a little bit of pol (NOT in the power 10**18) more because of truncation in division
+				addr2After := bankKeeper.GetAllBalances(ctx, TestAddrs[2])
+				addr3After := bankKeeper.GetAllBalances(ctx, TestAddrs[3])
+				addr4After := bankKeeper.GetAllBalances(ctx, TestAddrs[4])
+
+				if addr2After.AmountOf("pol").GT(addr3After.AmountOf("pol")) && addr2After.AmountOf("pol").GT(addr4After.AmountOf("pol")) {
+					require.Equal(t, addr2Initial.Add(sdk.NewCoin("pol", sdkmath.NewInt(3333333333333333336))), addr2After)
+					require.Equal(t, addr3Initial.Add(sdk.NewCoin("pol", sdkmath.NewInt(3333333333333333332))), addr3After)
+					require.Equal(t, addr4Initial.Add(sdk.NewCoin("pol", sdkmath.NewInt(3333333333333333332))), addr4After)
+				} else if addr3After.AmountOf("pol").GT(addr2After.AmountOf("pol")) && addr3After.AmountOf("pol").GT(addr4After.AmountOf("pol")) {
+					require.Equal(t, addr2Initial.Add(sdk.NewCoin("pol", sdkmath.NewInt(3333333333333333332))), addr2After)
+					require.Equal(t, addr3Initial.Add(sdk.NewCoin("pol", sdkmath.NewInt(3333333333333333336))), addr3After)
+					require.Equal(t, addr4Initial.Add(sdk.NewCoin("pol", sdkmath.NewInt(3333333333333333332))), addr4After)
+				} else {
+					require.Equal(t, addr2Initial.Add(sdk.NewCoin("pol", sdkmath.NewInt(3333333333333333332))), addr2After)
+					require.Equal(t, addr3Initial.Add(sdk.NewCoin("pol", sdkmath.NewInt(3333333333333333332))), addr3After)
+					require.Equal(t, addr4Initial.Add(sdk.NewCoin("pol", sdkmath.NewInt(3333333333333333336))), addr4After)
+				}
+			}
+		})
 	}
 }

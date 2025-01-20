@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"fmt"
+	"math/rand"
 	"strings"
 
 	"cosmossdk.io/collections"
@@ -14,6 +15,8 @@ import (
 	disttypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	"github.com/cosmos/cosmos-sdk/x/gov/types"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
+
+	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 )
 
 // SetDeposit sets a Deposit to the gov store
@@ -283,6 +286,94 @@ func (keeper Keeper) RefundAndDeleteDeposits(ctx context.Context, proposalID uin
 		err = keeper.Deposits.Remove(ctx, key)
 		return false, err
 	})
+}
+
+// DistributeAndDeleteDeposits distributes the deposits evenly among all the active validators and deletes the deposits on a specific proposal.
+func (keeper Keeper) DistributeAndDeleteDeposits(ctx context.Context, proposalID uint64) error {
+	var validatorAddresses []sdk.AccAddress
+
+	err := keeper.sk.IterateCurrentValidatorsAndApplyFn(ctx, func(validator stakeTypes.Validator) bool {
+		validatorAddr, err := sdk.AccAddressFromHex(validator.Signer)
+		if err != nil {
+			keeper.Logger(ctx).Error("Failed to parse validator address from hex", "error", err)
+			return true
+		}
+		validatorAddresses = append(validatorAddresses, validatorAddr)
+		return false
+	})
+	if err != nil {
+		keeper.Logger(ctx).Error("Error iterating over validators", "error", err)
+		return err
+	}
+
+	numValidators := len(validatorAddresses)
+
+	deposits, err := keeper.GetDeposits(ctx, proposalID)
+	if err != nil {
+		keeper.Logger(ctx).Error("Failed to retrieve deposits for proposal", "proposalID", proposalID, "error", err)
+		return err
+	}
+
+	var totalDeposits sdk.Coins
+	var amountPerValidator sdk.Coins
+
+	for _, deposit := range deposits {
+		depositorAddress, err := keeper.authKeeper.AddressCodec().StringToBytes(deposit.Depositor)
+		if err != nil {
+			keeper.Logger(ctx).Error("Failed to decode depositor address", "error", err)
+			return err
+		}
+
+		totalDeposits = totalDeposits.Add(deposit.Amount...)
+
+		for _, coin := range deposit.Amount {
+			amountPerValidatorPerCoin := sdkmath.LegacyNewDecFromInt(coin.Amount).QuoInt64(int64(numValidators)).TruncateInt()
+			amountPerValidator = amountPerValidator.Add(
+				sdk.NewCoin(
+					coin.Denom,
+					amountPerValidatorPerCoin,
+				),
+			)
+		}
+
+		err = keeper.Deposits.Remove(ctx, collections.Join(deposit.ProposalId, sdk.AccAddress(depositorAddress)))
+		if err != nil {
+			keeper.Logger(ctx).Error("Failed to remove deposit", "proposalID", proposalID, "depositor", depositorAddress, "error", err)
+			return err
+		}
+	}
+
+	for _, validator := range validatorAddresses {
+		err = keeper.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, validator, amountPerValidator)
+		if err != nil {
+			keeper.Logger(ctx).Error("Failed to send coins to validator", "error", err)
+			return err
+		}
+	}
+
+	// Calculate any remaining amount due to truncating issues
+	usedAmount := amountPerValidator.MulInt(sdkmath.NewInt(int64(numValidators)))
+	remainingAmount, isAnyNegative := totalDeposits.SafeSub(usedAmount...)
+	if isAnyNegative {
+		keeper.Logger(ctx).Error("subtraction resulted in a negative amount", "totalDeposits", totalDeposits, "usedAmount", usedAmount)
+		return fmt.Errorf("subtraction resulted in a negative amount")
+	}
+
+	if !remainingAmount.IsZero() {
+		// Send remaining amount to a random validator
+		rand := rand.New(rand.NewSource(int64(numValidators)))
+		randomValidator := validatorAddresses[rand.Intn(numValidators)]
+
+		err = keeper.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, randomValidator, remainingAmount)
+		if err != nil {
+			keeper.Logger(ctx).Error("Failed to send remaining coins to a random validator", "validator", randomValidator, "error", err)
+			return err
+		}
+	}
+
+	keeper.Logger(ctx).Info("Successfully distributed and deleted deposits")
+
+	return err
 }
 
 // validateInitialDeposit validates if initial deposit is greater than or equal to the minimum
