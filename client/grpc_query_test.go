@@ -33,7 +33,8 @@ type IntegrationTestSuite struct {
 func (s *IntegrationTestSuite) SetupSuite() {
 	s.T().Log("setting up integration test suite")
 
-	app, _, _ := hApp.SetupApp(s.T(), 1)
+	setUpAppResult := hApp.SetupApp(s.T(), 1)
+	app := setUpAppResult.App
 	hApp.RequestFinalizeBlock(s.T(), app, app.LastBlockHeight()+1)
 
 	s.ctx = app.BaseApp.NewContext(false)

@@ -10,7 +10,8 @@ import (
 )
 
 func TestItCreatesModuleAccountOnInitBlock(t *testing.T) {
-	app, _, _ := hApp.SetupApp(t, 1)
+	setUpAppResult := hApp.SetupApp(t, 1)
+	app := setUpAppResult.App
 	hApp.RequestFinalizeBlock(t, app, app.LastBlockHeight()+1)
 	ctx := app.BaseApp.NewContext(false)
 	acc := app.AccountKeeper.GetAccount(ctx, types.NewModuleAddress(types.FeeCollectorName))

@@ -36,7 +36,8 @@ type SimTestSuite struct {
 }
 
 func (suite *SimTestSuite) SetupTest() {
-	app, _, _ := hApp.SetupApp(suite.T(), 1)
+	setUpAppResult := hApp.SetupApp(suite.T(), 1)
+	app := setUpAppResult.App
 	hApp.RequestFinalizeBlock(suite.T(), app, app.LastBlockHeight()+1)
 
 	suite.app = app

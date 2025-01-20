@@ -55,7 +55,8 @@ func TestPaginationTestSuite(t *testing.T) {
 }
 
 func (s *paginationTestSuite) SetupTest() {
-	app, _, _ := hApp.SetupApp(s.T(), 1)
+	setUpAppResult := hApp.SetupApp(s.T(), 1)
+	app := setUpAppResult.App
 	hApp.RequestFinalizeBlock(s.T(), app, app.LastBlockHeight()+1)
 
 	ctx := app.BaseApp.NewContextLegacy(false, cmtproto.Header{Height: app.LastBlockHeight() + 1})

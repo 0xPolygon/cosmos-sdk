@@ -111,7 +111,8 @@ type suite struct {
 func createTestSuite(t *testing.T) suite {
 	res := suite{}
 
-	app, _, _ := hApp.SetupApp(t, 2)
+	setUpAppResult := hApp.SetupApp(t, 2)
+	app := setUpAppResult.App
 	hApp.RequestFinalizeBlock(t, app, app.LastBlockHeight()+1)
 
 	res.App = app

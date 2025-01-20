@@ -26,7 +26,8 @@ type fixture struct {
 
 func initFixture(t *testing.T) *fixture {
 
-	app, _, _ := hApp.SetupApp(t, 1)
+	setUpAppResult := hApp.SetupApp(t, 1)
+	app := setUpAppResult.App
 	hApp.RequestFinalizeBlock(t, app, app.LastBlockHeight()+1)
 
 	ctx := app.NewContext(false)
