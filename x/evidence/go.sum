@@ -25,8 +25,8 @@ github.com/0xPolygon/cosmos-sdk/math v1.4.0 h1:2cXVfURXPAzOvuWbhJseo28QLCnZYnUz9
 github.com/0xPolygon/cosmos-sdk/math v1.4.0/go.mod h1:O5PkD4apz2jZs4zqFdTr16e1dcaQCc5z6lkEnrrppuk=
 github.com/0xPolygon/cosmos-sdk/store v1.1.2-0.20241126102051-89dc71d02611 h1:aU2c4vQffstBG94t524ep53PsLtnHDA4w2bH+A3A/E4=
 github.com/0xPolygon/cosmos-sdk/store v1.1.2-0.20241126102051-89dc71d02611/go.mod h1:pADXCBZJK5hHx5qhx5jsZQWNRPB3a7mEEZBCRfn9dEw=
-github.com/0xPolygon/heimdall-v2 v0.0.0-20241216112156-6a9cfc1a1411 h1:SId1aJL4tbq9k8TgpP8XisGPa6Nz5jixf5seqkZnZkA=
-github.com/0xPolygon/heimdall-v2 v0.0.0-20241216112156-6a9cfc1a1411/go.mod h1:LdqHmJXcPaELo1IfP0RwL8M5UsNmvwpG4+4jlF70/os=
+github.com/0xPolygon/heimdall-v2 v0.0.0-20250120065205-95de2e36b02f h1:XidT17j1o8t4RxDprlbiT3B3cJTtm0Md6gTSRzcHfXQ=
+github.com/0xPolygon/heimdall-v2 v0.0.0-20250120065205-95de2e36b02f/go.mod h1:LdqHmJXcPaELo1IfP0RwL8M5UsNmvwpG4+4jlF70/os=
 github.com/99designs/go-keychain v0.0.0-20191008050251-8e49817e8af4 h1:/vQbFIOMbk2FiG/kXiLl8BRyzTWDw7gX/Hz7Dd5eDMs=
 github.com/99designs/go-keychain v0.0.0-20191008050251-8e49817e8af4/go.mod h1:hN7oaIRCjzsZ2dE+yG5k+rsdt3qcwykqK6HVGcKwsw4=
 github.com/99designs/keyring v1.2.1 h1:tYLp1ULvO7i3fI5vE21ReQuj99QFSs7lGm0xWyJo87o=

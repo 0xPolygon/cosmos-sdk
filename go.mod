@@ -12,7 +12,7 @@ require (
 	cosmossdk.io/math v1.4.0
 	cosmossdk.io/store v1.1.1
 	cosmossdk.io/x/tx v0.13.5
-	github.com/0xPolygon/heimdall-v2 v0.0.0-20241216112156-6a9cfc1a1411
+	github.com/0xPolygon/heimdall-v2 v0.0.0-20250120065205-95de2e36b02f
 	github.com/99designs/keyring v1.2.1
 	github.com/bgentry/speakeasy v0.1.1-0.20220910012023-760eaf8b6816
 	github.com/bits-and-blooms/bitset v1.10.0

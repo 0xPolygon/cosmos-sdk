@@ -102,7 +102,8 @@ type suite struct {
 func createTestSuite(t *testing.T, genesisAccounts []authtypes.GenesisAccount) suite {
 	res := suite{}
 
-	app, _, _ := hApp.SetupApp(t, 1)
+	setUpAppResult := hApp.SetupApp(t, 1)
+	app := setUpAppResult.App
 	hApp.RequestFinalizeBlock(t, app, app.LastBlockHeight()+1)
 
 	res.App = app

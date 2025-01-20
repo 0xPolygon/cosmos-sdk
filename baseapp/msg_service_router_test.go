@@ -20,7 +20,8 @@ import (
 )
 
 func TestRegisterMsgService(t *testing.T) {
-	app, _, _ := hApp.SetupApp(t, 1)
+	setUpAppResult := hApp.SetupApp(t, 1)
+	app := setUpAppResult.App
 	hApp.RequestFinalizeBlock(t, app, app.LastBlockHeight()+1)
 
 	require.Panics(t, func() {
@@ -43,7 +44,8 @@ func TestRegisterMsgService(t *testing.T) {
 
 func TestRegisterMsgServiceTwice(t *testing.T) {
 	// Setup baseapp.
-	app, _, _ := hApp.SetupApp(t, 1)
+	setUpAppResult := hApp.SetupApp(t, 1)
+	app := setUpAppResult.App
 	hApp.RequestFinalizeBlock(t, app, app.LastBlockHeight()+1)
 
 	testdata.RegisterInterfaces(app.InterfaceRegistry())
@@ -67,7 +69,8 @@ func TestRegisterMsgServiceTwice(t *testing.T) {
 
 func TestHybridHandlerByMsgName(t *testing.T) {
 	// Setup baseapp and router.
-	app, _, _ := hApp.SetupApp(t, 1)
+	setUpAppResult := hApp.SetupApp(t, 1)
+	app := setUpAppResult.App
 	hApp.RequestFinalizeBlock(t, app, app.LastBlockHeight()+1)
 
 	testdata.RegisterInterfaces(app.InterfaceRegistry())
@@ -93,7 +96,8 @@ func TestHybridHandlerByMsgName(t *testing.T) {
 func TestMsgService(t *testing.T) {
 	priv, _, _ := testdata.KeyTestPubAddr()
 
-	app, _, _ := hApp.SetupApp(t, 1)
+	setUpAppResult := hApp.SetupApp(t, 1)
+	app := setUpAppResult.App
 	hApp.RequestFinalizeBlock(t, app, app.LastBlockHeight()+1)
 
 	ctx := app.NewContext(false)

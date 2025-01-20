@@ -95,7 +95,8 @@ func TestGRPCRouterHybridHandlers(t *testing.T) {
 
 func TestRegisterQueryServiceTwice(t *testing.T) {
 	// Setup baseapp.
-	app, _, _ := hApp.SetupApp(t, 1)
+	setUpAppResult := hApp.SetupApp(t, 1)
+	app := setUpAppResult.App
 	hApp.RequestFinalizeBlock(t, app, app.LastBlockHeight()+1)
 
 	// First time registering service shouldn't panic.
