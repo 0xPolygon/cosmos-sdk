@@ -609,7 +609,6 @@ func (app *BaseApp) ExtendVote(_ context.Context, req *abci.RequestExtendVote) (
 	resp, err = app.extendVote(ctx, req)
 	if err != nil {
 		app.logger.Error("failed to extend vote", "height", req.Height, "hash", fmt.Sprintf("%X", req.Hash), "err", err)
-		//return &abci.ResponseExtendVote{VoteExtension: []byte{}}, nil
 		return nil, err
 	}
 
