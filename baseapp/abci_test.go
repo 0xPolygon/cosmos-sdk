@@ -283,7 +283,6 @@ func TestABCI_FinalizeBlock_WithBeginAndEndBlocker(t *testing.T) {
 }
 
 func TestABCI_ExtendVote(t *testing.T) {
-	t.Skip("Fix this test to use heimdall v2 - https://polygon.atlassian.net/browse/POS-2540")
 	name := t.Name()
 	db := dbm.NewMemDB()
 	app := baseapp.NewBaseApp(name, log.NewTestLogger(t), db, nil)
@@ -333,9 +332,8 @@ func TestABCI_ExtendVote(t *testing.T) {
 	app.SetExtendVoteHandler(func(ctx sdk.Context, req *abci.RequestExtendVote) (*abci.ResponseExtendVote, error) {
 		return nil, errors.New("some error")
 	})
-	res, err = app.ExtendVote(context.Background(), &abci.RequestExtendVote{Height: 1000, Hash: []byte("thehash")})
-	require.NoError(t, err)
-	require.Len(t, res.VoteExtension, 0)
+	_, err = app.ExtendVote(context.Background(), &abci.RequestExtendVote{Height: 1000, Hash: []byte("thehash")})
+	require.ErrorContains(t, err, "some error")
 
 	// Verify Vote Extensions
 	_, err = app.VerifyVoteExtension(&abci.RequestVerifyVoteExtension{Height: 123, VoteExtension: []byte("1234567")})
@@ -1773,7 +1771,6 @@ func TestABCI_PrepareProposal_PanicRecovery(t *testing.T) {
 }
 
 func TestABCI_PrepareProposal_VoteExtensions(t *testing.T) {
-	t.Skip("Fix this test to use heimdall v2 - https://polygon.atlassian.net/browse/POS-2540")
 	// set up mocks
 	ctrl := gomock.NewController(t)
 	valStore := mock.NewMockValidatorStore(ctrl)
@@ -1826,9 +1823,10 @@ func TestABCI_PrepareProposal_VoteExtensions(t *testing.T) {
 		MaxTxBytes: 1000,
 		Height:     1, // this value can't be 0
 	}
-	resPrepareProposal, err := suite.baseApp.PrepareProposal(&reqPrepareProposal)
-	require.NoError(t, err)
-	require.Equal(t, 0, len(resPrepareProposal.Txs))
+	_, err = suite.baseApp.PrepareProposal(&reqPrepareProposal)
+	// Differed behaviour in forked SDK!
+	// All errors on PrepareProposal are now propagated to the caller
+	require.ErrorContains(t, err, "total voting power must be positive")
 
 	// now we try with vote extensions, a new tx should show up
 	marshalDelimitedFn := func(msg proto.Message) ([]byte, error) {
@@ -1872,7 +1870,7 @@ func TestABCI_PrepareProposal_VoteExtensions(t *testing.T) {
 			},
 		},
 	}
-	resPrepareProposal, err = suite.baseApp.PrepareProposal(&reqPrepareProposal)
+	resPrepareProposal, err := suite.baseApp.PrepareProposal(&reqPrepareProposal)
 	require.NoError(t, err)
 	require.Equal(t, 1, len(resPrepareProposal.Txs))
 
@@ -1895,9 +1893,11 @@ func TestABCI_PrepareProposal_VoteExtensions(t *testing.T) {
 			},
 		},
 	}
-	resPrepareProposal, err = suite.baseApp.PrepareProposal(&reqPrepareProposal)
-	require.NoError(t, err)
-	require.Equal(t, 0, len(resPrepareProposal.Txs))
+
+	// Differed behaviour in forked SDK!
+	// All errors on PrepareProposal are now propagated to the caller
+	_, err = suite.baseApp.PrepareProposal(&reqPrepareProposal)
+	require.ErrorContains(t, err, "insufficient cumulative voting power")
 }
 
 func TestABCI_ProcessProposal_PanicRecovery(t *testing.T) {
@@ -2061,7 +2061,6 @@ func TestBaseApp_PreBlocker(t *testing.T) {
 
 // TestBaseApp_VoteExtensions tests vote extensions using a price as an example.
 func TestBaseApp_VoteExtensions(t *testing.T) {
-	t.Skip("Fix this test to use heimdall v2 - https://polygon.atlassian.net/browse/POS-2540")
 	ctrl := gomock.NewController(t)
 	valStore := mock.NewMockValidatorStore(ctrl)
 
@@ -2232,30 +2231,21 @@ func TestBaseApp_VoteExtensions(t *testing.T) {
 		},
 	}
 
-	// add all VEs to the local last commit, which will make PrepareProposal fail
+	// add the rest of all VEs to the local last commit, which will make PrepareProposal fail
 	// because it's not expecting to receive vote extensions when height == VoteExtensionsEnableHeight
-	for _, ve := range allVEs {
+	for _, ve := range allVEs[1:] {
 		prepPropReq.LocalLastCommit.Votes = append(prepPropReq.LocalLastCommit.Votes, abci.ExtendedVoteInfo{
 			VoteExtension:      ve,
 			BlockIdFlag:        cmtproto.BlockIDFlagCommit,
 			ExtensionSignature: []byte{}, // doesn't matter, it's just to make the next PrepareProposal fail
 		})
 	}
-	resp, err := suite.baseApp.PrepareProposal(prepPropReq)
-	require.Len(t, resp.Txs, 0) // this is actually a failure, but we don't want to halt the chain
-	require.NoError(t, err)     // we don't error here
+	_, err = suite.baseApp.PrepareProposal(prepPropReq)
+	require.ErrorContains(t, err, "vote address  is duplicated")
 
 	prepPropReq.LocalLastCommit.Votes = []abci.ExtendedVoteInfo{} // reset votes
-	resp, err = suite.baseApp.PrepareProposal(prepPropReq)
-	require.NoError(t, err)
-	require.Len(t, resp.Txs, 0)
-
-	procPropRes, err := suite.baseApp.ProcessProposal(&abci.RequestProcessProposal{Height: 1, Txs: resp.Txs})
-	require.NoError(t, err)
-	require.Equal(t, abci.ResponseProcessProposal_ACCEPT, procPropRes.Status)
-
-	_, err = suite.baseApp.FinalizeBlock(&abci.RequestFinalizeBlock{Height: 1, Txs: resp.Txs})
-	require.NoError(t, err)
+	_, err = suite.baseApp.PrepareProposal(prepPropReq)
+	require.ErrorContains(t, err, "total voting power must be positive")
 
 	// The average price will be nil during the first block, given that we don't have
 	// any vote extensions on block 1 in PrepareProposal
@@ -2293,11 +2283,11 @@ func TestBaseApp_VoteExtensions(t *testing.T) {
 	}
 
 	prepPropReq.Height = 2
-	resp, err = suite.baseApp.PrepareProposal(prepPropReq)
+	resp, err := suite.baseApp.PrepareProposal(prepPropReq)
 	require.NoError(t, err)
 	require.Len(t, resp.Txs, 10)
 
-	procPropRes, err = suite.baseApp.ProcessProposal(&abci.RequestProcessProposal{Height: 2, Txs: resp.Txs})
+	procPropRes, err := suite.baseApp.ProcessProposal(&abci.RequestProcessProposal{Height: 2, Txs: resp.Txs})
 	require.NoError(t, err)
 	require.Equal(t, abci.ResponseProcessProposal_ACCEPT, procPropRes.Status)
 
