@@ -2,6 +2,7 @@ package baseapp
 
 import (
 	cmtproto "github.com/cometbft/cometbft/api/cometbft/types/v1"
+	cmttypes "github.com/cometbft/cometbft/types"
 
 	coreheader "cosmossdk.io/core/header"
 	errorsmod "cosmossdk.io/errors"
@@ -58,17 +59,21 @@ func (app *BaseApp) NewContextLegacy(isCheckTx bool, header cmtproto.Header) sdk
 	return sdk.NewContext(app.finalizeBlockState.ms, false, app.logger).WithBlockHeader(header)
 }
 
-// NewContext returns a new sdk.Context with a empty header
+// NewContext returns a new sdk.Context with an empty header
 func (app *BaseApp) NewContext(isCheckTx bool) sdk.Context {
 	return app.NewContextLegacy(isCheckTx, cmtproto.Header{})
 }
 
 func (app *BaseApp) NewUncachedContext(isCheckTx bool, header cmtproto.Header) sdk.Context {
+	cmtHeader, _ := cmttypes.HeaderFromProto(&header)
 	return sdk.NewContext(app.cms, isCheckTx, app.logger).
 		WithBlockHeader(header).
 		WithHeaderInfo(coreheader.Info{
-			Height: header.Height,
-			Time:   header.Time,
+			AppHash: cmtHeader.AppHash,
+			Hash:    cmtHeader.Hash(),
+			ChainID: cmtHeader.ChainID,
+			Height:  cmtHeader.Height,
+			Time:    cmtHeader.Time,
 		})
 }
 

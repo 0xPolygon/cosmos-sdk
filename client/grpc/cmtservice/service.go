@@ -4,6 +4,7 @@ import (
 	"context"
 
 	abci "github.com/cometbft/cometbft/api/cometbft/abci/v1"
+	v1 "github.com/cometbft/cometbft/api/cometbft/types/v1"
 	gogogrpc "github.com/cosmos/gogoproto/grpc"
 	gogoprotoany "github.com/cosmos/gogoproto/types/any"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
@@ -109,7 +110,7 @@ func (s queryServer) GetBlockByHeight(ctx context.Context, req *GetBlockByHeight
 
 	return &GetBlockByHeightResponse{
 		BlockId:  &protoBlockID,
-		Block:    protoBlock,
+		Block:    &v1.Block{}, // fill with empty block to reduce response size
 		SdkBlock: sdkBlock,
 	}, nil
 }
@@ -227,14 +228,17 @@ func (s queryServer) GetNodeInfo(ctx context.Context, _ *GetNodeInfoRequest) (*G
 	resp := GetNodeInfoResponse{
 		DefaultNodeInfo: protoNodeInfo,
 		ApplicationVersion: &VersionInfo{
-			AppName:          nodeInfo.AppName,
-			Name:             nodeInfo.Name,
-			GitCommit:        nodeInfo.GitCommit,
-			GoVersion:        nodeInfo.GoVersion,
-			Version:          nodeInfo.Version,
-			BuildTags:        nodeInfo.BuildTags,
-			BuildDeps:        deps,
-			CosmosSdkVersion: nodeInfo.CosmosSdkVersion,
+			AppName:            nodeInfo.AppName,
+			Name:               nodeInfo.Name,
+			GitCommit:          nodeInfo.GitCommit,
+			GoVersion:          nodeInfo.GoVersion,
+			Version:            nodeInfo.Version,
+			BuildTags:          nodeInfo.BuildTags,
+			BuildDeps:          deps,
+			CosmosSdkVersion:   nodeInfo.CosmosSdkVersion,
+			RuntimeVersion:     nodeInfo.RuntimeVersion,
+			CometServerVersion: nodeInfo.CometServerVersion,
+			StfVersion:         nodeInfo.StfVersion,
 		},
 	}
 	return &resp, nil

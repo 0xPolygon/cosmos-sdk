@@ -19,9 +19,10 @@ var (
 
 	// jsonMarshalOptions configures JSON marshaling for protobuf messages.
 	jsonMarshalOptions = protojson.MarshalOptions{
-		Indent:         "",
-		UseProtoNames:  true,
-		UseEnumNumbers: false,
+		Indent:          "",
+		UseProtoNames:   true,
+		UseEnumNumbers:  false,
+		EmitUnpopulated: true,
 	}
 
 	// textMarshalOptions
@@ -114,7 +115,7 @@ func encodeTextTx(tx Tx) ([]byte, error) {
 	return textMarshalOptions.Marshal(wTx.Tx)
 }
 
-// decodeJsonTx decodes transaction bytes into an apitx.Tx structure using JSON format.
+// decodeTextTx decodes transaction bytes into an apitx.Tx structure using TEXT format.
 func decodeTextTx(cdc codec.BinaryCodec, decoder Decoder) txDecoder {
 	return func(txBytes []byte) (Tx, error) {
 		jsonTx := new(txv1beta1.Tx)

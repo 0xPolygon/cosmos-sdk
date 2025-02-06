@@ -5,16 +5,12 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"sync"
 	"time"
-
-	"golang.org/x/sync/errgroup"
 
 	corelog "cosmossdk.io/core/log"
 	corestore "cosmossdk.io/core/store"
 	"cosmossdk.io/store/v2"
 	"cosmossdk.io/store/v2/metrics"
-	"cosmossdk.io/store/v2/migration"
 	"cosmossdk.io/store/v2/proof"
 	"cosmossdk.io/store/v2/pruning"
 )
@@ -34,9 +30,6 @@ type Store struct {
 	// holds the db instance for closing it
 	dbCloser io.Closer
 
-	// stateStorage reflects the state storage backend
-	stateStorage store.VersionedWriter
-
 	// stateCommitment reflects the state commitment (SC) backend
 	stateCommitment store.Committer
 
@@ -48,17 +41,6 @@ type Store struct {
 
 	// pruningManager reflects the pruning manager used to prune state of the SS and SC backends
 	pruningManager *pruning.Manager
-
-	// Migration related fields
-	// migrationManager reflects the migration manager used to migrate state from v1 to v2
-	migrationManager *migration.Manager
-	// chChangeset reflects the channel used to send the changeset to the migration manager
-	chChangeset chan *migration.VersionedChangeset
-	// chDone reflects the channel used to signal the migration manager that the migration
-	// is done
-	chDone chan struct{}
-	// isMigrating reflects whether the store is currently migrating
-	isMigrating bool
 }
 
 // New creates a new root Store instance.
@@ -67,32 +49,25 @@ type Store struct {
 func New(
 	dbCloser io.Closer,
 	logger corelog.Logger,
-	ss store.VersionedWriter,
 	sc store.Committer,
 	pm *pruning.Manager,
-	mm *migration.Manager,
 	m metrics.StoreMetrics,
 ) (store.RootStore, error) {
 	return &Store{
-		dbCloser:         dbCloser,
-		logger:           logger,
-		stateStorage:     ss,
-		stateCommitment:  sc,
-		pruningManager:   pm,
-		migrationManager: mm,
-		telemetry:        m,
-		isMigrating:      mm != nil,
+		dbCloser:        dbCloser,
+		logger:          logger,
+		stateCommitment: sc,
+		pruningManager:  pm,
+		telemetry:       m,
 	}, nil
 }
 
 // Close closes the store and resets all internal fields. Note, Close() is NOT
 // idempotent and should only be called once.
 func (s *Store) Close() (err error) {
-	err = errors.Join(err, s.stateStorage.Close())
 	err = errors.Join(err, s.stateCommitment.Close())
 	err = errors.Join(err, s.dbCloser.Close())
 
-	s.stateStorage = nil
 	s.stateCommitment = nil
 	s.lastCommitInfo = nil
 
@@ -113,39 +88,14 @@ func (s *Store) SetInitialVersion(v uint64) error {
 // and the version exists in the state commitment, since the state storage will be
 // synced during migration.
 func (s *Store) getVersionedReader(version uint64) (store.VersionedReader, error) {
-	isExist, err := s.stateStorage.VersionExists(version)
+	isExist, err := s.stateCommitment.VersionExists(version)
 	if err != nil {
 		return nil, err
 	}
 	if isExist {
-		return s.stateStorage, nil
+		return s.stateCommitment, nil
 	}
-
-	if vReader, ok := s.stateCommitment.(store.VersionedReader); ok {
-		isExist, err := vReader.VersionExists(version)
-		if err != nil {
-			return nil, err
-		}
-		if isExist {
-			return vReader, nil
-		}
-	}
-
 	return nil, fmt.Errorf("version %d does not exist", version)
-}
-
-func (s *Store) StateLatest() (uint64, corestore.ReaderMap, error) {
-	v, err := s.GetLatestVersion()
-	if err != nil {
-		return 0, nil, err
-	}
-
-	vReader, err := s.getVersionedReader(v)
-	if err != nil {
-		return 0, nil, err
-	}
-
-	return v, NewReaderMap(v, vReader), nil
 }
 
 // StateAt returns a read-only view of the state at a given version.
@@ -154,8 +104,17 @@ func (s *Store) StateAt(v uint64) (corestore.ReaderMap, error) {
 	return NewReaderMap(v, vReader), err
 }
 
-func (s *Store) GetStateStorage() store.VersionedWriter {
-	return s.stateStorage
+func (s *Store) StateLatest() (uint64, corestore.ReaderMap, error) {
+	v, err := s.GetLatestVersion()
+	if err != nil {
+		return 0, nil, err
+	}
+	vReader, err := s.getVersionedReader(v)
+	if err != nil {
+		return 0, nil, err
+	}
+
+	return v, NewReaderMap(v, vReader), nil
 }
 
 func (s *Store) GetStateCommitment() store.Committer {
@@ -167,7 +126,7 @@ func (s *Store) GetStateCommitment() store.Committer {
 // latest version set, which is based off of the SC view.
 func (s *Store) LastCommitID() (proof.CommitID, error) {
 	if s.lastCommitInfo != nil {
-		return s.lastCommitInfo.CommitID(), nil
+		return *s.lastCommitInfo.CommitID(), nil
 	}
 
 	latestVersion, err := s.stateCommitment.GetLatestVersion()
@@ -177,7 +136,7 @@ func (s *Store) LastCommitID() (proof.CommitID, error) {
 	// if the latest version is 0, we return a CommitID with version 0 and a hash of an empty byte slice
 	bz := sha256.Sum256([]byte{})
 
-	return proof.CommitID{Version: latestVersion, Hash: bz[:]}, nil
+	return proof.CommitID{Version: int64(latestVersion), Hash: bz[:]}, nil
 }
 
 // GetLatestVersion returns the latest version based on the latest internal
@@ -189,38 +148,17 @@ func (s *Store) GetLatestVersion() (uint64, error) {
 		return 0, err
 	}
 
-	return lastCommitID.Version, nil
+	return uint64(lastCommitID.Version), nil
 }
 
 func (s *Store) Query(storeKey []byte, version uint64, key []byte, prove bool) (store.QueryResult, error) {
 	if s.telemetry != nil {
-		now := time.Now()
-		defer s.telemetry.MeasureSince(now, "root_store", "query")
+		defer s.telemetry.MeasureSince(time.Now(), "root_store", "query")
 	}
 
-	var val []byte
-	var err error
-	if s.isMigrating { // if we're migrating, we need to query the SC backend
-		val, err = s.stateCommitment.Get(storeKey, version, key)
-		if err != nil {
-			return store.QueryResult{}, fmt.Errorf("failed to query SC store: %w", err)
-		}
-	} else {
-		val, err = s.stateStorage.Get(storeKey, version, key)
-		if err != nil {
-			return store.QueryResult{}, fmt.Errorf("failed to query SS store: %w", err)
-		}
-		if val == nil {
-			// fallback to querying SC backend if not found in SS backend
-			//
-			// Note, this should only used during migration, i.e. while SS and IAVL v2
-			// are being asynchronously synced.
-			bz, scErr := s.stateCommitment.Get(storeKey, version, key)
-			if scErr != nil {
-				return store.QueryResult{}, fmt.Errorf("failed to query SC store: %w", scErr)
-			}
-			val = bz
-		}
+	val, err := s.stateCommitment.Get(storeKey, version, key)
+	if err != nil {
+		return store.QueryResult{}, fmt.Errorf("failed to query SC store: %w", err)
 	}
 
 	result := store.QueryResult{
@@ -241,8 +179,7 @@ func (s *Store) Query(storeKey []byte, version uint64, key []byte, prove bool) (
 
 func (s *Store) LoadLatestVersion() error {
 	if s.telemetry != nil {
-		now := time.Now()
-		defer s.telemetry.MeasureSince(now, "root_store", "load_latest_version")
+		defer s.telemetry.MeasureSince(time.Now(), "root_store", "load_latest_version")
 	}
 
 	lv, err := s.GetLatestVersion()
@@ -250,16 +187,23 @@ func (s *Store) LoadLatestVersion() error {
 		return err
 	}
 
-	return s.loadVersion(lv, nil)
+	return s.loadVersion(lv, nil, false)
 }
 
 func (s *Store) LoadVersion(version uint64) error {
 	if s.telemetry != nil {
-		now := time.Now()
-		defer s.telemetry.MeasureSince(now, "root_store", "load_version")
+		defer s.telemetry.MeasureSince(time.Now(), "root_store", "load_version")
 	}
 
-	return s.loadVersion(version, nil)
+	return s.loadVersion(version, nil, false)
+}
+
+func (s *Store) LoadVersionForOverwriting(version uint64) error {
+	if s.telemetry != nil {
+		defer s.telemetry.MeasureSince(time.Now(), "root_store", "load_version_for_overwriting")
+	}
+
+	return s.loadVersion(version, nil, true)
 }
 
 // LoadVersionAndUpgrade implements the UpgradeableStore interface.
@@ -269,45 +213,33 @@ func (s *Store) LoadVersionAndUpgrade(version uint64, upgrades *corestore.StoreU
 	if upgrades == nil {
 		return errors.New("upgrades cannot be nil")
 	}
-
 	if s.telemetry != nil {
 		defer s.telemetry.MeasureSince(time.Now(), "root_store", "load_version_and_upgrade")
 	}
 
-	if s.isMigrating {
-		return errors.New("cannot upgrade while migrating")
-	}
-
-	if err := s.loadVersion(version, upgrades); err != nil {
+	if err := s.loadVersion(version, upgrades, true); err != nil {
 		return err
-	}
-
-	// if the state storage implements the UpgradableDatabase interface, prune the
-	// deleted store keys
-	upgradableDatabase, ok := s.stateStorage.(store.UpgradableDatabase)
-	if ok {
-		if err := upgradableDatabase.PruneStoreKeys(upgrades.Deleted, version); err != nil {
-			return fmt.Errorf("failed to prune store keys %v: %w", upgrades.Deleted, err)
-		}
 	}
 
 	return nil
 }
 
-func (s *Store) loadVersion(v uint64, upgrades *corestore.StoreUpgrades) error {
+func (s *Store) loadVersion(v uint64, upgrades *corestore.StoreUpgrades, overrideAfter bool) error {
 	s.logger.Debug("loading version", "version", v)
 
 	if upgrades == nil {
-		if err := s.stateCommitment.LoadVersion(v); err != nil {
-			return fmt.Errorf("failed to load SC version %d: %w", v, err)
+		if !overrideAfter {
+			if err := s.stateCommitment.LoadVersion(v); err != nil {
+				return fmt.Errorf("failed to load SC version %d: %w", v, err)
+			}
+		} else {
+			if err := s.stateCommitment.LoadVersionForOverwriting(v); err != nil {
+				return fmt.Errorf("failed to load SC version %d: %w", v, err)
+			}
 		}
 	} else {
 		// if upgrades are provided, we need to load the version and apply the upgrades
-		upgradeableStore, ok := s.stateCommitment.(store.UpgradeableStore)
-		if !ok {
-			return errors.New("SC store does not support upgrades")
-		}
-		if err := upgradeableStore.LoadVersionAndUpgrade(v, upgrades); err != nil {
+		if err := s.stateCommitment.LoadVersionAndUpgrade(v, upgrades); err != nil {
 			return fmt.Errorf("failed to load SS version with upgrades %d: %w", v, err)
 		}
 	}
@@ -317,11 +249,6 @@ func (s *Store) loadVersion(v uint64, upgrades *corestore.StoreUpgrades) error {
 	s.lastCommitInfo, err = s.stateCommitment.GetCommitInfo(v)
 	if err != nil {
 		return fmt.Errorf("failed to get commit info for version %d: %w", v, err)
-	}
-
-	// if we're migrating, we need to start the migration process
-	if s.isMigrating {
-		s.startMigration()
 	}
 
 	return nil
@@ -334,11 +261,9 @@ func (s *Store) loadVersion(v uint64, upgrades *corestore.StoreUpgrades) error {
 func (s *Store) Commit(cs *corestore.Changeset) ([]byte, error) {
 	if s.telemetry != nil {
 		now := time.Now()
-		defer s.telemetry.MeasureSince(now, "root_store", "commit")
-	}
-
-	if err := s.handleMigration(cs); err != nil {
-		return nil, err
+		defer func() {
+			s.telemetry.MeasureSince(now, "root_store", "commit")
+		}()
 	}
 
 	// signal to the pruning manager that a new version is about to be committed
@@ -346,106 +271,29 @@ func (s *Store) Commit(cs *corestore.Changeset) ([]byte, error) {
 	// background pruning process (iavl v1 for example) which must be paused during the commit
 	s.pruningManager.PausePruning()
 
-	eg := new(errgroup.Group)
-
-	// if migrating the changeset will be sent to migration manager to fill SS
-	// otherwise commit to SS async here
-	if !s.isMigrating {
-		eg.Go(func() error {
-			if err := s.stateStorage.ApplyChangeset(cs); err != nil {
-				return fmt.Errorf("failed to commit SS: %w", err)
-			}
-
-			return nil
-		})
+	st := time.Now()
+	if err := s.stateCommitment.WriteChangeset(cs); err != nil {
+		return nil, fmt.Errorf("failed to write batch to SC store: %w", err)
 	}
-
-	// commit SC async
-	var cInfo *proof.CommitInfo
-	eg.Go(func() error {
-		if err := s.stateCommitment.WriteChangeset(cs); err != nil {
-			return fmt.Errorf("failed to write batch to SC store: %w", err)
-		}
-		var scErr error
-		cInfo, scErr = s.stateCommitment.Commit(cs.Version)
-		if scErr != nil {
-			return fmt.Errorf("failed to commit SC store: %w", scErr)
-		}
-		return nil
-	})
-
-	if err := eg.Wait(); err != nil {
-		return nil, err
+	writeDur := time.Since(st)
+	st = time.Now()
+	cInfo, err := s.stateCommitment.Commit(cs.Version)
+	if err != nil {
+		return nil, fmt.Errorf("failed to commit SC store: %w", err)
 	}
+	s.logger.Warn(fmt.Sprintf("commit version %d write=%s commit=%s", cs.Version, writeDur, time.Since(st)))
 
-	if cInfo.Version != cs.Version {
+	if cInfo.Version != int64(cs.Version) {
 		return nil, fmt.Errorf("commit version mismatch: got %d, expected %d", cInfo.Version, cs.Version)
 	}
 	s.lastCommitInfo = cInfo
 
 	// signal to the pruning manager that the commit is done
-	if err := s.pruningManager.ResumePruning(s.lastCommitInfo.Version); err != nil {
+	if err := s.pruningManager.ResumePruning(uint64(s.lastCommitInfo.Version)); err != nil {
 		s.logger.Error("failed to signal commit done to pruning manager", "err", err)
 	}
 
 	return s.lastCommitInfo.Hash(), nil
-}
-
-// startMigration starts a migration process to migrate the RootStore/v1 to the
-// SS and SC backends of store/v2 and initializes the channels.
-// It runs in a separate goroutine and replaces the current RootStore with the
-// migrated new backends once the migration is complete.
-//
-// NOTE: This method should only be called once after loadVersion.
-func (s *Store) startMigration() {
-	// buffer at most 1 changeset, if the receiver is behind attempting to buffer
-	// more than 1 will block.
-	s.chChangeset = make(chan *migration.VersionedChangeset, 1)
-	// it is used to signal the migration manager that the migration is done
-	s.chDone = make(chan struct{})
-
-	mtx := sync.Mutex{}
-	mtx.Lock()
-	go func() {
-		version := s.lastCommitInfo.Version
-		s.logger.Info("starting migration", "version", version)
-		mtx.Unlock()
-		if err := s.migrationManager.Start(version, s.chChangeset, s.chDone); err != nil {
-			s.logger.Error("failed to start migration", "err", err)
-		}
-	}()
-
-	// wait for the migration manager to start
-	mtx.Lock()
-	defer mtx.Unlock()
-}
-
-func (s *Store) handleMigration(cs *corestore.Changeset) error {
-	if s.isMigrating {
-		// if the migration manager has already migrated to the version, close the
-		// channels and replace the state commitment
-		if s.migrationManager.GetMigratedVersion() == s.lastCommitInfo.Version {
-			close(s.chDone)
-			close(s.chChangeset)
-			s.isMigrating = false
-			// close the old state commitment and replace it with the new one
-			if err := s.stateCommitment.Close(); err != nil {
-				return fmt.Errorf("failed to close the old SC store: %w", err)
-			}
-			newStateCommitment := s.migrationManager.GetStateCommitment()
-			if newStateCommitment != nil {
-				s.stateCommitment = newStateCommitment
-			}
-			if err := s.migrationManager.Close(); err != nil {
-				return fmt.Errorf("failed to close migration manager: %w", err)
-			}
-			s.logger.Info("migration completed", "version", s.lastCommitInfo.Version)
-		} else {
-			// queue the next changeset to the migration manager
-			s.chChangeset <- &migration.VersionedChangeset{Version: s.lastCommitInfo.Version + 1, Changeset: cs}
-		}
-	}
-	return nil
 }
 
 func (s *Store) Prune(version uint64) error {

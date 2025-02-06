@@ -11,7 +11,6 @@ This includes tools for development, operating a node, and ease of use of a Cosm
 
 * [Cosmovisor](./01-cosmovisor.md)
 * [Confix](./02-confix.md)
-* [Hubl](./03-hubl.md)
 * [Rosetta](https://docs.cosmos.network/main/run-node/rosetta)
 
 ## Other Tools
@@ -20,7 +19,8 @@ This includes tools for development, operating a node, and ease of use of a Cosm
 
 ## External Tools
 
-This section highlights tools that are not maintained by the SDK team, but are useful for Cosmos SDK development.
+This section highlights tools that are not maintained by the SDK team, but are useful for Cosmos SDK operations and development.
 
+* [Blazar](https://github.com/ChorusOne/blazar)
 * [Ignite](https://docs.ignite.com)
 * [Spawn](https://github.com/rollchains/spawn)
