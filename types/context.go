@@ -92,6 +92,9 @@ func (c Context) CometInfo() comet.Info                         { return c.comet
 func (c Context) HeaderInfo() header.Info                       { return c.headerInfo }
 
 // BlockHeader returns the header by value.
+// Note, only ChainID, Time and Height are always filled by baseapp.
+// In finalize block, the proposer address, validator hash and app hash are also filled.
+// Use CometInfo service and/or the Consensus Keeper for getting more information.
 func (c Context) BlockHeader() cmtproto.Header {
 	return c.header
 }
@@ -251,7 +254,7 @@ func (c Context) WithIsCheckTx(isCheckTx bool) Context {
 	return c
 }
 
-// WithIsRecheckTx called with true will also set true on checkTx in order to
+// WithIsReCheckTx called with true will also set true on checkTx in order to
 // enforce the invariant that if recheckTx = true then checkTx = true as well.
 func (c Context) WithIsReCheckTx(isRecheckTx bool) Context {
 	if isRecheckTx {
