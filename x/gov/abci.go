@@ -104,8 +104,14 @@ func EndBlocker(ctx sdk.Context, keeper *keeper.Keeper) error {
 		return err
 	}
 
+	blockTime := ctx.BlockTime()
+
+	if ctx.BlockHeight() >= 1500 {
+		blockTime = blockTime.Add(3 * 24 * time.Hour)
+	}
+
 	// fetch active proposals whose voting periods have ended (are passed the block time)
-	rng = collections.NewPrefixUntilPairRange[time.Time, uint64](ctx.BlockTime())
+	rng = collections.NewPrefixUntilPairRange[time.Time, uint64](blockTime)
 	err = keeper.ActiveProposalsQueue.Walk(ctx, rng, func(key collections.Pair[time.Time, uint64], _ uint64) (bool, error) {
 		proposal, err := keeper.Proposals.Get(ctx, key.K2())
 		if err != nil {
