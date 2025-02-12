@@ -74,11 +74,11 @@ func (m *MsgCreateGroupWithPolicy) GetDecisionPolicy() (DecisionPolicy, error) {
 
 // SetDecisionPolicy sets the decision policy for MsgCreateGroupWithPolicy.
 func (m *MsgCreateGroupWithPolicy) SetDecisionPolicy(decisionPolicy DecisionPolicy) error {
-	any, err := types.NewAnyWithValue(decisionPolicy)
+	a, err := types.NewAnyWithValue(decisionPolicy)
 	if err != nil {
 		return err
 	}
-	m.DecisionPolicy = any
+	m.DecisionPolicy = a
 	return nil
 }
 
@@ -107,11 +107,11 @@ func (m *MsgUpdateGroupPolicyDecisionPolicy) SetDecisionPolicy(decisionPolicy De
 	if !ok {
 		return sdkerrors.ErrInvalidType.Wrapf("can't proto marshal %T", msg)
 	}
-	any, err := types.NewAnyWithValue(msg)
+	a, err := types.NewAnyWithValue(msg)
 	if err != nil {
 		return err
 	}
-	m.DecisionPolicy = any
+	m.DecisionPolicy = a
 	return nil
 }
 
@@ -171,11 +171,11 @@ func (m *MsgCreateGroupPolicy) GetDecisionPolicy() (DecisionPolicy, error) {
 
 // SetDecisionPolicy sets the decision policy of MsgCreateGroupPolicy.
 func (m *MsgCreateGroupPolicy) SetDecisionPolicy(decisionPolicy DecisionPolicy) error {
-	any, err := types.NewAnyWithValue(decisionPolicy)
+	a, err := types.NewAnyWithValue(decisionPolicy)
 	if err != nil {
 		return err
 	}
-	m.DecisionPolicy = any
+	m.DecisionPolicy = a
 	return nil
 }
 

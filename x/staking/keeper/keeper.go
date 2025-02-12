@@ -3,8 +3,8 @@ package keeper
 import (
 	"context"
 	"fmt"
-	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 
+	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 	abci "github.com/cometbft/cometbft/abci/types"
 
 	addresscodec "cosmossdk.io/core/address"
@@ -178,13 +178,15 @@ func (k Keeper) GetValidatorUpdates(ctx context.Context) ([]abci.ValidatorUpdate
 //  They are present here just to be able to build cosmos-sdk (simapp/app.go uses the staking keeper) and run some tests
 
 // GetValIdFromAddress returns a validator's id given its address string
+//
+//nolint:revive
 func (k Keeper) GetValIdFromAddress(context context.Context, address string) (uint64, error) {
 	// HV2: returning zero value and nil error
 	return 0, nil
 }
 
 // IterateCurrentValidatorsAndApplyFn iterate through current validators
-func (k Keeper) IterateCurrentValidatorsAndApplyFn(ctx context.Context, f func(validator stakeTypes.Validator) bool) error {
+func (k Keeper) IterateCurrentValidatorsAndApplyFn(_ context.Context, _ func(validator stakeTypes.Validator) bool) error {
 	// HV2: returning nil error
 	return nil
 }

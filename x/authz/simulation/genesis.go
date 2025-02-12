@@ -47,12 +47,12 @@ func generateRandomGrant(r *rand.Rand) *codectypes.Any {
 }
 
 func newAnyAuthorization(a authz.Authorization) *codectypes.Any {
-	any, err := codectypes.NewAnyWithValue(a)
+	an, err := codectypes.NewAnyWithValue(a)
 	if err != nil {
 		panic(err)
 	}
 
-	return any
+	return an
 }
 
 // RandomizedGenState generates a random GenesisState for authz.

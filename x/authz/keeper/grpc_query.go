@@ -48,7 +48,7 @@ func (k Keeper) Grants(ctx context.Context, req *authz.QueryGrantsRequest) (*aut
 
 		authorizationAny, err := codectypes.NewAnyWithValue(authorization)
 		if err != nil {
-			return nil, status.Errorf(codes.Internal, err.Error())
+			return nil, status.Errorf(codes.Internal, "%s", err.Error())
 		}
 		return &authz.QueryGrantsResponse{
 			Grants: []*authz.Grant{{
@@ -62,7 +62,7 @@ func (k Keeper) Grants(ctx context.Context, req *authz.QueryGrantsRequest) (*aut
 	key := grantStoreKey(grantee, granter, "")
 	grantsStore := prefix.NewStore(store, key)
 
-	authorizations, pageRes, err := query.GenericFilteredPaginate(k.cdc, grantsStore, req.Pagination, func(key []byte, auth *authz.Grant) (*authz.Grant, error) {
+	authorizations, pageRes, err := query.GenericFilteredPaginate(k.cdc, grantsStore, req.Pagination, func(_ []byte, auth *authz.Grant) (*authz.Grant, error) {
 		auth1, err := auth.GetAuthorization()
 		if err != nil {
 			return nil, err
@@ -70,7 +70,7 @@ func (k Keeper) Grants(ctx context.Context, req *authz.QueryGrantsRequest) (*aut
 
 		authorizationAny, err := codectypes.NewAnyWithValue(auth1)
 		if err != nil {
-			return nil, status.Errorf(codes.Internal, err.Error())
+			return nil, status.Errorf(codes.Internal, "%s", err.Error())
 		}
 		return &authz.Grant{
 			Authorization: authorizationAny,
@@ -109,16 +109,16 @@ func (k Keeper) GranterGrants(ctx context.Context, req *authz.QueryGranterGrants
 			return nil, err
 		}
 
-		any, err := codectypes.NewAnyWithValue(auth1)
+		an, err := codectypes.NewAnyWithValue(auth1)
 		if err != nil {
-			return nil, status.Errorf(codes.Internal, err.Error())
+			return nil, status.Errorf(codes.Internal, "%s", err.Error())
 		}
 
 		grantee := firstAddressFromGrantStoreKey(key)
 		return &authz.GrantAuthorization{
 			Granter:       req.Granter,
 			Grantee:       grantee.String(),
-			Authorization: any,
+			Authorization: an,
 			Expiration:    auth.Expiration,
 		}, nil
 	}, func() *authz.Grant {
@@ -160,7 +160,7 @@ func (k Keeper) GranteeGrants(ctx context.Context, req *authz.QueryGranteeGrants
 
 		authorizationAny, err := codectypes.NewAnyWithValue(auth1)
 		if err != nil {
-			return nil, status.Errorf(codes.Internal, err.Error())
+			return nil, status.Errorf(codes.Internal, "%s", err.Error())
 		}
 
 		return &authz.GrantAuthorization{

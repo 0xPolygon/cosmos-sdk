@@ -9,7 +9,7 @@ import (
 )
 
 func FuzzCryptoTypesCompactbitarrayMarshalUnmarshal(f *testing.F) {
-	f.Fuzz(func(t *testing.T, data []byte) {
+	f.Fuzz(func(_ *testing.T, data []byte) {
 		cba, err := types.CompactUnmarshal(data)
 		if err != nil {
 			return

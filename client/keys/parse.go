@@ -33,7 +33,7 @@ type bech32Output struct {
 	Formats []string `json:"formats"`
 }
 
-func newBech32Output(config *sdk.Config, bs []byte) bech32Output {
+func newBech32Output(_ *sdk.Config, bs []byte) bech32Output {
 	out := bech32Output{Formats: make([]string, 1)}
 	bech32Addr, err := bech32.ConvertAndEncode("", bs)
 	if err != nil {

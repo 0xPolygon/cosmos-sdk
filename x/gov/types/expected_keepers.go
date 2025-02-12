@@ -3,10 +3,11 @@ package types
 import (
 	"context"
 
-	addresscodec "cosmossdk.io/core/address"
-	sdk "github.com/cosmos/cosmos-sdk/types"
-
 	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
+
+	addresscodec "cosmossdk.io/core/address"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 // ParamSubspace defines the expected Subspace interface for parameters (noalias)

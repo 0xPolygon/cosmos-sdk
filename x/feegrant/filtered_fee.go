@@ -30,19 +30,19 @@ func (a *AllowedMsgAllowance) UnpackInterfaces(unpacker types.AnyUnpacker) error
 	return unpacker.UnpackAny(a.Allowance, &allowance)
 }
 
-// NewAllowedMsgFeeAllowance creates new filtered fee allowance.
+// NewAllowedMsgAllowance creates new filtered fee allowance.
 func NewAllowedMsgAllowance(allowance FeeAllowanceI, allowedMsgs []string) (*AllowedMsgAllowance, error) {
 	msg, ok := allowance.(proto.Message)
 	if !ok {
 		return nil, errorsmod.Wrapf(sdkerrors.ErrPackAny, "cannot proto marshal %T", msg)
 	}
-	any, err := types.NewAnyWithValue(msg)
+	a, err := types.NewAnyWithValue(msg)
 	if err != nil {
 		return nil, err
 	}
 
 	return &AllowedMsgAllowance{
-		Allowance:       any,
+		Allowance:       a,
 		AllowedMessages: allowedMsgs,
 	}, nil
 }

@@ -1,3 +1,4 @@
+# TODO HV2: remove GIT_TERMINAL_PROMPT, GOPRIVATE and GH_ACCESS_TOKEN vars once heimdall-v2 is a public repo
 name: Govuln
 on: [ push, pull_request ]
 
@@ -19,9 +20,5 @@ jobs:
             go.sum
             Makefile
       - name: govulncheck
-        env:
-          GIT_TERMINAL_PROMPT: 1
-          GOPRIVATE: github.com/0xPolygon/heimdall-v2
-          GH_PAT_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
         run: make vulncheck
         if: "env.GIT_DIFF != ''"

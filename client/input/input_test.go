@@ -34,7 +34,7 @@ func TestReadLineFromBuf(t *testing.T) {
 	})
 
 	t.Run("it returns EOF if reader has been exhausted", func(t *testing.T) {
-		fr.fnc = func(p []byte) (int, error) {
+		fr.fnc = func(_ []byte) (int, error) {
 			return 0, io.EOF
 		}
 		buf := bufio.NewReader(fr)

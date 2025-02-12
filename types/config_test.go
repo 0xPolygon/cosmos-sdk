@@ -44,7 +44,7 @@ func (s *configTestSuite) TestConfig_SetTxEncoder() {
 	mockErr := errors.New("test")
 	config := sdk.NewConfig()
 	s.Require().Nil(config.GetTxEncoder())
-	encFunc := sdk.TxEncoder(func(tx sdk.Tx) ([]byte, error) { return nil, nil })
+	encFunc := sdk.TxEncoder(func(_ sdk.Tx) ([]byte, error) { return nil, nil })
 	config.SetTxEncoder(encFunc)
 	_, err := config.GetTxEncoder()(sdk.Tx(nil))
 	s.Require().Error(mockErr, err)

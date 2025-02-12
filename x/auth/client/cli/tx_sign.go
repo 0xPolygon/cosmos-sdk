@@ -63,6 +63,7 @@ overwritten by the default flag values.
 	return cmd
 }
 
+//nolint:staticcheck
 func makeSignBatchCmd() func(cmd *cobra.Command, args []string) error {
 	return func(cmd *cobra.Command, args []string) error {
 		clientCtx, err := client.GetClientTxContext(cmd)
@@ -76,6 +77,7 @@ func makeSignBatchCmd() func(cmd *cobra.Command, args []string) error {
 		txCfg := clientCtx.TxConfig
 		printSignatureOnly, _ := cmd.Flags().GetBool(flagSigOnly)
 
+		//nolint:ineffassign
 		ms, err := cmd.Flags().GetString(flagMultisig)
 		if err != nil {
 			return err
@@ -383,6 +385,7 @@ func makeSignCmd() func(cmd *cobra.Command, args []string) error {
 	}
 }
 
+//nolint:ineffassign,staticcheck
 func signTx(cmd *cobra.Command, clientCtx client.Context, txF tx.Factory, newTx sdk.Tx) error {
 	f := cmd.Flags()
 	txCfg := clientCtx.TxConfig

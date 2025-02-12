@@ -71,9 +71,9 @@ The SIGN_MODE_DIRECT sign mode is not supported.'
 	return cmd
 }
 
+//nolint:revive,govet
 func makeMultiSignCmd() func(cmd *cobra.Command, args []string) (err error) {
 	return func(cmd *cobra.Command, args []string) (err error) {
-
 		// HV2: multisig disabled in Heimdall
 		return fmt.Errorf("multi-sign is currently not supported in heimdall")
 
@@ -83,7 +83,7 @@ func makeMultiSignCmd() func(cmd *cobra.Command, args []string) (err error) {
 		}
 		parsedTx, err := authclient.ReadTxFromFile(clientCtx, args[0])
 		if err != nil {
-			return
+			return err
 		}
 
 		txFactory, err := tx.NewFactoryCLI(clientCtx, cmd.Flags())
@@ -246,9 +246,9 @@ The SIGN_MODE_DIRECT sign mode is not supported.'
 	return cmd
 }
 
+//nolint:revive,govet
 func makeBatchMultisignCmd() func(cmd *cobra.Command, args []string) error {
 	return func(cmd *cobra.Command, args []string) (err error) {
-
 		// HV2: multisig disabled in Heimdall
 		return fmt.Errorf("multi-sign is currently not supported in heimdall")
 

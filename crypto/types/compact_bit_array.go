@@ -87,9 +87,9 @@ func (bA *CompactBitArray) SetIndex(i int, v bool) bool {
 // there are two bits set to true before index 4.
 func (bA *CompactBitArray) NumTrueBitsBefore(index int) int {
 	onesCount := 0
-	max := bA.Count()
-	if index > max {
-		index = max
+	m := bA.Count()
+	if index > m {
+		index = m
 	}
 	// below we iterate over the bytes then over bits (in low endian) and count bits set to 1
 	for elem := range bA.Elems {

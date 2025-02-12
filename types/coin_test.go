@@ -882,8 +882,8 @@ func (s *coinTestSuite) TestMinMax() {
 		name   string
 		input1 sdk.Coins
 		input2 sdk.Coins
-		min    sdk.Coins
-		max    sdk.Coins
+		mi     sdk.Coins
+		ma     sdk.Coins
 	}{
 		{"zero-zero", sdk.Coins{}, sdk.Coins{}, sdk.Coins{}, sdk.Coins{}},
 		{"zero-one", sdk.Coins{}, sdk.Coins{{testDenom1, one}}, sdk.Coins{}, sdk.Coins{{testDenom1, one}}},
@@ -899,10 +899,10 @@ func (s *coinTestSuite) TestMinMax() {
 	}
 
 	for _, tc := range cases {
-		min := tc.input1.Min(tc.input2)
-		max := tc.input1.Max(tc.input2)
-		s.Require().True(min.Equal(tc.min), tc.name)
-		s.Require().True(max.Equal(tc.max), tc.name)
+		mi := tc.input1.Min(tc.input2)
+		ma := tc.input1.Max(tc.input2)
+		s.Require().True(mi.Equal(tc.mi), tc.name)
+		s.Require().True(ma.Equal(tc.ma), tc.name)
 	}
 }
 

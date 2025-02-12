@@ -73,6 +73,6 @@ type UniqueIndex interface {
 
 type indexer interface {
 	onInsert(store kv.Store, message protoreflect.Message) error
-	onUpdate(store kv.Store, new, existing protoreflect.Message) error
+	onUpdate(store kv.Store, n, existing protoreflect.Message) error
 	onDelete(store kv.Store, message protoreflect.Message) error
 }

@@ -72,8 +72,8 @@ func (i indexKeyIndex) onInsert(store kv.Store, message protoreflect.Message) er
 	return store.Set(k, v)
 }
 
-func (i indexKeyIndex) onUpdate(store kv.Store, new, existing protoreflect.Message) error {
-	newValues := i.GetKeyValues(new)
+func (i indexKeyIndex) onUpdate(store kv.Store, n, existing protoreflect.Message) error {
+	newValues := i.GetKeyValues(n)
 	existingValues := i.GetKeyValues(existing)
 	if i.CompareKeys(newValues, existingValues) == 0 {
 		return nil

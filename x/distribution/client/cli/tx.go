@@ -78,7 +78,6 @@ func newSplitAndApply(
 
 // NewWithdrawRewardsCmd returns a CLI command handler for creating a MsgWithdrawDelegatorReward transaction.
 func NewWithdrawRewardsCmd(valCodec, ac address.Codec) *cobra.Command {
-
 	cmd := &cobra.Command{
 		Use:   "withdraw-rewards [validator-addr]",
 		Short: "Withdraw rewards from a given delegation address, and optionally withdraw validator commission if the delegation address given is a validator operator",
@@ -190,7 +189,6 @@ $ %[1]s tx distribution withdraw-all-rewards --from mykey
 
 // NewSetWithdrawAddrCmd returns a CLI command handler for creating a MsgSetWithdrawAddress transaction.
 func NewSetWithdrawAddrCmd(ac address.Codec) *cobra.Command {
-
 	cmd := &cobra.Command{
 		Use:   "set-withdraw-addr [withdraw-addr]",
 		Short: "change the default withdraw address for rewards associated with an address",

@@ -3,27 +3,27 @@ package math
 import "golang.org/x/exp/constraints"
 
 func Max[T constraints.Ordered](a, b T, rest ...T) T {
-	max := a
+	m := a
 	if b > a {
-		max = b
+		m = b
 	}
 	for _, val := range rest {
-		if val > max {
-			max = val
+		if val > m {
+			m = val
 		}
 	}
-	return max
+	return m
 }
 
 func Min[T constraints.Ordered](a, b T, rest ...T) T {
-	min := a
+	m := a
 	if b < a {
-		min = b
+		m = b
 	}
 	for _, val := range rest {
-		if val < min {
-			min = val
+		if val < m {
+			m = val
 		}
 	}
-	return min
+	return m
 }

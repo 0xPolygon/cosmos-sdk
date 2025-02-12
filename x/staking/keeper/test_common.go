@@ -21,6 +21,8 @@ func ValidatorByPowerIndexExists(ctx context.Context, keeper *Keeper, power []by
 }
 
 // TestingUpdateValidator updates a validator for testing
+//
+//nolint:revive
 func TestingUpdateValidator(keeper *Keeper, ctx sdk.Context, validator types.Validator, apply bool) types.Validator {
 	err := keeper.SetValidator(ctx, validator)
 	if err != nil {

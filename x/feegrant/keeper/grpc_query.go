@@ -39,7 +39,7 @@ func (q Keeper) Allowance(c context.Context, req *feegrant.QueryAllowanceRequest
 
 	feeAllowance, err := q.GetAllowance(ctx, granterAddr, granteeAddr)
 	if err != nil {
-		return nil, status.Errorf(codes.Internal, err.Error())
+		return nil, status.Error(codes.Internal, err.Error())
 	}
 
 	msg, ok := feeAllowance.(proto.Message)
@@ -49,7 +49,7 @@ func (q Keeper) Allowance(c context.Context, req *feegrant.QueryAllowanceRequest
 
 	feeAllowanceAny, err := codectypes.NewAnyWithValue(msg)
 	if err != nil {
-		return nil, status.Errorf(codes.Internal, err.Error())
+		return nil, status.Error(codes.Internal, err.Error())
 	}
 
 	return &feegrant.QueryAllowanceResponse{
@@ -79,7 +79,7 @@ func (q Keeper) Allowances(c context.Context, req *feegrant.QueryAllowancesReque
 	store := q.storeService.OpenKVStore(ctx)
 	grantsStore := prefix.NewStore(runtime.KVStoreAdapter(store), feegrant.FeeAllowancePrefixByGrantee(granteeAddr))
 
-	pageRes, err := query.Paginate(grantsStore, req.Pagination, func(key, value []byte) error {
+	pageRes, err := query.Paginate(grantsStore, req.Pagination, func(_, value []byte) error {
 		var grant feegrant.Grant
 
 		if err := q.cdc.Unmarshal(value, &grant); err != nil {

@@ -15,7 +15,7 @@ type ValidateHooks interface {
 
 	// ValidateUpdate is called before the existing message is updated with the new one.
 	// If error is not nil the update will fail.
-	ValidateUpdate(ctx context.Context, existing, new proto.Message) error
+	ValidateUpdate(ctx context.Context, existing, n proto.Message) error
 
 	// ValidateDelete is called before the message is deleted.
 	// If error is not nil the deletion will fail.
@@ -33,7 +33,7 @@ type WriteHooks interface {
 	OnInsert(context.Context, proto.Message)
 
 	// OnUpdate is called after the entity is updated in the store.
-	OnUpdate(ctx context.Context, existing, new proto.Message)
+	OnUpdate(ctx context.Context, existing, n proto.Message)
 
 	// OnDelete is called after the entity is deleted from the store.
 	OnDelete(context.Context, proto.Message)

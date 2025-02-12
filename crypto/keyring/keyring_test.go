@@ -483,7 +483,7 @@ func TestExportPrivKey(t *testing.T) {
 			uid:               "noKeyTest",
 			backend:           BackendTest,
 			encryptPassphrase: "myPassphrase",
-			createKey: func(keystore Keyring) (*Record, string, error) {
+			createKey: func(_ Keyring) (*Record, string, error) {
 				return nil, "", nil
 			},
 			expectedErr: sdkerrors.ErrKeyNotFound,
@@ -1529,7 +1529,7 @@ func TestAltKeyring_KeyByAddress(t *testing.T) {
 			name:    "not found key",
 			backend: BackendTest,
 			uid:     "notFoundUid",
-			getAddres: func(k *Record) (sdk.AccAddress, error) {
+			getAddres: func(_ *Record) (sdk.AccAddress, error) {
 				return nil, nil
 			},
 			expectedErr: sdkerrors.ErrKeyNotFound,
@@ -1644,7 +1644,7 @@ func TestAltKeyring_DeleteByAddress(t *testing.T) {
 			name:    "not found",
 			backend: BackendTest,
 			uid:     "notFoundUid",
-			getAddres: func(k *Record) (sdk.AccAddress, error) {
+			getAddres: func(_ *Record) (sdk.AccAddress, error) {
 				return nil, nil
 			},
 			expectedErr: sdkerrors.ErrKeyNotFound,
@@ -1662,7 +1662,7 @@ func TestAltKeyring_DeleteByAddress(t *testing.T) {
 			name:    "in memory not found",
 			backend: BackendMemory,
 			uid:     "inMemoryNotFoundUid",
-			getAddres: func(k *Record) (sdk.AccAddress, error) {
+			getAddres: func(_ *Record) (sdk.AccAddress, error) {
 				return nil, nil
 			},
 			expectedErr: sdkerrors.ErrKeyNotFound,
@@ -1920,7 +1920,7 @@ func TestAltKeyring_ConstructorSupportedAlgos(t *testing.T) {
 		},
 		{
 			name:        "not supported algo",
-			algoOptions: func(options *Options) {},
+			algoOptions: func(_ *Options) {},
 			expectedErr: ErrUnsupportedSigningAlgo,
 		},
 	}
@@ -2004,7 +2004,7 @@ func TestRenameKey(t *testing.T) {
 	for _, tc := range testCases {
 		tc := tc
 		kr := newKeyring(t, "testKeyring")
-		t.Run(tc.name, func(t *testing.T) {
+		t.Run(tc.name, func(_ *testing.T) {
 			tc.run(kr)
 		})
 	}

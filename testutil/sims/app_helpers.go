@@ -7,14 +7,17 @@ import (
 	"strconv"
 	"time"
 
-	coreheader "cosmossdk.io/core/header"
-	"cosmossdk.io/depinject"
-	sdkmath "cosmossdk.io/math"
+	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 	abci "github.com/cometbft/cometbft/abci/types"
 	cmtjson "github.com/cometbft/cometbft/libs/json"
 	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	cmttypes "github.com/cometbft/cometbft/types"
 	dbm "github.com/cosmos/cosmos-db"
+
+	coreheader "cosmossdk.io/core/header"
+	"cosmossdk.io/depinject"
+	sdkmath "cosmossdk.io/math"
+
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cryptocodec "github.com/cosmos/cosmos-sdk/crypto/codec"
@@ -26,8 +29,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/simulation"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
-
-	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 )
 
 const DefaultGenTxGas = 10000000
@@ -281,7 +282,7 @@ func GenesisStateWithValSet(
 type EmptyAppOptions struct{}
 
 // Get implements AppOptions
-func (ao EmptyAppOptions) Get(o string) interface{} {
+func (ao EmptyAppOptions) Get(_ string) interface{} {
 	return nil
 }
 

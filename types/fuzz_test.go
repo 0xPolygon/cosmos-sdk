@@ -17,7 +17,7 @@ func FuzzCoinUnmarshalJSON(f *testing.F) {
 	f.Add(`{"denom":"uatom","amount":"1000111111111111111111111"}`)
 	f.Add(`{"denom":"mu","amount":"0"}`)
 
-	f.Fuzz(func(t *testing.T, jsonBlob string) {
+	f.Fuzz(func(_ *testing.T, jsonBlob string) {
 		var c Coin
 		_ = cdc.UnmarshalJSON([]byte(jsonBlob), &c)
 	})

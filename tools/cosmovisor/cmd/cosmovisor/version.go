@@ -53,7 +53,7 @@ func printVersion(cmd *cobra.Command, args []string, noAppVersion bool) error {
 	return nil
 }
 
-func printVersionJSON(cmd *cobra.Command, args []string, noAppVersion bool) error {
+func printVersionJSON(cmd *cobra.Command, _ []string, noAppVersion bool) error {
 	if noAppVersion {
 		cmd.Printf(`{"cosmovisor_version":"%s"}`+"\n", getVersion())
 		return nil

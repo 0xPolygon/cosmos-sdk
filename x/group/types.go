@@ -99,7 +99,7 @@ func (p ThresholdDecisionPolicy) Allow(tallyResult TallyResult, totalPower strin
 	// and the threshold doesn't, we can end up with threshold > total_weight.
 	// In this case, as long as everyone votes yes (in which case
 	// `yesCount`==`realThreshold`), then the proposal still passes.
-	realThreshold := min(threshold, totalPowerDec)
+	realThreshold := minV(threshold, totalPowerDec)
 
 	if yesCount.Cmp(realThreshold) >= 0 {
 		return DecisionPolicyResult{Allow: true, Final: true}, nil
@@ -126,7 +126,7 @@ func (p ThresholdDecisionPolicy) Allow(tallyResult TallyResult, totalPower strin
 	return DecisionPolicyResult{Allow: false, Final: false}, nil
 }
 
-func min(a, b math.Dec) math.Dec {
+func minV(a, b math.Dec) math.Dec {
 	if a.Cmp(b) < 0 {
 		return a
 	}
@@ -188,7 +188,7 @@ func (p PercentageDecisionPolicy) ValidateBasic() error {
 }
 
 // Validate validates the policy against the group.
-func (p *PercentageDecisionPolicy) Validate(g GroupInfo, config Config) error {
+func (p *PercentageDecisionPolicy) Validate(_ GroupInfo, config Config) error {
 	if p.Windows.MinExecutionPeriod > p.Windows.VotingPeriod+config.MaxExecutionPeriod {
 		return errorsmod.Wrap(errors.ErrInvalid, "min_execution_period should be smaller than voting_period + max_execution_period")
 	}
@@ -266,11 +266,11 @@ func NewGroupPolicyInfo(address sdk.AccAddress, group uint64, admin sdk.AccAddre
 
 // SetDecisionPolicy sets the decision policy for GroupPolicyInfo.
 func (g *GroupPolicyInfo) SetDecisionPolicy(decisionPolicy DecisionPolicy) error {
-	any, err := codectypes.NewAnyWithValue(decisionPolicy)
+	a, err := codectypes.NewAnyWithValue(decisionPolicy)
 	if err != nil {
 		return err
 	}
-	g.DecisionPolicy = any
+	g.DecisionPolicy = a
 	return nil
 }
 

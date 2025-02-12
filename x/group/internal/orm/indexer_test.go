@@ -92,7 +92,7 @@ func TestIndexerOnCreate(t *testing.T) {
 		expErr           error
 	}{
 		"single key": {
-			srcFunc: func(value interface{}) ([]interface{}, error) {
+			srcFunc: func(_ interface{}) ([]interface{}, error) {
 				return []interface{}{uint64(1)}, nil
 			},
 			expAddFuncCalled: true,
@@ -100,7 +100,7 @@ func TestIndexerOnCreate(t *testing.T) {
 			expRowIDs:        []RowID{myRowID},
 		},
 		"multi key": {
-			srcFunc: func(value interface{}) ([]interface{}, error) {
+			srcFunc: func(_ interface{}) ([]interface{}, error) {
 				return []interface{}{uint64(1), uint64(128)}, nil
 			},
 			expAddFuncCalled: true,
@@ -108,32 +108,32 @@ func TestIndexerOnCreate(t *testing.T) {
 			expRowIDs:        []RowID{myRowID, myRowID},
 		},
 		"empty key in slice": {
-			srcFunc: func(value interface{}) ([]interface{}, error) {
+			srcFunc: func(_ interface{}) ([]interface{}, error) {
 				return []interface{}{[]byte{}}, nil
 			},
 			expAddFuncCalled: false,
 		},
 		"nil key in slice": {
-			srcFunc: func(value interface{}) ([]interface{}, error) {
+			srcFunc: func(_ interface{}) ([]interface{}, error) {
 				return []interface{}{nil}, nil
 			},
 			expErr:           fmt.Errorf("type %T not allowed as key part", nil),
 			expAddFuncCalled: false,
 		},
 		"empty key": {
-			srcFunc: func(value interface{}) ([]interface{}, error) {
+			srcFunc: func(_ interface{}) ([]interface{}, error) {
 				return []interface{}{}, nil
 			},
 			expAddFuncCalled: false,
 		},
 		"nil key": {
-			srcFunc: func(value interface{}) ([]interface{}, error) {
+			srcFunc: func(_ interface{}) ([]interface{}, error) {
 				return nil, nil
 			},
 			expAddFuncCalled: false,
 		},
 		"error case": {
-			srcFunc: func(value interface{}) ([]interface{}, error) {
+			srcFunc: func(_ interface{}) ([]interface{}, error) {
 				return nil, stdErrors.New("test")
 			},
 			expErr:           stdErrors.New("test"),
@@ -174,13 +174,13 @@ func TestIndexerOnDelete(t *testing.T) {
 		expErr         error
 	}{
 		"single key": {
-			srcFunc: func(value interface{}) ([]interface{}, error) {
+			srcFunc: func(_ interface{}) ([]interface{}, error) {
 				return []interface{}{uint64(1)}, nil
 			},
 			expDeletedKeys: []RowID{append(EncodeSequence(1), myRowID...)},
 		},
 		"multi key": {
-			srcFunc: func(value interface{}) ([]interface{}, error) {
+			srcFunc: func(_ interface{}) ([]interface{}, error) {
 				return []interface{}{uint64(1), uint64(128)}, nil
 			},
 			expDeletedKeys: []RowID{
@@ -189,28 +189,28 @@ func TestIndexerOnDelete(t *testing.T) {
 			},
 		},
 		"empty key": {
-			srcFunc: func(value interface{}) ([]interface{}, error) {
+			srcFunc: func(_ interface{}) ([]interface{}, error) {
 				return []interface{}{}, nil
 			},
 		},
 		"nil key": {
-			srcFunc: func(value interface{}) ([]interface{}, error) {
+			srcFunc: func(_ interface{}) ([]interface{}, error) {
 				return nil, nil
 			},
 		},
 		"empty key in slice": {
-			srcFunc: func(value interface{}) ([]interface{}, error) {
+			srcFunc: func(_ interface{}) ([]interface{}, error) {
 				return []interface{}{[]byte{}}, nil
 			},
 		},
 		"nil key in slice": {
-			srcFunc: func(value interface{}) ([]interface{}, error) {
+			srcFunc: func(_ interface{}) ([]interface{}, error) {
 				return []interface{}{nil}, nil
 			},
 			expErr: fmt.Errorf("type %T not allowed as key part", nil),
 		},
 		"error case": {
-			srcFunc: func(value interface{}) ([]interface{}, error) {
+			srcFunc: func(_ interface{}) ([]interface{}, error) {
 				return nil, stdErrors.New("test")
 			},
 			expErr: stdErrors.New("test"),
@@ -258,7 +258,7 @@ func TestIndexerOnUpdate(t *testing.T) {
 		addFunc        func(storetypes.KVStore, interface{}, RowID) error
 	}{
 		"single key - same key, no update": {
-			srcFunc: func(value interface{}) ([]interface{}, error) {
+			srcFunc: func(_ interface{}) ([]interface{}, error) {
 				return []interface{}{uint64(1)}, nil
 			},
 		},
@@ -275,7 +275,7 @@ func TestIndexerOnUpdate(t *testing.T) {
 			},
 		},
 		"multi key - same key, no update": {
-			srcFunc: func(value interface{}) ([]interface{}, error) {
+			srcFunc: func(_ interface{}) ([]interface{}, error) {
 				return []interface{}{uint64(1), uint64(2)}, nil
 			},
 		},
@@ -294,28 +294,28 @@ func TestIndexerOnUpdate(t *testing.T) {
 			},
 		},
 		"empty key": {
-			srcFunc: func(value interface{}) ([]interface{}, error) {
+			srcFunc: func(_ interface{}) ([]interface{}, error) {
 				return []interface{}{}, nil
 			},
 		},
 		"nil key": {
-			srcFunc: func(value interface{}) ([]interface{}, error) {
+			srcFunc: func(_ interface{}) ([]interface{}, error) {
 				return nil, nil
 			},
 		},
 		"empty key in slice": {
-			srcFunc: func(value interface{}) ([]interface{}, error) {
+			srcFunc: func(_ interface{}) ([]interface{}, error) {
 				return []interface{}{[]byte{}}, nil
 			},
 		},
 		"nil key in slice": {
-			srcFunc: func(value interface{}) ([]interface{}, error) {
+			srcFunc: func(_ interface{}) ([]interface{}, error) {
 				return []interface{}{nil}, nil
 			},
 			expErr: fmt.Errorf("type %T not allowed as key part", nil),
 		},
 		"error case with new value": {
-			srcFunc: func(value interface{}) ([]interface{}, error) {
+			srcFunc: func(_ interface{}) ([]interface{}, error) {
 				return nil, stdErrors.New("test")
 			},
 			expErr: stdErrors.New("test"),
@@ -504,42 +504,42 @@ func TestPruneEmptyKeys(t *testing.T) {
 		expError  error
 	}{
 		"non empty": {
-			srcFunc: func(v interface{}) ([]interface{}, error) {
+			srcFunc: func(_ interface{}) ([]interface{}, error) {
 				return []interface{}{uint64(0), uint64(1)}, nil
 			},
 			expResult: []interface{}{uint64(0), uint64(1)},
 		},
 		"empty": {
-			srcFunc: func(v interface{}) ([]interface{}, error) {
+			srcFunc: func(_ interface{}) ([]interface{}, error) {
 				return []interface{}{}, nil
 			},
 			expResult: []interface{}{},
 		},
 		"nil": {
-			srcFunc: func(v interface{}) ([]interface{}, error) {
+			srcFunc: func(_ interface{}) ([]interface{}, error) {
 				return nil, nil
 			},
 		},
 		"empty in the beginning": {
-			srcFunc: func(v interface{}) ([]interface{}, error) {
+			srcFunc: func(_ interface{}) ([]interface{}, error) {
 				return []interface{}{[]byte{}, uint64(0), uint64(1)}, nil
 			},
 			expResult: []interface{}{uint64(0), uint64(1)},
 		},
 		"empty in the middle": {
-			srcFunc: func(v interface{}) ([]interface{}, error) {
+			srcFunc: func(_ interface{}) ([]interface{}, error) {
 				return []interface{}{uint64(0), []byte{}, uint64(1)}, nil
 			},
 			expResult: []interface{}{uint64(0), uint64(1)},
 		},
 		"empty at the end": {
-			srcFunc: func(v interface{}) ([]interface{}, error) {
+			srcFunc: func(_ interface{}) ([]interface{}, error) {
 				return []interface{}{uint64(0), uint64(1), []byte{}}, nil
 			},
 			expResult: []interface{}{uint64(0), uint64(1)},
 		},
 		"error passed": {
-			srcFunc: func(v interface{}) ([]interface{}, error) {
+			srcFunc: func(_ interface{}) ([]interface{}, error) {
 				return nil, stdErrors.New("test")
 			},
 			expError: stdErrors.New("test"),

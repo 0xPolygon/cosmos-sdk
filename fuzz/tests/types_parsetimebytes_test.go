@@ -11,7 +11,7 @@ import (
 )
 
 func FuzzTypesParseTimeBytes(f *testing.F) {
-	f.Fuzz(func(t *testing.T, bin []byte) {
+	f.Fuzz(func(_ *testing.T, bin []byte) {
 		// Normalize input, reject invalid timestamps.
 		ti, err := types.ParseTimeBytes(bin)
 		if err != nil {

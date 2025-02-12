@@ -27,14 +27,14 @@ var (
 // AnyUnpacker is an interface which allows safely unpacking types packed
 // in Any's against a whitelist of registered types
 type AnyUnpacker interface {
-	// UnpackAny unpacks the value in any to the interface pointer passed in as
+	// UnpackAny unpacks the value in a to the interface pointer passed in as
 	// iface. Note that the type in any must have been registered in the
 	// underlying whitelist registry as a concrete type for that interface
 	// Ex:
 	//    var msg sdk.Msg
-	//    err := cdc.UnpackAny(any, &msg)
+	//    err := cdc.UnpackAny(a, &msg)
 	//    ...
-	UnpackAny(any *Any, iface interface{}) error
+	UnpackAny(a *Any, iface interface{}) error
 }
 
 // InterfaceRegistry provides a mechanism for registering interfaces and
@@ -281,13 +281,13 @@ func (registry *interfaceRegistry) ListImplementations(ifaceName string) []strin
 	return keys
 }
 
-func (registry *interfaceRegistry) UnpackAny(any *Any, iface interface{}) error {
+func (registry *interfaceRegistry) UnpackAny(a *Any, iface interface{}) error {
 	unpacker := &statefulUnpacker{
 		registry: registry,
 		maxDepth: MaxUnpackAnyRecursionDepth,
 		maxCalls: &sharedCounter{count: MaxUnpackAnySubCalls},
 	}
-	return unpacker.UnpackAny(any, iface)
+	return unpacker.UnpackAny(a, iface)
 }
 
 // sharedCounter is a type that encapsulates a counter value
@@ -314,19 +314,19 @@ func (r statefulUnpacker) cloneForRecursion() *statefulUnpacker {
 
 // UnpackAny deserializes a protobuf Any message into the provided interface, ensuring the interface is a pointer.
 // It applies stateful constraints such as max depth and call limits, and unpacks interfaces if required.
-func (r *statefulUnpacker) UnpackAny(any *Any, iface interface{}) error {
+func (r *statefulUnpacker) UnpackAny(a *Any, iface interface{}) error {
 	if r.maxDepth == 0 {
 		return errors.New("max depth exceeded")
 	}
 	if r.maxCalls.count == 0 {
 		return errors.New("call limit exceeded")
 	}
-	// here we gracefully handle the case in which `any` itself is `nil`, which may occur in message decoding
-	if any == nil {
+	// here we gracefully handle the case in which `a` itself is `nil`, which may occur in message decoding
+	if a == nil {
 		return nil
 	}
 
-	if any.TypeUrl == "" {
+	if a.TypeUrl == "" {
 		// if TypeUrl is empty return nil because without it we can't actually unpack anything
 		return nil
 	}
@@ -340,7 +340,7 @@ func (r *statefulUnpacker) UnpackAny(any *Any, iface interface{}) error {
 
 	rt := rv.Elem().Type()
 
-	cachedValue := any.cachedValue
+	cachedValue := a.cachedValue
 	if cachedValue != nil {
 		if reflect.TypeOf(cachedValue).AssignableTo(rt) {
 			rv.Elem().Set(reflect.ValueOf(cachedValue))
@@ -353,9 +353,9 @@ func (r *statefulUnpacker) UnpackAny(any *Any, iface interface{}) error {
 		return fmt.Errorf("no registered implementations of type %+v", rt)
 	}
 
-	typ, found := imap[any.TypeUrl]
+	typ, found := imap[a.TypeUrl]
 	if !found {
-		return fmt.Errorf("no concrete type registered for type URL %s against interface %T", any.TypeUrl, iface)
+		return fmt.Errorf("no concrete type registered for type URL %s against interface %T", a.TypeUrl, iface)
 	}
 
 	msg, ok := reflect.New(typ.Elem()).Interface().(proto.Message)
@@ -363,7 +363,7 @@ func (r *statefulUnpacker) UnpackAny(any *Any, iface interface{}) error {
 		return fmt.Errorf("can't proto unmarshal %T", msg)
 	}
 
-	err := proto.Unmarshal(any.Value, msg)
+	err := proto.Unmarshal(a.Value, msg)
 	if err != nil {
 		return err
 	}
@@ -375,7 +375,7 @@ func (r *statefulUnpacker) UnpackAny(any *Any, iface interface{}) error {
 
 	rv.Elem().Set(reflect.ValueOf(msg))
 
-	any.cachedValue = msg
+	a.cachedValue = msg
 
 	return nil
 }

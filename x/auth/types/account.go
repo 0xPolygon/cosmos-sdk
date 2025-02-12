@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/cosmos/cosmos-sdk/types/address"
 	"strings"
 
 	"github.com/cometbft/cometbft/crypto"
@@ -13,6 +12,7 @@ import (
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/cosmos-sdk/types/address"
 )
 
 var (
@@ -89,9 +89,9 @@ func (acc *BaseAccount) SetPubKey(pubKey cryptotypes.PubKey) error {
 		acc.PubKey = nil
 		return nil
 	}
-	any, err := codectypes.NewAnyWithValue(pubKey)
+	a, err := codectypes.NewAnyWithValue(pubKey)
 	if err == nil {
-		acc.PubKey = any
+		acc.PubKey = a
 	}
 	return err
 }
@@ -211,7 +211,7 @@ func (ma ModuleAccount) GetPermissions() []string {
 }
 
 // SetPubKey - Implements AccountI
-func (ma ModuleAccount) SetPubKey(pubKey cryptotypes.PubKey) error {
+func (ma ModuleAccount) SetPubKey(_ cryptotypes.PubKey) error {
 	return fmt.Errorf("not supported for module accounts")
 }
 

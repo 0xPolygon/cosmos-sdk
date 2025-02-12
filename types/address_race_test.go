@@ -11,11 +11,11 @@ import (
 )
 
 // generates AccAddress with `prefix` and calls String method
-func addressStringCaller(require *require.Assertions, prefix byte, max uint32, cancel chan bool, done chan<- bool) {
+func addressStringCaller(require *require.Assertions, prefix byte, m uint32, cancel chan bool, done chan<- bool) {
 	bz := make([]byte, 5) // prefix + 4 bytes for uint
 	bz[0] = prefix
 	for i := uint32(0); ; i++ {
-		if i >= max {
+		if i >= m {
 			i = 0
 		}
 		select {

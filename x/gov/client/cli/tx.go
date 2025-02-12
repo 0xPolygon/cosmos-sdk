@@ -213,7 +213,7 @@ $ %s tx gov submit-legacy-proposal --title="Test Proposal" --description="My awe
 				version.AppName, version.AppName,
 			),
 		),
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(cmd *cobra.Command, _ []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
@@ -356,6 +356,8 @@ $ %s tx gov vote 1 yes --from mykey
 }
 
 // NewCmdWeightedVote implements creating a new weighted vote command.
+//
+//nolint:revive,govet
 func NewCmdWeightedVote() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "weighted-vote [proposal-id] [weighted-options]",
@@ -372,7 +374,6 @@ $ %s tx gov weighted-vote 1 yes=0.6,no=0.3,abstain=0.05,no_with_veto=0.05 --from
 			),
 		),
 		RunE: func(cmd *cobra.Command, args []string) error {
-
 			// HV2: disabled in heimdall as we do not support WeighedVoteOptions
 			return fmt.Errorf("weighted-vote are currently not supported in heimdall")
 

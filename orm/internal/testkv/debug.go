@@ -234,13 +234,13 @@ func (d debugHooks) ValidateInsert(context context.Context, message proto.Messag
 	return nil
 }
 
-func (d debugHooks) ValidateUpdate(ctx context.Context, existing, new proto.Message) error {
+func (d debugHooks) ValidateUpdate(ctx context.Context, existing, n proto.Message) error {
 	existingJSON, err := stablejson.Marshal(existing)
 	if err != nil {
 		return err
 	}
 
-	newJSON, err := stablejson.Marshal(new)
+	newJSON, err := stablejson.Marshal(n)
 	if err != nil {
 		return err
 	}
@@ -252,7 +252,7 @@ func (d debugHooks) ValidateUpdate(ctx context.Context, existing, new proto.Mess
 		newJSON,
 	))
 	if d.validateHooks != nil {
-		return d.validateHooks.ValidateUpdate(ctx, existing, new)
+		return d.validateHooks.ValidateUpdate(ctx, existing, n)
 	}
 	return nil
 }
@@ -290,13 +290,13 @@ func (d debugHooks) OnInsert(ctx context.Context, message proto.Message) {
 	}
 }
 
-func (d debugHooks) OnUpdate(ctx context.Context, existing, new proto.Message) {
+func (d debugHooks) OnUpdate(ctx context.Context, existing, n proto.Message) {
 	existingJSON, err := stablejson.Marshal(existing)
 	if err != nil {
 		panic(err)
 	}
 
-	newJSON, err := stablejson.Marshal(new)
+	newJSON, err := stablejson.Marshal(n)
 	if err != nil {
 		panic(err)
 	}
@@ -308,7 +308,7 @@ func (d debugHooks) OnUpdate(ctx context.Context, existing, new proto.Message) {
 		newJSON,
 	))
 	if d.writeHooks != nil {
-		d.writeHooks.OnUpdate(ctx, existing, new)
+		d.writeHooks.OnUpdate(ctx, existing, n)
 	}
 }
 

@@ -356,7 +356,7 @@ func mockIter(rowID RowID, val proto.Message) Iterator {
 }
 
 func noopIter() Iterator {
-	return IteratorFunc(func(dest proto.Message) (RowID, error) {
+	return IteratorFunc(func(_ proto.Message) (RowID, error) {
 		return nil, nil
 	})
 }

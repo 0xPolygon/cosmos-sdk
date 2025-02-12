@@ -118,7 +118,7 @@ func (k Keeper) NFTs(goCtx context.Context, r *nft.QueryNFTsRequest) (*nft.Query
 			return nil, err
 		}
 	case len(r.ClassId) == 0 && len(r.Owner) > 0:
-		if pageRes, err = query.Paginate(k.prefixStoreNftOfClassByOwner(ctx, owner), r.Pagination, func(key, value []byte) error {
+		if pageRes, err = query.Paginate(k.prefixStoreNftOfClassByOwner(ctx, owner), r.Pagination, func(key, _ []byte) error {
 			classID, nftID := parseNftOfClassByOwnerStoreKey(key)
 			if n, has := k.GetNFT(ctx, classID, nftID); has {
 				nfts = append(nfts, &n)

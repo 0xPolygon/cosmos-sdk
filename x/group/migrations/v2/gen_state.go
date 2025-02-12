@@ -2,7 +2,7 @@ package v2
 
 import (
 	"encoding/binary"
-	
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 )

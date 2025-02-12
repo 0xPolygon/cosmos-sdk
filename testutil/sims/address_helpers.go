@@ -7,10 +7,11 @@ import (
 	"fmt"
 	"strconv"
 
+	topupTypes "github.com/0xPolygon/heimdall-v2/x/topup/types"
+
 	errorsmod "cosmossdk.io/errors"
 	"cosmossdk.io/math"
 
-	topupTypes "github.com/0xPolygon/heimdall-v2/x/topup/types"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"

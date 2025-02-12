@@ -10,7 +10,7 @@ import (
 )
 
 func FuzzTendermintAminoDecodeTime(f *testing.F) {
-	f.Fuzz(func(t *testing.T, data []byte) {
+	f.Fuzz(func(_ *testing.T, data []byte) {
 		if len(data) == 0 {
 			return
 		}

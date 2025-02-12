@@ -129,10 +129,10 @@ func (u Uint) Decr() Uint {
 func (u Uint) QuoUint64(u2 uint64) Uint { return u.Quo(NewUint(u2)) }
 
 // Return the minimum of the Uints
-func MinUint(u1, u2 Uint) Uint { return NewUintFromBigInt(min(u1.i, u2.i)) }
+func MinUint(u1, u2 Uint) Uint { return NewUintFromBigInt(minV(u1.i, u2.i)) }
 
 // Return the maximum of the Uints
-func MaxUint(u1, u2 Uint) Uint { return NewUintFromBigInt(max(u1.i, u2.i)) }
+func MaxUint(u1, u2 Uint) Uint { return NewUintFromBigInt(maxV(u1.i, u2.i)) }
 
 // Human readable string
 func (u Uint) String() string { return u.i.String() }
@@ -247,7 +247,7 @@ func RelativePow(x, n, b Uint) (z Uint) {
 			return z
 		}
 		z = ZeroUint() // otherwise 0^a = 0
-		return
+		return z
 	}
 
 	z = x

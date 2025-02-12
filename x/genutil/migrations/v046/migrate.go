@@ -24,11 +24,11 @@ func Migrate(appState types.AppMap, clientCtx client.Context) (types.AppMap, err
 
 		// Migrate relative source genesis application state and marshal it into
 		// the respective key.
-		new, err := v3gov.MigrateJSON(&old)
+		n, err := v3gov.MigrateJSON(&old)
 		if err != nil {
 			return nil, err
 		}
-		appState[v3gov.ModuleName] = clientCtx.Codec.MustMarshalJSON(new)
+		appState[v3gov.ModuleName] = clientCtx.Codec.MustMarshalJSON(n)
 	}
 
 	// Migrate x/staking.
@@ -42,11 +42,11 @@ func Migrate(appState types.AppMap, clientCtx client.Context) (types.AppMap, err
 
 		// Migrate relative source genesis application state and marshal it into
 		// the respective key.
-		new, err := stakingv3.MigrateJSON(old)
+		n, err := stakingv3.MigrateJSON(old)
 		if err != nil {
 			return nil, err
 		}
-		appState[stakingv3.ModuleName] = clientCtx.Codec.MustMarshalJSON(&new)
+		appState[stakingv3.ModuleName] = clientCtx.Codec.MustMarshalJSON(&n)
 	}
 
 	return appState, nil

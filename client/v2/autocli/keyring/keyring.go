@@ -1,8 +1,6 @@
 package keyring
 
 import (
-	"context"
-
 	signingv1beta1 "cosmossdk.io/api/cosmos/tx/signing/v1beta1"
 
 	"github.com/cosmos/cosmos-sdk/crypto/types"
@@ -16,11 +14,6 @@ var _ Keyring = &KeyringImpl{}
 
 type KeyringImpl struct { //nolint:revive // stuttering is fine
 	k Keyring
-}
-
-// NewKeyringInContext returns a new context with the keyring set.
-func NewKeyringInContext(ctx context.Context, k Keyring) context.Context {
-	return context.WithValue(ctx, KeyringContextKey, NewKeyringImpl(k))
 }
 
 func NewKeyringImpl(k Keyring) *KeyringImpl {

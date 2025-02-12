@@ -22,13 +22,13 @@ func NewGrant(blockTime time.Time, a Authorization, expiration *time.Time) (Gran
 	if !ok {
 		return Grant{}, sdkerrors.ErrPackAny.Wrapf("cannot proto marshal %T", a)
 	}
-	any, err := cdctypes.NewAnyWithValue(msg)
+	an, err := cdctypes.NewAnyWithValue(msg)
 	if err != nil {
 		return Grant{}, err
 	}
 	return Grant{
 		Expiration:    expiration,
-		Authorization: any,
+		Authorization: an,
 	}, nil
 }
 

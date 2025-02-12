@@ -45,9 +45,9 @@ func NewSingleValueIterator(rowID RowID, val []byte) Iterator {
 	})
 }
 
-// Iterator that return ErrORMInvalidIterator only.
+// NewInvalidIterator that return ErrORMInvalidIterator only.
 func NewInvalidIterator() Iterator {
-	return IteratorFunc(func(dest proto.Message) (RowID, error) {
+	return IteratorFunc(func(_ proto.Message) (RowID, error) {
 		return nil, errors.ErrORMInvalidIterator
 	})
 }
@@ -61,14 +61,14 @@ type LimitedIterator struct {
 // LimitIterator returns a new iterator that returns max number of elements.
 // The parent iterator must not be nil
 // max can be 0 or any positive number
-func LimitIterator(parent Iterator, max int) (*LimitedIterator, error) {
-	if max < 0 {
+func LimitIterator(parent Iterator, m int) (*LimitedIterator, error) {
+	if m < 0 {
 		return nil, errors.ErrORMInvalidArgument.Wrap("quantity must not be negative")
 	}
 	if parent == nil {
 		return nil, errors.ErrORMInvalidArgument.Wrap("parent iterator must not be nil")
 	}
-	return &LimitedIterator{remainingCount: max, parentIterator: parent}, nil
+	return &LimitedIterator{remainingCount: m, parentIterator: parent}, nil
 }
 
 // LoadNext loads the next value in the sequence into the pointer passed as dest and returns the key. If there
@@ -298,6 +298,7 @@ func assertDest(dest ModelSlicePtr, destRef, tmpSlice *reflect.Value) (reflect.T
 
 	protoMarshaler := reflect.TypeOf((*proto.Message)(nil)).Elem()
 	if !elemType.Implements(protoMarshaler) &&
+		//nolint:staticcheck
 		!reflect.PtrTo(elemType).Implements(protoMarshaler) {
 		return nil, errorsmod.Wrapf(errors.ErrORMInvalidArgument, "unsupported type :%s", elemType)
 	}

@@ -21,22 +21,22 @@ var (
 )
 
 func newRecord(name string, pk cryptotypes.PubKey, item isRecord_Item) (*Record, error) {
-	any, err := codectypes.NewAnyWithValue(pk)
+	an, err := codectypes.NewAnyWithValue(pk)
 	if err != nil {
 		return nil, err
 	}
 
-	return &Record{name, any, item}, nil
+	return &Record{name, an, item}, nil
 }
 
 // NewLocalRecord creates a new Record with local key item
 func NewLocalRecord(name string, priv cryptotypes.PrivKey, pk cryptotypes.PubKey) (*Record, error) {
-	any, err := codectypes.NewAnyWithValue(priv)
+	an, err := codectypes.NewAnyWithValue(priv)
 	if err != nil {
 		return nil, err
 	}
 
-	recordLocal := &Record_Local{any}
+	recordLocal := &Record_Local{an}
 	recordLocalItem := &Record_Local_{recordLocal}
 
 	return newRecord(name, pk, recordLocalItem)

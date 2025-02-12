@@ -19,7 +19,7 @@ func NewGrant(granter, grantee sdk.AccAddress, feeAllowance FeeAllowanceI) (Gran
 		return Grant{}, errorsmod.Wrapf(sdkerrors.ErrPackAny, "cannot proto marshal %T", feeAllowance)
 	}
 
-	any, err := types.NewAnyWithValue(msg)
+	a, err := types.NewAnyWithValue(msg)
 	if err != nil {
 		return Grant{}, err
 	}
@@ -27,7 +27,7 @@ func NewGrant(granter, grantee sdk.AccAddress, feeAllowance FeeAllowanceI) (Gran
 	return Grant{
 		Granter:   granter.String(),
 		Grantee:   grantee.String(),
-		Allowance: any,
+		Allowance: a,
 	}, nil
 }
 

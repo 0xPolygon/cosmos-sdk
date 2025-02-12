@@ -78,12 +78,12 @@ func (s queryServer) Account(ctx context.Context, req *types.QueryAccountRequest
 		return nil, status.Errorf(codes.NotFound, "account %s not found", req.Address)
 	}
 
-	any, err := codectypes.NewAnyWithValue(account)
+	a, err := codectypes.NewAnyWithValue(account)
 	if err != nil {
-		return nil, status.Errorf(codes.Internal, err.Error())
+		return nil, status.Errorf(codes.Internal, "%s", err.Error())
 	}
 
-	return &types.QueryAccountResponse{Account: any}, nil
+	return &types.QueryAccountResponse{Account: a}, nil
 }
 
 // Params returns parameters of auth module
@@ -119,11 +119,11 @@ func (s queryServer) ModuleAccounts(c context.Context, req *types.QueryModuleAcc
 		if account == nil {
 			return nil, status.Errorf(codes.NotFound, "account %s not found", moduleName)
 		}
-		any, err := codectypes.NewAnyWithValue(account)
+		a, err := codectypes.NewAnyWithValue(account)
 		if err != nil {
-			return nil, status.Errorf(codes.Internal, err.Error())
+			return nil, status.Errorf(codes.Internal, "%s", err.Error())
 		}
-		modAccounts = append(modAccounts, any)
+		modAccounts = append(modAccounts, a)
 	}
 
 	return &types.QueryModuleAccountsResponse{Accounts: modAccounts}, nil
@@ -146,16 +146,16 @@ func (s queryServer) ModuleAccountByName(c context.Context, req *types.QueryModu
 	if account == nil {
 		return nil, status.Errorf(codes.NotFound, "account %s not found", moduleName)
 	}
-	any, err := codectypes.NewAnyWithValue(account)
+	a, err := codectypes.NewAnyWithValue(account)
 	if err != nil {
-		return nil, status.Errorf(codes.Internal, err.Error())
+		return nil, status.Errorf(codes.Internal, "%s", err.Error())
 	}
 
-	return &types.QueryModuleAccountByNameResponse{Account: any}, nil
+	return &types.QueryModuleAccountByNameResponse{Account: a}, nil
 }
 
 // AddressBytesToString converts an address from bytes to string
-func (s queryServer) AddressBytesToString(ctx context.Context, req *types.AddressBytesToStringRequest) (*types.AddressBytesToStringResponse, error) {
+func (s queryServer) AddressBytesToString(_ context.Context, req *types.AddressBytesToStringRequest) (*types.AddressBytesToStringResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "empty request")
 	}
@@ -173,7 +173,7 @@ func (s queryServer) AddressBytesToString(ctx context.Context, req *types.Addres
 }
 
 // AddressStringToBytes converts an address from string to bytes
-func (s queryServer) AddressStringToBytes(ctx context.Context, req *types.AddressStringToBytesRequest) (*types.AddressStringToBytesResponse, error) {
+func (s queryServer) AddressStringToBytes(_ context.Context, req *types.AddressStringToBytesRequest) (*types.AddressStringToBytesResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "empty request")
 	}
@@ -216,7 +216,7 @@ func (s queryServer) AccountInfo(ctx context.Context, req *types.QueryAccountInf
 	if pubKey != nil {
 		pkAny, err = codectypes.NewAnyWithValue(account.GetPubKey())
 		if err != nil {
-			return nil, status.Errorf(codes.Internal, err.Error())
+			return nil, status.Errorf(codes.Internal, "%s", err.Error())
 		}
 	}
 
