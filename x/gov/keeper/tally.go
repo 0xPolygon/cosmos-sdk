@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"strings"
 
 	"cosmossdk.io/collections"
 	"cosmossdk.io/math"
@@ -32,7 +33,7 @@ func (keeper Keeper) Tally(ctx context.Context, proposal v1.Proposal) (passes, b
 		if err != nil {
 			return true
 		}
-		currValidators[validator.GetOperator()] = v1.NewValidatorGovInfo(
+		currValidators[strings.ToLower(validator.GetOperator())] = v1.NewValidatorGovInfo(
 			valBz,
 			// HV2: using validator.GetBondedTokens() as custom staking module will return the validator's VotingPower for it
 			validator.GetBondedTokens(),
@@ -59,6 +60,7 @@ func (keeper Keeper) Tally(ctx context.Context, proposal v1.Proposal) (passes, b
 		if err != nil {
 			return false, err
 		}
+		valAddrStr = strings.ToLower(valAddrStr)
 		if val, ok := currValidators[valAddrStr]; ok {
 			val.Vote = vote.Options
 			currValidators[valAddrStr] = val
