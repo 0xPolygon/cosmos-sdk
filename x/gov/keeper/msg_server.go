@@ -193,8 +193,9 @@ func (k msgServer) Vote(goCtx context.Context, msg *v1.MsgVote) (*v1.MsgVoteResp
 }
 
 // VoteWeighted implements the MsgServer.VoteWeighted method.
+//
+//nolint:revive,govet
 func (k msgServer) VoteWeighted(goCtx context.Context, msg *v1.MsgVoteWeighted) (*v1.MsgVoteWeightedResponse, error) {
-
 	// HV2: disabled in heimdall as we do not support WeighedVoteOptions
 	return nil, errors.Wrap(govtypes.ErrWeightedVoteOptionsNotSupported, "not implemented")
 
@@ -351,8 +352,8 @@ func (k legacyMsgServer) Vote(goCtx context.Context, msg *v1beta1.MsgVote) (*v1b
 	return &v1beta1.MsgVoteResponse{}, nil
 }
 
+//nolint:revive,govet
 func (k legacyMsgServer) VoteWeighted(goCtx context.Context, msg *v1beta1.MsgVoteWeighted) (*v1beta1.MsgVoteWeightedResponse, error) {
-
 	// HV2: disabled in heimdall as we do not support WeighedVoteOptions
 	return nil, errors.Wrap(govtypes.ErrWeightedVoteOptionsNotSupported, "not implemented")
 

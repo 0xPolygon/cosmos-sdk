@@ -92,9 +92,9 @@ func NewAnyWithValue(v proto.Message) (*Any, error) {
 // marshaled with amino and not protobuf.
 func UnsafePackAny(x interface{}) *Any {
 	if msg, ok := x.(proto.Message); ok {
-		any, err := NewAnyWithValue(msg)
+		a, err := NewAnyWithValue(msg)
 		if err == nil {
-			return any
+			return a
 		}
 	}
 	return &Any{cachedValue: x}

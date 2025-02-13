@@ -38,7 +38,7 @@ func (signModeTextualHandler) Modes() []signingtypes.SignMode {
 }
 
 // GetSignBytes implements SignModeHandler.GetSignBytes
-func (h signModeTextualHandler) GetSignBytes(mode signingtypes.SignMode, data signing.SignerData, tx sdk.Tx) ([]byte, error) {
+func (h signModeTextualHandler) GetSignBytes(_ signingtypes.SignMode, _ signing.SignerData, _ sdk.Tx) ([]byte, error) {
 	panic("SIGN_MODE_TEXTUAL needs GetSignBytesWithContext")
 }
 

@@ -81,7 +81,7 @@ func getGroupPolicies(r *rand.Rand, simState *module.SimulationState) []*group.G
 		}
 		usedAccs[acc.Address.String()] = true
 
-		any, err := codectypes.NewAnyWithValue(group.NewThresholdDecisionPolicy("10", time.Second, 0))
+		an, err := codectypes.NewAnyWithValue(group.NewThresholdDecisionPolicy("10", time.Second, 0))
 		if err != nil {
 			panic(err)
 		}
@@ -90,7 +90,7 @@ func getGroupPolicies(r *rand.Rand, simState *module.SimulationState) []*group.G
 			Admin:          acc.Address.String(),
 			Address:        acc.Address.String(),
 			Version:        1,
-			DecisionPolicy: any,
+			DecisionPolicy: an,
 			Metadata:       simtypes.RandStringOfLength(r, 10),
 		})
 	}

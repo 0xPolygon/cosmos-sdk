@@ -142,7 +142,7 @@ func (pc *ProtoCodec) MustUnmarshalLengthPrefixed(bz []byte, ptr gogoproto.Messa
 // it marshals to JSON using proto codec.
 // NOTE: this function must be used with a concrete type which
 // implements proto.Message. For interface please use the codec.MarshalInterfaceJSON
-func (pc *ProtoCodec) MarshalJSON(o gogoproto.Message) ([]byte, error) { //nolint:stdmethods // we don't want to implement Marshaler interface
+func (pc *ProtoCodec) MarshalJSON(o gogoproto.Message) ([]byte, error) {
 	if o == nil {
 		return nil, fmt.Errorf("cannot protobuf JSON encode nil")
 	}
@@ -227,7 +227,7 @@ func (pc *ProtoCodec) MarshalInterface(i gogoproto.Message) ([]byte, error) {
 	if err := assertNotNil(i); err != nil {
 		return nil, err
 	}
-	any, err := types.NewAnyWithValue(i)
+	a, err := types.NewAnyWithValue(i)
 	if err != nil {
 		return nil, err
 	}
@@ -236,7 +236,7 @@ func (pc *ProtoCodec) MarshalInterface(i gogoproto.Message) ([]byte, error) {
 		return nil, err
 	}
 
-	return pc.Marshal(any)
+	return pc.Marshal(a)
 }
 
 // UnmarshalInterface is a convenience function for proto unmarshaling interfaces. It
@@ -249,24 +249,24 @@ func (pc *ProtoCodec) MarshalInterface(i gogoproto.Message) ([]byte, error) {
 //	var x MyInterface
 //	err := cdc.UnmarshalInterface(bz, &x)
 func (pc *ProtoCodec) UnmarshalInterface(bz []byte, ptr interface{}) error {
-	any := &types.Any{}
-	err := pc.Unmarshal(bz, any)
+	a := &types.Any{}
+	err := pc.Unmarshal(bz, a)
 	if err != nil {
 		return err
 	}
 
-	return pc.UnpackAny(any, ptr)
+	return pc.UnpackAny(a, ptr)
 }
 
 // MarshalInterfaceJSON is a convenience function for proto marshaling interfaces. It
 // packs the provided value in an Any and then marshals it to bytes.
 // NOTE: to marshal a concrete type, you should use MarshalJSON instead
 func (pc *ProtoCodec) MarshalInterfaceJSON(x gogoproto.Message) ([]byte, error) {
-	any, err := types.NewAnyWithValue(x)
+	a, err := types.NewAnyWithValue(x)
 	if err != nil {
 		return nil, err
 	}
-	return pc.MarshalJSON(any)
+	return pc.MarshalJSON(a)
 }
 
 // UnmarshalInterfaceJSON is a convenience function for proto unmarshaling interfaces.
@@ -279,19 +279,19 @@ func (pc *ProtoCodec) MarshalInterfaceJSON(x gogoproto.Message) ([]byte, error) 
 //	var x MyInterface  // must implement proto.Message
 //	err := cdc.UnmarshalInterfaceJSON(&x, bz)
 func (pc *ProtoCodec) UnmarshalInterfaceJSON(bz []byte, iface interface{}) error {
-	any := &types.Any{}
-	err := pc.UnmarshalJSON(bz, any)
+	a := &types.Any{}
+	err := pc.UnmarshalJSON(bz, a)
 	if err != nil {
 		return err
 	}
-	return pc.UnpackAny(any, iface)
+	return pc.UnpackAny(a, iface)
 }
 
 // UnpackAny implements AnyUnpacker.UnpackAny method,
 // it unpacks the value in any to the interface pointer passed in as
 // iface.
-func (pc *ProtoCodec) UnpackAny(any *types.Any, iface interface{}) error {
-	return pc.interfaceRegistry.UnpackAny(any, iface)
+func (pc *ProtoCodec) UnpackAny(a *types.Any, iface interface{}) error {
+	return pc.interfaceRegistry.UnpackAny(a, iface)
 }
 
 // InterfaceRegistry returns InterfaceRegistry

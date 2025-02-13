@@ -88,12 +88,12 @@ func (k Keeper) update(ctx context.Context, grantee, granter sdk.AccAddress, upd
 		return sdkerrors.ErrPackAny.Wrapf("cannot proto marshal %T", updated)
 	}
 
-	any, err := codectypes.NewAnyWithValue(msg)
+	a, err := codectypes.NewAnyWithValue(msg)
 	if err != nil {
 		return err
 	}
 
-	grant.Authorization = any
+	grant.Authorization = a
 	store := k.storeService.OpenKVStore(ctx)
 	store.Set(skey, k.cdc.MustMarshal(&grant))
 

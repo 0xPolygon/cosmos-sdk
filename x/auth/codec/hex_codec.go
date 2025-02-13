@@ -8,11 +8,11 @@ import (
 
 	"cosmossdk.io/core/address"
 	errorsmod "cosmossdk.io/errors"
+
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-type hexCodec struct {
-}
+type hexCodec struct{}
 
 var _ address.Codec = &hexCodec{}
 

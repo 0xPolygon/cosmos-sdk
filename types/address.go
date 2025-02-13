@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"sync"
 	"sync/atomic"
 
 	"github.com/ethereum/go-ethereum/common"
@@ -41,14 +40,13 @@ const (
 )
 
 // cache variables
+//
+//nolint:unused
 var (
 	// AccAddress.String() is expensive and if unoptimized dominantly showed up in profiles,
 	// yet has no mechanisms to trivially cache the result given that AccAddress is a []byte type.
-	accAddrMu     sync.Mutex
 	accAddrCache  *simplelru.LRU
-	consAddrMu    sync.Mutex
 	consAddrCache *simplelru.LRU
-	valAddrMu     sync.Mutex
 	valAddrCache  *simplelru.LRU
 
 	isCachingEnabled atomic.Bool

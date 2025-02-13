@@ -4,13 +4,13 @@ import (
 	"context"
 	"strings"
 
+	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
+
 	"cosmossdk.io/collections"
 	"cosmossdk.io/math"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
-
-	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 )
 
 // TODO: Break into several smaller functions for clarity
@@ -49,7 +49,7 @@ func (keeper Keeper) Tally(ctx context.Context, proposal v1.Proposal) (passes, b
 	}
 
 	rng := collections.NewPrefixedPairRange[uint64, sdk.AccAddress](proposal.Id)
-	err = keeper.Votes.Walk(ctx, rng, func(key collections.Pair[uint64, sdk.AccAddress], vote v1.Vote) (bool, error) {
+	err = keeper.Votes.Walk(ctx, rng, func(_ collections.Pair[uint64, sdk.AccAddress], vote v1.Vote) (bool, error) {
 		// if validator, just record it in the map
 		voter, err := keeper.authKeeper.AddressCodec().StringToBytes(vote.Voter)
 		if err != nil {
@@ -96,7 +96,6 @@ func (keeper Keeper) Tally(ctx context.Context, proposal v1.Proposal) (passes, b
 		*/
 		return false, keeper.Votes.Remove(ctx, collections.Join(vote.ProposalId, sdk.AccAddress(voter)))
 	})
-
 	if err != nil {
 		return false, false, tallyResults, err
 	}

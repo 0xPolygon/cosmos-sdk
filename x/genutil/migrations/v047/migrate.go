@@ -35,11 +35,11 @@ func Migrate(appState types.AppMap, clientCtx client.Context) (types.AppMap, err
 		delete(appState, v4gov.ModuleName)
 
 		// set the x/gov genesis state with new state.
-		new, err := v4gov.MigrateJSON(&old)
+		n, err := v4gov.MigrateJSON(&old)
 		if err != nil {
 			return nil, err
 		}
-		appState[v4gov.ModuleName] = clientCtx.Codec.MustMarshalJSON(new)
+		appState[v4gov.ModuleName] = clientCtx.Codec.MustMarshalJSON(n)
 	}
 
 	// Migrate x/auth group policy accounts

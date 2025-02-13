@@ -10,7 +10,7 @@ import (
 )
 
 func FuzzTypesDecSetString(f *testing.F) {
-	f.Fuzz(func(t *testing.T, b []byte) {
+	f.Fuzz(func(_ *testing.T, b []byte) {
 		dec, err := sdkmath.LegacyNewDecFromStr(string(b))
 		if err != nil {
 			return

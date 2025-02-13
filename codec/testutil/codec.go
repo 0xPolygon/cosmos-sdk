@@ -18,7 +18,6 @@ type CodecOptions struct {
 
 // NewInterfaceRegistry returns a new InterfaceRegistry with the given options.
 func (o CodecOptions) NewInterfaceRegistry() codectypes.InterfaceRegistry {
-
 	ir, err := codectypes.NewInterfaceRegistryWithOptions(codectypes.InterfaceRegistryOptions{
 		ProtoFiles: proto.HybridResolver,
 		SigningOptions: signing.Options{

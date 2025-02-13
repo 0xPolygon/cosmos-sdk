@@ -9,7 +9,7 @@ import (
 )
 
 func FuzzCryptoHDNewParamsFromPath(f *testing.F) {
-	f.Fuzz(func(t *testing.T, data []byte) {
-		hd.NewParamsFromPath(string(data))
+	f.Fuzz(func(_ *testing.T, data []byte) {
+		_, _ = hd.NewParamsFromPath(string(data))
 	})
 }

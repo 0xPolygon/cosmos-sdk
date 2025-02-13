@@ -112,7 +112,7 @@ func TestCollectionPagination(t *testing.T) {
 			expResp: &PageResponse{
 				NextKey: encodeKey(5),
 			},
-			filter: func(key, value uint64) (bool, error) {
+			filter: func(key, _ uint64) (bool, error) {
 				return key%2 == 0, nil
 			},
 			expResults: []collections.KeyValue[uint64, uint64]{
@@ -129,7 +129,7 @@ func TestCollectionPagination(t *testing.T) {
 			expResp: &PageResponse{
 				NextKey: encodeKey(5),
 			},
-			filter: func(key, value uint64) (bool, error) {
+			filter: func(key, _ uint64) (bool, error) {
 				return key%2 == 0, nil
 			},
 			expResults: []collections.KeyValue[uint64, uint64]{
@@ -166,7 +166,7 @@ type testStore struct {
 	db db.DB
 }
 
-func (t testStore) OpenKVStore(ctx context.Context) store.KVStore {
+func (t testStore) OpenKVStore(_ context.Context) store.KVStore {
 	return t
 }
 

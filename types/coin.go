@@ -420,7 +420,6 @@ func (coins Coins) SafeMulInt(x math.Int) (Coins, bool) {
 
 	res := make(Coins, len(coins))
 	for i, coin := range coins {
-		coin := coin
 		res[i] = NewCoin(coin.Denom, coin.Amount.Mul(x))
 	}
 
@@ -454,7 +453,6 @@ func (coins Coins) SafeQuoInt(x math.Int) (Coins, bool) {
 
 	var res Coins
 	for _, coin := range coins {
-		coin := coin
 		res = append(res, NewCoin(coin.Denom, coin.Amount.Quo(x)))
 	}
 
@@ -477,34 +475,34 @@ func (coins Coins) SafeQuoInt(x math.Int) (Coins, bool) {
 // {2A, 3B}.Max({1B, 4C}) == {2A, 3B, 4C}
 // {1A, 2B}.Max({}) == {1A, 2B}
 func (coins Coins) Max(coinsB Coins) Coins {
-	max := make([]Coin, 0)
+	m := make([]Coin, 0)
 	indexA, indexB := 0, 0
 	for indexA < len(coins) && indexB < len(coinsB) {
 		coinA, coinB := coins[indexA], coinsB[indexB]
 		switch strings.Compare(coinA.Denom, coinB.Denom) {
 		case -1: // denom missing from coinsB
-			max = append(max, coinA)
+			m = append(m, coinA)
 			indexA++
 		case 0: // same denom in both
 			maxCoin := coinA
 			if coinB.Amount.GT(maxCoin.Amount) {
 				maxCoin = coinB
 			}
-			max = append(max, maxCoin)
+			m = append(m, maxCoin)
 			indexA++
 			indexB++
 		case 1: // denom missing from coinsA
-			max = append(max, coinB)
+			m = append(m, coinB)
 			indexB++
 		}
 	}
 	for ; indexA < len(coins); indexA++ {
-		max = append(max, coins[indexA])
+		m = append(m, coins[indexA])
 	}
 	for ; indexB < len(coinsB); indexB++ {
-		max = append(max, coinsB[indexB])
+		m = append(m, coinsB[indexB])
 	}
-	return NewCoins(max...)
+	return NewCoins(m...)
 }
 
 // Min takes two valid Coins inputs and returns a valid Coins result
@@ -525,7 +523,7 @@ func (coins Coins) Max(coinsB Coins) Coins {
 //
 // See also DecCoins.Intersect().
 func (coins Coins) Min(coinsB Coins) Coins {
-	min := make([]Coin, 0)
+	m := make([]Coin, 0)
 	for indexA, indexB := 0, 0; indexA < len(coins) && indexB < len(coinsB); {
 		coinA, coinB := coins[indexA], coinsB[indexB]
 		switch strings.Compare(coinA.Denom, coinB.Denom) {
@@ -537,7 +535,7 @@ func (coins Coins) Min(coinsB Coins) Coins {
 				minCoin = coinB
 			}
 			if !minCoin.IsZero() {
-				min = append(min, minCoin)
+				m = append(m, minCoin)
 			}
 			indexA++
 			indexB++
@@ -545,7 +543,7 @@ func (coins Coins) Min(coinsB Coins) Coins {
 			indexB++
 		}
 	}
-	return NewCoins(min...)
+	return NewCoins(m...)
 }
 
 // IsAllGT returns true if for every denom in coinsB,

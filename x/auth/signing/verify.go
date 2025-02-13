@@ -5,10 +5,11 @@ import (
 	"encoding/hex"
 	"fmt"
 
-	signingv1beta1 "cosmossdk.io/api/cosmos/tx/signing/v1beta1"
-	txsigning "cosmossdk.io/x/tx/signing"
 	"github.com/ethereum/go-ethereum/crypto"
 	ethCrypto "github.com/ethereum/go-ethereum/crypto/secp256k1"
+
+	signingv1beta1 "cosmossdk.io/api/cosmos/tx/signing/v1beta1"
+	txsigning "cosmossdk.io/x/tx/signing"
 
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	"github.com/cosmos/cosmos-sdk/crypto/types/multisig"
@@ -62,6 +63,8 @@ func internalSignModeToAPI(mode signing.SignMode) (signingv1beta1.SignMode, erro
 
 // VerifySignature verifies a transaction signature contained in SignatureData abstracting over different signing
 // modes. It differs from VerifySignature in that it uses the new txsigning.TxData interface in x/tx.
+//
+//nolint:govet
 func VerifySignature(ctx context.Context, pubKey cryptotypes.PubKey, signerData txsigning.SignerData, signatureData signing.SignatureData, handler *txsigning.HandlerMap, txData txsigning.TxData) error {
 	switch data := signatureData.(type) {
 	case *signing.SingleSignatureData:
@@ -101,7 +104,7 @@ func VerifySignature(ctx context.Context, pubKey cryptotypes.PubKey, signerData 
 }
 
 // RecoverPubKey builds a signature for given a signed msg.
-func RecoverPubKey(msg []byte, sig []byte) ([]byte, error) {
+func RecoverPubKey(msg, sig []byte) ([]byte, error) {
 	data := crypto.Keccak256(msg)
-	return ethCrypto.RecoverPubkey(data, sig[:])
+	return ethCrypto.RecoverPubkey(data, sig)
 }

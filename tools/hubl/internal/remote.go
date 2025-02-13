@@ -79,8 +79,6 @@ func RemoteCommand(config *Config, configDir string) ([]*cobra.Command, error) {
 	commands := []*cobra.Command{}
 
 	for chain, chainConfig := range config.Chains {
-		chain, chainConfig := chain, chainConfig
-
 		// load chain info
 		chainInfo := NewChainInfo(configDir, chain, chainConfig)
 		if err := chainInfo.Load(false); err != nil {
@@ -100,10 +98,10 @@ func RemoteCommand(config *Config, configDir string) ([]*cobra.Command, error) {
 				TypeResolver:          &dynamicTypeResolver{chainInfo},
 				FileResolver:          chainInfo.ProtoFiles,
 			},
-			GetClientConn: func(command *cobra.Command) (grpc.ClientConnInterface, error) {
+			GetClientConn: func(_ *cobra.Command) (grpc.ClientConnInterface, error) {
 				return chainInfo.OpenClient()
 			},
-			AddQueryConnFlags: func(command *cobra.Command) {},
+			AddQueryConnFlags: func(_ *cobra.Command) {},
 		}
 
 		var (
@@ -115,7 +113,7 @@ func RemoteCommand(config *Config, configDir string) ([]*cobra.Command, error) {
 		chainCmd := &cobra.Command{
 			Use:   chain,
 			Short: fmt.Sprintf("Commands for the %s chain", chain),
-			RunE: func(cmd *cobra.Command, args []string) error {
+			RunE: func(cmd *cobra.Command, _ []string) error {
 				switch {
 				case reconfig:
 					return reconfigure(cmd, config, configDir, chain)
@@ -146,7 +144,7 @@ func RemoteErrorCommand(config *Config, configDir, chain string, chainConfig *Ch
 		Use:   chain,
 		Short: "Unable to load data",
 		Long:  "Unable to load data, reconfiguration needed.",
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(cmd *cobra.Command, _ []string) error {
 			cmd.Printf("Error loading chain data for %s: %+v\n", chain, err)
 
 			return reconfigure(cmd, config, configDir, chain)

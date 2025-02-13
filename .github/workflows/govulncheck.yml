@@ -1,0 +1,24 @@
+# TODO HV2: remove GIT_TERMINAL_PROMPT, GOPRIVATE and GH_ACCESS_TOKEN vars once heimdall-v2 is a public repo
+name: Govuln
+on: [ push, pull_request ]
+
+jobs:
+  govulncheck:
+    name: Run govulncheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.23.6"
+          check-latest: true
+      - uses: actions/checkout@v4
+      - uses: technote-space/get-diff-action@v6
+        with:
+          PATTERNS: |
+            **/*.go
+            go.mod
+            go.sum
+            Makefile
+      - name: govulncheck
+        run: make vulncheck
+        if: "env.GIT_DIFF != ''"

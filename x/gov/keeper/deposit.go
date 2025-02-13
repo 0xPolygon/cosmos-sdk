@@ -6,6 +6,8 @@ import (
 	"math/rand"
 	"strings"
 
+	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
+
 	"cosmossdk.io/collections"
 	"cosmossdk.io/errors"
 	sdkmath "cosmossdk.io/math"
@@ -15,8 +17,6 @@ import (
 	disttypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	"github.com/cosmos/cosmos-sdk/x/gov/types"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
-
-	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 )
 
 // SetDeposit sets a Deposit to the gov store
@@ -38,6 +38,8 @@ func (keeper Keeper) GetDeposits(ctx context.Context, proposalID uint64) (deposi
 }
 
 // DeleteAndBurnDeposits deletes and burns all the deposits on a specific proposal.
+//
+//nolint:govet
 func (keeper Keeper) DeleteAndBurnDeposits(ctx context.Context, proposalID uint64) error {
 	// HV2: no support in heimdall for burn deposits
 	panic(errors.ErrPanic)
@@ -379,7 +381,7 @@ func (keeper Keeper) DistributeAndDeleteDeposits(ctx context.Context, proposalID
 // validateInitialDeposit validates if initial deposit is greater than or equal to the minimum
 // required at the time of proposal submission. This threshold amount is determined by
 // the deposit parameters. Returns nil on success, error otherwise.
-func (keeper Keeper) validateInitialDeposit(ctx context.Context, params v1.Params, initialDeposit sdk.Coins, expedited bool) error {
+func (keeper Keeper) validateInitialDeposit(_ context.Context, params v1.Params, initialDeposit sdk.Coins, expedited bool) error {
 	if !initialDeposit.IsValid() || initialDeposit.IsAnyNegative() {
 		return errors.Wrap(sdkerrors.ErrInvalidCoins, initialDeposit.String())
 	}
@@ -409,7 +411,7 @@ func (keeper Keeper) validateInitialDeposit(ctx context.Context, params v1.Param
 }
 
 // validateDepositDenom validates if the deposit denom is accepted by the governance module.
-func (keeper Keeper) validateDepositDenom(ctx context.Context, params v1.Params, depositAmount sdk.Coins) error {
+func (keeper Keeper) validateDepositDenom(_ context.Context, params v1.Params, depositAmount sdk.Coins) error {
 	denoms := []string{}
 	acceptedDenoms := make(map[string]bool, len(params.MinDeposit))
 	for _, coin := range params.MinDeposit {

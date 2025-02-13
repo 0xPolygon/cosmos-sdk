@@ -175,6 +175,7 @@ func (c *ChainInfo) OpenClient() (*grpc.ClientConn, error) {
 		}
 
 		var err error
+		//nolint:staticcheck
 		c.client, err = grpc.Dial(endpoint.Endpoint, grpc.WithTransportCredentials(creds))
 		if err != nil {
 			res = errors.Join(res, err)

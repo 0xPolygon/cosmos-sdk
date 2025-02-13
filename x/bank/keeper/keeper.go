@@ -123,7 +123,7 @@ func (k BaseKeeper) WithMintCoinsRestriction(check types.MintingRestrictionFn) B
 // vesting and vested coins. The coins are then transferred from the delegator
 // address to a ModuleAccount address. If any of the delegation amounts are negative,
 // an error is returned.
-func (k BaseKeeper) DelegateCoins(ctx context.Context, delegatorAddr, moduleAccAddr sdk.AccAddress, amt sdk.Coins) error {
+func (k BaseKeeper) DelegateCoins(_ context.Context, _, _ sdk.AccAddress, _ sdk.Coins) error {
 	return fmt.Errorf("DelegateCoins not supported in Heimdall since vesting and delegation are disabled")
 	/*
 		moduleAcc := k.ak.GetAccount(ctx, moduleAccAddr)
@@ -177,7 +177,7 @@ func (k BaseKeeper) DelegateCoins(ctx context.Context, delegatorAddr, moduleAccA
 // vesting and vested coins. The coins are then transferred from a ModuleAccount
 // address to the delegator address. If any of the undelegation amounts are
 // negative, an error is returned.
-func (k BaseKeeper) UndelegateCoins(ctx context.Context, moduleAccAddr, delegatorAddr sdk.AccAddress, amt sdk.Coins) error {
+func (k BaseKeeper) UndelegateCoins(_ context.Context, _, _ sdk.AccAddress, _ sdk.Coins) error {
 	return fmt.Errorf("UndelegateCoins not supported in Heimdall since vesting and delegation is disabled")
 	/*
 		moduleAcc := k.ak.GetAccount(ctx, moduleAccAddr)
@@ -318,7 +318,7 @@ func (k BaseKeeper) SendCoinsFromAccountToModule(
 // delegator account to a module account. It will panic if the module account
 // does not exist or is unauthorized.
 func (k BaseKeeper) DelegateCoinsFromAccountToModule(
-	ctx context.Context, senderAddr sdk.AccAddress, recipientModule string, amt sdk.Coins,
+	_ context.Context, _ sdk.AccAddress, _ string, _ sdk.Coins,
 ) error {
 	return fmt.Errorf("DelegateCoinsFromAccountToModule not supported in Heimdall since vesting and delegation are disabled")
 	/*
@@ -341,7 +341,7 @@ func (k BaseKeeper) DelegateCoinsFromAccountToModule(
 // them from a module account to the delegator account. It will panic if the
 // module account does not exist or is unauthorized.
 func (k BaseKeeper) UndelegateCoinsFromModuleToAccount(
-	ctx context.Context, senderModule string, recipientAddr sdk.AccAddress, amt sdk.Coins,
+	_ context.Context, _ string, _ sdk.AccAddress, _ sdk.Coins,
 ) error {
 	return fmt.Errorf("UndelegateCoinsFromModuleToAccount not supported in Heimdall since vesting and delegation are disabled")
 	/*
@@ -442,41 +442,6 @@ func (k BaseKeeper) setSupply(ctx context.Context, coin sdk.Coin) {
 	} else {
 		_ = k.Supply.Set(ctx, coin.Denom, coin.Amount)
 	}
-}
-
-// trackDelegation tracks the delegation of the given account if it is a vesting account
-func (k BaseKeeper) trackDelegation(ctx context.Context, addr sdk.AccAddress, balance, amt sdk.Coins) error {
-	acc := k.ak.GetAccount(ctx, addr)
-	if acc == nil {
-		return errorsmod.Wrapf(sdkerrors.ErrUnknownAddress, "account %s does not exist", addr)
-	}
-
-	vacc, ok := acc.(types.VestingAccount)
-	if ok {
-		// TODO: return error on account.TrackDelegation
-		sdkCtx := sdk.UnwrapSDKContext(ctx)
-		vacc.TrackDelegation(sdkCtx.BlockHeader().Time, balance, amt)
-		k.ak.SetAccount(ctx, acc)
-	}
-
-	return nil
-}
-
-// trackUndelegation trakcs undelegation of the given account if it is a vesting account
-func (k BaseKeeper) trackUndelegation(ctx context.Context, addr sdk.AccAddress, amt sdk.Coins) error {
-	acc := k.ak.GetAccount(ctx, addr)
-	if acc == nil {
-		return errorsmod.Wrapf(sdkerrors.ErrUnknownAddress, "account %s does not exist", addr)
-	}
-
-	vacc, ok := acc.(types.VestingAccount)
-	if ok {
-		// TODO: return error on account.TrackUndelegation
-		vacc.TrackUndelegation(amt)
-		k.ak.SetAccount(ctx, acc)
-	}
-
-	return nil
 }
 
 // IterateTotalSupply iterates over the total supply calling the given cb (callback) function

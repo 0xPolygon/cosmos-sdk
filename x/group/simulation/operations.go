@@ -79,9 +79,9 @@ const (
 // WeightedOperations returns all the operations from the module with their respective weights
 func WeightedOperations(
 	registry cdctypes.InterfaceRegistry,
-	appParams simtypes.AppParams, cdc codec.JSONCodec, txGen client.TxConfig,
+	appParams simtypes.AppParams, _ codec.JSONCodec, txGen client.TxConfig,
 	ak group.AccountKeeper, bk group.BankKeeper, k keeper.Keeper,
-	appCdc cdctypes.AnyUnpacker,
+	_ cdctypes.AnyUnpacker,
 ) simulation.WeightedOperations {
 	var (
 		weightMsgCreateGroup                     int
@@ -217,7 +217,7 @@ func WeightedOperations(
 
 // SimulateMsgCreateGroup generates a MsgCreateGroup with random values
 func SimulateMsgCreateGroup(
-	cdc *codec.ProtoCodec,
+	_ *codec.ProtoCodec,
 	txGen client.TxConfig,
 	ak group.AccountKeeper,
 	bk group.BankKeeper,
@@ -264,7 +264,7 @@ func SimulateMsgCreateGroup(
 
 // SimulateMsgCreateGroupWithPolicy generates a MsgCreateGroupWithPolicy with random values
 func SimulateMsgCreateGroupWithPolicy(
-	cdc *codec.ProtoCodec,
+	_ *codec.ProtoCodec,
 	txGen client.TxConfig,
 	ak group.AccountKeeper,
 	bk group.BankKeeper,
@@ -328,7 +328,7 @@ func SimulateMsgCreateGroupWithPolicy(
 
 // SimulateMsgCreateGroupPolicy generates a NewMsgCreateGroupPolicy with random values
 func SimulateMsgCreateGroupPolicy(
-	cdc *codec.ProtoCodec,
+	_ *codec.ProtoCodec,
 	txGen client.TxConfig,
 	ak group.AccountKeeper,
 	bk group.BankKeeper,
@@ -394,7 +394,7 @@ func SimulateMsgCreateGroupPolicy(
 
 // SimulateMsgSubmitProposal generates a NewMsgSubmitProposal with random values
 func SimulateMsgSubmitProposal(
-	cdc *codec.ProtoCodec,
+	_ *codec.ProtoCodec,
 	txGen client.TxConfig,
 	ak group.AccountKeeper,
 	bk group.BankKeeper,
@@ -475,7 +475,7 @@ func SimulateMsgSubmitProposal(
 
 // SimulateMsgUpdateGroupAdmin generates a MsgUpdateGroupAdmin with random values
 func SimulateMsgUpdateGroupAdmin(
-	cdc *codec.ProtoCodec,
+	_ *codec.ProtoCodec,
 	txGen client.TxConfig,
 	ak group.AccountKeeper,
 	bk group.BankKeeper,
@@ -540,7 +540,7 @@ func SimulateMsgUpdateGroupAdmin(
 
 // SimulateMsgUpdateGroupMetadata generates a MsgUpdateGroupMetadata with random values
 func SimulateMsgUpdateGroupMetadata(
-	cdc *codec.ProtoCodec,
+	_ *codec.ProtoCodec,
 	txGen client.TxConfig,
 	ak group.AccountKeeper,
 	bk group.BankKeeper,
@@ -596,7 +596,7 @@ func SimulateMsgUpdateGroupMetadata(
 
 // SimulateMsgUpdateGroupMembers generates a MsgUpdateGroupMembers with random values
 func SimulateMsgUpdateGroupMembers(
-	cdc *codec.ProtoCodec,
+	_ *codec.ProtoCodec,
 	txGen client.TxConfig,
 	ak group.AccountKeeper,
 	bk group.BankKeeper,
@@ -679,7 +679,7 @@ func SimulateMsgUpdateGroupMembers(
 
 // SimulateMsgUpdateGroupPolicyAdmin generates a MsgUpdateGroupPolicyAdmin with random values
 func SimulateMsgUpdateGroupPolicyAdmin(
-	cdc *codec.ProtoCodec,
+	_ *codec.ProtoCodec,
 	txGen client.TxConfig,
 	ak group.AccountKeeper,
 	bk group.BankKeeper,
@@ -742,9 +742,9 @@ func SimulateMsgUpdateGroupPolicyAdmin(
 	}
 }
 
-// // SimulateMsgUpdateGroupPolicyDecisionPolicy generates a NewMsgUpdateGroupPolicyDecisionPolicy with random values
+// SimulateMsgUpdateGroupPolicyDecisionPolicy generates a NewMsgUpdateGroupPolicyDecisionPolicy with random values
 func SimulateMsgUpdateGroupPolicyDecisionPolicy(
-	cdc *codec.ProtoCodec,
+	_ *codec.ProtoCodec,
 	txGen client.TxConfig,
 	ak group.AccountKeeper,
 	bk group.BankKeeper,
@@ -806,9 +806,9 @@ func SimulateMsgUpdateGroupPolicyDecisionPolicy(
 	}
 }
 
-// // SimulateMsgUpdateGroupPolicyMetadata generates a MsgUpdateGroupPolicyMetadata with random values
+// SimulateMsgUpdateGroupPolicyMetadata generates a MsgUpdateGroupPolicyMetadata with random values
 func SimulateMsgUpdateGroupPolicyMetadata(
-	cdc *codec.ProtoCodec,
+	_ *codec.ProtoCodec,
 	txGen client.TxConfig,
 	ak group.AccountKeeper,
 	bk group.BankKeeper,
@@ -864,7 +864,7 @@ func SimulateMsgUpdateGroupPolicyMetadata(
 
 // SimulateMsgWithdrawProposal generates a MsgWithdrawProposal with random values
 func SimulateMsgWithdrawProposal(
-	cdc *codec.ProtoCodec,
+	_ *codec.ProtoCodec,
 	txGen client.TxConfig,
 	ak group.AccountKeeper,
 	bk group.BankKeeper,
@@ -958,7 +958,6 @@ func SimulateMsgWithdrawProposal(
 		}
 
 		_, _, err = app.SimDeliver(txGen.TxEncoder(), tx)
-
 		if err != nil {
 			if strings.Contains(err.Error(), "group was modified") || strings.Contains(err.Error(), "group policy was modified") {
 				return simtypes.NoOpMsg(group.ModuleName, sdk.MsgTypeURL(msg), "no-op:group/group-policy was modified"), nil, nil
@@ -972,7 +971,7 @@ func SimulateMsgWithdrawProposal(
 
 // SimulateMsgVote generates a MsgVote with random values
 func SimulateMsgVote(
-	cdc *codec.ProtoCodec,
+	_ *codec.ProtoCodec,
 	txGen client.TxConfig,
 	ak group.AccountKeeper,
 	bk group.BankKeeper,
@@ -1066,7 +1065,6 @@ func SimulateMsgVote(
 		}
 
 		_, _, err = app.SimDeliver(txGen.TxEncoder(), tx)
-
 		if err != nil {
 			if strings.Contains(err.Error(), "group was modified") || strings.Contains(err.Error(), "group policy was modified") {
 				return simtypes.NoOpMsg(group.ModuleName, sdk.MsgTypeURL(msg), "no-op:group/group-policy was modified"), nil, nil
@@ -1078,9 +1076,9 @@ func SimulateMsgVote(
 	}
 }
 
-// // SimulateMsgExec generates a MsgExec with random values
+// SimulateMsgExec generates a MsgExec with random values
 func SimulateMsgExec(
-	cdc *codec.ProtoCodec,
+	_ *codec.ProtoCodec,
 	txGen client.TxConfig,
 	ak group.AccountKeeper,
 	bk group.BankKeeper,
@@ -1160,7 +1158,7 @@ func SimulateMsgExec(
 
 // SimulateMsgLeaveGroup generates a MsgLeaveGroup with random values
 func SimulateMsgLeaveGroup(
-	cdc *codec.ProtoCodec,
+	_ *codec.ProtoCodec,
 	txGen client.TxConfig,
 	k keeper.Keeper,
 	ak group.AccountKeeper,
@@ -1352,12 +1350,12 @@ func genGroupMembers(r *rand.Rand, accounts []simtypes.Account) []group.MemberRe
 		}
 	}
 
-	max := 5
-	if len(accounts) < max {
-		max = len(accounts)
+	m := 5
+	if len(accounts) < m {
+		m = len(accounts)
 	}
 
-	membersLen := simtypes.RandIntBetween(r, 1, max)
+	membersLen := simtypes.RandIntBetween(r, 1, m)
 	members := make([]group.MemberRequest, membersLen)
 
 	for i := 0; i < membersLen; i++ {

@@ -123,7 +123,7 @@ func NewEditValidatorCmd(ac address.Codec) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "edit-validator",
 		Short: "edit an existing validator account",
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(cmd *cobra.Command, _ []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
@@ -278,7 +278,6 @@ $ %s tx staking redelegate cosmosvalopers1gghjut3ccd8ay0zduzj64hwre2fxs9ldmqhffj
 
 // NewUnbondCmd returns a CLI command handler for creating a MsgUndelegate transaction.
 func NewUnbondCmd(valAddrCodec, ac address.Codec) *cobra.Command {
-
 	cmd := &cobra.Command{
 		Use:   "unbond [validator-addr] [amount]",
 		Short: "Unbond shares from a validator",
@@ -325,7 +324,6 @@ $ %s tx staking unbond 0x... 100stake --from mykey
 
 // NewCancelUnbondingDelegation returns a CLI command handler for creating a MsgCancelUnbondingDelegation transaction.
 func NewCancelUnbondingDelegation(valAddrCodec, ac address.Codec) *cobra.Command {
-
 	cmd := &cobra.Command{
 		Use:   "cancel-unbond [validator-addr] [amount] [creation-height]",
 		Short: "Cancel unbonding delegation and delegate back to the validator",

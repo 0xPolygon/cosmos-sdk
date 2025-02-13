@@ -331,6 +331,7 @@ func NewAppConfig(opts ...ModuleOption) depinject.Config {
 
 	for _, s := range cfg.PreBlockersOrder {
 		if _, ok := cfg.ModuleConfigs[s]; ok {
+			//nolint:staticcheck
 			preBlockers = append(preBlockers, s)
 		}
 	}

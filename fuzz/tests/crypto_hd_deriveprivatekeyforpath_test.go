@@ -16,7 +16,7 @@ func mnemonicToSeed(mnemonic string) []byte {
 }
 
 func FuzzCryptoHDDerivePrivateKeyForPath(f *testing.F) {
-	f.Fuzz(func(t *testing.T, in []byte) {
+	f.Fuzz(func(_ *testing.T, in []byte) {
 		splits := bytes.Split(in, []byte("*"))
 		if len(splits) == 1 {
 			return
@@ -30,6 +30,6 @@ func FuzzCryptoHDDerivePrivateKeyForPath(f *testing.F) {
 		}
 		seed := mnemonicToSeed(string(mnemonic))
 		master, ch := hd.ComputeMastersFromSeed(seed)
-		hd.DerivePrivateKeyForPath(master, ch, string(path))
+		_, _ = hd.DerivePrivateKeyForPath(master, ch, string(path))
 	})
 }

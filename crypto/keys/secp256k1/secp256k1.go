@@ -9,8 +9,8 @@ import (
 	"math/big"
 
 	"github.com/cometbft/cometbft/crypto"
-	secp256k1 "github.com/decred/dcrd/dcrec/secp256k1/v4"
-	ethCrypto "github.com/ethereum/go-ethereum/crypto" //nolint:depguard
+	"github.com/decred/dcrd/dcrec/secp256k1/v4"
+	ethCrypto "github.com/ethereum/go-ethereum/crypto"
 
 	errorsmod "cosmossdk.io/errors"
 
@@ -38,6 +38,7 @@ const (
 func (privKey *PrivKeyOld) Bytes() []byte {
 	return privKey.Key
 }
+
 func (privKey *PrivKeyOld) PubKey() cryptotypes.PubKey {
 	privateObject, err := ethCrypto.ToECDSA(privKey.Key)
 	if err != nil {
@@ -47,12 +48,15 @@ func (privKey *PrivKeyOld) PubKey() cryptotypes.PubKey {
 	pk := ethCrypto.FromECDSAPub(&privateObject.PublicKey)
 	return &PubKey{Key: pk}
 }
+
 func (privKey *PrivKeyOld) Equals(other cryptotypes.LedgerPrivKey) bool {
 	return privKey.Type() == other.Type() && subtle.ConstantTimeCompare(privKey.Bytes(), other.Bytes()) == 1
 }
+
 func (privKey *PrivKeyOld) Type() string {
 	return keyType
 }
+
 func (privKey *PrivKeyOld) Sign(msg []byte) ([]byte, error) {
 	privateObject, err := ethCrypto.ToECDSA(privKey.Key)
 	if err != nil {
@@ -294,9 +298,8 @@ func (pubKey *PubKeyOld) Equals(other cryptotypes.PubKey) bool {
 	return pubKey.Type() == other.Type() && bytes.Equal(pubKey.Bytes(), other.Bytes())
 }
 
-func (pubKey *PubKeyOld) VerifySignature(msg []byte, sigStr []byte) bool {
+func (pubKey *PubKeyOld) VerifySignature(msg, sigStr []byte) bool {
 	if len(sigStr) != SigSize {
-
 		return false
 	}
 

@@ -7,12 +7,13 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const testAddress = "0xa316fa9fa91700d7084d377bfdc81eb9f232f5ff"
+
 func TestHexCodec_StringToBytes_ValidHex(t *testing.T) {
 	codec := NewHexCodec()
-	text := "0xa316fa9fa91700d7084d377bfdc81eb9f232f5ff"
-	expected := common.FromHex(text)
+	expected := common.FromHex(testAddress)
 
-	result, err := codec.StringToBytes(text)
+	result, err := codec.StringToBytes(testAddress)
 	require.NoError(t, err)
 	require.Equal(t, expected, result)
 }

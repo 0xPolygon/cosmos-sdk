@@ -120,9 +120,9 @@ func (u uniqueKeyIndex) onInsert(store kv.Store, message protoreflect.Message) e
 	return store.Set(k, v)
 }
 
-func (u uniqueKeyIndex) onUpdate(store kv.Store, new, existing protoreflect.Message) error {
+func (u uniqueKeyIndex) onUpdate(store kv.Store, n, existing protoreflect.Message) error {
 	keyCodec := u.GetKeyCodec()
-	newValues := keyCodec.GetKeyValues(new)
+	newValues := keyCodec.GetKeyValues(n)
 	existingValues := keyCodec.GetKeyValues(existing)
 	if keyCodec.CompareKeys(newValues, existingValues) == 0 {
 		return nil
@@ -152,7 +152,7 @@ func (u uniqueKeyIndex) onUpdate(store kv.Store, new, existing protoreflect.Mess
 		return err
 	}
 
-	_, value, err := u.GetValueCodec().EncodeKeyFromMessage(new)
+	_, value, err := u.GetValueCodec().EncodeKeyFromMessage(n)
 	if err != nil {
 		return err
 	}

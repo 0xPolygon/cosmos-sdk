@@ -27,7 +27,7 @@ func NewQuerier(keeper Keeper) Querier {
 }
 
 // Params queries params of distribution module
-func (k Querier) Params(ctx context.Context, req *types.QueryParamsRequest) (*types.QueryParamsResponse, error) {
+func (k Querier) Params(ctx context.Context, _ *types.QueryParamsRequest) (*types.QueryParamsResponse, error) {
 	params, err := k.Keeper.Params.Get(ctx)
 	if err != nil {
 		return nil, err
@@ -116,7 +116,7 @@ func (k Querier) ValidatorOutstandingRewards(ctx context.Context, req *types.Que
 	}
 
 	if validator == nil {
-		return nil, errors.Wrapf(types.ErrNoValidatorExists, req.ValidatorAddress)
+		return nil, errors.Wrapf(types.ErrNoValidatorExists, "%s", req.ValidatorAddress)
 	}
 
 	rewards, err := k.GetValidatorOutstandingRewards(ctx, valAdr)
@@ -148,7 +148,7 @@ func (k Querier) ValidatorCommission(ctx context.Context, req *types.QueryValida
 	}
 
 	if validator == nil {
-		return nil, errors.Wrapf(types.ErrNoValidatorExists, req.ValidatorAddress)
+		return nil, errors.Wrapf(types.ErrNoValidatorExists, "%s", req.ValidatorAddress)
 	}
 	commission, err := k.GetValidatorAccumulatedCommission(ctx, valAdr)
 	if err != nil {
@@ -180,7 +180,7 @@ func (k Querier) ValidatorSlashes(ctx context.Context, req *types.QueryValidator
 	store := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	slashesStore := prefix.NewStore(store, types.GetValidatorSlashEventPrefix(valAddr))
 
-	events, pageRes, err := query.GenericFilteredPaginate(k.cdc, slashesStore, req.Pagination, func(key []byte, result *types.ValidatorSlashEvent) (*types.ValidatorSlashEvent, error) {
+	events, pageRes, err := query.GenericFilteredPaginate(k.cdc, slashesStore, req.Pagination, func(_ []byte, result *types.ValidatorSlashEvent) (*types.ValidatorSlashEvent, error) {
 		if result.ValidatorPeriod < req.StartingHeight || result.ValidatorPeriod > req.EndingHeight {
 			return nil, nil
 		}
@@ -331,7 +331,6 @@ func (k Querier) DelegatorValidators(ctx context.Context, req *types.QueryDelega
 			return false
 		},
 	)
-
 	if err != nil {
 		return nil, err
 	}
@@ -362,7 +361,7 @@ func (k Querier) DelegatorWithdrawAddress(ctx context.Context, req *types.QueryD
 }
 
 // CommunityPool queries the community pool coins
-func (k Querier) CommunityPool(ctx context.Context, req *types.QueryCommunityPoolRequest) (*types.QueryCommunityPoolResponse, error) {
+func (k Querier) CommunityPool(ctx context.Context, _ *types.QueryCommunityPoolRequest) (*types.QueryCommunityPoolResponse, error) {
 	pool, err := k.FeePool.Get(ctx)
 	if err != nil {
 		return nil, err

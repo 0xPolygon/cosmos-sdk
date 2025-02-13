@@ -268,7 +268,7 @@ func (p *hashed) decodeVersion(sbytes []byte) (int, error) {
 
 // sbytes should begin where decodeVersion left off.
 func (p *hashed) decodeCost(sbytes []byte) (int, error) {
-	cost, err := strconv.Atoi(string(sbytes[0:2]))
+	cost, err := strconv.ParseUint(string(sbytes[0:2]), 10, 32)
 	if err != nil {
 		return -1, err
 	}

@@ -73,8 +73,8 @@ type AminoUnpacker struct {
 
 var _ AnyUnpacker = AminoUnpacker{}
 
-func (a AminoUnpacker) UnpackAny(any *Any, iface interface{}) error {
-	ac := any.compat
+func (a AminoUnpacker) UnpackAny(an *Any, iface interface{}) error {
+	ac := an.compat
 	if ac == nil {
 		return anyCompatError("amino binary unmarshal", reflect.TypeOf(iface))
 	}
@@ -88,21 +88,21 @@ func (a AminoUnpacker) UnpackAny(any *Any, iface interface{}) error {
 		return err
 	}
 	if m, ok := val.(proto.Message); ok {
-		if err = any.pack(m); err != nil {
+		if err = an.pack(m); err != nil {
 			return err
 		}
 	} else {
-		any.cachedValue = val
+		an.cachedValue = val
 	}
 
 	// this is necessary for tests that use reflect.DeepEqual and compare
 	// proto vs amino marshaled values
-	any.compat = nil
+	an.compat = nil
 
 	return nil
 }
 
-// AminoUnpacker is an AnyUnpacker provided for backwards compatibility with
+// AminoPacker is an AnyPacker provided for backwards compatibility with
 // amino for the binary marshaling phase
 type AminoPacker struct {
 	Cdc *amino.Codec
@@ -110,20 +110,20 @@ type AminoPacker struct {
 
 var _ AnyUnpacker = AminoPacker{}
 
-func (a AminoPacker) UnpackAny(any *Any, _ interface{}) error {
-	err := UnpackInterfaces(any.cachedValue, a)
+func (a AminoPacker) UnpackAny(an *Any, _ interface{}) error {
+	err := UnpackInterfaces(an.cachedValue, a)
 	if err != nil {
 		return err
 	}
-	bz, err := a.Cdc.MarshalBinaryBare(any.cachedValue)
-	any.compat = &anyCompat{
+	bz, err := a.Cdc.MarshalBinaryBare(an.cachedValue)
+	an.compat = &anyCompat{
 		aminoBz: bz,
 		err:     err,
 	}
 	return err
 }
 
-// AminoUnpacker is an AnyUnpacker provided for backwards compatibility with
+// AminoJSONUnpacker is an AnyUnpacker provided for backwards compatibility with
 // amino for the JSON marshaling phase
 type AminoJSONUnpacker struct {
 	Cdc *amino.Codec
@@ -131,8 +131,8 @@ type AminoJSONUnpacker struct {
 
 var _ AnyUnpacker = AminoJSONUnpacker{}
 
-func (a AminoJSONUnpacker) UnpackAny(any *Any, iface interface{}) error {
-	ac := any.compat
+func (a AminoJSONUnpacker) UnpackAny(an *Any, iface interface{}) error {
+	ac := an.compat
 	if ac == nil {
 		return anyCompatError("JSON unmarshal", reflect.TypeOf(iface))
 	}
@@ -146,21 +146,21 @@ func (a AminoJSONUnpacker) UnpackAny(any *Any, iface interface{}) error {
 		return err
 	}
 	if m, ok := val.(proto.Message); ok {
-		if err = any.pack(m); err != nil {
+		if err = an.pack(m); err != nil {
 			return err
 		}
 	} else {
-		any.cachedValue = val
+		an.cachedValue = val
 	}
 
 	// this is necessary for tests that use reflect.DeepEqual and compare
 	// proto vs amino marshaled values
-	any.compat = nil
+	an.compat = nil
 
 	return nil
 }
 
-// AminoUnpacker is an AnyUnpacker provided for backwards compatibility with
+// AminoJSONPacker is an AnyPacker provided for backwards compatibility with
 // amino for the JSON un-marshaling phase
 type AminoJSONPacker struct {
 	Cdc *amino.Codec
@@ -168,13 +168,13 @@ type AminoJSONPacker struct {
 
 var _ AnyUnpacker = AminoJSONPacker{}
 
-func (a AminoJSONPacker) UnpackAny(any *Any, _ interface{}) error {
-	err := UnpackInterfaces(any.cachedValue, a)
+func (a AminoJSONPacker) UnpackAny(an *Any, _ interface{}) error {
+	err := UnpackInterfaces(an.cachedValue, a)
 	if err != nil {
 		return err
 	}
-	bz, err := a.Cdc.MarshalJSON(any.cachedValue)
-	any.compat = &anyCompat{
+	bz, err := a.Cdc.MarshalJSON(an.cachedValue)
+	an.compat = &anyCompat{
 		jsonBz: bz,
 		err:    err,
 	}
@@ -188,20 +188,20 @@ type ProtoJSONPacker struct {
 
 var _ AnyUnpacker = ProtoJSONPacker{}
 
-func (a ProtoJSONPacker) UnpackAny(any *Any, _ interface{}) error {
-	if any == nil {
+func (a ProtoJSONPacker) UnpackAny(an *Any, _ interface{}) error {
+	if an == nil {
 		return nil
 	}
 
-	if any.cachedValue != nil {
-		err := UnpackInterfaces(any.cachedValue, a)
+	if an.cachedValue != nil {
+		err := UnpackInterfaces(an.cachedValue, a)
 		if err != nil {
 			return err
 		}
 	}
 
-	bz, err := a.JSONPBMarshaler.MarshalToString(any)
-	any.compat = &anyCompat{
+	bz, err := a.JSONPBMarshaler.MarshalToString(an)
+	an.compat = &anyCompat{
 		jsonBz: []byte(bz),
 		err:    err,
 	}

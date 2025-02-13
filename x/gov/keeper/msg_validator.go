@@ -3,18 +3,6 @@ package keeper
 import (
 	"fmt"
 
-	authv1beta1 "cosmossdk.io/api/cosmos/auth/v1beta1"
-	bankv1beta1 "cosmossdk.io/api/cosmos/bank/v1beta1"
-	consensusv1 "cosmossdk.io/api/cosmos/consensus/v1"
-	govv1 "cosmossdk.io/api/cosmos/gov/v1"
-	errorsmod "cosmossdk.io/errors"
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
-	consensustypes "github.com/cosmos/cosmos-sdk/x/consensus/types"
-	"github.com/cosmos/cosmos-sdk/x/gov/types"
-	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
-
 	"github.com/0xPolygon/heimdall-v2/api/heimdallv2/bor"
 	"github.com/0xPolygon/heimdall-v2/api/heimdallv2/chainmanager"
 	"github.com/0xPolygon/heimdall-v2/api/heimdallv2/checkpoint"
@@ -23,6 +11,19 @@ import (
 	chainmanagertypes "github.com/0xPolygon/heimdall-v2/x/chainmanager/types"
 	checkpointTypes "github.com/0xPolygon/heimdall-v2/x/checkpoint/types"
 	milestoneTypes "github.com/0xPolygon/heimdall-v2/x/milestone/types"
+
+	authv1beta1 "cosmossdk.io/api/cosmos/auth/v1beta1"
+	bankv1beta1 "cosmossdk.io/api/cosmos/bank/v1beta1"
+	consensusv1 "cosmossdk.io/api/cosmos/consensus/v1"
+	govv1 "cosmossdk.io/api/cosmos/gov/v1"
+	errorsmod "cosmossdk.io/errors"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
+	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+	consensustypes "github.com/cosmos/cosmos-sdk/x/consensus/types"
+	"github.com/cosmos/cosmos-sdk/x/gov/types"
+	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 )
 
 // ValidateGovMsgType validates the type of the message submitted within a proposal.

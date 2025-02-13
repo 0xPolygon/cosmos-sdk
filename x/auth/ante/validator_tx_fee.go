@@ -3,18 +3,17 @@ package ante
 import (
 	"math"
 
-	"github.com/cosmos/cosmos-sdk/x/auth/types"
-
 	errorsmod "cosmossdk.io/errors"
 	sdkmath "cosmossdk.io/math"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/cosmos/cosmos-sdk/x/auth/types"
 )
 
 // checkTxFeeWithValidatorMinGasPrices implements the default fee logic, where the minimum price per
 // unit of gas is fixed and set by each validator, can the tx priority is computed from the gas price.
-func checkTxFeeWithValidatorMinGasPrices(ctx sdk.Context, tx sdk.Tx, params types.Params) (sdk.Coins, int64, error) {
+func checkTxFeeWithValidatorMinGasPrices(_ sdk.Context, _ sdk.Tx, params types.Params) (sdk.Coins, int64, error) {
 	amount, ok := sdkmath.NewIntFromString(params.GetTxFees())
 	if !ok {
 		return nil, 0, errorsmod.Wrap(sdkerrors.ErrInvalidTxFees, "must provide correct txFees")
