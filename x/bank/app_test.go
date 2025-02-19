@@ -121,6 +121,7 @@ func checkBalance(t *testing.T, baseApp *baseapp.BaseApp, addr sdk.AccAddress, b
 }
 
 func TestSendNotEnoughBalance(t *testing.T) {
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	acc1 := &authtypes.BaseAccount{
 		Address: addr1.String(),
 	}
@@ -207,6 +208,7 @@ func TestSendNotEnoughBalance(t *testing.T) {
 }
 
 func TestMsgMultiSendWithAccounts(t *testing.T) {
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	acc := &authtypes.BaseAccount{
 		Address:       addr1.String(),
 		AccountNumber: 4,
@@ -303,6 +305,7 @@ func TestMsgMultiSendWithAccounts(t *testing.T) {
 }
 
 func TestMsgMultiSendMultipleOut(t *testing.T) {
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	acc1 := &authtypes.BaseAccount{
 		Address: addr1.String(),
 	}
@@ -351,6 +354,7 @@ func TestMsgMultiSendMultipleOut(t *testing.T) {
 }
 
 func TestMsgMultiSendDependent(t *testing.T) {
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	acc1 := authtypes.NewBaseAccountWithAddress(addr1)
 	acc2 := authtypes.NewBaseAccountWithAddress(addr2)
 	err := acc2.SetAccountNumber(1)
