@@ -1,4 +1,3 @@
-# TODO HV2: remove GIT_TERMINAL_PROMPT, GOPRIVATE and GH_ACCESS_TOKEN vars once heimdall-v2 is a public repo
 name: Govuln
 on: [ push, pull_request ]
 
