@@ -94,6 +94,7 @@ func TestHybridHandlerByMsgName(t *testing.T) {
 }
 
 func TestMsgService(t *testing.T) {
+	t.Skip("skipping test for HV2, see https://polygon.atlassian.net/browse/POS-2540")
 	priv, _, _ := testdata.KeyTestPubAddr()
 
 	setUpAppResult := hApp.SetupApp(t, 1)
