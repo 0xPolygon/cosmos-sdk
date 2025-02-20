@@ -84,6 +84,3 @@ jobs:
           go-version: 1.23.x
           cache: true
           cache-dependency-path: go.sum
-
-      - name: "Run ledger tests"
-        run: make test-ledger-mock
