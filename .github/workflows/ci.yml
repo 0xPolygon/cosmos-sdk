@@ -71,16 +71,3 @@ jobs:
 
       - name: "Run integration tests"
         run: make test-integration
-
-  test-ledger:
-    name: test-ledger
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: 1.23.x
-          cache: true
-          cache-dependency-path: go.sum
