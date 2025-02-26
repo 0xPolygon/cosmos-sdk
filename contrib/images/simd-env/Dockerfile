@@ -23,7 +23,7 @@ FROM alpine AS run
 RUN apk add bash curl jq
 EXPOSE 26656 26657
 ENTRYPOINT ["/usr/bin/wrapper.sh"]
-CMD ["start", "--log_format", "json"]
+CMD ["start", "--log_format", "plain"]
 STOPSIGNAL SIGTERM
 VOLUME /simd
 WORKDIR /simd
