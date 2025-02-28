@@ -7,7 +7,6 @@ import (
 	borTypes "github.com/0xPolygon/heimdall-v2/x/bor/types"
 	chainmanagertypes "github.com/0xPolygon/heimdall-v2/x/chainmanager/types"
 	checkpointTypes "github.com/0xPolygon/heimdall-v2/x/checkpoint/types"
-	milestoneTypes "github.com/0xPolygon/heimdall-v2/x/milestone/types"
 	stakingtypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 	topupTypes "github.com/0xPolygon/heimdall-v2/x/topup/types"
 
@@ -87,7 +86,6 @@ func setupGovKeeper(t *testing.T) (
 	borTypes.RegisterInterfaces(encCfg.InterfaceRegistry)
 	chainmanagertypes.RegisterInterfaces(encCfg.InterfaceRegistry)
 	checkpointTypes.RegisterInterfaces(encCfg.InterfaceRegistry)
-	milestoneTypes.RegisterInterfaces(encCfg.InterfaceRegistry)
 
 	// Create MsgServiceRouter, but don't populate it before creating the gov
 	// keeper.
@@ -138,7 +136,6 @@ func setupGovKeeper(t *testing.T) (
 	borTypes.RegisterMsgServer(msr, nil)
 	chainmanagertypes.RegisterMsgServer(msr, nil)
 	checkpointTypes.RegisterMsgServer(msr, nil)
-	milestoneTypes.RegisterMsgServer(msr, nil)
 
 	return govKeeper, acctKeeper, bankKeeper, stakingKeeper, distributionKeeper, encCfg, ctx
 }

@@ -6,11 +6,9 @@ import (
 	"github.com/0xPolygon/heimdall-v2/api/heimdallv2/bor"
 	"github.com/0xPolygon/heimdall-v2/api/heimdallv2/chainmanager"
 	"github.com/0xPolygon/heimdall-v2/api/heimdallv2/checkpoint"
-	"github.com/0xPolygon/heimdall-v2/api/heimdallv2/milestone"
 	borTypes "github.com/0xPolygon/heimdall-v2/x/bor/types"
 	chainmanagertypes "github.com/0xPolygon/heimdall-v2/x/chainmanager/types"
 	checkpointTypes "github.com/0xPolygon/heimdall-v2/x/checkpoint/types"
-	milestoneTypes "github.com/0xPolygon/heimdall-v2/x/milestone/types"
 
 	authv1beta1 "cosmossdk.io/api/cosmos/auth/v1beta1"
 	bankv1beta1 "cosmossdk.io/api/cosmos/bank/v1beta1"
@@ -38,8 +36,7 @@ func ValidateGovMsgType(msg sdk.Msg) error {
 		// HV2: list of MsgUpdateParams for heimdall-v2 custom modules, to be eventually extended
 		*chainmanagertypes.MsgUpdateParams, *chainmanager.MsgUpdateParams,
 		*borTypes.MsgUpdateParams, *bor.MsgUpdateParams,
-		*checkpointTypes.MsgUpdateParams, *checkpoint.MsgUpdateParams,
-		*milestoneTypes.MsgUpdateParams, *milestone.MsgUpdateParams:
+		*checkpointTypes.MsgUpdateParams, *checkpoint.MsgUpdateParams:
 		return nil
 	default:
 		return errorsmod.Wrap(types.ErrInvalidProposalMsgType, fmt.Sprintf("type not supported: %T", msg))
