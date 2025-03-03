@@ -7,6 +7,7 @@ import (
 
 	borTypes "github.com/0xPolygon/heimdall-v2/x/bor/types"
 	checkpointTypes "github.com/0xPolygon/heimdall-v2/x/checkpoint/types"
+	milestoneTypes "github.com/0xPolygon/heimdall-v2/x/milestone/types"
 
 	authv1beta1 "cosmossdk.io/api/cosmos/auth/v1beta1"
 	bankv1beta1 "cosmossdk.io/api/cosmos/bank/v1beta1"
@@ -420,6 +421,20 @@ func (suite *KeeperTestSuite) TestSubmitProposalReq() {
 			preRun: func() (*v1.MsgSubmitProposal, error) {
 				return v1.NewMsgSubmitProposal(
 					[]sdk.Msg{&checkpointTypes.MsgUpdateParams{Authority: govAcct.String()}},
+					initialDeposit,
+					proposer.String(),
+					"",
+					"Proposal",
+					"description of proposal",
+					false,
+				)
+			},
+			expErr: false,
+		},
+		"all good with milestoneTypes.MsgUpdateParams": {
+			preRun: func() (*v1.MsgSubmitProposal, error) {
+				return v1.NewMsgSubmitProposal(
+					[]sdk.Msg{&milestoneTypes.MsgUpdateParams{Authority: govAcct.String()}},
 					initialDeposit,
 					proposer.String(),
 					"",
