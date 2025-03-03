@@ -3,10 +3,10 @@ name: CI
 on:
   push:
     branches:
-      - "devel"
+      - 'devel'
   pull_request:
     branches:
-      - "**"
+      - '**'
     types: [opened, synchronize]
 
 jobs:
@@ -21,7 +21,7 @@ jobs:
         with:
           go-version-file: go.mod
 
-      - name: "Build binaries"
+      - name: 'Build binaries'
         run: make build
 
   test-unit:
@@ -37,7 +37,7 @@ jobs:
           cache: true
           cache-dependency-path: go.sum
 
-      - name: "Run unit tests"
+      - name: 'Run unit tests'
         run: make test-unit
 
   test-e2e:
@@ -53,7 +53,7 @@ jobs:
           cache: true
           cache-dependency-path: go.sum
 
-      - name: "Run e2e tests"
+      - name: 'Run e2e tests'
         run: make test-e2e
 
   test-integration:
@@ -69,5 +69,5 @@ jobs:
           cache: true
           cache-dependency-path: go.sum
 
-      - name: "Run integration tests"
+      - name: 'Run integration tests'
         run: make test-integration
