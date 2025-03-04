@@ -7,8 +7,8 @@ import (
 	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 
 	"cosmossdk.io/collections"
+	"cosmossdk.io/log"
 	"cosmossdk.io/math"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 )
@@ -17,7 +17,7 @@ import (
 
 // Tally iterates over the votes and updates the tally of a proposal based on the voting power of the
 // voters
-func (keeper Keeper) Tally(ctx context.Context, proposal v1.Proposal) (passes, burnDeposits bool, tallyResults v1.TallyResult, err error) {
+func (keeper Keeper) Tally(ctx context.Context, proposal v1.Proposal, logger log.Logger) (passes, burnDeposits bool, tallyResults v1.TallyResult, err error) {
 	results := make(map[v1.VoteOption]math.LegacyDec)
 	results[v1.OptionYes] = math.LegacyZeroDec()
 	results[v1.OptionAbstain] = math.LegacyZeroDec()
@@ -48,6 +48,11 @@ func (keeper Keeper) Tally(ctx context.Context, proposal v1.Proposal) (passes, b
 		return false, false, tallyResults, err
 	}
 
+	if logger != nil {
+		logger.Error("Tallying votes for proposal", "proposal", proposal.Id)
+		logger.Error("Current validators", "validators", currValidators)
+	}
+
 	rng := collections.NewPrefixedPairRange[uint64, sdk.AccAddress](proposal.Id)
 	err = keeper.Votes.Walk(ctx, rng, func(_ collections.Pair[uint64, sdk.AccAddress], vote v1.Vote) (bool, error) {
 		// if validator, just record it in the map
@@ -61,6 +66,9 @@ func (keeper Keeper) Tally(ctx context.Context, proposal v1.Proposal) (passes, b
 			return false, err
 		}
 		valAddrStr = strings.ToLower(valAddrStr)
+		if logger != nil {
+			logger.Error("Tallying vote", "voter", valAddrStr, "vote", vote.Options)
+		}
 		if val, ok := currValidators[valAddrStr]; ok {
 			val.Vote = vote.Options
 			currValidators[valAddrStr] = val
@@ -156,6 +164,9 @@ func (keeper Keeper) Tally(ctx context.Context, proposal v1.Proposal) (passes, b
 
 	// If there is not enough quorum of votes, the proposal fails
 	percentVoting := totalVotingPower.Quo(totalBondedTokens)
+	if logger != nil {
+		logger.Error("Tallying votes", "totalVotingPower", totalVotingPower, "totalBondedTokens", totalBondedTokens, "percentVoting", percentVoting)
+	}
 	quorum, _ := math.LegacyNewDecFromStr(params.Quorum)
 	if percentVoting.LT(quorum) {
 		return false, params.BurnVoteQuorum, tallyResults, nil
