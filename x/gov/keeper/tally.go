@@ -33,7 +33,7 @@ func (keeper Keeper) Tally(ctx context.Context, proposal v1.Proposal, logger log
 		if err != nil {
 			return true
 		}
-		currValidators[strings.ToLower(validator.GetOperator())] = v1.NewValidatorGovInfo(
+		currValidators[strings.TrimPrefix(strings.ToLower(validator.GetOperator()), "0x")] = v1.NewValidatorGovInfo(
 			valBz,
 			// HV2: using validator.GetBondedTokens() as custom staking module will return the validator's VotingPower for it
 			validator.GetBondedTokens(),
@@ -65,10 +65,11 @@ func (keeper Keeper) Tally(ctx context.Context, proposal v1.Proposal, logger log
 		if err != nil {
 			return false, err
 		}
-		valAddrStr = strings.ToLower(valAddrStr)
+
 		if logger != nil {
 			logger.Error("Tallying vote", "voter", valAddrStr, "vote", vote.Options)
 		}
+		valAddrStr = strings.TrimPrefix(strings.ToLower(valAddrStr), "0x")
 		if val, ok := currValidators[valAddrStr]; ok {
 			val.Vote = vote.Options
 			currValidators[valAddrStr] = val
