@@ -27,6 +27,7 @@ func ExportGenesisFile(genesis *types.AppGenesis, genFile string) error {
 	if err := genesis.ValidateAndComplete(); err != nil {
 		return err
 	}
+	genesis.Consensus.Params.ABCI.VoteExtensionsEnableHeight = 1
 
 	return genesis.SaveAs(genFile)
 }
