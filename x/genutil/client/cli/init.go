@@ -113,7 +113,8 @@ func InitCmd(mbm module.BasicManager, defaultNodeHome string) *cobra.Command {
 				initHeight = 1
 			}
 
-			nodeID, _, err := genutil.InitializeNodeValidatorFilesFromMnemonic(config, mnemonic)
+			nodeID, valPublicKey, err := genutil.InitializeNodeValidatorFilesFromMnemonic(config, mnemonic)
+      fmt.Print(nodeID)
 			if err != nil {
 				return err
 			}
@@ -135,6 +136,7 @@ func InitCmd(mbm module.BasicManager, defaultNodeHome string) *cobra.Command {
 				sdk.DefaultBondDenom = defaultDenom
 			}
 			appGenState := mbm.DefaultGenesis(cdc)
+			appGenState["stake"], err = SetGenesisValidator(valPublicKey)
 
 			appState, err := json.MarshalIndent(appGenState, "", " ")
 			if err != nil {
