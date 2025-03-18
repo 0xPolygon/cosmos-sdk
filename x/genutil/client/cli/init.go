@@ -114,7 +114,6 @@ func InitCmd(mbm module.BasicManager, defaultNodeHome string) *cobra.Command {
 			}
 
 			nodeID, valPublicKey, err := genutil.InitializeNodeValidatorFilesFromMnemonic(config, mnemonic)
-			fmt.Print(nodeID)
 			if err != nil {
 				return err
 			}
