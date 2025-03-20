@@ -24,7 +24,7 @@ require (
 	cosmossdk.io/store v1.1.1 // indirect
 	cosmossdk.io/x/tx v0.13.7 // indirect
 	filippo.io/edwards25519 v1.0.0 // indirect
-	github.com/0xPolygon/heimdall-v2 v0.1.0 // indirect
+	github.com/0xPolygon/heimdall-v2 v0.0.0-20250320142221-b2c1e489342c // indirect
 	github.com/99designs/go-keychain v0.0.0-20191008050251-8e49817e8af4 // indirect
 	github.com/99designs/keyring v1.2.1 // indirect
 	github.com/BurntSushi/toml v1.4.0 // indirect
@@ -82,6 +82,7 @@ require (
 	github.com/godbus/dbus v0.0.0-20190726142602-4481cbc300e2 // indirect
 	github.com/gogo/googleapis v1.4.1 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
+	github.com/golang-jwt/jwt/v4 v4.5.1 // indirect
 	github.com/golang/glog v1.2.4 // indirect
 	github.com/golang/groupcache v0.0.0-20241129210726-2c02b8208cf8 // indirect
 	github.com/golang/mock v1.6.0 // indirect

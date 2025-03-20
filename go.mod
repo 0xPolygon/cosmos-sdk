@@ -12,7 +12,7 @@ require (
 	cosmossdk.io/math v1.4.0
 	cosmossdk.io/store v1.1.1
 	cosmossdk.io/x/tx v0.13.7
-	github.com/0xPolygon/heimdall-v2 v0.1.0
+	github.com/0xPolygon/heimdall-v2 v0.0.0-20250320142221-b2c1e489342c // ssf branch: single slot finality POC
 	github.com/99designs/keyring v1.2.1
 	github.com/bgentry/speakeasy v0.1.1-0.20220910012023-760eaf8b6816
 	github.com/bits-and-blooms/bitset v1.10.0
@@ -76,6 +76,8 @@ require (
 	github.com/DataDog/zstd v1.5.5 // indirect
 	github.com/JekaMas/workerpool v1.1.8 // indirect
 	github.com/Microsoft/go-winio v0.6.2 // indirect
+	github.com/RichardKnop/logging v0.0.0-20190827224416-1a693bdd4fae // indirect
+	github.com/RichardKnop/machinery v1.10.6 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/btcsuite/btcd/btcec/v2 v2.3.4 // indirect
 	github.com/bufbuild/protocompile v0.14.1 // indirect
@@ -115,6 +117,7 @@ require (
 	github.com/godbus/dbus v0.0.0-20190726142602-4481cbc300e2 // indirect
 	github.com/gogo/googleapis v1.4.1 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
+	github.com/golang-jwt/jwt/v4 v4.5.1 // indirect
 	github.com/golang/glog v1.2.4 // indirect
 	github.com/golang/groupcache v0.0.0-20241129210726-2c02b8208cf8 // indirect
 	github.com/golang/snappy v0.0.5-0.20220116011046-fa5810519dcb // indirect

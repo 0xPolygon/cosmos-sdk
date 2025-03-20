@@ -18,7 +18,7 @@ require (
 	cosmossdk.io/x/nft v0.1.1
 	cosmossdk.io/x/tx v0.13.7
 	cosmossdk.io/x/upgrade v0.1.4
-	github.com/0xPolygon/heimdall-v2 v0.1.0
+	github.com/0xPolygon/heimdall-v2 v0.0.0-20250320142221-b2c1e489342c
 	github.com/cometbft/cometbft v0.38.17
 	github.com/cosmos/cosmos-db v1.0.2
 	// this version is not used as it is always replaced by the latest Cosmos SDK version
@@ -48,6 +48,8 @@ require (
 	github.com/DataDog/zstd v1.5.5 // indirect
 	github.com/JekaMas/workerpool v1.1.8 // indirect
 	github.com/Microsoft/go-winio v0.6.2 // indirect
+	github.com/RichardKnop/logging v0.0.0-20190827224416-1a693bdd4fae // indirect
+	github.com/RichardKnop/machinery v1.10.6 // indirect
 	github.com/aws/aws-sdk-go v1.44.274 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bgentry/go-netrc v0.0.0-20140422174119-9fd32a8b3d3d // indirect
@@ -103,6 +105,7 @@ require (
 	github.com/godbus/dbus v0.0.0-20190726142602-4481cbc300e2 // indirect
 	github.com/gogo/googleapis v1.4.1 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
+	github.com/golang-jwt/jwt/v4 v4.5.1 // indirect
 	github.com/golang/glog v1.2.4 // indirect
 	github.com/golang/groupcache v0.0.0-20241129210726-2c02b8208cf8 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
