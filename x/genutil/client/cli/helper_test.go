@@ -137,3 +137,12 @@ func TestSetGenesisValidatorJSON(t *testing.T) {
 	require.True(t, ok, "signer should be a string")
 	require.Equal(t, expectedSigner, signer)
 }
+
+// TestSetGenesisValidator_ErrorHandling tests error handling in SetGenesisValidator
+func TestSetGenesisValidator_ErrorHandling(t *testing.T) {
+	// Passing a nil public key to check if error handling works
+	rawMsg, err := cli.SetGenesisValidator(nil)
+	require.Error(t, err)
+	require.Nil(t, rawMsg)
+	require.Equal(t, "invalid public key: nil", err.Error()) // Validate the error message
+}
