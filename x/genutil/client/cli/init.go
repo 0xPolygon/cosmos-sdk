@@ -136,6 +136,9 @@ func InitCmd(mbm module.BasicManager, defaultNodeHome string) *cobra.Command {
 			}
 			appGenState := mbm.DefaultGenesis(cdc)
 			appGenState["stake"], err = SetGenesisValidator(valPublicKey)
+      if err != nil {
+        return fmt.Errorf("Failed to add genesis validators to genesis.json")
+      }
 
 			appState, err := json.MarshalIndent(appGenState, "", " ")
 			if err != nil {
