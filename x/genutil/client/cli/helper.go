@@ -2,16 +2,12 @@ package cli
 
 import (
 	"encoding/json"
-  "errors"
 
 	stakeType "github.com/0xPolygon/heimdall-v2/x/stake/types"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 )
 
 func SetGenesisValidator(valPubKey cryptotypes.PubKey) (json.RawMessage, error) {
-  if valPubKey == nil {
-		return nil, errors.New("invalid public key: nil")
-	}
 	genesisState := stakeType.GenesisState{
 		CurrentValidatorSet: stakeType.ValidatorSet{
 			Validators: []*stakeType.Validator{

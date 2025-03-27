@@ -33,6 +33,7 @@ type StakingKeeper interface {
 	*/
 
 	// HV2: added for heimdall business logic
+	AddValidator(ctx context.Context, validator stakeTypes.Validator) error
 	IterateCurrentValidatorsAndApplyFn(context.Context, func(stakeTypes.Validator) bool) error
 	GetValIdFromAddress(ctx context.Context, address string) (uint64, error)
 }
