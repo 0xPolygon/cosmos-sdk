@@ -7,6 +7,7 @@ import (
 
 	"cosmossdk.io/math"
 
+	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
 	"github.com/cosmos/cosmos-sdk/x/gov/types"
@@ -33,6 +34,7 @@ type StakingKeeper interface {
 
 	BondDenom(ctx context.Context) (string, error)
 	TokensFromConsensusPower(ctx context.Context, power int64) math.Int
+	AddValidator(ctx context.Context, validator stakeTypes.Validator) error
 }
 
 // DistributionKeeper defines the expected distribution keeper
