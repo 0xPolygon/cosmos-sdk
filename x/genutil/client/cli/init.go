@@ -8,12 +8,12 @@ import (
 	"os"
 	"path/filepath"
 
+	errorsmod "cosmossdk.io/errors"
+	"cosmossdk.io/math/unsafe"
+
 	cfg "github.com/cometbft/cometbft/config"
 	"github.com/cosmos/go-bip39"
 	"github.com/spf13/cobra"
-
-	errorsmod "cosmossdk.io/errors"
-	"cosmossdk.io/math/unsafe"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -137,7 +137,7 @@ func InitCmd(mbm module.BasicManager, defaultNodeHome string) *cobra.Command {
 			appGenState := mbm.DefaultGenesis(cdc)
 			appGenState["stake"], err = SetGenesisValidator(valPublicKey)
       if err != nil {
-        return fmt.Errorf("Failed to add genesis validators to genesis.json")
+        return fmt.Errorf("failed to add genesis validators to genesis.json")
       }
 
 			appState, err := json.MarshalIndent(appGenState, "", " ")
