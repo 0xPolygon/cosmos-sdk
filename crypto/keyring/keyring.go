@@ -504,6 +504,16 @@ func (ks keystore) Delete(uid string) error {
 }
 
 func (ks keystore) KeyByAddress(address sdk.Address) (*Record, error) {
+	fmt.Printf("address: %v\n", address)
+	fmt.Printf("address string: %v\n", address.String())
+	fmt.Printf("addrHexKeyAsString: %v\n", addrHexKeyAsString(address))
+
+	keys, err := ks.db.Keys()
+	if err != nil {
+		fmt.Printf("error: %v\n", err)
+	}
+	fmt.Printf("keys: %v\n", keys)
+
 	ik, err := ks.db.Get(addrHexKeyAsString(address))
 	if err != nil {
 		return nil, wrapKeyNotFound(err, fmt.Sprintf("key with address %s not found", address.String()))

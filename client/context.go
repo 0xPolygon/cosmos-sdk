@@ -373,41 +373,55 @@ func (ctx Context) printOutput(out []byte) error {
 // If clientCtx.GenerateOnly is true the keystore is only accessed if a key name is provided
 func GetFromFields(clientCtx Context, kr keyring.Keyring, from string) (sdk.AccAddress, string, keyring.KeyType, error) {
 	if from == "" {
+		fmt.Println("No 'from' address provided.")
 		return nil, "", 0, nil
 	}
 
 	addr, err := sdk.AccAddressFromHex(from)
+	fmt.Printf("Parsed address from hex: %s, addr: %v, err: %v\n", from, addr, err)
 	switch {
 	case clientCtx.Simulate:
 		if err != nil {
+			fmt.Printf("Simulation mode: Invalid address, err: %v\n", err)
 			return nil, "", 0, fmt.Errorf("a valid hex address must be provided in simulation mode: %w", err)
 		}
 
+		fmt.Println("Simulation mode: Address is valid.")
 		return addr, "", 0, nil
 
 	case clientCtx.GenerateOnly:
 		if err == nil {
+			fmt.Println("GenerateOnly mode: Valid address, returning addr.")
 			return addr, "", 0, nil
 		}
+		fmt.Printf("GenerateOnly mode: Error encountered, err: %v\n", err)
 	}
 
 	var k *keyring.Record
 	if err == nil {
+		fmt.Println("Address is valid. Trying to get key by address...")
 		k, err = kr.KeyByAddress(addr)
 		if err != nil {
+			fmt.Printf("Failed to get key by address, err: %v\n", err)
 			return nil, "", 0, err
 		}
+		fmt.Printf("Key retrieved by address: %v\n", k)
 	} else {
+		fmt.Println("Address is invalid. Trying to get key by name...")
 		k, err = kr.Key(from)
 		if err != nil {
+			fmt.Printf("Failed to get key by name, err: %v\n", err)
 			return nil, "", 0, err
 		}
+		fmt.Printf("Key retrieved by name: %v\n", k)
 	}
 
 	addr, err = k.GetAddress()
 	if err != nil {
+		fmt.Printf("Failed to get address from key, err: %v\n", err)
 		return nil, "", 0, err
 	}
+	fmt.Printf("Final address obtained: %v\n", addr)
 
 	return addr, k.Name, k.GetType(), nil
 }
