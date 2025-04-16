@@ -512,7 +512,10 @@ func (ks keystore) KeyByAddress(address sdk.Address) (*Record, error) {
 	if err != nil {
 		fmt.Printf("error: %v\n", err)
 	}
-	fmt.Printf("keys: %v\n", keys)
+
+	for i, key := range keys {
+		fmt.Printf("Key %d: %+v\n", i, key)
+	}
 
 	ik, err := ks.db.Get(addrHexKeyAsString(address))
 	if err != nil {
