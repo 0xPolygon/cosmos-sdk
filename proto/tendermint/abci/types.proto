@@ -315,6 +315,9 @@ message ResponseApplySnapshotChunk {
 
 message ResponsePrepareProposal {
   repeated bytes txs = 1;
+  // A blob (see EIP-4844) is a piece of temporary data attached to a blob
+  // transaction. CometBFT will gossip this blob separately from the block.
+  bytes blob = 2;
 }
 
 message ResponseProcessProposal {
