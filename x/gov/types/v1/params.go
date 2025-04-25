@@ -13,8 +13,8 @@ import (
 
 // Default period for deposits & voting
 const (
-	DefaultPeriod                         time.Duration = time.Hour * 24 * 2 // 2 days
-	DefaultExpeditedPeriod                time.Duration = time.Hour * 24 * 1 // 1 day
+	DefaultPeriod                         time.Duration = time.Hour * 24 * 1 // 1 day
+	DefaultExpeditedPeriod                time.Duration = time.Hour * 24 / 2 // 0.5 days
 	DefaultMinExpeditedDepositTokensRatio               = 5
 )
 
