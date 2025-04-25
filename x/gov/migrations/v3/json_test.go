@@ -77,7 +77,7 @@ func TestMigrateJSON(t *testing.T) {
 	expected := `{
 	"constitution": "",
 	"deposit_params": {
-		"max_deposit_period": "172800s",
+		"max_deposit_period": "86400s",
 		"min_deposit": [
 			{
 				"amount": "100000000000000000000",
@@ -157,7 +157,7 @@ func TestMigrateJSON(t *testing.T) {
 		}
 	],
 	"voting_params": {
-		"voting_period": "172800s"
+		"voting_period": "86400s"
 	}
 }`
 
