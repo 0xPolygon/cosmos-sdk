@@ -6986,6 +6986,507 @@ func (x *fastReflection_ExtendedCommitSig) ProtoMethods() *protoiface.Methods {
 }
 
 var (
+	md_BlobID                 protoreflect.MessageDescriptor
+	fd_BlobID_hash            protoreflect.FieldDescriptor
+	fd_BlobID_part_set_header protoreflect.FieldDescriptor
+)
+
+func init() {
+	file_tendermint_types_types_proto_init()
+	md_BlobID = File_tendermint_types_types_proto.Messages().ByName("BlobID")
+	fd_BlobID_hash = md_BlobID.Fields().ByName("hash")
+	fd_BlobID_part_set_header = md_BlobID.Fields().ByName("part_set_header")
+}
+
+var _ protoreflect.Message = (*fastReflection_BlobID)(nil)
+
+type fastReflection_BlobID BlobID
+
+func (x *BlobID) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_BlobID)(x)
+}
+
+func (x *BlobID) slowProtoReflect() protoreflect.Message {
+	mi := &file_tendermint_types_types_proto_msgTypes[10]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+var _fastReflection_BlobID_messageType fastReflection_BlobID_messageType
+var _ protoreflect.MessageType = fastReflection_BlobID_messageType{}
+
+type fastReflection_BlobID_messageType struct{}
+
+func (x fastReflection_BlobID_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_BlobID)(nil)
+}
+func (x fastReflection_BlobID_messageType) New() protoreflect.Message {
+	return new(fastReflection_BlobID)
+}
+func (x fastReflection_BlobID_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_BlobID
+}
+
+// Descriptor returns message descriptor, which contains only the protobuf
+// type information for the message.
+func (x *fastReflection_BlobID) Descriptor() protoreflect.MessageDescriptor {
+	return md_BlobID
+}
+
+// Type returns the message type, which encapsulates both Go and protobuf
+// type information. If the Go type information is not needed,
+// it is recommended that the message descriptor be used instead.
+func (x *fastReflection_BlobID) Type() protoreflect.MessageType {
+	return _fastReflection_BlobID_messageType
+}
+
+// New returns a newly allocated and mutable empty message.
+func (x *fastReflection_BlobID) New() protoreflect.Message {
+	return new(fastReflection_BlobID)
+}
+
+// Interface unwraps the message reflection interface and
+// returns the underlying ProtoMessage interface.
+func (x *fastReflection_BlobID) Interface() protoreflect.ProtoMessage {
+	return (*BlobID)(x)
+}
+
+// Range iterates over every populated field in an undefined order,
+// calling f for each field descriptor and value encountered.
+// Range returns immediately if f returns false.
+// While iterating, mutating operations may only be performed
+// on the current field descriptor.
+func (x *fastReflection_BlobID) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+	if len(x.Hash) != 0 {
+		value := protoreflect.ValueOfBytes(x.Hash)
+		if !f(fd_BlobID_hash, value) {
+			return
+		}
+	}
+	if x.PartSetHeader != nil {
+		value := protoreflect.ValueOfMessage(x.PartSetHeader.ProtoReflect())
+		if !f(fd_BlobID_part_set_header, value) {
+			return
+		}
+	}
+}
+
+// Has reports whether a field is populated.
+//
+// Some fields have the property of nullability where it is possible to
+// distinguish between the default value of a field and whether the field
+// was explicitly populated with the default value. Singular message fields,
+// member fields of a oneof, and proto2 scalar fields are nullable. Such
+// fields are populated only if explicitly set.
+//
+// In other cases (aside from the nullable cases above),
+// a proto3 scalar field is populated if it contains a non-zero value, and
+// a repeated field is populated if it is non-empty.
+func (x *fastReflection_BlobID) Has(fd protoreflect.FieldDescriptor) bool {
+	switch fd.FullName() {
+	case "tendermint.types.BlobID.hash":
+		return len(x.Hash) != 0
+	case "tendermint.types.BlobID.part_set_header":
+		return x.PartSetHeader != nil
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: tendermint.types.BlobID"))
+		}
+		panic(fmt.Errorf("message tendermint.types.BlobID does not contain field %s", fd.FullName()))
+	}
+}
+
+// Clear clears the field such that a subsequent Has call reports false.
+//
+// Clearing an extension field clears both the extension type and value
+// associated with the given field number.
+//
+// Clear is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_BlobID) Clear(fd protoreflect.FieldDescriptor) {
+	switch fd.FullName() {
+	case "tendermint.types.BlobID.hash":
+		x.Hash = nil
+	case "tendermint.types.BlobID.part_set_header":
+		x.PartSetHeader = nil
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: tendermint.types.BlobID"))
+		}
+		panic(fmt.Errorf("message tendermint.types.BlobID does not contain field %s", fd.FullName()))
+	}
+}
+
+// Get retrieves the value for a field.
+//
+// For unpopulated scalars, it returns the default value, where
+// the default value of a bytes scalar is guaranteed to be a copy.
+// For unpopulated composite types, it returns an empty, read-only view
+// of the value; to obtain a mutable reference, use Mutable.
+func (x *fastReflection_BlobID) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+	switch descriptor.FullName() {
+	case "tendermint.types.BlobID.hash":
+		value := x.Hash
+		return protoreflect.ValueOfBytes(value)
+	case "tendermint.types.BlobID.part_set_header":
+		value := x.PartSetHeader
+		return protoreflect.ValueOfMessage(value.ProtoReflect())
+	default:
+		if descriptor.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: tendermint.types.BlobID"))
+		}
+		panic(fmt.Errorf("message tendermint.types.BlobID does not contain field %s", descriptor.FullName()))
+	}
+}
+
+// Set stores the value for a field.
+//
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType.
+// When setting a composite type, it is unspecified whether the stored value
+// aliases the source's memory in any way. If the composite value is an
+// empty, read-only value, then it panics.
+//
+// Set is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_BlobID) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+	switch fd.FullName() {
+	case "tendermint.types.BlobID.hash":
+		x.Hash = value.Bytes()
+	case "tendermint.types.BlobID.part_set_header":
+		x.PartSetHeader = value.Message().Interface().(*PartSetHeader)
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: tendermint.types.BlobID"))
+		}
+		panic(fmt.Errorf("message tendermint.types.BlobID does not contain field %s", fd.FullName()))
+	}
+}
+
+// Mutable returns a mutable reference to a composite type.
+//
+// If the field is unpopulated, it may allocate a composite value.
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType
+// if not already stored.
+// It panics if the field does not contain a composite type.
+//
+// Mutable is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_BlobID) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "tendermint.types.BlobID.part_set_header":
+		if x.PartSetHeader == nil {
+			x.PartSetHeader = new(PartSetHeader)
+		}
+		return protoreflect.ValueOfMessage(x.PartSetHeader.ProtoReflect())
+	case "tendermint.types.BlobID.hash":
+		panic(fmt.Errorf("field hash of message tendermint.types.BlobID is not mutable"))
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: tendermint.types.BlobID"))
+		}
+		panic(fmt.Errorf("message tendermint.types.BlobID does not contain field %s", fd.FullName()))
+	}
+}
+
+// NewField returns a new value that is assignable to the field
+// for the given descriptor. For scalars, this returns the default value.
+// For lists, maps, and messages, this returns a new, empty, mutable value.
+func (x *fastReflection_BlobID) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "tendermint.types.BlobID.hash":
+		return protoreflect.ValueOfBytes(nil)
+	case "tendermint.types.BlobID.part_set_header":
+		m := new(PartSetHeader)
+		return protoreflect.ValueOfMessage(m.ProtoReflect())
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: tendermint.types.BlobID"))
+		}
+		panic(fmt.Errorf("message tendermint.types.BlobID does not contain field %s", fd.FullName()))
+	}
+}
+
+// WhichOneof reports which field within the oneof is populated,
+// returning nil if none are populated.
+// It panics if the oneof descriptor does not belong to this message.
+func (x *fastReflection_BlobID) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+	switch d.FullName() {
+	default:
+		panic(fmt.Errorf("%s is not a oneof field in tendermint.types.BlobID", d.FullName()))
+	}
+	panic("unreachable")
+}
+
+// GetUnknown retrieves the entire list of unknown fields.
+// The caller may only mutate the contents of the RawFields
+// if the mutated bytes are stored back into the message with SetUnknown.
+func (x *fastReflection_BlobID) GetUnknown() protoreflect.RawFields {
+	return x.unknownFields
+}
+
+// SetUnknown stores an entire list of unknown fields.
+// The raw fields must be syntactically valid according to the wire format.
+// An implementation may panic if this is not the case.
+// Once stored, the caller must not mutate the content of the RawFields.
+// An empty RawFields may be passed to clear the fields.
+//
+// SetUnknown is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_BlobID) SetUnknown(fields protoreflect.RawFields) {
+	x.unknownFields = fields
+}
+
+// IsValid reports whether the message is valid.
+//
+// An invalid message is an empty, read-only value.
+//
+// An invalid message often corresponds to a nil pointer of the concrete
+// message type, but the details are implementation dependent.
+// Validity is not part of the protobuf data model, and may not
+// be preserved in marshaling or other operations.
+func (x *fastReflection_BlobID) IsValid() bool {
+	return x != nil
+}
+
+// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
+// This method may return nil.
+//
+// The returned methods type is identical to
+// "google.golang.org/protobuf/runtime/protoiface".Methods.
+// Consult the protoiface package documentation for details.
+func (x *fastReflection_BlobID) ProtoMethods() *protoiface.Methods {
+	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
+		x := input.Message.Interface().(*BlobID)
+		if x == nil {
+			return protoiface.SizeOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Size:              0,
+			}
+		}
+		options := runtime.SizeInputToOptions(input)
+		_ = options
+		var n int
+		var l int
+		_ = l
+		l = len(x.Hash)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		if x.PartSetHeader != nil {
+			l = options.Size(x.PartSetHeader)
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		if x.unknownFields != nil {
+			n += len(x.unknownFields)
+		}
+		return protoiface.SizeOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Size:              n,
+		}
+	}
+
+	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
+		x := input.Message.Interface().(*BlobID)
+		if x == nil {
+			return protoiface.MarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Buf:               input.Buf,
+			}, nil
+		}
+		options := runtime.MarshalInputToOptions(input)
+		_ = options
+		size := options.Size(x)
+		dAtA := make([]byte, size)
+		i := len(dAtA)
+		_ = i
+		var l int
+		_ = l
+		if x.unknownFields != nil {
+			i -= len(x.unknownFields)
+			copy(dAtA[i:], x.unknownFields)
+		}
+		if x.PartSetHeader != nil {
+			encoded, err := options.Marshal(x.PartSetHeader)
+			if err != nil {
+				return protoiface.MarshalOutput{
+					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+					Buf:               input.Buf,
+				}, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
+			i--
+			dAtA[i] = 0x12
+		}
+		if len(x.Hash) > 0 {
+			i -= len(x.Hash)
+			copy(dAtA[i:], x.Hash)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Hash)))
+			i--
+			dAtA[i] = 0xa
+		}
+		if input.Buf != nil {
+			input.Buf = append(input.Buf, dAtA...)
+		} else {
+			input.Buf = dAtA
+		}
+		return protoiface.MarshalOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Buf:               input.Buf,
+		}, nil
+	}
+	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
+		x := input.Message.Interface().(*BlobID)
+		if x == nil {
+			return protoiface.UnmarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Flags:             input.Flags,
+			}, nil
+		}
+		options := runtime.UnmarshalInputToOptions(input)
+		_ = options
+		dAtA := input.Buf
+		l := len(dAtA)
+		iNdEx := 0
+		for iNdEx < l {
+			preIndex := iNdEx
+			var wire uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				wire |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			fieldNum := int32(wire >> 3)
+			wireType := int(wire & 0x7)
+			if wireType == 4 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: BlobID: wiretype end group for non-group")
+			}
+			if fieldNum <= 0 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: BlobID: illegal tag %d (wire type %d)", fieldNum, wire)
+			}
+			switch fieldNum {
+			case 1:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Hash", wireType)
+				}
+				var byteLen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					byteLen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if byteLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + byteLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.Hash = append(x.Hash[:0], dAtA[iNdEx:postIndex]...)
+				if x.Hash == nil {
+					x.Hash = []byte{}
+				}
+				iNdEx = postIndex
+			case 2:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field PartSetHeader", wireType)
+				}
+				var msglen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					msglen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if msglen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + msglen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if x.PartSetHeader == nil {
+					x.PartSetHeader = &PartSetHeader{}
+				}
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.PartSetHeader); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				iNdEx = postIndex
+			default:
+				iNdEx = preIndex
+				skippy, err := runtime.Skip(dAtA[iNdEx:])
+				if err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				if (skippy < 0) || (iNdEx+skippy) < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if (iNdEx + skippy) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if !options.DiscardUnknown {
+					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+				}
+				iNdEx += skippy
+			}
+		}
+
+		if iNdEx > l {
+			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+		}
+		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
+	}
+	return &protoiface.Methods{
+		NoUnkeyedLiterals: struct{}{},
+		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
+		Size:              size,
+		Marshal:           marshal,
+		Unmarshal:         unmarshal,
+		Merge:             nil,
+		CheckInitialized:  nil,
+	}
+}
+
+var (
 	md_Proposal           protoreflect.MessageDescriptor
 	fd_Proposal_type      protoreflect.FieldDescriptor
 	fd_Proposal_height    protoreflect.FieldDescriptor
@@ -6994,6 +7495,7 @@ var (
 	fd_Proposal_block_id  protoreflect.FieldDescriptor
 	fd_Proposal_timestamp protoreflect.FieldDescriptor
 	fd_Proposal_signature protoreflect.FieldDescriptor
+	fd_Proposal_blob_id   protoreflect.FieldDescriptor
 )
 
 func init() {
@@ -7006,6 +7508,7 @@ func init() {
 	fd_Proposal_block_id = md_Proposal.Fields().ByName("block_id")
 	fd_Proposal_timestamp = md_Proposal.Fields().ByName("timestamp")
 	fd_Proposal_signature = md_Proposal.Fields().ByName("signature")
+	fd_Proposal_blob_id = md_Proposal.Fields().ByName("blob_id")
 }
 
 var _ protoreflect.Message = (*fastReflection_Proposal)(nil)
@@ -7017,7 +7520,7 @@ func (x *Proposal) ProtoReflect() protoreflect.Message {
 }
 
 func (x *Proposal) slowProtoReflect() protoreflect.Message {
-	mi := &file_tendermint_types_types_proto_msgTypes[10]
+	mi := &file_tendermint_types_types_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7115,6 +7618,12 @@ func (x *fastReflection_Proposal) Range(f func(protoreflect.FieldDescriptor, pro
 			return
 		}
 	}
+	if x.BlobId != nil {
+		value := protoreflect.ValueOfMessage(x.BlobId.ProtoReflect())
+		if !f(fd_Proposal_blob_id, value) {
+			return
+		}
+	}
 }
 
 // Has reports whether a field is populated.
@@ -7144,6 +7653,8 @@ func (x *fastReflection_Proposal) Has(fd protoreflect.FieldDescriptor) bool {
 		return x.Timestamp != nil
 	case "tendermint.types.Proposal.signature":
 		return len(x.Signature) != 0
+	case "tendermint.types.Proposal.blob_id":
+		return x.BlobId != nil
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: tendermint.types.Proposal"))
@@ -7174,6 +7685,8 @@ func (x *fastReflection_Proposal) Clear(fd protoreflect.FieldDescriptor) {
 		x.Timestamp = nil
 	case "tendermint.types.Proposal.signature":
 		x.Signature = nil
+	case "tendermint.types.Proposal.blob_id":
+		x.BlobId = nil
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: tendermint.types.Proposal"))
@@ -7211,6 +7724,9 @@ func (x *fastReflection_Proposal) Get(descriptor protoreflect.FieldDescriptor) p
 	case "tendermint.types.Proposal.signature":
 		value := x.Signature
 		return protoreflect.ValueOfBytes(value)
+	case "tendermint.types.Proposal.blob_id":
+		value := x.BlobId
+		return protoreflect.ValueOfMessage(value.ProtoReflect())
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: tendermint.types.Proposal"))
@@ -7245,6 +7761,8 @@ func (x *fastReflection_Proposal) Set(fd protoreflect.FieldDescriptor, value pro
 		x.Timestamp = value.Message().Interface().(*timestamppb.Timestamp)
 	case "tendermint.types.Proposal.signature":
 		x.Signature = value.Bytes()
+	case "tendermint.types.Proposal.blob_id":
+		x.BlobId = value.Message().Interface().(*BlobID)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: tendermint.types.Proposal"))
@@ -7275,6 +7793,11 @@ func (x *fastReflection_Proposal) Mutable(fd protoreflect.FieldDescriptor) proto
 			x.Timestamp = new(timestamppb.Timestamp)
 		}
 		return protoreflect.ValueOfMessage(x.Timestamp.ProtoReflect())
+	case "tendermint.types.Proposal.blob_id":
+		if x.BlobId == nil {
+			x.BlobId = new(BlobID)
+		}
+		return protoreflect.ValueOfMessage(x.BlobId.ProtoReflect())
 	case "tendermint.types.Proposal.type":
 		panic(fmt.Errorf("field type of message tendermint.types.Proposal is not mutable"))
 	case "tendermint.types.Proposal.height":
@@ -7314,6 +7837,9 @@ func (x *fastReflection_Proposal) NewField(fd protoreflect.FieldDescriptor) prot
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	case "tendermint.types.Proposal.signature":
 		return protoreflect.ValueOfBytes(nil)
+	case "tendermint.types.Proposal.blob_id":
+		m := new(BlobID)
+		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: tendermint.types.Proposal"))
@@ -7407,6 +7933,10 @@ func (x *fastReflection_Proposal) ProtoMethods() *protoiface.Methods {
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
+		if x.BlobId != nil {
+			l = options.Size(x.BlobId)
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
 		if x.unknownFields != nil {
 			n += len(x.unknownFields)
 		}
@@ -7435,6 +7965,20 @@ func (x *fastReflection_Proposal) ProtoMethods() *protoiface.Methods {
 		if x.unknownFields != nil {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
+		}
+		if x.BlobId != nil {
+			encoded, err := options.Marshal(x.BlobId)
+			if err != nil {
+				return protoiface.MarshalOutput{
+					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+					Buf:               input.Buf,
+				}, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
+			i--
+			dAtA[i] = 0x42
 		}
 		if len(x.Signature) > 0 {
 			i -= len(x.Signature)
@@ -7722,6 +8266,42 @@ func (x *fastReflection_Proposal) ProtoMethods() *protoiface.Methods {
 					x.Signature = []byte{}
 				}
 				iNdEx = postIndex
+			case 8:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field BlobId", wireType)
+				}
+				var msglen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					msglen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if msglen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + msglen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if x.BlobId == nil {
+					x.BlobId = &BlobID{}
+				}
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.BlobId); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
 				skippy, err := runtime.Skip(dAtA[iNdEx:])
@@ -7779,7 +8359,7 @@ func (x *SignedHeader) ProtoReflect() protoreflect.Message {
 }
 
 func (x *SignedHeader) slowProtoReflect() protoreflect.Message {
-	mi := &file_tendermint_types_types_proto_msgTypes[11]
+	mi := &file_tendermint_types_types_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8293,7 +8873,7 @@ func (x *LightBlock) ProtoReflect() protoreflect.Message {
 }
 
 func (x *LightBlock) slowProtoReflect() protoreflect.Message {
-	mi := &file_tendermint_types_types_proto_msgTypes[12]
+	mi := &file_tendermint_types_types_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8811,7 +9391,7 @@ func (x *BlockMeta) ProtoReflect() protoreflect.Message {
 }
 
 func (x *BlockMeta) slowProtoReflect() protoreflect.Message {
-	mi := &file_tendermint_types_types_proto_msgTypes[13]
+	mi := &file_tendermint_types_types_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9419,7 +9999,7 @@ func (x *TxProof) ProtoReflect() protoreflect.Message {
 }
 
 func (x *TxProof) slowProtoReflect() protoreflect.Message {
-	mi := &file_tendermint_types_types_proto_msgTypes[14]
+	mi := &file_tendermint_types_types_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10728,6 +11308,50 @@ func (x *ExtendedCommitSig) GetExtensionSignature() []byte {
 	return nil
 }
 
+// BlobID defines the unique ID of a blob as its hash and its PartSetHeader.
+type BlobID struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Hash          []byte         `protobuf:"bytes,1,opt,name=hash,proto3" json:"hash,omitempty"`
+	PartSetHeader *PartSetHeader `protobuf:"bytes,2,opt,name=part_set_header,json=partSetHeader,proto3" json:"part_set_header,omitempty"`
+}
+
+func (x *BlobID) Reset() {
+	*x = BlobID{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_tendermint_types_types_proto_msgTypes[10]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *BlobID) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BlobID) ProtoMessage() {}
+
+// Deprecated: Use BlobID.ProtoReflect.Descriptor instead.
+func (*BlobID) Descriptor() ([]byte, []int) {
+	return file_tendermint_types_types_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *BlobID) GetHash() []byte {
+	if x != nil {
+		return x.Hash
+	}
+	return nil
+}
+
+func (x *BlobID) GetPartSetHeader() *PartSetHeader {
+	if x != nil {
+		return x.PartSetHeader
+	}
+	return nil
+}
+
 type Proposal struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -10740,12 +11364,13 @@ type Proposal struct {
 	BlockId   *BlockID               `protobuf:"bytes,5,opt,name=block_id,json=blockId,proto3" json:"block_id,omitempty"`
 	Timestamp *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
 	Signature []byte                 `protobuf:"bytes,7,opt,name=signature,proto3" json:"signature,omitempty"`
+	BlobId    *BlobID                `protobuf:"bytes,8,opt,name=blob_id,json=blobId,proto3" json:"blob_id,omitempty"`
 }
 
 func (x *Proposal) Reset() {
 	*x = Proposal{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_tendermint_types_types_proto_msgTypes[10]
+		mi := &file_tendermint_types_types_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -10759,7 +11384,7 @@ func (*Proposal) ProtoMessage() {}
 
 // Deprecated: Use Proposal.ProtoReflect.Descriptor instead.
 func (*Proposal) Descriptor() ([]byte, []int) {
-	return file_tendermint_types_types_proto_rawDescGZIP(), []int{10}
+	return file_tendermint_types_types_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *Proposal) GetType_() SignedMsgType {
@@ -10811,6 +11436,13 @@ func (x *Proposal) GetSignature() []byte {
 	return nil
 }
 
+func (x *Proposal) GetBlobId() *BlobID {
+	if x != nil {
+		return x.BlobId
+	}
+	return nil
+}
+
 type SignedHeader struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -10823,7 +11455,7 @@ type SignedHeader struct {
 func (x *SignedHeader) Reset() {
 	*x = SignedHeader{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_tendermint_types_types_proto_msgTypes[11]
+		mi := &file_tendermint_types_types_proto_msgTypes[12]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -10837,7 +11469,7 @@ func (*SignedHeader) ProtoMessage() {}
 
 // Deprecated: Use SignedHeader.ProtoReflect.Descriptor instead.
 func (*SignedHeader) Descriptor() ([]byte, []int) {
-	return file_tendermint_types_types_proto_rawDescGZIP(), []int{11}
+	return file_tendermint_types_types_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *SignedHeader) GetHeader() *Header {
@@ -10866,7 +11498,7 @@ type LightBlock struct {
 func (x *LightBlock) Reset() {
 	*x = LightBlock{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_tendermint_types_types_proto_msgTypes[12]
+		mi := &file_tendermint_types_types_proto_msgTypes[13]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -10880,7 +11512,7 @@ func (*LightBlock) ProtoMessage() {}
 
 // Deprecated: Use LightBlock.ProtoReflect.Descriptor instead.
 func (*LightBlock) Descriptor() ([]byte, []int) {
-	return file_tendermint_types_types_proto_rawDescGZIP(), []int{12}
+	return file_tendermint_types_types_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *LightBlock) GetSignedHeader() *SignedHeader {
@@ -10911,7 +11543,7 @@ type BlockMeta struct {
 func (x *BlockMeta) Reset() {
 	*x = BlockMeta{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_tendermint_types_types_proto_msgTypes[13]
+		mi := &file_tendermint_types_types_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -10925,7 +11557,7 @@ func (*BlockMeta) ProtoMessage() {}
 
 // Deprecated: Use BlockMeta.ProtoReflect.Descriptor instead.
 func (*BlockMeta) Descriptor() ([]byte, []int) {
-	return file_tendermint_types_types_proto_rawDescGZIP(), []int{13}
+	return file_tendermint_types_types_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *BlockMeta) GetBlockId() *BlockID {
@@ -10970,7 +11602,7 @@ type TxProof struct {
 func (x *TxProof) Reset() {
 	*x = TxProof{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_tendermint_types_types_proto_msgTypes[14]
+		mi := &file_tendermint_types_types_proto_msgTypes[15]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -10984,7 +11616,7 @@ func (*TxProof) ProtoMessage() {}
 
 // Deprecated: Use TxProof.ProtoReflect.Descriptor instead.
 func (*TxProof) Descriptor() ([]byte, []int) {
-	return file_tendermint_types_types_proto_rawDescGZIP(), []int{14}
+	return file_tendermint_types_types_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *TxProof) GetRootHash() []byte {
@@ -11168,26 +11800,37 @@ var file_tendermint_types_types_proto_rawDesc = []byte{
 	0x6e, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x2f, 0x0a, 0x13, 0x65, 0x78, 0x74, 0x65, 0x6e, 0x73, 0x69,
 	0x6f, 0x6e, 0x5f, 0x73, 0x69, 0x67, 0x6e, 0x61, 0x74, 0x75, 0x72, 0x65, 0x18, 0x06, 0x20, 0x01,
 	0x28, 0x0c, 0x52, 0x12, 0x65, 0x78, 0x74, 0x65, 0x6e, 0x73, 0x69, 0x6f, 0x6e, 0x53, 0x69, 0x67,
-	0x6e, 0x61, 0x74, 0x75, 0x72, 0x65, 0x22, 0xb3, 0x02, 0x0a, 0x08, 0x50, 0x72, 0x6f, 0x70, 0x6f,
-	0x73, 0x61, 0x6c, 0x12, 0x33, 0x0a, 0x04, 0x74, 0x79, 0x70, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28,
-	0x0e, 0x32, 0x1f, 0x2e, 0x74, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x6d, 0x69, 0x6e, 0x74, 0x2e, 0x74,
-	0x79, 0x70, 0x65, 0x73, 0x2e, 0x53, 0x69, 0x67, 0x6e, 0x65, 0x64, 0x4d, 0x73, 0x67, 0x54, 0x79,
-	0x70, 0x65, 0x52, 0x04, 0x74, 0x79, 0x70, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x68, 0x65, 0x69, 0x67,
-	0x68, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x06, 0x68, 0x65, 0x69, 0x67, 0x68, 0x74,
-	0x12, 0x14, 0x0a, 0x05, 0x72, 0x6f, 0x75, 0x6e, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x05, 0x52,
-	0x05, 0x72, 0x6f, 0x75, 0x6e, 0x64, 0x12, 0x1b, 0x0a, 0x09, 0x70, 0x6f, 0x6c, 0x5f, 0x72, 0x6f,
-	0x75, 0x6e, 0x64, 0x18, 0x04, 0x20, 0x01, 0x28, 0x05, 0x52, 0x08, 0x70, 0x6f, 0x6c, 0x52, 0x6f,
-	0x75, 0x6e, 0x64, 0x12, 0x45, 0x0a, 0x08, 0x62, 0x6c, 0x6f, 0x63, 0x6b, 0x5f, 0x69, 0x64, 0x18,
-	0x05, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x19, 0x2e, 0x74, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x6d, 0x69,
-	0x6e, 0x74, 0x2e, 0x74, 0x79, 0x70, 0x65, 0x73, 0x2e, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x49, 0x44,
-	0x42, 0x0f, 0xc8, 0xde, 0x1f, 0x00, 0xe2, 0xde, 0x1f, 0x07, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x49,
-	0x44, 0x52, 0x07, 0x62, 0x6c, 0x6f, 0x63, 0x6b, 0x49, 0x64, 0x12, 0x42, 0x0a, 0x09, 0x74, 0x69,
-	0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x18, 0x06, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e,
-	0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e,
-	0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x42, 0x08, 0xc8, 0xde, 0x1f, 0x00, 0x90,
-	0xdf, 0x1f, 0x01, 0x52, 0x09, 0x74, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x12, 0x1c,
-	0x0a, 0x09, 0x73, 0x69, 0x67, 0x6e, 0x61, 0x74, 0x75, 0x72, 0x65, 0x18, 0x07, 0x20, 0x01, 0x28,
-	0x0c, 0x52, 0x09, 0x73, 0x69, 0x67, 0x6e, 0x61, 0x74, 0x75, 0x72, 0x65, 0x22, 0x72, 0x0a, 0x0c,
+	0x6e, 0x61, 0x74, 0x75, 0x72, 0x65, 0x22, 0x6b, 0x0a, 0x06, 0x42, 0x6c, 0x6f, 0x62, 0x49, 0x44,
+	0x12, 0x12, 0x0a, 0x04, 0x68, 0x61, 0x73, 0x68, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x04,
+	0x68, 0x61, 0x73, 0x68, 0x12, 0x4d, 0x0a, 0x0f, 0x70, 0x61, 0x72, 0x74, 0x5f, 0x73, 0x65, 0x74,
+	0x5f, 0x68, 0x65, 0x61, 0x64, 0x65, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1f, 0x2e,
+	0x74, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x6d, 0x69, 0x6e, 0x74, 0x2e, 0x74, 0x79, 0x70, 0x65, 0x73,
+	0x2e, 0x50, 0x61, 0x72, 0x74, 0x53, 0x65, 0x74, 0x48, 0x65, 0x61, 0x64, 0x65, 0x72, 0x42, 0x04,
+	0xc8, 0xde, 0x1f, 0x00, 0x52, 0x0d, 0x70, 0x61, 0x72, 0x74, 0x53, 0x65, 0x74, 0x48, 0x65, 0x61,
+	0x64, 0x65, 0x72, 0x22, 0xf6, 0x02, 0x0a, 0x08, 0x50, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x61, 0x6c,
+	0x12, 0x33, 0x0a, 0x04, 0x74, 0x79, 0x70, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x1f,
+	0x2e, 0x74, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x6d, 0x69, 0x6e, 0x74, 0x2e, 0x74, 0x79, 0x70, 0x65,
+	0x73, 0x2e, 0x53, 0x69, 0x67, 0x6e, 0x65, 0x64, 0x4d, 0x73, 0x67, 0x54, 0x79, 0x70, 0x65, 0x52,
+	0x04, 0x74, 0x79, 0x70, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x68, 0x65, 0x69, 0x67, 0x68, 0x74, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x06, 0x68, 0x65, 0x69, 0x67, 0x68, 0x74, 0x12, 0x14, 0x0a,
+	0x05, 0x72, 0x6f, 0x75, 0x6e, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x05, 0x52, 0x05, 0x72, 0x6f,
+	0x75, 0x6e, 0x64, 0x12, 0x1b, 0x0a, 0x09, 0x70, 0x6f, 0x6c, 0x5f, 0x72, 0x6f, 0x75, 0x6e, 0x64,
+	0x18, 0x04, 0x20, 0x01, 0x28, 0x05, 0x52, 0x08, 0x70, 0x6f, 0x6c, 0x52, 0x6f, 0x75, 0x6e, 0x64,
+	0x12, 0x45, 0x0a, 0x08, 0x62, 0x6c, 0x6f, 0x63, 0x6b, 0x5f, 0x69, 0x64, 0x18, 0x05, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x19, 0x2e, 0x74, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x6d, 0x69, 0x6e, 0x74, 0x2e,
+	0x74, 0x79, 0x70, 0x65, 0x73, 0x2e, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x49, 0x44, 0x42, 0x0f, 0xc8,
+	0xde, 0x1f, 0x00, 0xe2, 0xde, 0x1f, 0x07, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x49, 0x44, 0x52, 0x07,
+	0x62, 0x6c, 0x6f, 0x63, 0x6b, 0x49, 0x64, 0x12, 0x42, 0x0a, 0x09, 0x74, 0x69, 0x6d, 0x65, 0x73,
+	0x74, 0x61, 0x6d, 0x70, 0x18, 0x06, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f,
+	0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d,
+	0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x42, 0x08, 0xc8, 0xde, 0x1f, 0x00, 0x90, 0xdf, 0x1f, 0x01,
+	0x52, 0x09, 0x74, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x12, 0x1c, 0x0a, 0x09, 0x73,
+	0x69, 0x67, 0x6e, 0x61, 0x74, 0x75, 0x72, 0x65, 0x18, 0x07, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x09,
+	0x73, 0x69, 0x67, 0x6e, 0x61, 0x74, 0x75, 0x72, 0x65, 0x12, 0x41, 0x0a, 0x07, 0x62, 0x6c, 0x6f,
+	0x62, 0x5f, 0x69, 0x64, 0x18, 0x08, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x18, 0x2e, 0x74, 0x65, 0x6e,
+	0x64, 0x65, 0x72, 0x6d, 0x69, 0x6e, 0x74, 0x2e, 0x74, 0x79, 0x70, 0x65, 0x73, 0x2e, 0x42, 0x6c,
+	0x6f, 0x62, 0x49, 0x44, 0x42, 0x0e, 0xc8, 0xde, 0x1f, 0x00, 0xe2, 0xde, 0x1f, 0x06, 0x42, 0x6c,
+	0x6f, 0x62, 0x49, 0x44, 0x52, 0x06, 0x62, 0x6c, 0x6f, 0x62, 0x49, 0x64, 0x22, 0x72, 0x0a, 0x0c,
 	0x53, 0x69, 0x67, 0x6e, 0x65, 0x64, 0x48, 0x65, 0x61, 0x64, 0x65, 0x72, 0x12, 0x30, 0x0a, 0x06,
 	0x68, 0x65, 0x61, 0x64, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x18, 0x2e, 0x74,
 	0x65, 0x6e, 0x64, 0x65, 0x72, 0x6d, 0x69, 0x6e, 0x74, 0x2e, 0x74, 0x79, 0x70, 0x65, 0x73, 0x2e,
@@ -11264,7 +11907,7 @@ func file_tendermint_types_types_proto_rawDescGZIP() []byte {
 }
 
 var file_tendermint_types_types_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_tendermint_types_types_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
+var file_tendermint_types_types_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
 var file_tendermint_types_types_proto_goTypes = []interface{}{
 	(SignedMsgType)(0),            // 0: tendermint.types.SignedMsgType
 	(*PartSetHeader)(nil),         // 1: tendermint.types.PartSetHeader
@@ -11277,49 +11920,52 @@ var file_tendermint_types_types_proto_goTypes = []interface{}{
 	(*CommitSig)(nil),             // 8: tendermint.types.CommitSig
 	(*ExtendedCommit)(nil),        // 9: tendermint.types.ExtendedCommit
 	(*ExtendedCommitSig)(nil),     // 10: tendermint.types.ExtendedCommitSig
-	(*Proposal)(nil),              // 11: tendermint.types.Proposal
-	(*SignedHeader)(nil),          // 12: tendermint.types.SignedHeader
-	(*LightBlock)(nil),            // 13: tendermint.types.LightBlock
-	(*BlockMeta)(nil),             // 14: tendermint.types.BlockMeta
-	(*TxProof)(nil),               // 15: tendermint.types.TxProof
-	(*crypto.Proof)(nil),          // 16: tendermint.crypto.Proof
-	(*version.Consensus)(nil),     // 17: tendermint.version.Consensus
-	(*timestamppb.Timestamp)(nil), // 18: google.protobuf.Timestamp
-	(BlockIDFlag)(0),              // 19: tendermint.types.BlockIDFlag
-	(*ValidatorSet)(nil),          // 20: tendermint.types.ValidatorSet
+	(*BlobID)(nil),                // 11: tendermint.types.BlobID
+	(*Proposal)(nil),              // 12: tendermint.types.Proposal
+	(*SignedHeader)(nil),          // 13: tendermint.types.SignedHeader
+	(*LightBlock)(nil),            // 14: tendermint.types.LightBlock
+	(*BlockMeta)(nil),             // 15: tendermint.types.BlockMeta
+	(*TxProof)(nil),               // 16: tendermint.types.TxProof
+	(*crypto.Proof)(nil),          // 17: tendermint.crypto.Proof
+	(*version.Consensus)(nil),     // 18: tendermint.version.Consensus
+	(*timestamppb.Timestamp)(nil), // 19: google.protobuf.Timestamp
+	(BlockIDFlag)(0),              // 20: tendermint.types.BlockIDFlag
+	(*ValidatorSet)(nil),          // 21: tendermint.types.ValidatorSet
 }
 var file_tendermint_types_types_proto_depIdxs = []int32{
-	16, // 0: tendermint.types.Part.proof:type_name -> tendermint.crypto.Proof
+	17, // 0: tendermint.types.Part.proof:type_name -> tendermint.crypto.Proof
 	1,  // 1: tendermint.types.BlockID.part_set_header:type_name -> tendermint.types.PartSetHeader
-	17, // 2: tendermint.types.Header.version:type_name -> tendermint.version.Consensus
-	18, // 3: tendermint.types.Header.time:type_name -> google.protobuf.Timestamp
+	18, // 2: tendermint.types.Header.version:type_name -> tendermint.version.Consensus
+	19, // 3: tendermint.types.Header.time:type_name -> google.protobuf.Timestamp
 	3,  // 4: tendermint.types.Header.last_block_id:type_name -> tendermint.types.BlockID
 	0,  // 5: tendermint.types.Vote.type:type_name -> tendermint.types.SignedMsgType
 	3,  // 6: tendermint.types.Vote.block_id:type_name -> tendermint.types.BlockID
-	18, // 7: tendermint.types.Vote.timestamp:type_name -> google.protobuf.Timestamp
+	19, // 7: tendermint.types.Vote.timestamp:type_name -> google.protobuf.Timestamp
 	3,  // 8: tendermint.types.Commit.block_id:type_name -> tendermint.types.BlockID
 	8,  // 9: tendermint.types.Commit.signatures:type_name -> tendermint.types.CommitSig
-	19, // 10: tendermint.types.CommitSig.block_id_flag:type_name -> tendermint.types.BlockIDFlag
-	18, // 11: tendermint.types.CommitSig.timestamp:type_name -> google.protobuf.Timestamp
+	20, // 10: tendermint.types.CommitSig.block_id_flag:type_name -> tendermint.types.BlockIDFlag
+	19, // 11: tendermint.types.CommitSig.timestamp:type_name -> google.protobuf.Timestamp
 	3,  // 12: tendermint.types.ExtendedCommit.block_id:type_name -> tendermint.types.BlockID
 	10, // 13: tendermint.types.ExtendedCommit.extended_signatures:type_name -> tendermint.types.ExtendedCommitSig
-	19, // 14: tendermint.types.ExtendedCommitSig.block_id_flag:type_name -> tendermint.types.BlockIDFlag
-	18, // 15: tendermint.types.ExtendedCommitSig.timestamp:type_name -> google.protobuf.Timestamp
-	0,  // 16: tendermint.types.Proposal.type:type_name -> tendermint.types.SignedMsgType
-	3,  // 17: tendermint.types.Proposal.block_id:type_name -> tendermint.types.BlockID
-	18, // 18: tendermint.types.Proposal.timestamp:type_name -> google.protobuf.Timestamp
-	4,  // 19: tendermint.types.SignedHeader.header:type_name -> tendermint.types.Header
-	7,  // 20: tendermint.types.SignedHeader.commit:type_name -> tendermint.types.Commit
-	12, // 21: tendermint.types.LightBlock.signed_header:type_name -> tendermint.types.SignedHeader
-	20, // 22: tendermint.types.LightBlock.validator_set:type_name -> tendermint.types.ValidatorSet
-	3,  // 23: tendermint.types.BlockMeta.block_id:type_name -> tendermint.types.BlockID
-	4,  // 24: tendermint.types.BlockMeta.header:type_name -> tendermint.types.Header
-	16, // 25: tendermint.types.TxProof.proof:type_name -> tendermint.crypto.Proof
-	26, // [26:26] is the sub-list for method output_type
-	26, // [26:26] is the sub-list for method input_type
-	26, // [26:26] is the sub-list for extension type_name
-	26, // [26:26] is the sub-list for extension extendee
-	0,  // [0:26] is the sub-list for field type_name
+	20, // 14: tendermint.types.ExtendedCommitSig.block_id_flag:type_name -> tendermint.types.BlockIDFlag
+	19, // 15: tendermint.types.ExtendedCommitSig.timestamp:type_name -> google.protobuf.Timestamp
+	1,  // 16: tendermint.types.BlobID.part_set_header:type_name -> tendermint.types.PartSetHeader
+	0,  // 17: tendermint.types.Proposal.type:type_name -> tendermint.types.SignedMsgType
+	3,  // 18: tendermint.types.Proposal.block_id:type_name -> tendermint.types.BlockID
+	19, // 19: tendermint.types.Proposal.timestamp:type_name -> google.protobuf.Timestamp
+	11, // 20: tendermint.types.Proposal.blob_id:type_name -> tendermint.types.BlobID
+	4,  // 21: tendermint.types.SignedHeader.header:type_name -> tendermint.types.Header
+	7,  // 22: tendermint.types.SignedHeader.commit:type_name -> tendermint.types.Commit
+	13, // 23: tendermint.types.LightBlock.signed_header:type_name -> tendermint.types.SignedHeader
+	21, // 24: tendermint.types.LightBlock.validator_set:type_name -> tendermint.types.ValidatorSet
+	3,  // 25: tendermint.types.BlockMeta.block_id:type_name -> tendermint.types.BlockID
+	4,  // 26: tendermint.types.BlockMeta.header:type_name -> tendermint.types.Header
+	17, // 27: tendermint.types.TxProof.proof:type_name -> tendermint.crypto.Proof
+	28, // [28:28] is the sub-list for method output_type
+	28, // [28:28] is the sub-list for method input_type
+	28, // [28:28] is the sub-list for extension type_name
+	28, // [28:28] is the sub-list for extension extendee
+	0,  // [0:28] is the sub-list for field type_name
 }
 
 func init() { file_tendermint_types_types_proto_init() }
@@ -11450,7 +12096,7 @@ func file_tendermint_types_types_proto_init() {
 			}
 		}
 		file_tendermint_types_types_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Proposal); i {
+			switch v := v.(*BlobID); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -11462,7 +12108,7 @@ func file_tendermint_types_types_proto_init() {
 			}
 		}
 		file_tendermint_types_types_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*SignedHeader); i {
+			switch v := v.(*Proposal); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -11474,7 +12120,7 @@ func file_tendermint_types_types_proto_init() {
 			}
 		}
 		file_tendermint_types_types_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*LightBlock); i {
+			switch v := v.(*SignedHeader); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -11486,7 +12132,7 @@ func file_tendermint_types_types_proto_init() {
 			}
 		}
 		file_tendermint_types_types_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BlockMeta); i {
+			switch v := v.(*LightBlock); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -11498,6 +12144,18 @@ func file_tendermint_types_types_proto_init() {
 			}
 		}
 		file_tendermint_types_types_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*BlockMeta); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_tendermint_types_types_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*TxProof); i {
 			case 0:
 				return &v.state
@@ -11516,7 +12174,7 @@ func file_tendermint_types_types_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_tendermint_types_types_proto_rawDesc,
 			NumEnums:      1,
-			NumMessages:   15,
+			NumMessages:   16,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
