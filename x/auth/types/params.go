@@ -61,7 +61,7 @@ func validateTxSigLimit(i interface{}) error {
 		return fmt.Errorf("invalid parameter type: %T", i)
 	}
 
-	if v == 0 {
+	if v != 1 {
 		return fmt.Errorf("invalid tx signature limit: %d", v)
 	}
 

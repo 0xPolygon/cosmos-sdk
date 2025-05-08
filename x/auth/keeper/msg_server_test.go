@@ -25,7 +25,7 @@ func (s *KeeperTestSuite) TestUpdateParams() {
 				Authority: s.accountKeeper.GetAuthority(),
 				Params: types.Params{
 					MaxMemoCharacters:      0,
-					TxSigLimit:             9,
+					TxSigLimit:             1,
 					TxSizeCostPerByte:      5,
 					SigVerifyCostED25519:   694,
 					SigVerifyCostSecp256k1: 511,
@@ -55,7 +55,7 @@ func (s *KeeperTestSuite) TestUpdateParams() {
 				Authority: s.accountKeeper.GetAuthority(),
 				Params: types.Params{
 					MaxMemoCharacters:      140,
-					TxSigLimit:             9,
+					TxSigLimit:             1,
 					TxSizeCostPerByte:      0,
 					SigVerifyCostED25519:   694,
 					SigVerifyCostSecp256k1: 511,
@@ -70,7 +70,7 @@ func (s *KeeperTestSuite) TestUpdateParams() {
 				Authority: s.accountKeeper.GetAuthority(),
 				Params: types.Params{
 					MaxMemoCharacters:      140,
-					TxSigLimit:             9,
+					TxSigLimit:             1,
 					TxSizeCostPerByte:      5,
 					SigVerifyCostED25519:   0,
 					SigVerifyCostSecp256k1: 511,
@@ -85,7 +85,7 @@ func (s *KeeperTestSuite) TestUpdateParams() {
 				Authority: s.accountKeeper.GetAuthority(),
 				Params: types.Params{
 					MaxMemoCharacters:      140,
-					TxSigLimit:             9,
+					TxSigLimit:             1,
 					TxSizeCostPerByte:      5,
 					SigVerifyCostED25519:   694,
 					SigVerifyCostSecp256k1: 0,
