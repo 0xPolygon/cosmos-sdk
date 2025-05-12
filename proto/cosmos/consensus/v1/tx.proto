@@ -39,6 +39,9 @@ message MsgUpdateParams {
 
   // Since: cosmos-sdk 0.50
   tendermint.types.ABCIParams abci = 5;
+
+  // Updated to support blobs
+  tendermint.types.BlobParams blob = 6;
 }
 
 // MsgUpdateParamsResponse defines the response structure for executing a
