@@ -85,6 +85,7 @@ func (s *KeeperTestSuite) TestGRPCQueryConsensusParams() {
 			types.QueryParamsResponse{
 				Params: &cmtproto.ConsensusParams{
 					Block:     modifiedConsensusParams.Block,
+					Blob:      modifiedConsensusParams.Blob,
 					Validator: modifiedConsensusParams.Validator,
 					Evidence:  modifiedConsensusParams.Evidence,
 					Version:   modifiedConsensusParams.Version,
@@ -114,6 +115,7 @@ func (s *KeeperTestSuite) TestGRPCQueryConsensusParams() {
 			types.QueryParamsResponse{
 				Params: &cmtproto.ConsensusParams{
 					Block:     modifiedConsensusParams.Block,
+					Blob:      modifiedConsensusParams.Blob,
 					Validator: modifiedConsensusParams.Validator,
 					Evidence:  modifiedConsensusParams.Evidence,
 					Version:   modifiedConsensusParams.Version,
