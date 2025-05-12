@@ -1,6 +1,6 @@
 module cosmossdk.io/collections
 
-go 1.23.2
+go 1.23.8
 
 require (
 	cosmossdk.io/core v0.11.0
@@ -55,7 +55,7 @@ require (
 
 // HV2 related packages
 replace (
-	cosmossdk.io/api => github.com/0xPolygon/cosmos-sdk/api v0.7.5
+	cosmossdk.io/api => github.com/0xPolygon/cosmos-sdk/api v0.7.6-0.20250429154832-7177ebac408e
 	cosmossdk.io/core => github.com/0xPolygon/cosmos-sdk/core v0.11.3-0.20241126102051-89dc71d02611
 	cosmossdk.io/depinject => github.com/0xPolygon/cosmos-sdk/depinject v1.0.0
 )

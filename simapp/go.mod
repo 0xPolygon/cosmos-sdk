@@ -1,6 +1,6 @@
 module cosmossdk.io/simapp
 
-go 1.23.6
+go 1.23.8
 
 require (
 	cosmossdk.io/api v0.7.5
@@ -198,9 +198,9 @@ require (
 	go.opentelemetry.io/otel/metric v1.34.0 // indirect
 	go.opentelemetry.io/otel/trace v1.34.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	golang.org/x/crypto v0.33.0 // indirect
+	golang.org/x/crypto v0.35.0 // indirect
 	golang.org/x/exp v0.0.0-20250106191152-7588d65b2ba8 // indirect
-	golang.org/x/net v0.34.0 // indirect
+	golang.org/x/net v0.36.0 // indirect
 	golang.org/x/oauth2 v0.24.0 // indirect
 	golang.org/x/sync v0.11.0 // indirect
 	golang.org/x/sys v0.30.0 // indirect
@@ -239,7 +239,7 @@ replace (
 
 // HV2 related packages
 replace (
-	cosmossdk.io/api => github.com/0xPolygon/cosmos-sdk/api v0.7.5
+	cosmossdk.io/api => github.com/0xPolygon/cosmos-sdk/api v0.7.6-0.20250429154832-7177ebac408e
 	cosmossdk.io/client/v2 => github.com/0xPolygon/cosmos-sdk/client/v2 v2.0.0-beta.5.0.20241126102051-89dc71d02611
 	cosmossdk.io/collections => github.com/0xPolygon/cosmos-sdk/collections v0.4.0
 	cosmossdk.io/core => github.com/0xPolygon/cosmos-sdk/core v0.11.3-0.20241126102051-89dc71d02611
@@ -254,6 +254,6 @@ replace (
 	cosmossdk.io/x/nft => github.com/0xPolygon/cosmos-sdk/x/nft v0.1.2-0.20241126102051-89dc71d02611
 	cosmossdk.io/x/tx => github.com/0xPolygon/cosmos-sdk/x/tx v0.13.6-0.20241126102051-89dc71d02611
 	cosmossdk.io/x/upgrade => github.com/0xPolygon/cosmos-sdk/x/upgrade v0.1.5-0.20241126102051-89dc71d02611
-	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.4-beta-polygon
+	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.6-beta-polygon
 	github.com/ethereum/go-ethereum => github.com/maticnetwork/bor v1.5.5
 )
