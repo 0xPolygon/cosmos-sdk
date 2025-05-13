@@ -1050,6 +1050,20 @@ func (m *MockStakingKeeper) EXPECT() *MockStakingKeeperMockRecorder {
 	return m.recorder
 }
 
+// AddValidator mocks base method.
+func (m *MockStakingKeeper) AddValidator(ctx context.Context, validator types.Validator) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "AddValidator", ctx, validator)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// AddValidator indicates an expected call of AddValidator.
+func (mr *MockStakingKeeperMockRecorder) AddValidator(ctx, validator interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddValidator", reflect.TypeOf((*MockStakingKeeper)(nil).AddValidator), ctx, validator)
+}
+
 // BondDenom mocks base method.
 func (m *MockStakingKeeper) BondDenom(ctx context.Context) (string, error) {
 	m.ctrl.T.Helper()

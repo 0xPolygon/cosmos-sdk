@@ -1,6 +1,6 @@
 module cosmossdk.io/core
 
-go 1.23.8
+go 1.24.3
 
 require (
 	cosmossdk.io/api v0.7.0
