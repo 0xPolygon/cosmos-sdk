@@ -2,6 +2,7 @@ package cli_test
 
 import (
 	"encoding/json"
+	milestonestypes "github.com/0xPolygon/heimdall-v2/x/milestone/types"
 	"testing"
 
 	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
@@ -52,7 +53,7 @@ func TestSetGenesisValidator(t *testing.T) {
 	require.Equal(t, pubKey.Address().String(), validator.Signer)
 }
 
-// TestSetGenesisValidatorJSON tests the JSON structure of the output
+// TestSetGenesisValidatorJSON tests the JSON structure of the stake output
 func TestSetGenesisValidatorJSON(t *testing.T) {
 	// Generate a public key with known output for testing
 	privKey := ed25519.GenPrivKey()
@@ -136,4 +137,29 @@ func TestSetGenesisValidator_ErrorHandling(t *testing.T) {
 	require.Nil(t, rawMsg)
 	// Validate the error message
 	require.Equal(t, "invalid public key: nil", err.Error())
+}
+
+// TestBuildEmptyMilestoneGenesis tests the JSON structure of the milestones output
+func TestBuildEmptyMilestoneGenesis(t *testing.T) {
+	rawMsg, err := cli.BuildEmptyMilestoneGenesis()
+	require.NoError(t, err)
+
+	// Convert to map to check JSON structure
+	var result map[string]interface{}
+	err = json.Unmarshal(rawMsg, &result)
+	require.NoError(t, err)
+
+	params := milestonestypes.DefaultParams()
+
+	// Check top-level structure
+	milestonesArray, ok := result["milestones"].([]interface{})
+	require.True(t, ok, "milestones should be a JSON array")
+	milestonesParams, ok := result["params"].(map[string]interface{})
+	require.True(t, ok, "params should be a JSON object")
+
+	require.Len(t, milestonesArray, 0)
+	require.NoError(t, err)
+	require.Equal(t, float64(params.MaxMilestonePropositionLength), milestonesParams["max_milestone_proposition_length"])
+	require.Equal(t, float64(params.FfMilestoneThreshold), milestonesParams["ff_milestone_threshold"])
+	require.Equal(t, float64(params.FfMilestoneBlockInterval), milestonesParams["ff_milestone_block_interval"])
 }

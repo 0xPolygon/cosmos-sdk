@@ -5,16 +5,14 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	milestonestypes "github.com/0xPolygon/heimdall-v2/x/milestone/types"
+	staketypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 	"os"
 	"path/filepath"
 
 	errorsmod "cosmossdk.io/errors"
 	"cosmossdk.io/math/unsafe"
-
 	cfg "github.com/cometbft/cometbft/config"
-	"github.com/cosmos/go-bip39"
-	"github.com/spf13/cobra"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/input"
@@ -24,6 +22,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/version"
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	"github.com/cosmos/cosmos-sdk/x/genutil/types"
+	"github.com/cosmos/go-bip39"
+	"github.com/spf13/cobra"
 )
 
 const (
@@ -130,15 +130,25 @@ func InitCmd(mbm module.BasicManager, defaultNodeHome string) *cobra.Command {
 				return fmt.Errorf("genesis.json file already exists: %v", genFile)
 			}
 
-			// Overwrites the SDK default denom for side-effects
+			// Overwrites the SDK default denom for side effects
 			if defaultDenom != "" {
 				sdk.DefaultBondDenom = defaultDenom
 			}
+
 			appGenState := mbm.DefaultGenesis(cdc)
-			appGenState["stake"], err = SetGenesisValidator(valPublicKey)
+
+			// override stake data with validators
+			appGenState[staketypes.ModuleName], err = SetGenesisValidator(valPublicKey)
 			if err != nil {
 				return fmt.Errorf("failed to add genesis validators to genesis.json")
 			}
+
+			// override milestones with an empty list and default params
+			milestoneGenesisJSON, err := BuildEmptyMilestoneGenesis()
+			if err != nil {
+				return fmt.Errorf("failed to build milestone genesis: %w", err)
+			}
+			appGenState[milestonestypes.ModuleName] = milestoneGenesisJSON
 
 			appState, err := json.MarshalIndent(appGenState, "", " ")
 			if err != nil {
