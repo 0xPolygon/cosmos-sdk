@@ -3,8 +3,9 @@ package cli
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 
-	stakeType "github.com/0xPolygon/heimdall-v2/x/stake/types"
+	staketypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 )
 
@@ -13,9 +14,9 @@ func SetGenesisValidator(valPubKey cryptotypes.PubKey) (json.RawMessage, error) 
 		return nil, fmt.Errorf("invalid public key: nil")
 	}
 
-	genesisState := stakeType.GenesisState{
-		CurrentValidatorSet: stakeType.ValidatorSet{
-			Validators: []*stakeType.Validator{
+	genesisState := staketypes.GenesisState{
+		CurrentValidatorSet: staketypes.ValidatorSet{
+			Validators: []*staketypes.Validator{
 				{
 					EndEpoch:         0,
 					ValId:            1,
@@ -23,14 +24,14 @@ func SetGenesisValidator(valPubKey cryptotypes.PubKey) (json.RawMessage, error) 
 					Nonce:            0,
 					VotingPower:      1000,
 					PubKey:           valPubKey.Bytes(),
-					Signer:           "0x" + valPubKey.Address().String(),
+					Signer:           strings.ToUpper(valPubKey.Address().String()),
 					LastUpdated:      "",
 					Jailed:           false,
 					ProposerPriority: 0,
 				},
 			},
 		},
-		Validators: []*stakeType.Validator{
+		Validators: []*staketypes.Validator{
 			{
 				ValId:            1,
 				StartEpoch:       0,
@@ -38,7 +39,7 @@ func SetGenesisValidator(valPubKey cryptotypes.PubKey) (json.RawMessage, error) 
 				Nonce:            0,
 				VotingPower:      1000,
 				PubKey:           valPubKey.Bytes(),
-				Signer:           "0x" + valPubKey.Address().String(),
+				Signer:           valPubKey.Address().String(),
 				LastUpdated:      "",
 				Jailed:           false,
 				ProposerPriority: 0,
@@ -51,5 +52,5 @@ func SetGenesisValidator(valPubKey cryptotypes.PubKey) (json.RawMessage, error) 
 		return nil, err
 	}
 
-	return json.RawMessage(data), nil
+	return data, nil
 }

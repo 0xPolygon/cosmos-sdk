@@ -2,24 +2,14 @@ package cli_test
 
 import (
 	"encoding/json"
-	"sort"
 	"testing"
 
-	stakeType "github.com/0xPolygon/heimdall-v2/x/stake/types"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
 	"github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
 	"github.com/stretchr/testify/require"
-)
 
-// Helper function to get and sort keys from a map
-func getKeys(m map[string]interface{}) []string {
-	keys := make([]string, 0, len(m))
-	for k := range m {
-		keys = append(keys, k)
-	}
-	sort.Strings(keys)
-	return keys
-}
+	staketypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
+)
 
 func TestSetGenesisValidator(t *testing.T) {
 	// Generate a public key for testing
@@ -35,7 +25,7 @@ func TestSetGenesisValidator(t *testing.T) {
 	require.IsType(t, json.RawMessage{}, rawMsg)
 
 	// Unmarshal the JSON result
-	var genesisState stakeType.GenesisState
+	var genesisState staketypes.GenesisState
 	err = json.Unmarshal(rawMsg, &genesisState)
 	require.NoError(t, err)
 
@@ -43,7 +33,7 @@ func TestSetGenesisValidator(t *testing.T) {
 	require.Len(t, genesisState.CurrentValidatorSet.Validators, 1)
 	currentValidator := genesisState.CurrentValidatorSet.Validators[0]
 
-	// Validate the validators list
+	// Validate the validators' list
 	require.Len(t, genesisState.Validators, 1)
 	validator := genesisState.Validators[0]
 
@@ -51,7 +41,7 @@ func TestSetGenesisValidator(t *testing.T) {
 	require.Equal(t, uint64(1), currentValidator.ValId)
 	require.Equal(t, int64(1000), currentValidator.VotingPower)
 	require.Equal(t, pubKey.Bytes(), currentValidator.PubKey)
-	require.Equal(t, "0x"+pubKey.Address().String(), currentValidator.Signer)
+	require.Equal(t, pubKey.Address().String(), currentValidator.Signer)
 
 	// Test validators list fields
 	require.Equal(t, uint64(1), validator.ValId)
@@ -59,7 +49,7 @@ func TestSetGenesisValidator(t *testing.T) {
 	require.Equal(t, uint64(1000000), validator.EndEpoch)
 	require.Equal(t, int64(1000), validator.VotingPower)
 	require.Equal(t, pubKey.Bytes(), validator.PubKey)
-	require.Equal(t, "0x"+pubKey.Address().String(), validator.Signer)
+	require.Equal(t, pubKey.Address().String(), validator.Signer)
 }
 
 // TestSetGenesisValidatorJSON tests the JSON structure of the output
@@ -69,7 +59,7 @@ func TestSetGenesisValidatorJSON(t *testing.T) {
 	pubKey := privKey.PubKey()
 
 	// Get the expected address string
-	expectedSigner := "0x" + pubKey.Address().String()
+	expectedSigner := pubKey.Address().String()
 
 	// Call the function to test
 	rawMsg, err := cli.SetGenesisValidator(pubKey)
@@ -77,7 +67,7 @@ func TestSetGenesisValidatorJSON(t *testing.T) {
 
 	// Convert to map to check JSON structure
 	var result map[string]interface{}
-	err = json.Unmarshal([]byte(rawMsg), &result)
+	err = json.Unmarshal(rawMsg, &result)
 	require.NoError(t, err)
 
 	// Check top-level structure
@@ -144,5 +134,6 @@ func TestSetGenesisValidator_ErrorHandling(t *testing.T) {
 	rawMsg, err := cli.SetGenesisValidator(nil)
 	require.Error(t, err)
 	require.Nil(t, rawMsg)
-	require.Equal(t, "invalid public key: nil", err.Error()) // Validate the error message
+	// Validate the error message
+	require.Equal(t, "invalid public key: nil", err.Error())
 }

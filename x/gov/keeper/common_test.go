@@ -113,8 +113,6 @@ func setupGovKeeper(t *testing.T) (
 	stakingKeeper.EXPECT().BondDenom(ctx).Return("pol", nil).AnyTimes()
 	stakingKeeper.EXPECT().TokensFromConsensusPower(gomock.Any(), gomock.Any()).AnyTimes()
 	stakingKeeper.EXPECT().ValidatorAddressCodec().Return(address.NewHexCodec()).AnyTimes()
-	stakingKeeper.EXPECT().AddValidator(gomock.Any(), gomock.Any()).Return(nil)
-	stakingKeeper.EXPECT().IterateCurrentValidatorsAndApplyFn(gomock.Any(), gomock.Any()).Return(nil)
 
 	distributionKeeper.EXPECT().FundCommunityPool(gomock.Any(), gomock.Any(), gomock.Any()).Return(nil).AnyTimes()
 

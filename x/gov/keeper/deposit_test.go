@@ -6,19 +6,16 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/golang/mock/gomock"
-
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/collections"
 	sdkmath "cosmossdk.io/math"
-
 	"github.com/cosmos/cosmos-sdk/codec/address"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	disttypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
+	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 
 	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 )
@@ -58,6 +55,7 @@ func TestDeposits(t *testing.T) {
 			accAmt := sdkmath.NewIntFromBigInt(new(big.Int).Mul(big.NewInt(100), new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil)))
 			TestAddrs := simtestutil.AddTestAddrsIncremental(bankKeeper, ctx, 2, accAmt.Mul(sdkmath.NewInt(depositMultiplier)))
 			authKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
+			stakingKeeper.EXPECT().AddValidator(gomock.Any(), gomock.Any()).AnyTimes()
 
 			tp := TestProposal
 			proposal, err := govKeeper.SubmitProposal(ctx, tp, "", "title", "summary", TestAddrs[0], tc.expedited)
@@ -217,12 +215,13 @@ func TestDepositAmount(t *testing.T) {
 
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
-			govKeeper, authKeeper, bankKeeper, _, distrKeeper, _, ctx := setupGovKeeper(t)
+			govKeeper, authKeeper, bankKeeper, stakingKeeper, distrKeeper, _, ctx := setupGovKeeper(t)
 			trackMockBalances(bankKeeper, distrKeeper)
 
 			accAmt := sdkmath.NewIntFromBigInt(new(big.Int).Mul(big.NewInt(10), new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil)))
 			testAddrs := simtestutil.AddTestAddrsIncremental(bankKeeper, ctx, 2, accAmt)
 			authKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
+			stakingKeeper.EXPECT().AddValidator(gomock.Any(), gomock.Any()).AnyTimes()
 
 			params, _ := govKeeper.Params.Get(ctx)
 			params.MinDepositRatio = tc.minDepositRatio
@@ -335,7 +334,8 @@ func TestValidateInitialDeposit(t *testing.T) {
 
 	for name, tc := range testcases {
 		t.Run(name, func(t *testing.T) {
-			govKeeper, _, _, _, _, _, ctx := setupGovKeeper(t)
+			govKeeper, _, _, stakingKeeper, _, _, ctx := setupGovKeeper(t)
+			stakingKeeper.EXPECT().AddValidator(gomock.Any(), gomock.Any()).AnyTimes()
 
 			params := v1.DefaultParams()
 			if tc.expedited {
@@ -404,6 +404,7 @@ func TestChargeDeposit(t *testing.T) {
 				accAmt := sdkmath.NewIntFromBigInt(new(big.Int).Mul(big.NewInt(10), new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil)))
 				TestAddrs := simtestutil.AddTestAddrsIncremental(bankKeeper, ctx, 2, accAmt)
 				authKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
+				stakingKeeper.EXPECT().AddValidator(gomock.Any(), gomock.Any()).AnyTimes()
 
 				switch i {
 				case 0:
@@ -494,6 +495,7 @@ func TestDistributeAndDeleteDeposits(t *testing.T) {
 			accAmt := sdkmath.NewIntFromBigInt(new(big.Int).Mul(big.NewInt(10), new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil)))
 			TestAddrs := simtestutil.AddTestAddrsIncremental(bankKeeper, ctx, 5, accAmt.Mul(sdkmath.NewInt(1)))
 			authKeeper.EXPECT().AddressCodec().Return(address.NewHexCodec()).AnyTimes()
+			stakingKeeper.EXPECT().AddValidator(gomock.Any(), gomock.Any()).AnyTimes()
 
 			var mockValidators []stakeTypes.Validator
 

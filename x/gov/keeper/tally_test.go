@@ -1,65 +1,25 @@
 package keeper_test
 
 import (
-	// "context"
 	"testing"
 
+	"github.com/cosmos/cosmos-sdk/types"
+	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 
-	// "github.com/0xPolygon/heimdall-v2/helper"
-	// chainmanagerKeeper "github.com/0xPolygon/heimdall-v2/x/chainmanager/keeper"
-	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
-
-	// "github.com/cosmos/cosmos-sdk/codec"
-	// "github.com/cosmos/cosmos-sdk/codec/address"
-	// "github.com/cosmos/cosmos-sdk/codec/types"
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	// bankKeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
-	// "github.com/cosmos/cosmos-sdk/x/gov/testutil"
+	staketypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 )
-
-// setupTestKeeper initializes the StakeKeeper and sets up CurrentValidators
-// func setupTestKeeper(bankKeeper testutil.MockBankKeeper, ctx context.Context) (*stakeKeeper.Keeper, context.Context) {
-
-// 	// Create a new StakeKeeper instance with required dependencies
-// 	sk := stakeKeeper.NewKeeper(
-// 		codec.NewProtoCodec(types.NewInterfaceRegistry()),
-// 		nil, // Store key (mocked)
-// 		bankKeeper,
-// 		chainmanagerKeeper.Keeper{},
-// 		address.HexCodec{},       // Address Codec
-// 		&helper.ContractCaller{}, // Contract Caller (mocked)
-// 	)
-
-// 	// Initialize mock validators
-// 	mockValidators := []*stakeType.Validator{
-// 		{
-// 			EndEpoch:         0,
-// 			ValId:            1,
-// 			StartEpoch:       0,
-// 			Nonce:            0,
-// 			VotingPower:      1000,
-// 			PubKey:           []byte("Hello"),
-// 			Signer:           "0xworld",
-// 			LastUpdated:      "",
-// 			Jailed:           false,
-// 			ProposerPriority: 0,
-// 		},
-// 	}
-
-// 	sk.AddValidator(ctx, mockValidators)
-
-// 	return &sk, ctx
-// }
 
 func TestTally(t *testing.T) {
 	govKeeper, _, _, sk, _, _, ctx := setupGovKeeper(t)
+	sk.EXPECT().AddValidator(gomock.Any(), gomock.Any()).AnyTimes()
+	sk.EXPECT().IterateCurrentValidatorsAndApplyFn(gomock.Any(), gomock.Any()).Return(nil)
 
 	// Create a minimal proposal
 	tp := TestProposal
-	accAddr, err := sdk.AccAddressFromHex("0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff")
+	accAddr, err := types.AccAddressFromHex("0xb316fa9fa91700d7084d377bfdc81eb9f232f5ff")
 	proposal, err := govKeeper.SubmitProposal(ctx, tp, "", "title", "description", accAddr, false)
-	mockValidators := []*stakeTypes.Validator{
+	mockValidators := []*staketypes.Validator{
 		{
 			EndEpoch:         0,
 			ValId:            1,
@@ -67,16 +27,17 @@ func TestTally(t *testing.T) {
 			Nonce:            0,
 			VotingPower:      1000,
 			PubKey:           []byte("Hello"),
-			Signer:           "0xworld",
+			Signer:           accAddr.String(),
 			LastUpdated:      "",
 			Jailed:           false,
 			ProposerPriority: 0,
 		},
 	}
 
-	sk.AddValidator(ctx, *mockValidators[0])
+	err = sk.AddValidator(ctx, *mockValidators[0])
+	require.NoError(t, err)
 
-	// Call Tally function
+	// Call tally function
 	passes, burnDeposits, tallyResults, err := govKeeper.Tally(ctx, proposal)
 
 	// Assertions
