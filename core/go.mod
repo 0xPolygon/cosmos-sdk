@@ -1,6 +1,6 @@
 module cosmossdk.io/core
 
-go 1.23.2
+go 1.23.8
 
 require (
 	cosmossdk.io/api v0.7.0
@@ -45,9 +45,9 @@ require (
 	github.com/syndtr/goleveldb v1.0.1-0.20220721030215-126854af5e6d // indirect
 	github.com/tendermint/go-amino v0.16.0 // indirect
 	golang.org/x/exp v0.0.0-20231006140011-7918f672742d // indirect
-	golang.org/x/net v0.33.0 // indirect
-	golang.org/x/sys v0.28.0 // indirect
-	golang.org/x/text v0.21.0 // indirect
+	golang.org/x/net v0.36.0 // indirect
+	golang.org/x/sys v0.30.0 // indirect
+	golang.org/x/text v0.22.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20240318140521-94a12d6c2237 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240709173604-40e1e62336c5 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
@@ -56,7 +56,7 @@ require (
 
 // HV2 related packages
 replace (
-	cosmossdk.io/api => github.com/0xPolygon/cosmos-sdk/api v0.7.5
+	cosmossdk.io/api => github.com/0xPolygon/cosmos-sdk/api v0.7.6-0.20250429154832-7177ebac408e
 	cosmossdk.io/depinject => github.com/0xPolygon/cosmos-sdk/depinject v1.0.0
 	cosmossdk.io/math => github.com/0xPolygon/cosmos-sdk/math v1.4.0
 )

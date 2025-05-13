@@ -761,7 +761,7 @@ Example Output:
 
 ```bash
 deposit_params:
-  max_deposit_period: 172800s
+  max_deposit_period: 86400s
   min_deposit:
   - amount: "10000000"
     denom: pol
@@ -770,8 +770,8 @@ params:
   - amount: "50000000"
     denom: pol
   expedited_threshold: "0.670000000000000000"
-  expedited_voting_period: 86400s
-  max_deposit_period: 172800s
+  expedited_voting_period: 43200s
+  max_deposit_period: 86400s
   min_deposit:
   - amount: "10000000"
     denom: pol
@@ -780,13 +780,13 @@ params:
   quorum: "0.334000000000000000"
   threshold: "0.500000000000000000"
   veto_threshold: "0.334000000000000000"
-  voting_period: 172800s
+  voting_period: 86400s
 tally_params:
   quorum: "0.334000000000000000"
   threshold: "0.500000000000000000"
   veto_threshold: "0.334000000000000000"
 voting_params:
-  voting_period: 172800s
+  voting_period: 86400s
 ```
 
 ##### proposal
@@ -1570,7 +1570,7 @@ Example Output:
 ```bash
 {
   "votingParams": {
-    "votingPeriod": "172800s"
+    "votingPeriod": "86400s"
   },
   "depositParams": {
     "maxDepositPeriod": "0s"
@@ -1603,7 +1603,7 @@ Example Output:
 ```bash
 {
   "votingParams": {
-    "votingPeriod": "172800s"
+    "votingPeriod": "86400s"
   }
 }
 ```
@@ -2248,7 +2248,7 @@ Example Output:
 ```bash
 {
   "voting_params": {
-    "voting_period": "172800s"
+    "voting_period": "86400s"
   },
   "deposit_params": {
     "min_deposit": [
@@ -2280,7 +2280,7 @@ Example Output:
 ```bash
 {
   "voting_params": {
-    "voting_period": "172800s"
+    "voting_period": "86400s"
   },
   "deposit_params": {
     "min_deposit": [

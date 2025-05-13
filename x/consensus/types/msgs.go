@@ -38,5 +38,11 @@ func (msg MsgUpdateParams) ToProtoConsensusParams() (cmtproto.ConsensusParams, e
 		}
 	}
 
+	if msg.Blob != nil {
+		cp.Blob = &cmtproto.BlobParams{
+			MaxBytes: msg.Blob.MaxBytes,
+		}
+	}
+
 	return cp, nil
 }

@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	stakeType "github.com/0xPolygon/heimdall-v2/x/stake/types"
+	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 )
 
 func SetGenesisValidator(valPubKey cryptotypes.PubKey) (json.RawMessage, error) {

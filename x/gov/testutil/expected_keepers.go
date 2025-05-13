@@ -7,10 +7,10 @@ import (
 
 	"cosmossdk.io/math"
 
+	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
 	"github.com/cosmos/cosmos-sdk/x/gov/types"
-	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 )
 
 // AccountKeeper extends gov's actual expected AccountKeeper with additional

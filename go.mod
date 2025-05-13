@@ -1,4 +1,4 @@
-go 1.23.6
+go 1.23.8
 
 module github.com/cosmos/cosmos-sdk
 
@@ -55,7 +55,7 @@ require (
 	github.com/spf13/viper v1.19.0
 	github.com/stretchr/testify v1.10.0
 	github.com/tendermint/go-amino v0.16.0
-	golang.org/x/crypto v0.33.0
+	golang.org/x/crypto v0.35.0
 	golang.org/x/exp v0.0.0-20250106191152-7588d65b2ba8
 	golang.org/x/sync v0.11.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20250207221924-e9438ea467c6
@@ -177,7 +177,7 @@ require (
 	go.etcd.io/bbolt v1.4.0-alpha.0.0.20240404170359-43604f3112c5 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	golang.org/x/net v0.34.0 // indirect
+	golang.org/x/net v0.36.0 // indirect
 	golang.org/x/sys v0.30.0 // indirect
 	golang.org/x/term v0.29.0 // indirect
 	golang.org/x/text v0.22.0 // indirect
@@ -205,7 +205,7 @@ replace (
 
 // HV2 related packages
 replace (
-	cosmossdk.io/api => github.com/0xPolygon/cosmos-sdk/api v0.7.5
+	cosmossdk.io/api => github.com/0xPolygon/cosmos-sdk/api v0.7.6-0.20250429154832-7177ebac408e
 	cosmossdk.io/client/v2 => github.com/0xPolygon/cosmos-sdk/client/v2 v2.0.0-beta.5.0.20241126102051-89dc71d02611
 	cosmossdk.io/collections => github.com/0xPolygon/cosmos-sdk/collections v0.4.0
 	cosmossdk.io/core => github.com/0xPolygon/cosmos-sdk/core v0.11.3-0.20241126102051-89dc71d02611
@@ -221,7 +221,7 @@ replace (
 	cosmossdk.io/x/nft => github.com/0xPolygon/cosmos-sdk/x/nft v0.1.2-0.20241126102051-89dc71d02611
 	cosmossdk.io/x/tx => github.com/0xPolygon/cosmos-sdk/x/tx v0.13.6-0.20241126102051-89dc71d02611
 	cosmossdk.io/x/upgrade => github.com/0xPolygon/cosmos-sdk/x/upgrade v0.1.5-0.20241126102051-89dc71d02611
-	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.3-beta-polygon
+	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.6-beta-polygon
 	github.com/ethereum/go-ethereum => github.com/maticnetwork/bor v1.5.5
 )
 
