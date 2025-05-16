@@ -76,11 +76,15 @@ func TestConsumeSignatureVerificationGas(t *testing.T) {
 	msg := []byte{1, 2, 3, 4}
 
 	p := types.DefaultParams()
+	// HV2: expected signature verification cost is 0 by default
+	p.SigVerifyCostED25519 = 0
+	p.SigVerifyCostSecp256k1 = 0
 	skR1, _ := secp256r1.GenPrivKey()
 	pkSet1, sigSet1 := generatePubKeysAndSignatures(5, msg, false)
 	multisigKey1 := kmultisig.NewLegacyAminoPubKey(2, pkSet1)
 	multisignature1 := multisig.NewMultisig(len(pkSet1))
-	expectedCost1 := expectedGasCostByKeys(pkSet1)
+	// HV2: expected signature verification cost is 0 by default
+	expectedCost1 := 0
 	for i := 0; i < len(pkSet1); i++ {
 		stdSig := legacytx.StdSignature{PubKey: pkSet1[i], Signature: sigSet1[i]} //nolint:staticcheck // SA1019: legacytx.StdSignature is deprecated
 		sigV2, err := legacytx.StdSignatureToSignatureV2(suite.clientCtx.LegacyAmino, stdSig)
@@ -104,7 +108,7 @@ func TestConsumeSignatureVerificationGas(t *testing.T) {
 		{"PubKeyEd25519", args{storetypes.NewInfiniteGasMeter(), nil, ed25519.GenPrivKey().PubKey(), params}, p.SigVerifyCostED25519, true},
 		{"PubKeySecp256k1", args{storetypes.NewInfiniteGasMeter(), nil, secp256k1.GenPrivKey().PubKey(), params}, p.SigVerifyCostSecp256k1, false},
 		{"PubKeySecp256r1", args{storetypes.NewInfiniteGasMeter(), nil, skR1.PubKey(), params}, p.SigVerifyCostSecp256r1(), false},
-		{"Multisig", args{storetypes.NewInfiniteGasMeter(), multisignature1, multisigKey1, params}, expectedCost1, false},
+		{"Multisig", args{storetypes.NewInfiniteGasMeter(), multisignature1, multisigKey1, params}, uint64(expectedCost1), false},
 		{"unknown key", args{storetypes.NewInfiniteGasMeter(), nil, nil, params}, 0, true},
 	}
 	for _, tt := range tests {
@@ -261,7 +265,7 @@ func TestSigIntegration(t *testing.T) {
 	doubleCost, err := runSigDecorators(t, params, false, privs...)
 	require.Nil(t, err)
 
-	require.Equal(t, initialSigCost*uint64(len(privs)), doubleCost-initialCost)
+	require.Equal(t, initialSigCost*uint64(len(privs))*0, doubleCost-initialCost)
 }
 
 func runSigDecorators(t *testing.T, params types.Params, _ bool, privs ...cryptotypes.PrivKey) (storetypes.Gas, error) {
