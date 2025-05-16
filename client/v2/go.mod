@@ -191,7 +191,7 @@ replace (
 	cosmossdk.io/log => github.com/0xPolygon/cosmos-sdk/log v1.4.1
 	cosmossdk.io/math => github.com/0xPolygon/cosmos-sdk/math v1.4.0
 	cosmossdk.io/store => github.com/0xPolygon/cosmos-sdk/store v1.1.2-0.20241126102051-89dc71d02611
-	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.6-beta-polygon
+	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.7-beta-polygon
 	github.com/cosmos/cosmos-sdk => ./../../
 	github.com/ethereum/go-ethereum => github.com/maticnetwork/bor v1.5.5
 )
