@@ -153,19 +153,12 @@ func EndBlocker(ctx sdk.Context, keeper *keeper.Keeper) error {
 		// As a result, the deposits are either deleted or refunded in all cases
 		// EXCEPT when an expedited proposal fails.
 
-		// HV2: this was removed in heimdall's gov/endblocker.go
-		/*
-			if !(proposal.Expedited && !passes) {
-				if burnDeposits {
-					err = keeper.DeleteAndBurnDeposits(ctx, proposal.Id)
-				} else {
-					err = keeper.RefundAndDeleteDeposits(ctx, proposal.Id)
-				}
-				if err != nil {
-					return false, err
-				}
+		if !(proposal.Expedited && !passes) {
+			err = keeper.RefundAndDeleteDeposits(ctx, proposal.Id)
+			if err != nil {
+				return false, err
 			}
-		*/
+		}
 
 		if err = keeper.ActiveProposalsQueue.Remove(ctx, collections.Join(*proposal.VotingEndTime, proposal.Id)); err != nil {
 			return false, err
