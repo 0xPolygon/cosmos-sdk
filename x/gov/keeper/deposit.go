@@ -298,7 +298,7 @@ func (keeper Keeper) DistributeAndDeleteDeposits(ctx context.Context, proposalID
 		validatorAddr, err := sdk.AccAddressFromHex(validator.Signer)
 		if err != nil {
 			keeper.Logger(ctx).Error("Failed to parse validator address from hex", "error", err)
-			return true
+			return false
 		}
 		validatorAddresses = append(validatorAddresses, validatorAddr)
 		return false

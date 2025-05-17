@@ -154,6 +154,7 @@ type SigGasConsumeDecorator struct {
 }
 
 func NewSigGasConsumeDecorator(ak AccountKeeper, sigGasConsumer SignatureVerificationGasConsumer) SigGasConsumeDecorator {
+	// HV2: this is the case for heimdall, and it will use the DefaultSigVerificationGasConsumer, which does not deduce signature verification fees
 	if sigGasConsumer == nil {
 		sigGasConsumer = DefaultSigVerificationGasConsumer
 	}
@@ -436,31 +437,32 @@ func (vscd ValidateSigCountDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, sim
 // for signature verification based upon the public key type. The cost is fetched from the given params and is matched
 // by the concrete type.
 func DefaultSigVerificationGasConsumer(
-	meter storetypes.GasMeter, sig signing.SignatureV2, params types.Params,
+	_ storetypes.GasMeter, sig signing.SignatureV2, _ types.Params,
 ) error {
 	pubkey := sig.PubKey
 	switch pubkey := pubkey.(type) {
 	case *ed25519.PubKey:
-		meter.ConsumeGas(params.SigVerifyCostED25519, "ante verify: ed25519")
+		// HV2: do not deduce signature verification fees
+		// meter.ConsumeGas(params.SigVerifyCostED25519, "ante verify: ed25519")
 		return errorsmod.Wrap(sdkerrors.ErrInvalidPubKey, "ED25519 public keys are unsupported")
 
 	case *secp256k1.PubKey:
-		meter.ConsumeGas(params.SigVerifyCostSecp256k1, "ante verify: secp256k1")
+		// HV2: do not deduce signature verification fees
+		// meter.ConsumeGas(params.SigVerifyCostSecp256k1, "ante verify: secp256k1")
 		return nil
 
 	case *secp256r1.PubKey:
-		meter.ConsumeGas(params.SigVerifyCostSecp256r1(), "ante verify: secp256r1")
+		// HV2: do not deduce signature verification fees
+		// meter.ConsumeGas(params.SigVerifyCostSecp256r1(), "ante verify: secp256r1")
 		return nil
 
 	case multisig.PubKey:
-		multisignature, ok := sig.Data.(*signing.MultiSignatureData)
+		_, ok := sig.Data.(*signing.MultiSignatureData)
 		if !ok {
 			return fmt.Errorf("expected %T, got, %T", &signing.MultiSignatureData{}, sig.Data)
 		}
-		err := ConsumeMultisignatureVerificationGas(meter, multisignature, pubkey, params, sig.Sequence)
-		if err != nil {
-			return err
-		}
+		// HV2: do not deduce signature verification fees
+		// err := ConsumeMultisignatureVerificationGas(meter, multisignature, pubkey, params, sig.Sequence)
 		return nil
 
 	default:
