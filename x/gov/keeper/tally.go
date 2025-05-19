@@ -31,7 +31,7 @@ func (keeper Keeper) Tally(ctx context.Context, proposal v1.Proposal) (passes, b
 	err = keeper.sk.IterateCurrentValidatorsAndApplyFn(ctx, func(validator stakeTypes.Validator) bool {
 		valBz, err := keeper.sk.ValidatorAddressCodec().StringToBytes(validator.GetOperator())
 		if err != nil {
-			return true
+			return false
 		}
 		currValidators[strings.TrimPrefix(strings.ToLower(validator.GetOperator()), "0x")] = v1.NewValidatorGovInfo(
 			valBz,

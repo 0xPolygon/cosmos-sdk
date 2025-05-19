@@ -61,7 +61,7 @@ func validateTxSigLimit(i interface{}) error {
 		return fmt.Errorf("invalid parameter type: %T", i)
 	}
 
-	if v == 0 {
+	if v != 1 {
 		return fmt.Errorf("invalid tx signature limit: %d", v)
 	}
 
@@ -138,8 +138,12 @@ func validateTxFees(v string) error {
 		return fmt.Errorf("invalid tx fees: %s", v)
 	}
 
-	if _, ok := big.NewInt(0).SetString(v, 10); !ok {
+	fee, ok := big.NewInt(0).SetString(v, 10)
+	if !ok {
 		return fmt.Errorf("invalid tx fees: %s, should be valid big integer", v)
+	}
+	if fee.Cmp(big.NewInt(0)) <= 0 {
+		return fmt.Errorf("invalid tx fees: %s, should be greater than 0", v)
 	}
 
 	return nil

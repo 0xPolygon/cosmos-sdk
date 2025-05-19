@@ -48,6 +48,9 @@ func TestParams_Validate(t *testing.T) {
 		{"invalid tx fees", types.NewParams(types.DefaultMaxMemoCharacters, types.DefaultTxSigLimit, types.DefaultTxSizeCostPerByte,
 			types.DefaultSigVerifyCostED25519, types.DefaultSigVerifyCostSecp256k1, types.DefaultMaxTxGas, ""),
 			fmt.Errorf("invalid tx fees: ")},
+		{"negative tx fees", types.NewParams(types.DefaultMaxMemoCharacters, types.DefaultTxSigLimit, types.DefaultTxSizeCostPerByte,
+			types.DefaultSigVerifyCostED25519, types.DefaultSigVerifyCostSecp256k1, types.DefaultMaxTxGas, "-1"),
+			fmt.Errorf("invalid tx fees: -1, should be greater than 0")},
 	}
 	for _, tt := range tests {
 		tt := tt
