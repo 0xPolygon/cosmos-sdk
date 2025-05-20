@@ -12,7 +12,7 @@ require (
 	cosmossdk.io/math v1.4.0
 	cosmossdk.io/store v1.1.1
 	cosmossdk.io/x/tx v0.13.7
-	github.com/0xPolygon/heimdall-v2 v0.1.13
+	github.com/0xPolygon/heimdall-v2 v0.1.18
 	github.com/99designs/keyring v1.2.1
 	github.com/bgentry/speakeasy v0.1.1-0.20220910012023-760eaf8b6816
 	github.com/bits-and-blooms/bitset v1.10.0
@@ -221,7 +221,7 @@ replace (
 	cosmossdk.io/x/nft => github.com/0xPolygon/cosmos-sdk/x/nft v0.1.2-0.20241126102051-89dc71d02611
 	cosmossdk.io/x/tx => github.com/0xPolygon/cosmos-sdk/x/tx v0.13.6-0.20241126102051-89dc71d02611
 	cosmossdk.io/x/upgrade => github.com/0xPolygon/cosmos-sdk/x/upgrade v0.1.5-0.20241126102051-89dc71d02611
-	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.7-beta-polygon
+	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.1.8-beta-polygon
 	github.com/ethereum/go-ethereum => github.com/maticnetwork/bor v1.5.5
 )
 
