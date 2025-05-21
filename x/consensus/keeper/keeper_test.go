@@ -60,6 +60,7 @@ func (s *KeeperTestSuite) TestGRPCQueryConsensusParams() {
 	modifiedConsensusParams.Evidence.MaxAgeDuration++
 	modifiedConsensusParams.Evidence.MaxAgeNumBlocks++
 	modifiedConsensusParams.Evidence.MaxBytes++
+	modifiedConsensusParams.Blob.MaxBytes++
 	modifiedConsensusParams.Validator.PubKeyTypes = []string{cmttypes.ABCIPubKeyTypeSecp256k1}
 
 	testCases := []struct {
@@ -76,6 +77,7 @@ func (s *KeeperTestSuite) TestGRPCQueryConsensusParams() {
 				input := &types.MsgUpdateParams{
 					Authority: s.consensusParamsKeeper.GetAuthority(),
 					Block:     modifiedConsensusParams.Block,
+					Blob:      modifiedConsensusParams.Blob,
 					Validator: modifiedConsensusParams.Validator,
 					Evidence:  modifiedConsensusParams.Evidence,
 				}
@@ -103,6 +105,38 @@ func (s *KeeperTestSuite) TestGRPCQueryConsensusParams() {
 				input := &types.MsgUpdateParams{
 					Authority: s.consensusParamsKeeper.GetAuthority(),
 					Block:     modifiedConsensusParams.Block,
+					Blob:      modifiedConsensusParams.Blob,
+					Validator: modifiedConsensusParams.Validator,
+					Evidence:  modifiedConsensusParams.Evidence,
+					Abci: &cmtproto.ABCIParams{
+						VoteExtensionsEnableHeight: 1234,
+					},
+				}
+				_, err := s.consensusParamsKeeper.UpdateParams(s.ctx, input)
+				s.Require().NoError(err)
+			},
+			types.QueryParamsResponse{
+				Params: &cmtproto.ConsensusParams{
+					Block:     modifiedConsensusParams.Block,
+					Blob:      modifiedConsensusParams.Blob,
+					Validator: modifiedConsensusParams.Validator,
+					Evidence:  modifiedConsensusParams.Evidence,
+					Version:   modifiedConsensusParams.Version,
+					Abci: &cmtproto.ABCIParams{
+						VoteExtensionsEnableHeight: 1234,
+					},
+				},
+			},
+			true,
+		},
+		{
+			"success with blob",
+			types.QueryParamsRequest{},
+			func() {
+				input := &types.MsgUpdateParams{
+					Authority: s.consensusParamsKeeper.GetAuthority(),
+					Block:     modifiedConsensusParams.Block,
+					Blob:      modifiedConsensusParams.Blob,
 					Validator: modifiedConsensusParams.Validator,
 					Evidence:  modifiedConsensusParams.Evidence,
 					Abci: &cmtproto.ABCIParams{
@@ -290,6 +324,30 @@ func (s *KeeperTestSuite) TestUpdateParams() {
 			},
 			expErr:    true,
 			expErrMsg: "vote extensions cannot be updated to a past or current height",
+		},
+		{
+			name: "valid blob update",
+			input: &types.MsgUpdateParams{
+				Authority: s.consensusParamsKeeper.GetAuthority(),
+				Block:     defaultConsensusParams.Block,
+				Blob:      &cmtproto.BlobParams{MaxBytes: 100},
+				Validator: defaultConsensusParams.Validator,
+				Evidence:  defaultConsensusParams.Evidence,
+			},
+			expErr:    false,
+			expErrMsg: "",
+		},
+		{
+			name: "invalid blob update",
+			input: &types.MsgUpdateParams{
+				Authority: s.consensusParamsKeeper.GetAuthority(),
+				Block:     defaultConsensusParams.Block,
+				Blob:      &cmtproto.BlobParams{MaxBytes: cmttypes.MaxBlobSizeBytes + 1},
+				Validator: defaultConsensusParams.Validator,
+				Evidence:  defaultConsensusParams.Evidence,
+			},
+			expErr:    true,
+			expErrMsg: "blob.MaxBytes is too big",
 		},
 	}
 
