@@ -15,7 +15,7 @@ import (
 func TxSignExec(clientCtx client.Context, from fmt.Stringer, filename string, extraArgs ...string) (testutil.BufferWriter, error) {
 	args := []string{
 		fmt.Sprintf("--from=%s", from.String()),
-		fmt.Sprintf("--%s=%s", flags.FlagHome, strings.Replace(clientCtx.HomeDir, "simd", "simcli", 1)),
+		fmt.Sprintf("--%s=%s", flags.FlagHome, strings.Replace(clientCtx.HomeDir, "heimdalld", "simcli", 1)),
 		fmt.Sprintf("--%s=%s", flags.FlagChainID, clientCtx.ChainID),
 		filename,
 	}

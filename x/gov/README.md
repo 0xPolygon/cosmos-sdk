@@ -668,7 +668,7 @@ A user can query and interact with the `gov` module using the CLI.
 The `query` commands allow users to query `gov` state.
 
 ```bash
-simd query gov --help
+heimdalld query gov --help
 ```
 
 ##### deposit
@@ -676,13 +676,13 @@ simd query gov --help
 The `deposit` command allows users to query a deposit for a given proposal from a given depositor.
 
 ```bash
-simd query gov deposit [proposal-id] [depositer-addr] [flags]
+heimdalld query gov deposit [proposal-id] [depositer-addr] [flags]
 ```
 
 Example:
 
 ```bash
-simd query gov deposit 1 0x...
+heimdalld query gov deposit 1 0x...
 ```
 
 Example Output:
@@ -700,13 +700,13 @@ proposal_id: "1"
 The `deposits` command allows users to query all deposits for a given proposal.
 
 ```bash
-simd query gov deposits [proposal-id] [flags]
+heimdalld query gov deposits [proposal-id] [flags]
 ```
 
 Example:
 
 ```bash
-simd query gov deposits 1
+heimdalld query gov deposits 1
 ```
 
 Example Output:
@@ -728,13 +728,13 @@ pagination:
 The `param` command allows users to query a given parameter for the `gov` module.
 
 ```bash
-simd query gov param [param-type] [flags]
+heimdalld query gov param [param-type] [flags]
 ```
 
 Example:
 
 ```bash
-simd query gov param voting
+heimdalld query gov param voting
 ```
 
 Example Output:
@@ -748,13 +748,13 @@ voting_period: "172800000000000"
 The `params` command allows users to query all parameters for the `gov` module.
 
 ```bash
-simd query gov params [flags]
+heimdalld query gov params [flags]
 ```
 
 Example:
 
 ```bash
-simd query gov params
+heimdalld query gov params
 ```
 
 Example Output:
@@ -794,13 +794,13 @@ voting_params:
 The `proposal` command allows users to query a given proposal.
 
 ```bash
-simd query gov proposal [proposal-id] [flags]
+heimdalld query gov proposal [proposal-id] [flags]
 ```
 
 Example:
 
 ```bash
-simd query gov proposal 1
+heimdalld query gov proposal 1
 ```
 
 Example Output:
@@ -835,13 +835,13 @@ voting_start_time: null
 The `proposals` command allows users to query all proposals with optional filters.
 
 ```bash
-simd query gov proposals [flags]
+heimdalld query gov proposals [flags]
 ```
 
 Example:
 
 ```bash
-simd query gov proposals
+heimdalld query gov proposals
 ```
 
 Example Output:
@@ -902,13 +902,13 @@ proposals:
 The `proposer` command allows users to query the proposer for a given proposal.
 
 ```bash
-simd query gov proposer [proposal-id] [flags]
+heimdalld query gov proposer [proposal-id] [flags]
 ```
 
 Example:
 
 ```bash
-simd query gov proposer 1
+heimdalld query gov proposer 1
 ```
 
 Example Output:
@@ -923,13 +923,13 @@ proposer: 0x...
 The `tally` command allows users to query the tally of a given proposal vote.
 
 ```bash
-simd query gov tally [proposal-id] [flags]
+heimdalld query gov tally [proposal-id] [flags]
 ```
 
 Example:
 
 ```bash
-simd query gov tally 1
+heimdalld query gov tally 1
 ```
 
 Example Output:
@@ -946,13 +946,13 @@ no_with_veto: "0"
 The `vote` command allows users to query a vote for a given proposal.
 
 ```bash
-simd query gov vote [proposal-id] [voter-addr] [flags]
+heimdalld query gov vote [proposal-id] [voter-addr] [flags]
 ```
 
 Example:
 
 ```bash
-simd query gov vote 1 0x...
+heimdalld query gov vote 1 0x...
 ```
 
 Example Output:
@@ -971,13 +971,13 @@ voter: 0x...
 The `votes` command allows users to query all votes for a given proposal.
 
 ```bash
-simd query gov votes [proposal-id] [flags]
+heimdalld query gov votes [proposal-id] [flags]
 ```
 
 Example:
 
 ```bash
-simd query gov votes 1
+heimdalld query gov votes 1
 ```
 
 Example Output:
@@ -1000,7 +1000,7 @@ votes:
 The `tx` commands allow users to interact with the `gov` module.
 
 ```bash
-simd tx gov --help
+heimdalld tx gov --help
 ```
 
 ##### deposit
@@ -1008,13 +1008,13 @@ simd tx gov --help
 The `deposit` command allows users to deposit tokens for a given proposal.
 
 ```bash
-simd tx gov deposit [proposal-id] [deposit] [flags]
+heimdalld tx gov deposit [proposal-id] [deposit] [flags]
 ```
 
 Example:
 
 ```bash
-simd tx gov deposit 1 10000000pol --from 0x...
+heimdalld tx gov deposit 1 10000000pol --from 0x...
 ```
 
 ##### draft-proposal
@@ -1024,7 +1024,7 @@ The command returns a `draft_proposal.json`, to be used by `submit-proposal` aft
 The `draft_metadata.json` is meant to be uploaded to [IPFS](#metadata).
 
 ```bash
-simd tx gov draft-proposal
+heimdalld tx gov draft-proposal
 ```
 
 ##### submit-proposal
@@ -1033,13 +1033,13 @@ The `submit-proposal` command allows users to submit a governance proposal along
 Messages, metadata and deposit are defined in a JSON file.
 
 ```bash
-simd tx gov submit-proposal [path-to-proposal-json] [flags]
+heimdalld tx gov submit-proposal [path-to-proposal-json] [flags]
 ```
 
 Example:
 
 ```bash
-simd tx gov submit-proposal /path/to/proposal.json --from 0x...
+heimdalld tx gov submit-proposal /path/to/proposal.json --from 0x...
 ```
 
 where `proposal.json` contains:
@@ -1074,19 +1074,19 @@ When metadata is not specified, the title is limited to 255 characters and the s
 The `submit-legacy-proposal` command allows users to submit a governance legacy proposal along with an initial deposit.
 
 ```bash
-simd tx gov submit-legacy-proposal [command] [flags]
+heimdalld tx gov submit-legacy-proposal [command] [flags]
 ```
 
 Example:
 
 ```bash
-simd tx gov submit-legacy-proposal --title="Test Proposal" --description="testing" --type="Text" --deposit="100000000pol" --from 0x...
+heimdalld tx gov submit-legacy-proposal --title="Test Proposal" --description="testing" --type="Text" --deposit="100000000pol" --from 0x...
 ```
 
 Example (`param-change`):
 
 ```bash
-simd tx gov submit-legacy-proposal param-change proposal.json --from 0x...
+heimdalld tx gov submit-legacy-proposal param-change proposal.json --from 0x...
 ```
 
 ```json
@@ -1109,13 +1109,13 @@ simd tx gov submit-legacy-proposal param-change proposal.json --from 0x...
 Once proposal is canceled, from the deposits of proposal `deposits * proposal_cancel_ratio` will be sent to `ProposalCancelDest` address , if `ProposalCancelDest` is empty then deposits will be refunded. The `remaining deposits` will be sent to depositers.
 
 ```bash
-simd tx gov cancel-proposal [proposal-id] [flags]
+heimdalld tx gov cancel-proposal [proposal-id] [flags]
 ```
 
 Example:
 
 ```bash
-simd tx gov cancel-proposal 1 --from 0x...
+heimdalld tx gov cancel-proposal 1 --from 0x...
 ```
 
 ##### vote
@@ -1123,13 +1123,13 @@ simd tx gov cancel-proposal 1 --from 0x...
 The `vote` command allows users to submit a vote for a given governance proposal.
 
 ```bash
-simd tx gov vote [command] [flags]
+heimdalld tx gov vote [command] [flags]
 ```
 
 Example:
 
 ```bash
-simd tx gov vote 1 yes --from 0x...
+heimdalld tx gov vote 1 yes --from 0x...
 ```
 
 ##### weighted-vote
@@ -1139,13 +1139,13 @@ simd tx gov vote 1 yes --from 0x...
 The `weighted-vote` command allows users to submit a weighted vote for a given governance proposal.
 
 ```bash
-simd tx gov weighted-vote [proposal-id] [weighted-options] [flags]
+heimdalld tx gov weighted-vote [proposal-id] [weighted-options] [flags]
 ```
 
 Example:
 
 ```bash
-simd tx gov weighted-vote 1 yes=0.5,no=0.5 --from 0x...
+heimdalld tx gov weighted-vote 1 yes=0.5,no=0.5 --from 0x...
 ```
 
 ### gRPC
