@@ -68,25 +68,25 @@ The `x/auth/tx` module provides a CLI command to query any transaction, given it
 Without any argument, the command will query the transaction using the transaction hash.
 
 ```shell
-simd query tx DFE87B78A630C0EFDF76C80CD24C997E252792E0317502AE1A02B9809F0D8685
+heimdalld query tx DFE87B78A630C0EFDF76C80CD24C997E252792E0317502AE1A02B9809F0D8685
 ```
 
 When querying a transaction from an account given its sequence, use the `--type=acc_seq` flag:
 
 ```shell
-simd query tx --type=acc_seq cosmos1u69uyr6v9qwe6zaaeaqly2h6wnedac0xpxq325/1
+heimdalld query tx --type=acc_seq cosmos1u69uyr6v9qwe6zaaeaqly2h6wnedac0xpxq325/1
 ```
 
 When querying a transaction given its signature, use the `--type=signature` flag:
 
 ```shell
-simd query tx --type=signature Ofjvgrqi8twZfqVDmYIhqwRLQjZZ40XbxEamk/veH3gQpRF0hL2PH4ejRaDzAX+2WChnaWNQJQ41ekToIi5Wqw==
+heimdalld query tx --type=signature Ofjvgrqi8twZfqVDmYIhqwRLQjZZ40XbxEamk/veH3gQpRF0hL2PH4ejRaDzAX+2WChnaWNQJQ41ekToIi5Wqw==
 ```
 
 When querying a transaction given its events, use the `--type=events` flag:
 
 ```shell
-simd query txs --events 'message.sender=cosmos...' --page 1 --limit 30
+heimdalld query txs --events 'message.sender=cosmos...' --page 1 --limit 30
 ```
 
 The `x/auth/block` module provides a CLI command to query any block, given its hash, height, or events.
@@ -94,19 +94,19 @@ The `x/auth/block` module provides a CLI command to query any block, given its h
 When querying a block by its hash, use the `--type=hash` flag:
 
 ```shell
-simd query block --type=hash DFE87B78A630C0EFDF76C80CD24C997E252792E0317502AE1A02B9809F0D8685
+heimdalld query block --type=hash DFE87B78A630C0EFDF76C80CD24C997E252792E0317502AE1A02B9809F0D8685
 ```
 
 When querying a block by its height, use the `--type=height` flag:
 
 ```shell
-simd query block --type=height 1357
+heimdalld query block --type=height 1357
 ```
 
 When querying a block by its events, use the `--query` flag:
 
 ```shell
-simd query blocks --query 'message.sender=cosmos...' --page 1 --limit 30
+heimdalld query blocks --query 'message.sender=cosmos...' --page 1 --limit 30
 ```
 
 #### Transactions
@@ -119,12 +119,12 @@ The `encode` command encodes a transaction created with the `--generate-only` fl
 The transaction is seralized it to Protobuf and returned as base64.
 
 ```bash
-$ simd tx encode tx.json
+$ heimdalld tx encode tx.json
 Co8BCowBChwvY29zbW9zLmJhbmsudjFiZXRhMS5Nc2dTZW5kEmwKLWNvc21vczFsNnZzcWhoN3Jud3N5cjJreXozampnM3FkdWF6OGd3Z3lsODI3NRItY29zbW9zMTU4c2FsZHlnOHBteHU3Znd2dDBkNng3amVzd3A0Z3d5a2xrNnkzGgwKBXN0YWtlEgMxMDASBhIEEMCaDA==
-$ simd tx encode tx.signed.json
+$ heimdalld tx encode tx.signed.json
 ```
 
-More information about the `encode` command can be found running `simd tx encode --help`.
+More information about the `encode` command can be found running `heimdalld tx encode --help`.
 
 #### `decode`
 
@@ -132,10 +132,10 @@ The `decode` commands decodes a transaction encoded with the `encode` command.
 
 
 ```bash
-simd tx decode Co8BCowBChwvY29zbW9zLmJhbmsudjFiZXRhMS5Nc2dTZW5kEmwKLWNvc21vczFsNnZzcWhoN3Jud3N5cjJreXozampnM3FkdWF6OGd3Z3lsODI3NRItY29zbW9zMTU4c2FsZHlnOHBteHU3Znd2dDBkNng3amVzd3A0Z3d5a2xrNnkzGgwKBXN0YWtlEgMxMDASBhIEEMCaDA==
+heimdalld tx decode Co8BCowBChwvY29zbW9zLmJhbmsudjFiZXRhMS5Nc2dTZW5kEmwKLWNvc21vczFsNnZzcWhoN3Jud3N5cjJreXozampnM3FkdWF6OGd3Z3lsODI3NRItY29zbW9zMTU4c2FsZHlnOHBteHU3Znd2dDBkNng3amVzd3A0Z3d5a2xrNnkzGgwKBXN0YWtlEgMxMDASBhIEEMCaDA==
 ```
 
-More information about the `decode` command can be found running `simd tx decode --help`.
+More information about the `decode` command can be found running `heimdalld tx decode --help`.
 
 ### gRPC
 
