@@ -27,7 +27,7 @@ func ExportGenesisFile(genesis *types.AppGenesis, genFile string) error {
 	if err := genesis.ValidateAndComplete(); err != nil {
 		return err
 	}
-	genesis.Consensus.Params.ABCI.VoteExtensionsEnableHeight = 1
+	genesis.ConsensusParams.ABCI.VoteExtensionsEnableHeight = 1
 
 	return genesis.SaveAs(genFile)
 }
@@ -37,9 +37,8 @@ func ExportGenesisFile(genesis *types.AppGenesis, genFile string) error {
 func ExportGenesisFileWithTime(genFile, chainID string, validators []cmttypes.GenesisValidator, appState json.RawMessage, genTime time.Time) error {
 	appGenesis := types.NewAppGenesisWithVersion(chainID, appState)
 	appGenesis.GenesisTime = genTime
-	appGenesis.Consensus.Validators = validators
-	appGenesis.Consensus.Params = cmttypes.DefaultConsensusParams()
-	appGenesis.Consensus.Params.ABCI.VoteExtensionsEnableHeight = DefaultVEsEnabledHeight
+	appGenesis.ConsensusParams = cmttypes.DefaultConsensusParams()
+	appGenesis.ConsensusParams.ABCI.VoteExtensionsEnableHeight = DefaultVEsEnabledHeight
 
 	if err := appGenesis.ValidateAndComplete(); err != nil {
 		return err

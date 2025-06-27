@@ -348,5 +348,4 @@ func CheckExportedGenesis(t *testing.T, j []byte) {
 	require.NotEmpty(t, ag.AppName)
 	require.NotZero(t, ag.GenesisTime)
 	require.NotEmpty(t, ag.ChainID)
-	require.NotNil(t, ag.Consensus)
 }

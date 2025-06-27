@@ -188,9 +188,6 @@ func initGenFiles(cfg Config, genAccounts []authtypes.GenesisAccount, genBalance
 	appGenesis := genutiltypes.AppGenesis{
 		ChainID:  cfg.ChainID,
 		AppState: appGenStateJSON,
-		Consensus: &genutiltypes.ConsensusGenesis{
-			Validators: nil,
-		},
 	}
 
 	// generate empty genesis files for each validator and save

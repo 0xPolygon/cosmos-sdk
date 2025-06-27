@@ -5,10 +5,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	milestonestypes "github.com/0xPolygon/heimdall-v2/x/milestone/types"
-	staketypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 	"os"
 	"path/filepath"
+
+	milestonestypes "github.com/0xPolygon/heimdall-v2/x/milestone/types"
+	staketypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
+	cmttypes "github.com/cometbft/cometbft/types"
 
 	errorsmod "cosmossdk.io/errors"
 	"cosmossdk.io/math/unsafe"
@@ -172,10 +174,7 @@ func InitCmd(mbm module.BasicManager, defaultNodeHome string) *cobra.Command {
 			appGenesis.ChainID = chainID
 			appGenesis.AppState = appState
 			appGenesis.InitialHeight = initHeight
-			appGenesis.Consensus = &types.ConsensusGenesis{
-				Validators: nil,
-			}
-
+			appGenesis.ConsensusParams = cmttypes.DefaultConsensusParams()
 			if err = genutil.ExportGenesisFile(appGenesis, genFile); err != nil {
 				return errorsmod.Wrap(err, "Failed to export genesis file")
 			}
