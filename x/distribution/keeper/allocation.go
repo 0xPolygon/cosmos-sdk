@@ -3,10 +3,8 @@ package keeper
 import (
 	"context"
 
-	abci "github.com/cometbft/cometbft/abci/types"
-
 	"cosmossdk.io/math"
-
+	abci "github.com/cometbft/cometbft/abci/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/distribution/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"

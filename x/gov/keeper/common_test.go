@@ -4,22 +4,16 @@ import (
 	"fmt"
 	"testing"
 
+	"cosmossdk.io/math"
+	storetypes "cosmossdk.io/store/types"
 	borTypes "github.com/0xPolygon/heimdall-v2/x/bor/types"
 	chainmanagertypes "github.com/0xPolygon/heimdall-v2/x/chainmanager/types"
 	checkpointTypes "github.com/0xPolygon/heimdall-v2/x/checkpoint/types"
 	milestoneTypes "github.com/0xPolygon/heimdall-v2/x/milestone/types"
 	stakingtypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 	topupTypes "github.com/0xPolygon/heimdall-v2/x/topup/types"
-
 	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	cmttime "github.com/cometbft/cometbft/types/time"
-
-	"github.com/golang/mock/gomock"
-	"github.com/stretchr/testify/require"
-
-	"cosmossdk.io/math"
-	storetypes "cosmossdk.io/store/types"
-
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/codec/address"
 	"github.com/cosmos/cosmos-sdk/runtime"
@@ -36,6 +30,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/gov/types"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 	"github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
+	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 var (

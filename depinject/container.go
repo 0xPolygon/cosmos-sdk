@@ -5,9 +5,8 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/cockroachdb/errors"
-
 	"cosmossdk.io/depinject/internal/graphviz"
+	"github.com/cockroachdb/errors"
 )
 
 type container struct {

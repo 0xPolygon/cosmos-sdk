@@ -8,15 +8,13 @@ import (
 	"io"
 	"math/big"
 
-	"github.com/cometbft/cometbft/crypto"
-	"github.com/decred/dcrd/dcrec/secp256k1/v4"
-	ethCrypto "github.com/ethereum/go-ethereum/crypto"
-
 	errorsmod "cosmossdk.io/errors"
-
+	"github.com/cometbft/cometbft/crypto"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	"github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/decred/dcrd/dcrec/secp256k1/v4"
+	ethCrypto "github.com/ethereum/go-ethereum/crypto"
 )
 
 var (

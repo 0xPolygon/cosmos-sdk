@@ -3,9 +3,8 @@ package baseapp
 import (
 	"time"
 
-	abci "github.com/cometbft/cometbft/abci/types"
-
 	"cosmossdk.io/core/comet"
+	abci "github.com/cometbft/cometbft/abci/types"
 )
 
 // NewBlockInfo returns a new BlockInfo instance

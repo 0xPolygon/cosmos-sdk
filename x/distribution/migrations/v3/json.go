@@ -2,7 +2,6 @@ package v3
 
 import (
 	sdkmath "cosmossdk.io/math"
-
 	"github.com/cosmos/cosmos-sdk/x/distribution/types"
 )
 

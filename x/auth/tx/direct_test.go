@@ -5,9 +5,6 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-	protov2 "google.golang.org/protobuf/proto"
-
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/testutil/testdata"
@@ -15,6 +12,8 @@ import (
 	txtypes "github.com/cosmos/cosmos-sdk/types/tx"
 	signingtypes "github.com/cosmos/cosmos-sdk/types/tx/signing"
 	"github.com/cosmos/cosmos-sdk/x/auth/signing"
+	"github.com/stretchr/testify/require"
+	protov2 "google.golang.org/protobuf/proto"
 )
 
 func TestDirectModeHandler(t *testing.T) {

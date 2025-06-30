@@ -4,11 +4,8 @@ import (
 	"fmt"
 	"testing"
 
-	abci "github.com/cometbft/cometbft/abci/types"
-	"gotest.tools/v3/assert"
-
 	"cosmossdk.io/math"
-
+	abci "github.com/cometbft/cometbft/abci/types"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -16,6 +13,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/staking/keeper"
 	"github.com/cosmos/cosmos-sdk/x/staking/testutil"
 	"github.com/cosmos/cosmos-sdk/x/staking/types"
+	"gotest.tools/v3/assert"
 )
 
 func newMonikerValidator(tb testing.TB, operator sdk.ValAddress, pubKey cryptotypes.PubKey, moniker string) types.Validator {

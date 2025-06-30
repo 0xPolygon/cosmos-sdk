@@ -5,11 +5,6 @@ import (
 	"fmt"
 	"io"
 
-	cmtprotocrypto "github.com/cometbft/cometbft/proto/tendermint/crypto"
-	dbm "github.com/cosmos/cosmos-db"
-	"github.com/cosmos/iavl"
-	ics23 "github.com/cosmos/ics23/go"
-
 	errorsmod "cosmossdk.io/errors"
 	"cosmossdk.io/log"
 	"cosmossdk.io/store/cachekv"
@@ -19,6 +14,10 @@ import (
 	"cosmossdk.io/store/tracekv"
 	"cosmossdk.io/store/types"
 	"cosmossdk.io/store/wrapper"
+	cmtprotocrypto "github.com/cometbft/cometbft/proto/tendermint/crypto"
+	dbm "github.com/cosmos/cosmos-db"
+	"github.com/cosmos/iavl"
+	ics23 "github.com/cosmos/ics23/go"
 )
 
 const (

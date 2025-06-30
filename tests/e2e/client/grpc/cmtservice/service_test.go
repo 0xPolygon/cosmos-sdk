@@ -9,8 +9,6 @@ import (
 	"testing"
 
 	"cosmossdk.io/simapp"
-	"github.com/stretchr/testify/suite"
-
 	"github.com/cosmos/cosmos-sdk/client/grpc/cmtservice"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
@@ -21,6 +19,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/version"
 	_ "github.com/cosmos/cosmos-sdk/x/distribution"
 	_ "github.com/cosmos/cosmos-sdk/x/gov"
+	"github.com/stretchr/testify/suite"
 )
 
 type E2ETestSuite struct {

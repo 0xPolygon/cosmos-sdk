@@ -4,12 +4,11 @@ import (
 	"fmt"
 	"testing"
 
-	dbm "github.com/cosmos/cosmos-db"
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/store/dbadapter"
 	"cosmossdk.io/store/gaskv"
 	"cosmossdk.io/store/types"
+	dbm "github.com/cosmos/cosmos-db"
+	"github.com/stretchr/testify/require"
 )
 
 func bz(s string) []byte { return []byte(s) }

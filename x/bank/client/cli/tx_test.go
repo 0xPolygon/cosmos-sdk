@@ -6,11 +6,8 @@ import (
 	"io"
 	"testing"
 
-	rpcclientmock "github.com/cometbft/cometbft/rpc/client/mock"
-	"github.com/stretchr/testify/suite"
-
 	sdkmath "cosmossdk.io/math"
-
+	rpcclientmock "github.com/cometbft/cometbft/rpc/client/mock"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec/address"
@@ -22,6 +19,7 @@ import (
 	testutilmod "github.com/cosmos/cosmos-sdk/types/module/testutil"
 	"github.com/cosmos/cosmos-sdk/x/bank"
 	"github.com/cosmos/cosmos-sdk/x/bank/client/cli"
+	"github.com/stretchr/testify/suite"
 )
 
 type CLITestSuite struct {

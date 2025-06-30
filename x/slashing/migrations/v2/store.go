@@ -4,7 +4,6 @@ import (
 	"context"
 
 	storetypes "cosmossdk.io/core/store"
-
 	"github.com/cosmos/cosmos-sdk/runtime"
 	v2distribution "github.com/cosmos/cosmos-sdk/x/distribution/migrations/v2"
 	v1 "github.com/cosmos/cosmos-sdk/x/slashing/migrations/v1"

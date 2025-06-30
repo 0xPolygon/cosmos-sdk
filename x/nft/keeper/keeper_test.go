@@ -3,17 +3,13 @@ package keeper_test
 import (
 	"testing"
 
-	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
-	cmttime "github.com/cometbft/cometbft/types/time"
-	"github.com/golang/mock/gomock"
-	"github.com/stretchr/testify/suite"
-
 	storetypes "cosmossdk.io/store/types"
 	"cosmossdk.io/x/nft"
 	"cosmossdk.io/x/nft/keeper"
 	"cosmossdk.io/x/nft/module"
 	nfttestutil "cosmossdk.io/x/nft/testutil"
-
+	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
+	cmttime "github.com/cometbft/cometbft/types/time"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/codec/address"
 	"github.com/cosmos/cosmos-sdk/runtime"
@@ -21,6 +17,8 @@ import (
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	moduletestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
+	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/suite"
 )
 
 const (

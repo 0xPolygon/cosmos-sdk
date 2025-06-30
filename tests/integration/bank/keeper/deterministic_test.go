@@ -9,9 +9,6 @@ import (
 	storetypes "cosmossdk.io/store/types"
 	topupTypes "github.com/0xPolygon/heimdall-v2/x/topup/types"
 	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
-	"gotest.tools/v3/assert"
-	"pgregory.net/rapid"
-
 	addresscodec "github.com/cosmos/cosmos-sdk/codec/address"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	"github.com/cosmos/cosmos-sdk/testutil/integration"
@@ -30,6 +27,8 @@ import (
 	_ "github.com/cosmos/cosmos-sdk/x/consensus"
 	_ "github.com/cosmos/cosmos-sdk/x/params"
 	_ "github.com/cosmos/cosmos-sdk/x/staking"
+	"gotest.tools/v3/assert"
+	"pgregory.net/rapid"
 )
 
 var (

@@ -4,13 +4,11 @@ import (
 	"encoding/binary"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	storetypes "cosmossdk.io/store/types"
 	"cosmossdk.io/x/upgrade/types"
-
 	"github.com/cosmos/cosmos-sdk/runtime"
 	"github.com/cosmos/cosmos-sdk/testutil"
+	"github.com/stretchr/testify/require"
 )
 
 type storedUpgrade struct {

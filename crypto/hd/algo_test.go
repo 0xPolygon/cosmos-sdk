@@ -3,9 +3,8 @@ package hd_test
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"github.com/cosmos/cosmos-sdk/crypto/hd"
+	"github.com/stretchr/testify/require"
 )
 
 func TestDefaults(t *testing.T) {

@@ -10,10 +10,9 @@ import (
 	"strings"
 	"testing"
 
+	"cosmossdk.io/math"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
-
-	"cosmossdk.io/math"
 )
 
 type intTestSuite struct {

@@ -4,13 +4,12 @@ import (
 	"fmt"
 	"reflect"
 
+	"cosmossdk.io/collections"
+	collcodec "cosmossdk.io/collections/codec"
 	"github.com/cosmos/gogoproto/proto"
 	gogotypes "github.com/cosmos/gogoproto/types"
 	"google.golang.org/protobuf/encoding/protojson"
 	protov2 "google.golang.org/protobuf/proto"
-
-	"cosmossdk.io/collections"
-	collcodec "cosmossdk.io/collections/codec"
 )
 
 // BoolValue implements a ValueCodec that saves the bool value

@@ -6,11 +6,8 @@ import (
 	"sort"
 	"testing"
 
-	hApp "github.com/0xPolygon/heimdall-v2/app"
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/math"
-
+	hApp "github.com/0xPolygon/heimdall-v2/app"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -30,6 +27,7 @@ import (
 	_ "github.com/cosmos/cosmos-sdk/x/staking"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	"github.com/stretchr/testify/require"
 )
 
 var (

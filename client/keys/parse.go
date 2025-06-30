@@ -8,12 +8,11 @@ import (
 	"io"
 	"strings"
 
-	"github.com/spf13/cobra"
-	"sigs.k8s.io/yaml"
-
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/bech32"
+	"github.com/spf13/cobra"
+	"sigs.k8s.io/yaml"
 )
 
 type hexOutput struct {

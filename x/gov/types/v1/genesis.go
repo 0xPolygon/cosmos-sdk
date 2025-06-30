@@ -4,9 +4,8 @@ import (
 	"errors"
 	"fmt"
 
-	"golang.org/x/sync/errgroup"
-
 	"github.com/cosmos/cosmos-sdk/codec/types"
+	"golang.org/x/sync/errgroup"
 )
 
 // NewGenesisState creates a new genesis state for the governance module

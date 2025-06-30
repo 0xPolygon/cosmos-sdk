@@ -3,9 +3,8 @@ package ledger
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
+	"github.com/stretchr/testify/require"
 )
 
 func checkAminoJSON(t *testing.T, src, dst interface{}, isNil bool) {

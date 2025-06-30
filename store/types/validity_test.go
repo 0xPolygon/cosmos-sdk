@@ -3,9 +3,8 @@ package types_test
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/store/types"
+	"github.com/stretchr/testify/require"
 )
 
 func TestAssertValidKey(t *testing.T) {

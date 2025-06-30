@@ -5,15 +5,13 @@ import (
 	"math"
 	"sort"
 
-	"golang.org/x/exp/maps"
-
 	storetypes "cosmossdk.io/store/types"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/group"
 	"github.com/cosmos/cosmos-sdk/x/group/errors"
 	groupmath "github.com/cosmos/cosmos-sdk/x/group/internal/math"
 	"github.com/cosmos/cosmos-sdk/x/group/internal/orm"
+	"golang.org/x/exp/maps"
 )
 
 const weightInvariant = "Group-TotalWeight"

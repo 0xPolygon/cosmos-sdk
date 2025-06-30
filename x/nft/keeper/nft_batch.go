@@ -5,7 +5,6 @@ import (
 
 	"cosmossdk.io/errors"
 	"cosmossdk.io/x/nft"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 

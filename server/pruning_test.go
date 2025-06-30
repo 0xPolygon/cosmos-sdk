@@ -3,10 +3,9 @@ package server
 import (
 	"testing"
 
+	pruningtypes "cosmossdk.io/store/pruning/types"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/require"
-
-	pruningtypes "cosmossdk.io/store/pruning/types"
 )
 
 func TestGetPruningOptionsFromFlags(t *testing.T) {

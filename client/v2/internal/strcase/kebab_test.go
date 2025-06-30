@@ -3,9 +3,8 @@ package strcase_test
 import (
 	"testing"
 
-	"gotest.tools/v3/assert"
-
 	"cosmossdk.io/client/v2/internal/strcase"
+	"gotest.tools/v3/assert"
 )
 
 func toKebab(t testing.TB) {

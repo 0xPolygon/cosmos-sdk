@@ -3,10 +3,9 @@ package reflection
 import (
 	"context"
 
+	"github.com/cosmos/cosmos-sdk/codec/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-
-	"github.com/cosmos/cosmos-sdk/codec/types"
 )
 
 type reflectionServiceServer struct {

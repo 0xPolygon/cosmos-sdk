@@ -4,7 +4,6 @@ import (
 	"context"
 
 	abci "github.com/cometbft/cometbft/abci/types"
-
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
 )
 

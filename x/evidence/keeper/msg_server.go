@@ -5,7 +5,6 @@ import (
 
 	"cosmossdk.io/errors"
 	"cosmossdk.io/x/evidence/types"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )

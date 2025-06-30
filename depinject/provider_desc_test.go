@@ -4,10 +4,9 @@ import (
 	"reflect"
 	"testing"
 
-	"gotest.tools/v3/assert"
-
 	"cosmossdk.io/depinject/internal/codegen"
 	"cosmossdk.io/depinject/internal/graphviz"
+	"gotest.tools/v3/assert"
 )
 
 type StructIn struct {

@@ -3,7 +3,6 @@ package v5
 import (
 	"cosmossdk.io/collections"
 	corestoretypes "cosmossdk.io/core/store"
-
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	v4 "github.com/cosmos/cosmos-sdk/x/gov/migrations/v4"

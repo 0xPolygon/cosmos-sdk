@@ -4,9 +4,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	upgradetypes "cosmossdk.io/x/upgrade/types"
+	"github.com/stretchr/testify/require"
 )
 
 func TestParseUpgradeInfoFile(t *testing.T) {

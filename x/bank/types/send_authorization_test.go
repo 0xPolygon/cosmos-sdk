@@ -4,15 +4,13 @@ import (
 	fmt "fmt"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/core/header"
 	sdkmath "cosmossdk.io/math"
 	storetypes "cosmossdk.io/store/types"
-
 	"github.com/cosmos/cosmos-sdk/testutil"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/bank/types"
+	"github.com/stretchr/testify/require"
 )
 
 var (

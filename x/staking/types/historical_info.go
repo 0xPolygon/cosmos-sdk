@@ -3,15 +3,13 @@ package types
 import (
 	"sort"
 
-	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
-	"github.com/cosmos/gogoproto/proto"
-
 	"cosmossdk.io/core/address"
 	"cosmossdk.io/errors"
 	"cosmossdk.io/math"
-
+	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
+	"github.com/cosmos/gogoproto/proto"
 )
 
 // NewHistoricalInfo will create a historical information struct from header and valset

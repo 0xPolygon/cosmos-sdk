@@ -3,15 +3,13 @@ package v3_test
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	storetypes "cosmossdk.io/store/types"
-
 	"github.com/cosmos/cosmos-sdk/testutil"
 	moduletestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	v3 "github.com/cosmos/cosmos-sdk/x/staking/migrations/v3"
 	"github.com/cosmos/cosmos-sdk/x/staking/types"
+	"github.com/stretchr/testify/require"
 )
 
 func TestStoreMigration(t *testing.T) {

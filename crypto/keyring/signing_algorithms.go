@@ -4,7 +4,6 @@ import (
 	"strings"
 
 	"github.com/cockroachdb/errors"
-
 	"github.com/cosmos/cosmos-sdk/crypto/hd"
 )
 

@@ -1,8 +1,6 @@
 package keeper
 
 import (
-	"github.com/cosmos/gogoproto/grpc"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/exported"
 	v2 "github.com/cosmos/cosmos-sdk/x/auth/migrations/v2"
@@ -10,6 +8,7 @@ import (
 	v4 "github.com/cosmos/cosmos-sdk/x/auth/migrations/v4"
 	v5 "github.com/cosmos/cosmos-sdk/x/auth/migrations/v5"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
+	"github.com/cosmos/gogoproto/grpc"
 )
 
 // Migrator is a struct for handling in-place store migrations.

@@ -8,15 +8,14 @@ import (
 	"io"
 	"os"
 
-	"github.com/cosmos/gogoproto/proto"
-	"github.com/spf13/viper"
-	"google.golang.org/grpc"
-	"sigs.k8s.io/yaml"
-
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/gogoproto/proto"
+	"github.com/spf13/viper"
+	"google.golang.org/grpc"
+	"sigs.k8s.io/yaml"
 )
 
 // PreprocessTxFn defines a hook by which chains can preprocess transactions before broadcasting

@@ -6,9 +6,8 @@ import (
 	"bytes"
 	"testing"
 
-	bip39 "github.com/cosmos/go-bip39"
-
 	"github.com/cosmos/cosmos-sdk/crypto/hd"
+	bip39 "github.com/cosmos/go-bip39"
 )
 
 func mnemonicToSeed(mnemonic string) []byte {

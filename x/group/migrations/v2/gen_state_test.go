@@ -1,14 +1,13 @@
 package v2_test
 
 import (
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
+	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/cosmos/cosmos-sdk/x/group"
 	v2 "github.com/cosmos/cosmos-sdk/x/group/migrations/v2"
+	"github.com/stretchr/testify/require"
 )
 
 func TestMigrateGenState(t *testing.T) {

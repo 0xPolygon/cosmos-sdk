@@ -4,11 +4,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/collections"
 	storetypes "cosmossdk.io/store/types"
-
 	"github.com/cosmos/cosmos-sdk/runtime"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	moduletestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
@@ -17,6 +14,7 @@ import (
 	v4 "github.com/cosmos/cosmos-sdk/x/gov/migrations/v4"
 	v5 "github.com/cosmos/cosmos-sdk/x/gov/migrations/v5"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
+	"github.com/stretchr/testify/require"
 )
 
 func TestMigrateStore(t *testing.T) {

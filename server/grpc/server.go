@@ -5,10 +5,7 @@ import (
 	"fmt"
 	"net"
 
-	"google.golang.org/grpc"
-
 	"cosmossdk.io/log"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/server/config"
@@ -17,6 +14,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/server/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	_ "github.com/cosmos/cosmos-sdk/types/tx/amino" // Import amino.proto file for reflection
+	"google.golang.org/grpc"
 )
 
 // NewGRPCServer returns a correctly configured and initialized gRPC server.

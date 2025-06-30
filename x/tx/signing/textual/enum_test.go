@@ -7,14 +7,13 @@ import (
 	"strings"
 	"testing"
 
+	"cosmossdk.io/x/tx/internal/testpb"
+	"cosmossdk.io/x/tx/signing/textual"
 	"github.com/google/go-cmp/cmp"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/testing/protocmp"
-
-	"cosmossdk.io/x/tx/internal/testpb"
-	"cosmossdk.io/x/tx/signing/textual"
 )
 
 type enumTest struct {

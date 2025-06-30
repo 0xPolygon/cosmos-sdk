@@ -3,10 +3,7 @@ package keeper_test
 import (
 	"testing"
 
-	"gotest.tools/v3/assert"
-
 	"cosmossdk.io/math"
-
 	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -14,6 +11,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/gov/types"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 	"github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
+	"gotest.tools/v3/assert"
 )
 
 var TestProposal = getTestProposal()

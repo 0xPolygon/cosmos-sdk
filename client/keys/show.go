@@ -4,10 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/spf13/cobra"
-
 	errorsmod "cosmossdk.io/errors"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
@@ -16,6 +13,7 @@ import (
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerr "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/spf13/cobra"
 )
 
 const (

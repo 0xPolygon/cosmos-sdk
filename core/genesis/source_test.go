@@ -5,9 +5,8 @@ import (
 	"io"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/core/appmodule"
+	"github.com/stretchr/testify/require"
 )
 
 func TestSource(t *testing.T) {

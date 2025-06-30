@@ -14,10 +14,9 @@ import (
 	"testing"
 
 	"github.com/chzyer/readline"
+	"github.com/cosmos/cosmos-sdk/x/gov/client/cli"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-
-	"github.com/cosmos/cosmos-sdk/x/gov/client/cli"
 )
 
 type st struct {

@@ -5,9 +5,8 @@ import (
 	"io"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"github.com/cosmos/cosmos-sdk/types/module/testutil"
+	"github.com/stretchr/testify/require"
 )
 
 // Issue #7739: Catch parse errors resulting from unexpected EOF in

@@ -8,7 +8,6 @@ import (
 	"io"
 
 	"github.com/99designs/keyring"
-
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/crypto/ledger"
 	"github.com/cosmos/cosmos-sdk/crypto/types"

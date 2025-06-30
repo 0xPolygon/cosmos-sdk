@@ -4,10 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"sigs.k8s.io/yaml"
-
 	"cosmossdk.io/errors"
-
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/codec/legacy"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -15,6 +12,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/crypto/types/multisig"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
+	"sigs.k8s.io/yaml"
 )
 
 // LegacyMsg defines the old interface a message must fulfill,

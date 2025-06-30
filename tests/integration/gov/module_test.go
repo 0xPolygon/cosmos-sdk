@@ -3,13 +3,12 @@ package gov_test
 import (
 	"testing"
 
-	"gotest.tools/v3/assert"
-
 	hApp "github.com/0xPolygon/heimdall-v2/app"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	_ "github.com/cosmos/cosmos-sdk/x/distribution"
 	"github.com/cosmos/cosmos-sdk/x/gov/types"
 	_ "github.com/cosmos/cosmos-sdk/x/mint"
+	"gotest.tools/v3/assert"
 )
 
 func TestItCreatesModuleAccountOnInitBlock(t *testing.T) {

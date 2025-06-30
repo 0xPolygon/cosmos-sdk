@@ -3,11 +3,10 @@ package proofs
 import (
 	"sort"
 
-	cmtprotocrypto "github.com/cometbft/cometbft/proto/tendermint/crypto"
-	"golang.org/x/exp/maps"
-
 	"cosmossdk.io/math/unsafe"
 	sdkmaps "cosmossdk.io/store/internal/maps"
+	cmtprotocrypto "github.com/cometbft/cometbft/proto/tendermint/crypto"
+	"golang.org/x/exp/maps"
 )
 
 // SimpleResult contains a merkle.SimpleProof along with all data needed to build the confio/proof

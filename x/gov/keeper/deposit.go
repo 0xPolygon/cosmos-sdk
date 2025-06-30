@@ -6,12 +6,10 @@ import (
 	"math/rand"
 	"strings"
 
-	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
-
 	"cosmossdk.io/collections"
 	"cosmossdk.io/errors"
 	sdkmath "cosmossdk.io/math"
-
+	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	disttypes "github.com/cosmos/cosmos-sdk/x/distribution/types"

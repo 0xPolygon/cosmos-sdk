@@ -4,10 +4,9 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/cosmos/gogoproto/proto"
-
 	"github.com/cosmos/cosmos-sdk/codec/unknownproto"
 	"github.com/cosmos/cosmos-sdk/testutil/testdata"
+	"github.com/cosmos/gogoproto/proto"
 )
 
 var n1BBlob []byte

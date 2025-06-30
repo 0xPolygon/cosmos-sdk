@@ -3,12 +3,11 @@ package node
 import (
 	context "context"
 
-	gogogrpc "github.com/cosmos/gogoproto/grpc"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/server/config"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	gogogrpc "github.com/cosmos/gogoproto/grpc"
+	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 )
 
 // RegisterNodeService registers the node gRPC service on the provided gRPC router.

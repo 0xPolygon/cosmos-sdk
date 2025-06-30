@@ -4,18 +4,15 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cosmos/cosmos-sdk/codec/address"
-	"github.com/stretchr/testify/require"
-
-	"gotest.tools/v3/assert"
-
 	"cosmossdk.io/math"
-
+	"github.com/cosmos/cosmos-sdk/codec/address"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	banktestutil "github.com/cosmos/cosmos-sdk/x/bank/testutil"
 	"github.com/cosmos/cosmos-sdk/x/staking/keeper"
 	"github.com/cosmos/cosmos-sdk/x/staking/testutil"
 	"github.com/cosmos/cosmos-sdk/x/staking/types"
+	"github.com/stretchr/testify/require"
+	"gotest.tools/v3/assert"
 )
 
 func TestUnbondingDelegationsMaxEntries(t *testing.T) {

@@ -7,14 +7,13 @@ import (
 	"os"
 	"testing"
 
+	bankv1beta1 "cosmossdk.io/api/cosmos/bank/v1beta1"
+	"cosmossdk.io/x/tx/internal/testpb"
+	"cosmossdk.io/x/tx/signing/textual"
 	"github.com/google/go-cmp/cmp"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/testing/protocmp"
-
-	bankv1beta1 "cosmossdk.io/api/cosmos/bank/v1beta1"
-	"cosmossdk.io/x/tx/internal/testpb"
-	"cosmossdk.io/x/tx/signing/textual"
 )
 
 func EmptyCoinMetadataQuerier(ctx context.Context, denom string) (*bankv1beta1.Metadata, error) {

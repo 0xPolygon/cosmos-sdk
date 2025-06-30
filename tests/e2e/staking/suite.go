@@ -6,12 +6,9 @@ import (
 	"fmt"
 	"testing"
 
+	"cosmossdk.io/math"
 	"github.com/cometbft/cometbft/proto/tendermint/crypto"
 	"github.com/cometbft/cometbft/rpc/client/http"
-	"github.com/stretchr/testify/suite"
-
-	"cosmossdk.io/math"
-
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	addresscodec "github.com/cosmos/cosmos-sdk/codec/address"
 	"github.com/cosmos/cosmos-sdk/crypto/hd"
@@ -20,6 +17,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/testutil/network"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/staking/client/cli"
+	"github.com/stretchr/testify/suite"
 )
 
 type E2ETestSuite struct {

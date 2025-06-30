@@ -1,10 +1,8 @@
 package baseapp
 
 import (
-	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
-
 	errorsmod "cosmossdk.io/errors"
-
+	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )

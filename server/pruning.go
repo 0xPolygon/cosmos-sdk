@@ -4,11 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/spf13/cast"
-
 	pruningtypes "cosmossdk.io/store/pruning/types"
-
 	"github.com/cosmos/cosmos-sdk/server/types"
+	"github.com/spf13/cast"
 )
 
 // GetPruningOptionsFromFlags parses command flags and returns the correct

@@ -5,10 +5,9 @@ import (
 	"os"
 	"testing"
 
+	"cosmossdk.io/depinject"
 	"github.com/stretchr/testify/require"
 	"gotest.tools/v3/golden"
-
-	"cosmossdk.io/depinject"
 )
 
 type KVStoreKey struct {

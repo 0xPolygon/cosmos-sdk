@@ -8,9 +8,8 @@ import (
 	"io"
 
 	cmttypes "github.com/cometbft/cometbft/types"
-	amino "github.com/tendermint/go-amino"
-
 	"github.com/cosmos/cosmos-sdk/codec/types"
+	amino "github.com/tendermint/go-amino"
 )
 
 // LegacyAmino defines a wrapper for an Amino codec that properly

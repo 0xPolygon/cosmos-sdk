@@ -1,9 +1,8 @@
 package main
 
 import (
-	"github.com/spf13/cobra"
-
 	"cosmossdk.io/tools/cosmovisor"
+	"github.com/spf13/cobra"
 )
 
 var configCmd = &cobra.Command{

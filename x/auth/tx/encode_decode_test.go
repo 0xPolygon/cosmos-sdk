@@ -6,9 +6,6 @@ import (
 	"math"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-	"google.golang.org/protobuf/encoding/protowire"
-
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/testutil/testdata"
@@ -16,6 +13,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/tx"
 	signingtypes "github.com/cosmos/cosmos-sdk/types/tx/signing"
 	"github.com/cosmos/cosmos-sdk/x/auth/signing"
+	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/encoding/protowire"
 )
 
 func TestDefaultTxDecoderError(t *testing.T) {

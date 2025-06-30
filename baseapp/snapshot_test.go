@@ -5,11 +5,10 @@ import (
 	"fmt"
 	"testing"
 
-	abci "github.com/cometbft/cometbft/abci/types"
-	"github.com/stretchr/testify/require"
-
 	pruningtypes "cosmossdk.io/store/pruning/types"
 	snapshottypes "cosmossdk.io/store/snapshots/types"
+	abci "github.com/cometbft/cometbft/abci/types"
+	"github.com/stretchr/testify/require"
 )
 
 func TestABCI_ListSnapshots(t *testing.T) {

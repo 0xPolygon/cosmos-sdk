@@ -4,12 +4,11 @@ import (
 	"fmt"
 	"io"
 
-	dbm "github.com/cosmos/cosmos-db"
-
 	"cosmossdk.io/store/cachekv"
 	"cosmossdk.io/store/dbadapter"
 	"cosmossdk.io/store/tracekv"
 	"cosmossdk.io/store/types"
+	dbm "github.com/cosmos/cosmos-db"
 )
 
 // storeNameCtxKey is the TraceContext metadata key that identifies

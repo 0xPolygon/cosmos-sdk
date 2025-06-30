@@ -7,11 +7,10 @@ import (
 	"math"
 	"sort"
 
-	"github.com/cosmos/gogoproto/proto"
-
 	"github.com/cosmos/cosmos-sdk/testutil/testdata"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
+	"github.com/cosmos/gogoproto/proto"
 )
 
 const addrStr = "0x8186b214a917fb4922eb984fb80cfafa30ee8810"

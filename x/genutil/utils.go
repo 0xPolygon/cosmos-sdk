@@ -12,11 +12,10 @@ import (
 	"github.com/cometbft/cometbft/p2p"
 	"github.com/cometbft/cometbft/privval"
 	cmttypes "github.com/cometbft/cometbft/types"
-	"github.com/cosmos/go-bip39"
-
 	cryptocodec "github.com/cosmos/cosmos-sdk/crypto/codec"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	"github.com/cosmos/cosmos-sdk/x/genutil/types"
+	"github.com/cosmos/go-bip39"
 )
 
 const DefaultVEsEnabledHeight = 1

@@ -4,9 +4,8 @@ import (
 	"testing"
 
 	hApp "github.com/0xPolygon/heimdall-v2/app"
-	"github.com/stretchr/testify/require"
-
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
+	"github.com/stretchr/testify/require"
 )
 
 func TestItCreatesModuleAccountOnInitBlock(t *testing.T) {

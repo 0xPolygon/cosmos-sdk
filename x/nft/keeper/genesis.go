@@ -4,7 +4,6 @@ import (
 	"sort"
 
 	"cosmossdk.io/x/nft"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 

@@ -5,12 +5,10 @@ import (
 	"fmt"
 	"testing"
 
-	"gotest.tools/v3/assert"
-
 	"cosmossdk.io/math"
-
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 	"github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
+	"gotest.tools/v3/assert"
 )
 
 func TestGRPCQueryTally(t *testing.T) {

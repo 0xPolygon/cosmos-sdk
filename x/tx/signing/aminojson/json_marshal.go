@@ -7,13 +7,12 @@ import (
 	"io"
 	"sort"
 
+	"cosmossdk.io/x/tx/signing"
 	gogoproto "github.com/cosmos/gogoproto/proto"
 	"github.com/pkg/errors"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/reflect/protoregistry"
-
-	"cosmossdk.io/x/tx/signing"
 )
 
 const cosmosDecType = "cosmos.Dec"

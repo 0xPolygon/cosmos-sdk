@@ -6,13 +6,6 @@ import (
 	"os"
 	"testing"
 
-	"github.com/google/go-cmp/cmp"
-	"github.com/stretchr/testify/require"
-	"google.golang.org/protobuf/encoding/protojson"
-	"google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/reflect/protoreflect"
-	"google.golang.org/protobuf/testing/protocmp"
-
 	_ "cosmossdk.io/api/cosmos/auth/v1beta1"
 	_ "cosmossdk.io/api/cosmos/authz/v1beta1"
 	bankv1beta1 "cosmossdk.io/api/cosmos/bank/v1beta1"
@@ -23,6 +16,12 @@ import (
 	"cosmossdk.io/x/tx/signing"
 	"cosmossdk.io/x/tx/signing/textual"
 	"cosmossdk.io/x/tx/signing/textual/internal/textualpb"
+	"github.com/google/go-cmp/cmp"
+	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/encoding/protojson"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protoreflect"
+	"google.golang.org/protobuf/testing/protocmp"
 )
 
 // txJSONTestTx represents the type that in the JSON test

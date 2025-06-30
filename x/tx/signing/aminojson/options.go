@@ -1,6 +1,7 @@
 package aminojson
 
 import (
+	"cosmossdk.io/api/amino"
 	cosmos_proto "github.com/cosmos/cosmos-proto"
 	gogo "github.com/cosmos/gogoproto/gogoproto"
 	gogoproto "github.com/cosmos/gogoproto/proto"
@@ -11,8 +12,6 @@ import (
 	"google.golang.org/protobuf/reflect/protoregistry"
 	"google.golang.org/protobuf/runtime/protoimpl"
 	"google.golang.org/protobuf/types/descriptorpb"
-
-	"cosmossdk.io/api/amino"
 )
 
 // getMessageAminoName returns the amino name of a message if it has been set by the `amino.name` option.

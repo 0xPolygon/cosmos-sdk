@@ -3,13 +3,12 @@ package types
 import (
 	"fmt"
 
-	"github.com/cometbft/cometbft/crypto/merkle"
-	cmtprotocrypto "github.com/cometbft/cometbft/proto/tendermint/crypto"
-	ics23 "github.com/cosmos/ics23/go"
-
 	errorsmod "cosmossdk.io/errors"
 	sdkmaps "cosmossdk.io/store/internal/maps"
 	sdkproofs "cosmossdk.io/store/internal/proofs"
+	"github.com/cometbft/cometbft/crypto/merkle"
+	cmtprotocrypto "github.com/cometbft/cometbft/proto/tendermint/crypto"
+	ics23 "github.com/cosmos/ics23/go"
 )
 
 const (

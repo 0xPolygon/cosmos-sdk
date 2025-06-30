@@ -13,12 +13,11 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/otiai10/copy"
-	"github.com/rs/zerolog"
-
 	"cosmossdk.io/log"
 	"cosmossdk.io/x/upgrade/plan"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
+	"github.com/otiai10/copy"
+	"github.com/rs/zerolog"
 )
 
 type Launcher struct {

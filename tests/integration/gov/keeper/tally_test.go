@@ -3,13 +3,11 @@ package keeper_test
 import (
 	"testing"
 
-	"gotest.tools/v3/assert"
-
 	"cosmossdk.io/math"
-
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
+	"gotest.tools/v3/assert"
 )
 
 func TestTallyNoOneVotes(t *testing.T) {

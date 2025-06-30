@@ -5,13 +5,12 @@ import (
 	"errors"
 	"fmt"
 
-	gogoproto "github.com/cosmos/gogoproto/proto"
-	"google.golang.org/protobuf/reflect/protoregistry"
-
 	signingv1beta1 "cosmossdk.io/api/cosmos/tx/signing/v1beta1"
 	"cosmossdk.io/x/tx/decode"
 	"cosmossdk.io/x/tx/signing"
 	"cosmossdk.io/x/tx/signing/aminojson/internal/aminojsonpb"
+	gogoproto "github.com/cosmos/gogoproto/proto"
+	"google.golang.org/protobuf/reflect/protoregistry"
 )
 
 // SignModeHandler implements the SIGN_MODE_LEGACY_AMINO_JSON signing mode.

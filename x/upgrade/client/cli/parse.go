@@ -1,9 +1,8 @@
 package cli
 
 import (
-	"github.com/spf13/pflag"
-
 	"cosmossdk.io/x/upgrade/types"
+	"github.com/spf13/pflag"
 )
 
 func parsePlan(fs *pflag.FlagSet, name string) (types.Plan, error) {

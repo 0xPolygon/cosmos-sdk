@@ -9,6 +9,9 @@ import (
 	"testing"
 	"time"
 
+	"cosmossdk.io/x/tx/signing/aminojson"
+	"cosmossdk.io/x/tx/signing/aminojson/internal/aminojsonpb"
+	"cosmossdk.io/x/tx/signing/aminojson/internal/testpb"
 	"github.com/cosmos/cosmos-proto/rapidproto"
 	"github.com/stretchr/testify/require"
 	"github.com/tendermint/go-amino"
@@ -20,10 +23,6 @@ import (
 	"google.golang.org/protobuf/types/known/durationpb"
 	"gotest.tools/v3/assert"
 	"pgregory.net/rapid"
-
-	"cosmossdk.io/x/tx/signing/aminojson"
-	"cosmossdk.io/x/tx/signing/aminojson/internal/aminojsonpb"
-	"cosmossdk.io/x/tx/signing/aminojson/internal/testpb"
 )
 
 func marshalLegacy(msg proto.Message) ([]byte, error) {

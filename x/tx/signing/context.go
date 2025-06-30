@@ -5,15 +5,14 @@ import (
 	"fmt"
 	"sync"
 
+	msgv1 "cosmossdk.io/api/cosmos/msg/v1"
+	"cosmossdk.io/core/address"
 	cosmos_proto "github.com/cosmos/cosmos-proto"
 	gogoproto "github.com/cosmos/gogoproto/proto"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protodesc"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/reflect/protoregistry"
-
-	msgv1 "cosmossdk.io/api/cosmos/msg/v1"
-	"cosmossdk.io/core/address"
 )
 
 type TypeResolver interface {

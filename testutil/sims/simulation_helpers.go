@@ -7,11 +7,9 @@ import (
 	"os"
 	"sync"
 
-	dbm "github.com/cosmos/cosmos-db"
-
 	"cosmossdk.io/log"
 	storetypes "cosmossdk.io/store/types"
-
+	dbm "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	sdk "github.com/cosmos/cosmos-sdk/types"

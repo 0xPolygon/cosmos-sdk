@@ -9,7 +9,6 @@ import (
 	rpcclientmock "github.com/cometbft/cometbft/rpc/client/mock"
 	coretypes "github.com/cometbft/cometbft/rpc/core/types"
 	cmttypes "github.com/cometbft/cometbft/types"
-
 	"github.com/cosmos/cosmos-sdk/client"
 )
 

@@ -3,14 +3,12 @@ package orm
 import (
 	"bytes"
 
-	"github.com/cosmos/gogoproto/proto"
-
 	errorsmod "cosmossdk.io/errors"
 	"cosmossdk.io/store/prefix"
 	"cosmossdk.io/store/types"
-
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"github.com/cosmos/cosmos-sdk/x/group/errors"
+	"github.com/cosmos/gogoproto/proto"
 )
 
 // indexer creates and modifies the second MultiKeyIndex based on the operations and changes on the primary object.

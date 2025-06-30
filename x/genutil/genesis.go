@@ -1,10 +1,8 @@
 package genutil
 
 import (
-	abci "github.com/cometbft/cometbft/abci/types"
-
 	"cosmossdk.io/core/genesis"
-
+	abci "github.com/cometbft/cometbft/abci/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/genutil/types"

@@ -3,9 +3,8 @@ package gov
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/stretchr/testify/require"
 )
 
 func failingHandler(_ sdk.Context, _ sdk.Msg) (*sdk.Result, error) {

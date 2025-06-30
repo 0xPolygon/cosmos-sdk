@@ -4,13 +4,8 @@ import (
 	"math/big"
 	"testing"
 
-	abci "github.com/cometbft/cometbft/abci/types"
-	govv1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
-	"github.com/stretchr/testify/require"
-	"gotest.tools/assert"
-
 	hApp "github.com/0xPolygon/heimdall-v2/app"
-
+	abci "github.com/cometbft/cometbft/abci/types"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
@@ -26,8 +21,11 @@ import (
 	_ "github.com/cosmos/cosmos-sdk/x/consensus"
 	_ "github.com/cosmos/cosmos-sdk/x/distribution"
 	_ "github.com/cosmos/cosmos-sdk/x/gov"
+	govv1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 	_ "github.com/cosmos/cosmos-sdk/x/params"
 	_ "github.com/cosmos/cosmos-sdk/x/staking"
+	"github.com/stretchr/testify/require"
+	"gotest.tools/assert"
 )
 
 type (

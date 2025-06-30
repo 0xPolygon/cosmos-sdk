@@ -3,13 +3,10 @@ package params
 import (
 	"context"
 
-	gwruntime "github.com/grpc-ecosystem/grpc-gateway/runtime"
-
 	modulev1 "cosmossdk.io/api/cosmos/params/module/v1"
 	"cosmossdk.io/core/appmodule"
 	"cosmossdk.io/depinject"
 	store "cosmossdk.io/store/types"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -19,6 +16,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/params/keeper"
 	"github.com/cosmos/cosmos-sdk/x/params/types"
 	"github.com/cosmos/cosmos-sdk/x/params/types/proposal"
+	gwruntime "github.com/grpc-ecosystem/grpc-gateway/runtime"
 )
 
 var (

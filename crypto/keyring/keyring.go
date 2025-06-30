@@ -10,13 +10,9 @@ import (
 	"sort"
 	"strings"
 
+	errorsmod "cosmossdk.io/errors"
 	"github.com/99designs/keyring"
 	"github.com/cockroachdb/errors"
-	"github.com/cosmos/go-bip39"
-	"golang.org/x/crypto/bcrypt"
-
-	errorsmod "cosmossdk.io/errors"
-
 	"github.com/cosmos/cosmos-sdk/client/input"
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/crypto"
@@ -26,6 +22,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
+	"github.com/cosmos/go-bip39"
+	"golang.org/x/crypto/bcrypt"
 )
 
 // Backend options for Keyring

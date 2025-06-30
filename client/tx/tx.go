@@ -8,9 +8,6 @@ import (
 	"fmt"
 	"os"
 
-	gogogrpc "github.com/cosmos/gogoproto/grpc"
-	"github.com/spf13/pflag"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/input"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
@@ -19,6 +16,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/tx"
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
 	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
+	gogogrpc "github.com/cosmos/gogoproto/grpc"
+	"github.com/spf13/pflag"
 )
 
 // GenerateOrBroadcastTxCLI will either generate and print an unsigned transaction

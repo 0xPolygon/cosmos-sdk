@@ -5,22 +5,15 @@ import (
 	"sort"
 	"testing"
 
+	"cosmossdk.io/core/comet"
+	"cosmossdk.io/core/header"
+	"cosmossdk.io/log"
 	abci "github.com/cometbft/cometbft/abci/types"
 	cmtsecp256k1 "github.com/cometbft/cometbft/crypto/secp256k1"
 	cmtprotocrypto "github.com/cometbft/cometbft/proto/tendermint/crypto"
 	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	cmttypes "github.com/cometbft/cometbft/types"
 	dbm "github.com/cosmos/cosmos-db"
-	protoio "github.com/cosmos/gogoproto/io"
-	"github.com/cosmos/gogoproto/proto"
-	"github.com/golang/mock/gomock"
-	"github.com/stretchr/testify/require"
-	"github.com/stretchr/testify/suite"
-
-	"cosmossdk.io/core/comet"
-	"cosmossdk.io/core/header"
-	"cosmossdk.io/log"
-
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	baseapptestutil "github.com/cosmos/cosmos-sdk/baseapp/testutil"
 	"github.com/cosmos/cosmos-sdk/baseapp/testutil/mock"
@@ -32,6 +25,11 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/mempool"
 	signingtypes "github.com/cosmos/cosmos-sdk/types/tx/signing"
 	authtx "github.com/cosmos/cosmos-sdk/x/auth/tx"
+	protoio "github.com/cosmos/gogoproto/io"
+	"github.com/cosmos/gogoproto/proto"
+	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/suite"
 )
 
 const (

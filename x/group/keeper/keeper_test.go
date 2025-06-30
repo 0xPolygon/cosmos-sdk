@@ -2,19 +2,15 @@ package keeper_test
 
 import (
 	"context"
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	"testing"
 	"time"
 
-	cmttime "github.com/cometbft/cometbft/types/time"
-	"github.com/golang/mock/gomock"
-	"github.com/stretchr/testify/suite"
-
 	"cosmossdk.io/log"
 	storetypes "cosmossdk.io/store/types"
-
+	cmttime "github.com/cometbft/cometbft/types/time"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/codec/address"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -27,6 +23,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/group/module"
 	grouptestutil "github.com/cosmos/cosmos-sdk/x/group/testutil"
 	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
+	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/suite"
 )
 
 const minExecutionPeriod = 5 * time.Second

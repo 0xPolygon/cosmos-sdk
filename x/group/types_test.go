@@ -4,9 +4,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/require"
-
 	"github.com/cosmos/cosmos-sdk/x/group"
+	"github.com/stretchr/testify/require"
 )
 
 func TestThresholdDecisionPolicyValidate(t *testing.T) {

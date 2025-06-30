@@ -6,7 +6,9 @@ import (
 	"fmt"
 	"strings"
 
+	"cosmossdk.io/x/tx/signing/aminojson"
 	"github.com/cosmos/cosmos-proto/anyutil"
+	"github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/gogoproto/jsonpb"
 	gogoproto "github.com/cosmos/gogoproto/proto"
 	"google.golang.org/grpc/encoding"
@@ -15,10 +17,6 @@ import (
 	"google.golang.org/protobuf/reflect/protoregistry"
 	"google.golang.org/protobuf/types/dynamicpb"
 	"google.golang.org/protobuf/types/known/anypb"
-
-	"cosmossdk.io/x/tx/signing/aminojson"
-
-	"github.com/cosmos/cosmos-sdk/codec/types"
 )
 
 // ProtoCodecMarshaler defines an interface for codecs that utilize Protobuf for both

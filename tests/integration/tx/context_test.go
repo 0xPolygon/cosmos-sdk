@@ -3,17 +3,15 @@ package tx
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
-	"google.golang.org/protobuf/proto"
-
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/log"
 	"cosmossdk.io/x/tx/signing"
-
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/tests/integration/tx/internal/pulsar/testpb"
 	"github.com/cosmos/cosmos-sdk/testutil/configurator"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
+	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/proto"
 )
 
 func ProvideCustomGetSigners() signing.CustomGetSigner {

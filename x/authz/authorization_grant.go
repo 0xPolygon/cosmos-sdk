@@ -3,12 +3,10 @@ package authz
 import (
 	"time"
 
-	proto "github.com/cosmos/gogoproto/proto"
-
 	errorsmod "cosmossdk.io/errors"
-
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	proto "github.com/cosmos/gogoproto/proto"
 )
 
 // NewGrant returns new Grant. Expiration is optional and noop if null.

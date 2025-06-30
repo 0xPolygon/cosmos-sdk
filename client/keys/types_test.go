@@ -3,9 +3,8 @@ package keys_test
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"github.com/cosmos/cosmos-sdk/client/keys"
+	"github.com/stretchr/testify/require"
 )
 
 func TestConstructors(t *testing.T) {

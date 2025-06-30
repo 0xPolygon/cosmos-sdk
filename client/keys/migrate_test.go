@@ -7,8 +7,6 @@ import (
 	"testing"
 
 	design99keyring "github.com/99designs/keyring"
-	"github.com/stretchr/testify/suite"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -18,6 +16,7 @@ import (
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	moduletestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
+	"github.com/stretchr/testify/suite"
 )
 
 type setter interface {

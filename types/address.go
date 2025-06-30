@@ -7,15 +7,13 @@ import (
 	"fmt"
 	"sync/atomic"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/hashicorp/golang-lru/simplelru"
-	"sigs.k8s.io/yaml"
-
 	errorsmod "cosmossdk.io/errors"
-
 	addresscodec "github.com/cosmos/cosmos-sdk/codec/address"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/hashicorp/golang-lru/simplelru"
+	"sigs.k8s.io/yaml"
 )
 
 const (

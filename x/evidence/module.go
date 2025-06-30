@@ -5,10 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 
-	gwruntime "github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"github.com/spf13/cobra"
-	"google.golang.org/grpc"
-
 	modulev1 "cosmossdk.io/api/cosmos/evidence/module/v1"
 	"cosmossdk.io/core/address"
 	"cosmossdk.io/core/appmodule"
@@ -20,13 +16,15 @@ import (
 	"cosmossdk.io/x/evidence/keeper"
 	"cosmossdk.io/x/evidence/simulation"
 	"cosmossdk.io/x/evidence/types"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
+	gwruntime "github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/spf13/cobra"
+	"google.golang.org/grpc"
 )
 
 var (

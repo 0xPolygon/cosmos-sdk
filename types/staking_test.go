@@ -3,11 +3,9 @@ package types_test
 import (
 	"testing"
 
-	"github.com/stretchr/testify/suite"
-
 	"cosmossdk.io/math"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/stretchr/testify/suite"
 )
 
 type stakingTestSuite struct {

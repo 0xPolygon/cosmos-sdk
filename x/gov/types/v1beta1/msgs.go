@@ -3,10 +3,9 @@ package v1beta1
 import (
 	"fmt"
 
-	"github.com/cosmos/gogoproto/proto"
-
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/gogoproto/proto"
 )
 
 // Governance message types and routes

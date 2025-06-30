@@ -9,22 +9,20 @@ import (
 	"sync"
 	"time"
 
-	tmrpcserver "github.com/cometbft/cometbft/rpc/jsonrpc/server"
-	gateway "github.com/cosmos/gogogateway"
-	"github.com/gorilla/handlers"
-	"github.com/gorilla/mux"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"github.com/improbable-eng/grpc-web/go/grpcweb"
-	"google.golang.org/grpc"
-
 	"cosmossdk.io/log"
-
+	tmrpcserver "github.com/cometbft/cometbft/rpc/jsonrpc/server"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec/legacy"
 	"github.com/cosmos/cosmos-sdk/server/config"
 	servercmtlog "github.com/cosmos/cosmos-sdk/server/log"
 	"github.com/cosmos/cosmos-sdk/telemetry"
 	grpctypes "github.com/cosmos/cosmos-sdk/types/grpc"
+	gateway "github.com/cosmos/gogogateway"
+	"github.com/gorilla/handlers"
+	"github.com/gorilla/mux"
+	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/improbable-eng/grpc-web/go/grpcweb"
+	"google.golang.org/grpc"
 )
 
 // Server defines the server's API interface.

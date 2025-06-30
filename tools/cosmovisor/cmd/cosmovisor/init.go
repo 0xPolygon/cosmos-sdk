@@ -7,12 +7,11 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/spf13/cobra"
-
 	"cosmossdk.io/log"
 	"cosmossdk.io/tools/cosmovisor"
 	cverrors "cosmossdk.io/tools/cosmovisor/errors"
 	"cosmossdk.io/x/upgrade/plan"
+	"github.com/spf13/cobra"
 )
 
 var initCmd = &cobra.Command{

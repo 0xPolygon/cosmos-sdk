@@ -3,13 +3,12 @@ package types_test
 import (
 	"testing"
 
-	dbm "github.com/cosmos/cosmos-db"
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/log"
 	"cosmossdk.io/store/iavl"
 	"cosmossdk.io/store/metrics"
 	"cosmossdk.io/store/types"
+	dbm "github.com/cosmos/cosmos-db"
+	"github.com/stretchr/testify/require"
 )
 
 func newMemTestKVStore(t *testing.T) types.KVStore {

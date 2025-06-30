@@ -4,11 +4,10 @@ import (
 	"context"
 	"fmt"
 
-	abci "github.com/cometbft/cometbft/abci/types"
-	"github.com/hashicorp/go-plugin"
-
 	streamingabci "cosmossdk.io/store/streaming/abci"
 	store "cosmossdk.io/store/types"
+	abci "github.com/cometbft/cometbft/abci/types"
+	"github.com/hashicorp/go-plugin"
 )
 
 // StdoutPlugin is the implementation of the ABCIListener interface

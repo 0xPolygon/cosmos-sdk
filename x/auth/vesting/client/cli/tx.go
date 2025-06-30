@@ -7,15 +7,13 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/spf13/cobra"
-
 	"cosmossdk.io/core/address"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/vesting/types"
+	"github.com/spf13/cobra"
 )
 
 // Transaction command flags

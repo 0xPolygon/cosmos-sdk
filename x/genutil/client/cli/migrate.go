@@ -7,9 +7,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/spf13/cobra"
-	"golang.org/x/exp/maps"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/version"
@@ -17,6 +14,8 @@ import (
 	v046 "github.com/cosmos/cosmos-sdk/x/genutil/migrations/v046"
 	v047 "github.com/cosmos/cosmos-sdk/x/genutil/migrations/v047"
 	"github.com/cosmos/cosmos-sdk/x/genutil/types"
+	"github.com/spf13/cobra"
+	"golang.org/x/exp/maps"
 )
 
 const flagGenesisTime = "genesis-time"

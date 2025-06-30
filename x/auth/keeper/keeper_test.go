@@ -1,17 +1,14 @@
 package keeper_test
 
 import (
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	"math/big"
 	"testing"
 
-	"github.com/stretchr/testify/suite"
-
 	"cosmossdk.io/core/header"
 	storetypes "cosmossdk.io/store/types"
-
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -20,6 +17,7 @@ import (
 	authcodec "github.com/cosmos/cosmos-sdk/x/auth/codec"
 	"github.com/cosmos/cosmos-sdk/x/auth/keeper"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
+	"github.com/stretchr/testify/suite"
 )
 
 const (

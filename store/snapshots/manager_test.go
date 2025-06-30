@@ -4,13 +4,12 @@ import (
 	"errors"
 	"testing"
 
-	db "github.com/cosmos/cosmos-db"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/log"
 	"cosmossdk.io/store/snapshots"
 	"cosmossdk.io/store/snapshots/types"
+	db "github.com/cosmos/cosmos-db"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 var opts = types.NewSnapshotOptions(1500, 2)

@@ -4,13 +4,11 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/spf13/cobra"
-
 	"cosmossdk.io/core/address"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	"github.com/cosmos/cosmos-sdk/x/bank/client/cli"
+	"github.com/spf13/cobra"
 )
 
 // ExecTestCLICmd builds the client context, mocks the output and executes the command.

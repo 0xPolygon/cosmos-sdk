@@ -7,9 +7,6 @@ import (
 	"io"
 	"testing"
 
-	"github.com/cosmos/go-bip39"
-	"github.com/stretchr/testify/require"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/crypto/hd"
@@ -18,6 +15,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/testutil/testdata"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	moduletestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
+	"github.com/cosmos/go-bip39"
+	"github.com/stretchr/testify/require"
 )
 
 func Test_runAddCmdBasic(t *testing.T) {

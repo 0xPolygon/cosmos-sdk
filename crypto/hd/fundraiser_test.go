@@ -8,11 +8,10 @@ import (
 	"testing"
 
 	"github.com/cometbft/cometbft/crypto"
-	"github.com/cosmos/go-bip39"
-	"github.com/stretchr/testify/require"
-
 	"github.com/cosmos/cosmos-sdk/crypto/hd"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"github.com/cosmos/go-bip39"
+	"github.com/stretchr/testify/require"
 )
 
 type addrData struct {

@@ -4,12 +4,11 @@ import (
 	"context"
 	"fmt"
 
-	"google.golang.org/protobuf/reflect/protoreflect"
-
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/codec/types"
 	cryptocodec "github.com/cosmos/cosmos-sdk/crypto/codec"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 type pubkeyType struct{}

@@ -1,9 +1,8 @@
 package types
 
 import (
-	"github.com/cosmos/gogoproto/proto"
-
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
+	"github.com/cosmos/gogoproto/proto"
 )
 
 // AccountI is an interface used to store coins at a given address within state.

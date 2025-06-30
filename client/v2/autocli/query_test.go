@@ -8,19 +8,17 @@ import (
 	"testing"
 	"time"
 
+	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
+	queryv1beta1 "cosmossdk.io/api/cosmos/base/query/v1beta1"
+	basev1beta1 "cosmossdk.io/api/cosmos/base/v1beta1"
+	"cosmossdk.io/client/v2/internal/testpb"
+	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/testing/protocmp"
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"gotest.tools/v3/assert"
 	"gotest.tools/v3/golden"
-
-	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
-	queryv1beta1 "cosmossdk.io/api/cosmos/base/query/v1beta1"
-	basev1beta1 "cosmossdk.io/api/cosmos/base/v1beta1"
-	"cosmossdk.io/client/v2/internal/testpb"
-
-	"github.com/cosmos/cosmos-sdk/client"
 )
 
 var buildModuleQueryCommand = func(moduleName string, f *fixture) (*cobra.Command, error) {

@@ -3,17 +3,15 @@ package codec_test
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
-	protov2 "google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/types/dynamicpb"
-
 	bankv1beta1 "cosmossdk.io/api/cosmos/bank/v1beta1"
-
 	codectestutil "github.com/cosmos/cosmos-sdk/codec/testutil"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/testutil/testdata"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+	"github.com/stretchr/testify/require"
+	protov2 "google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/dynamicpb"
 )
 
 type bankSendWrapper struct {

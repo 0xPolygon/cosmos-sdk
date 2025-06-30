@@ -8,13 +8,12 @@ import (
 	"os"
 	"path/filepath"
 
-	milestonestypes "github.com/0xPolygon/heimdall-v2/x/milestone/types"
-	staketypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
-	cmttypes "github.com/cometbft/cometbft/types"
-
 	errorsmod "cosmossdk.io/errors"
 	"cosmossdk.io/math/unsafe"
+	milestonestypes "github.com/0xPolygon/heimdall-v2/x/milestone/types"
+	staketypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 	cfg "github.com/cometbft/cometbft/config"
+	cmttypes "github.com/cometbft/cometbft/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/input"

@@ -4,14 +4,13 @@ import (
 	"context"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-	"google.golang.org/protobuf/reflect/protoregistry"
-
 	bankv1beta1 "cosmossdk.io/api/cosmos/bank/v1beta1"
 	basev1beta1 "cosmossdk.io/api/cosmos/base/v1beta1"
 	txv1beta1 "cosmossdk.io/api/cosmos/tx/v1beta1"
 	"cosmossdk.io/x/tx/signing/aminojson"
 	"cosmossdk.io/x/tx/signing/testutil"
+	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/reflect/protoregistry"
 )
 
 func TestAminoJsonSignMode(t *testing.T) {

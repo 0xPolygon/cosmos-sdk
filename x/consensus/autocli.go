@@ -3,7 +3,6 @@ package consensus
 import (
 	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
 	consensusv1 "cosmossdk.io/api/cosmos/consensus/v1"
-
 	"github.com/cosmos/cosmos-sdk/client/grpc/cmtservice"
 )
 

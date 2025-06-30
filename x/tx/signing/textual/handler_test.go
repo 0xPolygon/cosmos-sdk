@@ -4,11 +4,10 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-	"google.golang.org/protobuf/reflect/protoreflect"
-
 	"cosmossdk.io/x/tx/internal/testpb"
 	"cosmossdk.io/x/tx/signing/textual"
+	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 func TestDispatcher(t *testing.T) {

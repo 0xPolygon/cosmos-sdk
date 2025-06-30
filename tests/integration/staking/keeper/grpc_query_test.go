@@ -5,15 +5,13 @@ import (
 	"fmt"
 	"testing"
 
-	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
-	"gotest.tools/v3/assert"
-
 	"cosmossdk.io/math"
-
+	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"github.com/cosmos/cosmos-sdk/x/staking/types"
+	"gotest.tools/v3/assert"
 )
 
 func createValidatorAccs(t *testing.T, f *fixture) ([]sdk.AccAddress, []types.Validator) {

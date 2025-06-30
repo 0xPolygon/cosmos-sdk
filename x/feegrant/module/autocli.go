@@ -5,7 +5,6 @@ import (
 
 	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
 	feegrantv1beta1 "cosmossdk.io/api/cosmos/feegrant/v1beta1"
-
 	"github.com/cosmos/cosmos-sdk/version"
 )
 

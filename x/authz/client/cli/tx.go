@@ -6,10 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/spf13/cobra"
-
 	"cosmossdk.io/core/address"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
@@ -19,6 +16,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/authz"
 	bank "github.com/cosmos/cosmos-sdk/x/bank/types"
 	staking "github.com/cosmos/cosmos-sdk/x/staking/types"
+	"github.com/spf13/cobra"
 )
 
 // Flag names and values

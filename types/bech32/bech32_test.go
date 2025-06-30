@@ -5,9 +5,8 @@ import (
 	"crypto/sha256"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"github.com/cosmos/cosmos-sdk/types/bech32"
+	"github.com/stretchr/testify/require"
 )
 
 func TestEncodeAndDecode(t *testing.T) {

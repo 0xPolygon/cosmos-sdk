@@ -1,11 +1,9 @@
 package orm
 
 import (
-	"github.com/cosmos/gogoproto/proto"
-
 	storetypes "cosmossdk.io/store/types"
-
 	"github.com/cosmos/cosmos-sdk/codec"
+	"github.com/cosmos/gogoproto/proto"
 )
 
 var (

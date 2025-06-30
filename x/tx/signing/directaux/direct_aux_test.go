@@ -3,13 +3,7 @@ package directaux_test
 import (
 	"context"
 	"fmt"
-	"github.com/ethereum/go-ethereum/common"
 	"testing"
-
-	"github.com/cosmos/cosmos-proto/anyutil"
-	"github.com/stretchr/testify/require"
-	"google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/types/known/anypb"
 
 	bankv1beta1 "cosmossdk.io/api/cosmos/bank/v1beta1"
 	basev1beta1 "cosmossdk.io/api/cosmos/base/v1beta1"
@@ -19,6 +13,11 @@ import (
 	"cosmossdk.io/core/address"
 	"cosmossdk.io/x/tx/signing"
 	"cosmossdk.io/x/tx/signing/directaux"
+	"github.com/cosmos/cosmos-proto/anyutil"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/anypb"
 )
 
 func TestDirectAuxHandler(t *testing.T) {

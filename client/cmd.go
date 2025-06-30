@@ -6,19 +6,17 @@ import (
 	"fmt"
 	"strings"
 
+	signingv1beta1 "cosmossdk.io/api/cosmos/tx/signing/v1beta1"
 	"github.com/cockroachdb/errors"
+	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/cosmos/cosmos-sdk/crypto/keyring"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 	"golang.org/x/exp/slices"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/credentials/insecure"
-
-	signingv1beta1 "cosmossdk.io/api/cosmos/tx/signing/v1beta1"
-
-	"github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/cosmos/cosmos-sdk/crypto/keyring"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 // ClientContextKey defines the context key used to retrieve a client.Context from

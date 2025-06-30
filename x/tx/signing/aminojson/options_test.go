@@ -3,9 +3,8 @@ package aminojson
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/x/tx/signing/aminojson/internal/testpb"
+	"github.com/stretchr/testify/require"
 )
 
 func Test_getMessageAminoName(t *testing.T) {

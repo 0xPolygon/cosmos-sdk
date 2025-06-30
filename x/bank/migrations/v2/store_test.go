@@ -3,12 +3,9 @@ package v2_test
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/math"
 	"cosmossdk.io/store/prefix"
 	storetypes "cosmossdk.io/store/types"
-
 	"github.com/cosmos/cosmos-sdk/runtime"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	"github.com/cosmos/cosmos-sdk/testutil/testdata"
@@ -17,6 +14,7 @@ import (
 	v1bank "github.com/cosmos/cosmos-sdk/x/bank/migrations/v1"
 	v2bank "github.com/cosmos/cosmos-sdk/x/bank/migrations/v2"
 	"github.com/cosmos/cosmos-sdk/x/bank/types"
+	"github.com/stretchr/testify/require"
 )
 
 func TestSupplyMigration(t *testing.T) {

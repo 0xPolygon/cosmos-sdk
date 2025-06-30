@@ -1,10 +1,9 @@
 package autocli
 
 import (
+	"cosmossdk.io/client/v2/autocli/flag"
 	"github.com/spf13/cobra"
 	"google.golang.org/grpc"
-
-	"cosmossdk.io/client/v2/autocli/flag"
 )
 
 // Builder manages options for building CLI commands.

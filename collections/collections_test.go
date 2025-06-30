@@ -5,10 +5,9 @@ import (
 	"math"
 	"testing"
 
+	"cosmossdk.io/core/store"
 	db "github.com/cosmos/cosmos-db"
 	"github.com/stretchr/testify/require"
-
-	"cosmossdk.io/core/store"
 )
 
 type testStore struct {

@@ -3,11 +3,10 @@ package registry
 import (
 	"sync"
 
+	"cosmossdk.io/x/tx/signing"
 	"github.com/cosmos/gogoproto/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/reflect/protoregistry"
-
-	"cosmossdk.io/x/tx/signing"
 )
 
 var (

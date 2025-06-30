@@ -4,10 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cockroachdb/errors"
-
 	"cosmossdk.io/core/comet"
-
+	"github.com/cockroachdb/errors"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/slashing/types"

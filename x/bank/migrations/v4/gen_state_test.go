@@ -3,13 +3,11 @@ package v4_test
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-
 	sdkmath "cosmossdk.io/math"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	v4 "github.com/cosmos/cosmos-sdk/x/bank/migrations/v4"
 	"github.com/cosmos/cosmos-sdk/x/bank/types"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestMigrateGenState(t *testing.T) {

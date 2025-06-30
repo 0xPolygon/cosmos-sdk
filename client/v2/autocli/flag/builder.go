@@ -6,21 +6,19 @@ import (
 	"fmt"
 	"strconv"
 
+	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
+	msgv1 "cosmossdk.io/api/cosmos/msg/v1"
+	"cosmossdk.io/client/v2/internal/flags"
+	"cosmossdk.io/client/v2/internal/util"
+	"cosmossdk.io/core/address"
 	cosmos_proto "github.com/cosmos/cosmos-proto"
+	"github.com/cosmos/cosmos-sdk/runtime"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protodesc"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/reflect/protoregistry"
-
-	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
-	msgv1 "cosmossdk.io/api/cosmos/msg/v1"
-	"cosmossdk.io/client/v2/internal/flags"
-	"cosmossdk.io/client/v2/internal/util"
-	"cosmossdk.io/core/address"
-
-	"github.com/cosmos/cosmos-sdk/runtime"
 )
 
 const (

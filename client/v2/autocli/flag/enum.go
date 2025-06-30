@@ -5,9 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"google.golang.org/protobuf/reflect/protoreflect"
-
 	"cosmossdk.io/client/v2/internal/strcase"
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 type enumType struct {

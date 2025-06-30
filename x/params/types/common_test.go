@@ -6,7 +6,6 @@ import (
 	"time"
 
 	storetypes "cosmossdk.io/store/types"
-
 	"github.com/cosmos/cosmos-sdk/x/params/types"
 )
 

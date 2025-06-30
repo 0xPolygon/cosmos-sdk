@@ -11,10 +11,6 @@ import (
 	"os"
 	"sort"
 
-	"github.com/cosmos/go-bip39"
-	"github.com/spf13/cobra"
-	"github.com/spf13/pflag"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/input"
@@ -24,6 +20,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/crypto/keys/multisig"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/go-bip39"
+	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
 )
 
 const (

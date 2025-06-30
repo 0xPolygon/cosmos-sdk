@@ -4,11 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/stretchr/testify/suite"
-
 	"cosmossdk.io/math"
 	"cosmossdk.io/simapp"
-
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec/address"
 	"github.com/cosmos/cosmos-sdk/crypto/hd"
@@ -19,6 +16,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/distribution/client/cli"
 	stakingcli "github.com/cosmos/cosmos-sdk/x/staking/client/cli"
+	"github.com/stretchr/testify/suite"
 )
 
 type WithdrawAllTestSuite struct {

@@ -4,12 +4,11 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	moduletestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
 	v3 "github.com/cosmos/cosmos-sdk/x/staking/migrations/v3"
 	"github.com/cosmos/cosmos-sdk/x/staking/types"
+	"github.com/stretchr/testify/require"
 )
 
 func TestMigrateJSON(t *testing.T) {

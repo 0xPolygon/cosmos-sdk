@@ -2,7 +2,6 @@ package types
 
 import (
 	storetypes "cosmossdk.io/store/types"
-
 	"github.com/cosmos/cosmos-sdk/baseapp"
 )
 

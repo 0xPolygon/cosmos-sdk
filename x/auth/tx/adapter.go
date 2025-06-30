@@ -1,15 +1,13 @@
 package tx
 
 import (
-	"google.golang.org/protobuf/types/known/anypb"
-
 	basev1beta1 "cosmossdk.io/api/cosmos/base/v1beta1"
 	multisigv1beta1 "cosmossdk.io/api/cosmos/crypto/multisig/v1beta1"
 	signingv1beta1 "cosmossdk.io/api/cosmos/tx/signing/v1beta1"
 	txv1beta1 "cosmossdk.io/api/cosmos/tx/v1beta1"
 	txsigning "cosmossdk.io/x/tx/signing"
-
 	"github.com/cosmos/cosmos-sdk/types/tx"
+	"google.golang.org/protobuf/types/known/anypb"
 )
 
 // GetSigningTxData returns an x/tx/signing.TxData representation of a transaction for use in the signing

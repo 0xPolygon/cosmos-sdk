@@ -3,13 +3,6 @@ package tx
 import (
 	"testing"
 
-	"github.com/cosmos/cosmos-proto/rapidproto"
-	gogoproto "github.com/cosmos/gogoproto/proto"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/stretchr/testify/require"
-	"google.golang.org/protobuf/proto"
-	"pgregory.net/rapid"
-
 	msgv1 "cosmossdk.io/api/cosmos/msg/v1"
 	"cosmossdk.io/math"
 	"cosmossdk.io/x/evidence"
@@ -17,7 +10,7 @@ import (
 	"cosmossdk.io/x/tx/decode"
 	txsigning "cosmossdk.io/x/tx/signing"
 	"cosmossdk.io/x/upgrade"
-
+	"github.com/cosmos/cosmos-proto/rapidproto"
 	"github.com/cosmos/cosmos-sdk/codec/legacy"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/tests/integration/rapidgen"
@@ -39,6 +32,11 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/params"
 	"github.com/cosmos/cosmos-sdk/x/slashing"
 	"github.com/cosmos/cosmos-sdk/x/staking"
+	gogoproto "github.com/cosmos/gogoproto/proto"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/proto"
+	"pgregory.net/rapid"
 )
 
 // TestDecode tests that the tx decoder can decode all the txs in the test suite.

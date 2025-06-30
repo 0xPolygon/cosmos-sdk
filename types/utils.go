@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"cosmossdk.io/log"
-
 	"github.com/cosmos/cosmos-sdk/types/kv"
 )
 

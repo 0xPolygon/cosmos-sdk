@@ -8,12 +8,11 @@ import (
 	"os"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-	"google.golang.org/protobuf/reflect/protoreflect"
-
 	bankv1beta1 "cosmossdk.io/api/cosmos/bank/v1beta1"
 	basev1beta1 "cosmossdk.io/api/cosmos/base/v1beta1"
 	"cosmossdk.io/x/tx/signing/textual"
+	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 // Dedicated type for context Values, to avoid conflicts,

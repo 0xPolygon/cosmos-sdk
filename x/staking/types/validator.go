@@ -7,13 +7,11 @@ import (
 	"strings"
 	"time"
 
-	abci "github.com/cometbft/cometbft/abci/types"
-	cmtprotocrypto "github.com/cometbft/cometbft/proto/tendermint/crypto"
-
 	"cosmossdk.io/core/address"
 	"cosmossdk.io/errors"
 	"cosmossdk.io/math"
-
+	abci "github.com/cometbft/cometbft/abci/types"
+	cmtprotocrypto "github.com/cometbft/cometbft/proto/tendermint/crypto"
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	cryptocodec "github.com/cosmos/cosmos-sdk/crypto/codec"

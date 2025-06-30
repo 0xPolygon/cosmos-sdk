@@ -4,16 +4,14 @@ import (
 	"testing"
 	"time"
 
-	"gotest.tools/v3/assert"
-
 	"cosmossdk.io/math"
-
 	"github.com/cosmos/cosmos-sdk/codec/address"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/bank/testutil"
 	"github.com/cosmos/cosmos-sdk/x/staking/keeper"
 	"github.com/cosmos/cosmos-sdk/x/staking/types"
+	"gotest.tools/v3/assert"
 )
 
 func TestCancelUnbondingDelegation(t *testing.T) {

@@ -4,12 +4,11 @@ import (
 	"errors"
 	"fmt"
 
+	msg "cosmossdk.io/api/cosmos/msg/v1"
+	"cosmossdk.io/x/tx/signing"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/reflect/protoregistry"
-
-	msg "cosmossdk.io/api/cosmos/msg/v1"
-	"cosmossdk.io/x/tx/signing"
 )
 
 // ValidateAnnotations validates that the proto annotations are correct.

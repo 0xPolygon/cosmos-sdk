@@ -3,16 +3,14 @@ package staking_test
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/log"
-
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	authKeeper "github.com/cosmos/cosmos-sdk/x/auth/keeper"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/cosmos/cosmos-sdk/x/staking/testutil"
 	"github.com/cosmos/cosmos-sdk/x/staking/types"
+	"github.com/stretchr/testify/require"
 )
 
 func TestItCreatesModuleAccountOnInitBlock(t *testing.T) {

@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"cosmossdk.io/errors"
-
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/crypto/types/multisig"
 	signingtypes "github.com/cosmos/cosmos-sdk/types/tx/signing"
