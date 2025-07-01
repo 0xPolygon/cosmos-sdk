@@ -8,7 +8,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	cmttypes "github.com/cometbft/cometbft/types"
 	"io"
 	"os"
 	"path"
@@ -18,6 +17,7 @@ import (
 	"cosmossdk.io/simapp"
 	hApp "github.com/0xPolygon/heimdall-v2/app"
 	abci "github.com/cometbft/cometbft/abci/types"
+	cmttypes "github.com/cometbft/cometbft/types"
 	dbm "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -174,8 +174,8 @@ func setupApp(t *testing.T, tempDir string) (*hApp.HeimdallApp, context.Context,
 
 	clientCtx := client.Context{}.WithCodec(app.AppCodec())
 	appGenesis := genutiltypes.AppGenesis{
-		ChainID:  "theChainId",
-		AppState: stateBytes,
+		ChainID:         "theChainId",
+		AppState:        stateBytes,
 		ConsensusParams: &cmttypes.ConsensusParams{},
 	}
 
