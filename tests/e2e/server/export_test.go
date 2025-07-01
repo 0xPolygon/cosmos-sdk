@@ -8,6 +8,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	cmttypes "github.com/cometbft/cometbft/types"
 	"io"
 	"os"
 	"path"
@@ -175,9 +176,7 @@ func setupApp(t *testing.T, tempDir string) (*hApp.HeimdallApp, context.Context,
 	appGenesis := genutiltypes.AppGenesis{
 		ChainID:  "theChainId",
 		AppState: stateBytes,
-		ConsensusParams: &genutiltypes.ConsensusGenesis{
-			Validators: nil,
-		},
+		ConsensusParams: &cmttypes.ConsensusParams{},
 	}
 
 	// save genesis file
