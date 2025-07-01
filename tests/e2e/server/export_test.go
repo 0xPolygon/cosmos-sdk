@@ -175,7 +175,7 @@ func setupApp(t *testing.T, tempDir string) (*hApp.HeimdallApp, context.Context,
 	appGenesis := genutiltypes.AppGenesis{
 		ChainID:  "theChainId",
 		AppState: stateBytes,
-		Consensus: &genutiltypes.ConsensusGenesis{
+		ConsensusParams: &genutiltypes.ConsensusGenesis{
 			Validators: nil,
 		},
 	}
