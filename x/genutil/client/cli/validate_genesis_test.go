@@ -22,6 +22,7 @@ var v037Exported = `{
 	"app_hash": "",
 	"app_state": {},
 	"chain_id": "test",
+	"initial_height": "-1",
 	"consensus_params": {
 		"block": {
 		"max_bytes": "22020096",
