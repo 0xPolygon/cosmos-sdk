@@ -4,9 +4,8 @@ import (
 	"errors"
 	"sort"
 
-	ics23 "github.com/cosmos/ics23/go"
-
 	sdkmaps "cosmossdk.io/store/internal/maps"
+	ics23 "github.com/cosmos/ics23/go"
 )
 
 var (

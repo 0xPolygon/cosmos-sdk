@@ -2,7 +2,6 @@ package v2
 
 import (
 	"cosmossdk.io/core/store"
-
 	"github.com/cosmos/cosmos-sdk/runtime"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	v1 "github.com/cosmos/cosmos-sdk/x/distribution/migrations/v1"

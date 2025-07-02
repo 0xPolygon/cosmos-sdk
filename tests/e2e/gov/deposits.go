@@ -5,10 +5,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/stretchr/testify/suite"
-
 	"cosmossdk.io/math"
-
 	"github.com/cosmos/cosmos-sdk/testutil"
 	"github.com/cosmos/cosmos-sdk/testutil/network"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -16,6 +13,7 @@ import (
 	govclitestutil "github.com/cosmos/cosmos-sdk/x/gov/client/testutil"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 	"github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
+	"github.com/stretchr/testify/suite"
 )
 
 type DepositTestSuite struct {

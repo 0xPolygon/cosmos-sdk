@@ -3,11 +3,7 @@ package keeper_test
 import (
 	"testing"
 
-	"github.com/golang/mock/gomock"
-	"github.com/stretchr/testify/require"
-
 	storetypes "cosmossdk.io/store/types"
-
 	addresscodec "github.com/cosmos/cosmos-sdk/codec/address"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	"github.com/cosmos/cosmos-sdk/testutil"
@@ -17,6 +13,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/crisis/keeper"
 	crisistestutil "github.com/cosmos/cosmos-sdk/x/crisis/testutil"
 	"github.com/cosmos/cosmos-sdk/x/crisis/types"
+	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func TestLogger(t *testing.T) {

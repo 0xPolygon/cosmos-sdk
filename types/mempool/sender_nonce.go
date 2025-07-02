@@ -8,10 +8,9 @@ import (
 	"math/rand" // #nosec // math/rand is used for random selection and seeded from crypto/rand
 	"sync"
 
-	"github.com/huandu/skiplist"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/signing"
+	"github.com/huandu/skiplist"
 )
 
 var (

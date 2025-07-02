@@ -8,16 +8,15 @@ import (
 	"sort"
 	"testing"
 
-	dbm "github.com/cosmos/cosmos-db"
-	"github.com/cosmos/iavl"
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/log"
 	"cosmossdk.io/store/cachekv"
 	"cosmossdk.io/store/internal/kv"
 	"cosmossdk.io/store/metrics"
 	"cosmossdk.io/store/types"
 	"cosmossdk.io/store/wrapper"
+	dbm "github.com/cosmos/cosmos-db"
+	"github.com/cosmos/iavl"
+	"github.com/stretchr/testify/require"
 )
 
 var (

@@ -4,15 +4,11 @@ import (
 	"testing"
 	"time"
 
-	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
-	"gotest.tools/v3/assert"
-	"pgregory.net/rapid"
-
 	"cosmossdk.io/core/appmodule"
 	"cosmossdk.io/log"
 	"cosmossdk.io/math"
 	storetypes "cosmossdk.io/store/types"
-
+	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	"github.com/cosmos/cosmos-sdk/codec"
 	addresscodec "github.com/cosmos/cosmos-sdk/codec/address"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -35,6 +31,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/staking"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	"gotest.tools/v3/assert"
+	"pgregory.net/rapid"
 )
 
 var (

@@ -8,7 +8,6 @@ import (
 	storetypes "cosmossdk.io/core/store"
 	"cosmossdk.io/log"
 	"cosmossdk.io/math"
-
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/mint/types"

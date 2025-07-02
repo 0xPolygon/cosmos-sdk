@@ -6,9 +6,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/x/tx/signing/textual/internal/cbor"
+	"github.com/stretchr/testify/require"
 )
 
 var (

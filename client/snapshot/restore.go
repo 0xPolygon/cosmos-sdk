@@ -4,13 +4,11 @@ import (
 	"path/filepath"
 	"strconv"
 
-	dbm "github.com/cosmos/cosmos-db"
-	"github.com/spf13/cobra"
-
 	"cosmossdk.io/log"
-
+	dbm "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/server"
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
+	"github.com/spf13/cobra"
 )
 
 // RestoreSnapshotCmd returns a command to restore a snapshot

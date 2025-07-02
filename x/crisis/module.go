@@ -5,16 +5,11 @@ import (
 	"encoding/json"
 	"fmt"
 
-	gwruntime "github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"github.com/spf13/cast"
-	"github.com/spf13/cobra"
-
 	modulev1 "cosmossdk.io/api/cosmos/crisis/module/v1"
 	"cosmossdk.io/core/address"
 	"cosmossdk.io/core/appmodule"
 	"cosmossdk.io/core/store"
 	"cosmossdk.io/depinject"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -27,6 +22,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/crisis/keeper"
 	"github.com/cosmos/cosmos-sdk/x/crisis/types"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
+	gwruntime "github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/spf13/cast"
+	"github.com/spf13/cobra"
 )
 
 // ConsensusVersion defines the current x/crisis module consensus version.

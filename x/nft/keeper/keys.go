@@ -5,7 +5,6 @@ import (
 
 	"cosmossdk.io/x/nft"
 	"cosmossdk.io/x/nft/internal/conv"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/address"
 )

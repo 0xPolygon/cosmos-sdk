@@ -4,11 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/codes"
-	grpcstatus "google.golang.org/grpc/status"
-	"google.golang.org/protobuf/reflect/protoreflect"
-
 	bankv1beta1 "cosmossdk.io/api/cosmos/bank/v1beta1"
 	txconfigv1 "cosmossdk.io/api/cosmos/tx/config/v1"
 	"cosmossdk.io/core/address"
@@ -16,7 +11,6 @@ import (
 	"cosmossdk.io/depinject"
 	txsigning "cosmossdk.io/x/tx/signing"
 	"cosmossdk.io/x/tx/signing/textual"
-
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -29,6 +23,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth/tx"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/cosmos/cosmos-sdk/x/bank/types"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	grpcstatus "google.golang.org/grpc/status"
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 func init() {

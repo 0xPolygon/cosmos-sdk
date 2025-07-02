@@ -4,10 +4,9 @@ import (
 	"io/fs"
 	"net/http"
 
-	"github.com/gorilla/mux"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/docs"
+	"github.com/gorilla/mux"
 )
 
 // RegisterSwaggerAPI provides a common function which registers swagger route with API Server

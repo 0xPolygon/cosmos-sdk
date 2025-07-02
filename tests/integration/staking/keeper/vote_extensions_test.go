@@ -5,16 +5,11 @@ import (
 	"sort"
 	"testing"
 
-	abci "github.com/cometbft/cometbft/abci/types"
-	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
-	protoio "github.com/cosmos/gogoproto/io"
-	"github.com/cosmos/gogoproto/proto"
-	"gotest.tools/v3/assert"
-
 	"cosmossdk.io/core/comet"
 	"cosmossdk.io/core/header"
 	"cosmossdk.io/math"
-
+	abci "github.com/cometbft/cometbft/abci/types"
+	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	ed25519 "github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
@@ -22,6 +17,9 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/staking/testutil"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	protoio "github.com/cosmos/gogoproto/io"
+	"github.com/cosmos/gogoproto/proto"
+	"gotest.tools/v3/assert"
 )
 
 const chainID = "chain-id-123"

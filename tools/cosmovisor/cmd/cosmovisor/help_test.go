@@ -3,9 +3,8 @@ package main
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-
 	"cosmossdk.io/tools/cosmovisor"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGetHelpText(t *testing.T) {

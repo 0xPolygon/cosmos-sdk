@@ -5,11 +5,10 @@ import (
 	"os"
 	"path"
 
-	"github.com/rs/zerolog"
-	"github.com/spf13/cobra"
-
 	"cosmossdk.io/log"
 	"cosmossdk.io/tools/cosmovisor"
+	"github.com/rs/zerolog"
+	"github.com/spf13/cobra"
 )
 
 func NewAddUpgradeCmd() *cobra.Command {

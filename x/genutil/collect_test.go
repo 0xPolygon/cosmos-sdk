@@ -6,8 +6,6 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/cosmos/gogoproto/proto"
-
 	"github.com/cosmos/cosmos-sdk/codec"
 	addresscodec "github.com/cosmos/cosmos-sdk/codec/address"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -16,6 +14,7 @@ import (
 	bankexported "github.com/cosmos/cosmos-sdk/x/bank/exported"
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	"github.com/cosmos/cosmos-sdk/x/genutil/types"
+	"github.com/cosmos/gogoproto/proto"
 )
 
 type doNothingUnmarshalJSON struct {

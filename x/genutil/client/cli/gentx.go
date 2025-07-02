@@ -9,11 +9,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/spf13/cobra"
-
 	address "cosmossdk.io/core/address"
 	"cosmossdk.io/errors"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
@@ -26,6 +23,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	"github.com/cosmos/cosmos-sdk/x/genutil/types"
 	"github.com/cosmos/cosmos-sdk/x/staking/client/cli"
+	"github.com/spf13/cobra"
 )
 
 // GenTxCmd builds the application's gentx command.

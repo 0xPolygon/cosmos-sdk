@@ -12,6 +12,7 @@ import (
 	"strings"
 	"time"
 
+	pruningtypes "cosmossdk.io/store/pruning/types"
 	"github.com/cometbft/cometbft/abci/server"
 	cmtcmd "github.com/cometbft/cometbft/cmd/cometbft/commands"
 	cmtcfg "github.com/cometbft/cometbft/config"
@@ -28,15 +29,6 @@ import (
 	"github.com/cometbft/cometbft/store"
 	cmttypes "github.com/cometbft/cometbft/types"
 	dbm "github.com/cosmos/cosmos-db"
-	"github.com/hashicorp/go-metrics"
-	"github.com/spf13/cobra"
-	"github.com/spf13/pflag"
-	"golang.org/x/sync/errgroup"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
-
-	pruningtypes "cosmossdk.io/store/pruning/types"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -49,6 +41,12 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/mempool"
 	"github.com/cosmos/cosmos-sdk/version"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
+	"github.com/hashicorp/go-metrics"
+	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
+	"golang.org/x/sync/errgroup"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 const (

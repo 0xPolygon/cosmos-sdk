@@ -5,13 +5,10 @@ import (
 	"encoding/json"
 	"fmt"
 
-	gwruntime "github.com/grpc-ecosystem/grpc-gateway/runtime"
-
 	modulev1 "cosmossdk.io/api/cosmos/mint/module/v1"
 	"cosmossdk.io/core/appmodule"
 	"cosmossdk.io/core/store"
 	"cosmossdk.io/depinject"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -24,6 +21,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/mint/keeper"
 	"github.com/cosmos/cosmos-sdk/x/mint/simulation"
 	"github.com/cosmos/cosmos-sdk/x/mint/types"
+	gwruntime "github.com/grpc-ecosystem/grpc-gateway/runtime"
 )
 
 // ConsensusVersion defines the current x/mint module consensus version.

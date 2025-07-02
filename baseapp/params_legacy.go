@@ -39,7 +39,6 @@ import (
 	"fmt"
 
 	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 

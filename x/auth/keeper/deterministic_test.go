@@ -6,13 +6,9 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"github.com/stretchr/testify/suite"
-	"pgregory.net/rapid"
-
 	"cosmossdk.io/core/header"
 	corestore "cosmossdk.io/core/store"
 	storetypes "cosmossdk.io/store/types"
-
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	"github.com/cosmos/cosmos-sdk/runtime"
@@ -24,6 +20,8 @@ import (
 	authcodec "github.com/cosmos/cosmos-sdk/x/auth/codec"
 	"github.com/cosmos/cosmos-sdk/x/auth/keeper"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
+	"github.com/stretchr/testify/suite"
+	"pgregory.net/rapid"
 )
 
 type DeterministicTestSuite struct {

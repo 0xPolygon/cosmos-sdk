@@ -7,12 +7,11 @@ import (
 	"io"
 	"sort"
 
-	"github.com/pkg/errors"
-	"google.golang.org/protobuf/reflect/protoreflect"
-
 	authapi "cosmossdk.io/api/cosmos/auth/v1beta1"
 	"cosmossdk.io/api/cosmos/crypto/multisig"
 	"cosmossdk.io/math"
+	"github.com/pkg/errors"
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 // cosmosIntEncoder provides legacy compatible encoding for cosmos.Int types. In gogo messages these are sometimes

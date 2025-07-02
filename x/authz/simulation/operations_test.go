@@ -5,13 +5,9 @@ import (
 	"testing"
 	"time"
 
-	abci "github.com/cometbft/cometbft/abci/types"
-	"github.com/cosmos/gogoproto/proto"
-	"github.com/stretchr/testify/suite"
-
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/log"
-
+	abci "github.com/cometbft/cometbft/abci/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -27,6 +23,8 @@ import (
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
 	banktestutil "github.com/cosmos/cosmos-sdk/x/bank/testutil"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+	"github.com/cosmos/gogoproto/proto"
+	"github.com/stretchr/testify/suite"
 )
 
 type SimTestSuite struct {

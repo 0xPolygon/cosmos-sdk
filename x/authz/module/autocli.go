@@ -5,7 +5,6 @@ import (
 
 	authzv1beta1 "cosmossdk.io/api/cosmos/authz/v1beta1"
 	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
-
 	"github.com/cosmos/cosmos-sdk/version"
 	bank "github.com/cosmos/cosmos-sdk/x/bank/types"
 )

@@ -3,9 +3,8 @@ package authz
 import (
 	context "context"
 
-	"github.com/cosmos/gogoproto/proto"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/gogoproto/proto"
 )
 
 // Authorization represents the interface of various Authorization types implemented

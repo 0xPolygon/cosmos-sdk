@@ -4,11 +4,9 @@ import (
 	"context"
 	"strings"
 
-	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
-
 	"cosmossdk.io/collections"
 	"cosmossdk.io/math"
-
+	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 )

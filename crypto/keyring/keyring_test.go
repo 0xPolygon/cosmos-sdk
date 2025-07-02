@@ -13,9 +13,6 @@ import (
 
 	"github.com/99designs/keyring"
 	cmtcrypto "github.com/cometbft/cometbft/crypto"
-	"github.com/stretchr/testify/require"
-	"golang.org/x/crypto/bcrypt"
-
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/crypto"
@@ -29,6 +26,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
+	"github.com/stretchr/testify/require"
+	"golang.org/x/crypto/bcrypt"
 )
 
 const (

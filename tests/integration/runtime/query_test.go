@@ -3,18 +3,11 @@ package runtime
 import (
 	"testing"
 
-	"github.com/cosmos/gogoproto/proto"
-	"google.golang.org/protobuf/reflect/protoreflect"
-	"google.golang.org/protobuf/reflect/protoregistry"
-	"google.golang.org/protobuf/types/descriptorpb"
-	"gotest.tools/v3/assert"
-
 	appv1alpha1 "cosmossdk.io/api/cosmos/app/v1alpha1"
 	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
 	reflectionv1 "cosmossdk.io/api/cosmos/reflection/v1"
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/log"
-
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/testutil/configurator"
@@ -26,6 +19,11 @@ import (
 	_ "github.com/cosmos/cosmos-sdk/x/consensus"
 	_ "github.com/cosmos/cosmos-sdk/x/params"
 	_ "github.com/cosmos/cosmos-sdk/x/staking"
+	"github.com/cosmos/gogoproto/proto"
+	"google.golang.org/protobuf/reflect/protoreflect"
+	"google.golang.org/protobuf/reflect/protoregistry"
+	"google.golang.org/protobuf/types/descriptorpb"
+	"gotest.tools/v3/assert"
 )
 
 type fixture struct {

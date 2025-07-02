@@ -1,14 +1,13 @@
 package testutil
 
 import (
-	"github.com/cosmos/cosmos-proto/anyutil"
-	"google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/types/known/anypb"
-
 	"cosmossdk.io/api/cosmos/crypto/secp256k1"
 	signingv1beta1 "cosmossdk.io/api/cosmos/tx/signing/v1beta1"
 	txv1beta1 "cosmossdk.io/api/cosmos/tx/v1beta1"
 	"cosmossdk.io/x/tx/signing"
+	"github.com/cosmos/cosmos-proto/anyutil"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/anypb"
 )
 
 type HandlerArgumentOptions struct {

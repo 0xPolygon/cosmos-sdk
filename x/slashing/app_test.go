@@ -4,13 +4,10 @@ import (
 	"errors"
 	"testing"
 
-	abci "github.com/cometbft/cometbft/abci/types"
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/log"
 	"cosmossdk.io/math"
-
+	abci "github.com/cometbft/cometbft/abci/types"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	"github.com/cosmos/cosmos-sdk/testutil/configurator"
@@ -23,6 +20,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/slashing/types"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	"github.com/stretchr/testify/require"
 )
 
 var (

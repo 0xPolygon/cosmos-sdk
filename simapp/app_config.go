@@ -3,8 +3,6 @@ package simapp
 import (
 	"time"
 
-	"google.golang.org/protobuf/types/known/durationpb"
-
 	runtimev1alpha1 "cosmossdk.io/api/cosmos/app/runtime/v1alpha1"
 	appv1alpha1 "cosmossdk.io/api/cosmos/app/v1alpha1"
 	authmodulev1 "cosmossdk.io/api/cosmos/auth/module/v1"
@@ -39,7 +37,6 @@ import (
 	_ "cosmossdk.io/x/nft/module" // import for side-effects
 	_ "cosmossdk.io/x/upgrade"    // import for side-effects
 	upgradetypes "cosmossdk.io/x/upgrade/types"
-
 	"github.com/cosmos/cosmos-sdk/runtime"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	_ "github.com/cosmos/cosmos-sdk/x/auth/tx/config" // import for side-effects
@@ -72,6 +69,7 @@ import (
 	slashingtypes "github.com/cosmos/cosmos-sdk/x/slashing/types"
 	_ "github.com/cosmos/cosmos-sdk/x/staking" // import for side-effects
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	"google.golang.org/protobuf/types/known/durationpb"
 )
 
 var (

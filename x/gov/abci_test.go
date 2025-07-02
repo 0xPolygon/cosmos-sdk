@@ -1,18 +1,13 @@
 package gov_test
 
 import (
+	"math/big"
+	"math/rand"
 	"testing"
 	"time"
 
-	"math/big"
-	"math/rand"
-
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/collections"
 	"cosmossdk.io/math"
-
 	sideTxs "github.com/0xPolygon/heimdall-v2/sidetxs"
 	stakeKeeper "github.com/0xPolygon/heimdall-v2/x/stake/keeper"
 	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
@@ -27,6 +22,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/gov/types"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 	"github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/stretchr/testify/require"
 )
 
 func TestUnregisteredProposal_InactiveProposalFails(t *testing.T) {

@@ -7,12 +7,11 @@ import (
 	"testing"
 	"time"
 
+	"cosmossdk.io/store/snapshots"
+	"cosmossdk.io/store/snapshots/types"
 	db "github.com/cosmos/cosmos-db"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-
-	"cosmossdk.io/store/snapshots"
-	"cosmossdk.io/store/snapshots/types"
 )
 
 func setupStore(t *testing.T) *snapshots.Store {

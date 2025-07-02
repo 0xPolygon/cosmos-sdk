@@ -3,7 +3,6 @@ package legacytx
 import (
 	errorsmod "cosmossdk.io/errors"
 	"cosmossdk.io/math"
-
 	"github.com/cosmos/cosmos-sdk/codec/legacy"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"

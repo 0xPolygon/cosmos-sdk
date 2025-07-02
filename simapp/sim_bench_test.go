@@ -6,10 +6,6 @@ import (
 	"testing"
 
 	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
-	flag "github.com/spf13/pflag"
-	"github.com/spf13/viper"
-	"github.com/stretchr/testify/require"
-
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/server"
@@ -17,6 +13,9 @@ import (
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
 	simcli "github.com/cosmos/cosmos-sdk/x/simulation/client/cli"
+	flag "github.com/spf13/pflag"
+	"github.com/spf13/viper"
+	"github.com/stretchr/testify/require"
 )
 
 var FlagEnableBenchStreamingValue bool

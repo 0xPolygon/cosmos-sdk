@@ -3,14 +3,6 @@ package rapidgen
 import (
 	"fmt"
 
-	cosmos_proto "github.com/cosmos/cosmos-proto"
-	"github.com/cosmos/cosmos-proto/rapidproto"
-	gogoproto "github.com/cosmos/gogoproto/proto"
-	"google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/reflect/protoreflect"
-	"google.golang.org/protobuf/reflect/protoregistry"
-	"pgregory.net/rapid"
-
 	authapi "cosmossdk.io/api/cosmos/auth/v1beta1"
 	authzapi "cosmossdk.io/api/cosmos/authz/v1beta1"
 	bankapi "cosmossdk.io/api/cosmos/bank/v1beta1"
@@ -30,7 +22,8 @@ import (
 	evidencetypes "cosmossdk.io/x/evidence/types"
 	feegranttypes "cosmossdk.io/x/feegrant"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
-
+	cosmos_proto "github.com/cosmos/cosmos-proto"
+	"github.com/cosmos/cosmos-proto/rapidproto"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	vestingtypes "github.com/cosmos/cosmos-sdk/x/auth/vesting/types"
 	authztypes "github.com/cosmos/cosmos-sdk/x/authz"
@@ -43,6 +36,11 @@ import (
 	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
 	"github.com/cosmos/cosmos-sdk/x/params/types/proposal"
 	slashingtypes "github.com/cosmos/cosmos-sdk/x/slashing/types"
+	gogoproto "github.com/cosmos/gogoproto/proto"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protoreflect"
+	"google.golang.org/protobuf/reflect/protoregistry"
+	"pgregory.net/rapid"
 )
 
 type GeneratedType struct {

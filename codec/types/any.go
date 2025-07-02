@@ -3,12 +3,10 @@ package types
 import (
 	fmt "fmt"
 
+	errorsmod "cosmossdk.io/errors"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/gogoproto/proto"
 	protov2 "google.golang.org/protobuf/proto"
-
-	errorsmod "cosmossdk.io/errors"
-
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 // nolint:revive // XXX is reqired for proto compatibility

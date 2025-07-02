@@ -5,13 +5,12 @@ import (
 	"runtime/debug"
 	"strings"
 
+	"cosmossdk.io/client/v2/internal/strcase"
 	cosmos_proto "github.com/cosmos/cosmos-proto"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/reflect/protoregistry"
 	"google.golang.org/protobuf/types/dynamicpb"
-
-	"cosmossdk.io/client/v2/internal/strcase"
 )
 
 // get build info to verify later if comment is supported

@@ -3,9 +3,8 @@ package types_test
 import (
 	"testing"
 
-	"gotest.tools/v3/assert"
-
 	"cosmossdk.io/store/types"
+	"gotest.tools/v3/assert"
 )
 
 func TestPrefixEndBytes(t *testing.T) {

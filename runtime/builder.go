@@ -5,7 +5,6 @@ import (
 	"io"
 
 	dbm "github.com/cosmos/cosmos-db"
-
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/version"

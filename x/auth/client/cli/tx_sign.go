@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/spf13/cobra"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
@@ -13,6 +11,7 @@ import (
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authclient "github.com/cosmos/cosmos-sdk/x/auth/client"
+	"github.com/spf13/cobra"
 )
 
 const (

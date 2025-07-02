@@ -7,11 +7,10 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-	"google.golang.org/protobuf/reflect/protoreflect"
-
 	"cosmossdk.io/math"
 	"cosmossdk.io/x/tx/signing/textual"
+	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 func TestIntJSONTestcases(t *testing.T) {

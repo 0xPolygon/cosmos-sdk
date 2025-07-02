@@ -4,10 +4,9 @@ import (
 	"context"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/x/evidence/exported"
 	"cosmossdk.io/x/evidence/types"
+	"github.com/stretchr/testify/require"
 )
 
 func testHandler(context.Context, exported.Evidence) error { return nil }

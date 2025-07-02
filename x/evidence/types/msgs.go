@@ -3,12 +3,10 @@ package types
 import (
 	"fmt"
 
-	"github.com/cosmos/gogoproto/proto"
-
 	"cosmossdk.io/x/evidence/exported"
-
 	"github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/gogoproto/proto"
 )
 
 var (

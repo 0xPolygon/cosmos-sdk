@@ -4,18 +4,16 @@ import (
 	"testing"
 	"time"
 
-	ocproto "github.com/cometbft/cometbft/proto/tendermint/types"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
-
 	storetypes "cosmossdk.io/store/types"
 	"cosmossdk.io/x/feegrant"
 	"cosmossdk.io/x/feegrant/module"
-
+	ocproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	moduletestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestFilteredFeeValidAllow(t *testing.T) {

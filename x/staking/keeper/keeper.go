@@ -4,14 +4,12 @@ import (
 	"context"
 	"fmt"
 
-	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
-	abci "github.com/cometbft/cometbft/abci/types"
-
 	addresscodec "cosmossdk.io/core/address"
 	storetypes "cosmossdk.io/core/store"
 	"cosmossdk.io/log"
 	"cosmossdk.io/math"
-
+	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
+	abci "github.com/cometbft/cometbft/abci/types"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/staking/types"

@@ -8,14 +8,13 @@ import (
 	"regexp"
 	"testing"
 
+	basev1beta1 "cosmossdk.io/api/cosmos/base/v1beta1"
+	"cosmossdk.io/x/tx/internal/testpb"
+	"cosmossdk.io/x/tx/signing/textual"
 	"github.com/google/go-cmp/cmp"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/testing/protocmp"
 	tspb "google.golang.org/protobuf/types/known/timestamppb"
-
-	basev1beta1 "cosmossdk.io/api/cosmos/base/v1beta1"
-	"cosmossdk.io/x/tx/internal/testpb"
-	"cosmossdk.io/x/tx/signing/textual"
 )
 
 func FuzzIntValueRendererParse(f *testing.F) {

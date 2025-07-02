@@ -4,9 +4,8 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/cockroachdb/errors"
-
 	"cosmossdk.io/depinject/internal/graphviz"
+	"github.com/cockroachdb/errors"
 )
 
 // ManyPerContainerType marks a type which automatically gets grouped together. For an ManyPerContainerType T,

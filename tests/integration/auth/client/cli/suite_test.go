@@ -7,13 +7,10 @@ import (
 	"strings"
 	"testing"
 
-	abci "github.com/cometbft/cometbft/abci/types"
-	rpcclientmock "github.com/cometbft/cometbft/rpc/client/mock"
-	"github.com/stretchr/testify/suite"
-
 	"cosmossdk.io/core/address"
 	"cosmossdk.io/math"
-
+	abci "github.com/cometbft/cometbft/abci/types"
+	rpcclientmock "github.com/cometbft/cometbft/rpc/client/mock"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	addresscodec "github.com/cosmos/cosmos-sdk/codec/address"
@@ -36,6 +33,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/gov"
 	govtestutil "github.com/cosmos/cosmos-sdk/x/gov/client/testutil"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
+	"github.com/stretchr/testify/suite"
 )
 
 type CLITestSuite struct {

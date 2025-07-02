@@ -3,10 +3,7 @@ package v2_test
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	storetypes "cosmossdk.io/store/types"
-
 	"github.com/cosmos/cosmos-sdk/codec"
 	addresscodec "github.com/cosmos/cosmos-sdk/codec/address"
 	"github.com/cosmos/cosmos-sdk/runtime"
@@ -21,6 +18,7 @@ import (
 	groupkeeper "github.com/cosmos/cosmos-sdk/x/group/keeper"
 	v2 "github.com/cosmos/cosmos-sdk/x/group/migrations/v2"
 	groupmodule "github.com/cosmos/cosmos-sdk/x/group/module"
+	"github.com/stretchr/testify/require"
 )
 
 var (

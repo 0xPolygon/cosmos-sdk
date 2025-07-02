@@ -1,11 +1,20 @@
 package codec_test
 
 import (
-	"github.com/cosmos/cosmos-sdk/codec/address"
 	"math"
 	"reflect"
 	"testing"
 
+	bankv1beta1 "cosmossdk.io/api/cosmos/bank/v1beta1"
+	basev1beta1 "cosmossdk.io/api/cosmos/base/v1beta1"
+	sdkmath "cosmossdk.io/math"
+	"cosmossdk.io/x/tx/signing"
+	"github.com/cosmos/cosmos-sdk/codec"
+	"github.com/cosmos/cosmos-sdk/codec/address"
+	"github.com/cosmos/cosmos-sdk/codec/types"
+	"github.com/cosmos/cosmos-sdk/testutil/testdata"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/cosmos/gogoproto/proto"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc/codes"
@@ -13,17 +22,6 @@ import (
 	"google.golang.org/grpc/status"
 	protov2 "google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoregistry"
-
-	bankv1beta1 "cosmossdk.io/api/cosmos/bank/v1beta1"
-	basev1beta1 "cosmossdk.io/api/cosmos/base/v1beta1"
-	sdkmath "cosmossdk.io/math"
-	"cosmossdk.io/x/tx/signing"
-
-	"github.com/cosmos/cosmos-sdk/codec"
-	"github.com/cosmos/cosmos-sdk/codec/types"
-	"github.com/cosmos/cosmos-sdk/testutil/testdata"
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 )
 
 func createTestInterfaceRegistry() types.InterfaceRegistry {

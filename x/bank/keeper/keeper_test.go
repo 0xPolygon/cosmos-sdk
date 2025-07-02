@@ -10,18 +10,14 @@ import (
 	"testing"
 	"time"
 
-	abci "github.com/cometbft/cometbft/abci/types"
-	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
-	cmttime "github.com/cometbft/cometbft/types/time"
-	"github.com/golang/mock/gomock"
-	"github.com/stretchr/testify/suite"
-
 	errorsmod "cosmossdk.io/errors"
 	"cosmossdk.io/log"
 	"cosmossdk.io/math"
 	storetypes "cosmossdk.io/store/types"
-
 	topupTypes "github.com/0xPolygon/heimdall-v2/x/topup/types"
+	abci "github.com/cometbft/cometbft/abci/types"
+	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
+	cmttime "github.com/cometbft/cometbft/types/time"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/codec/address"
 	"github.com/cosmos/cosmos-sdk/runtime"
@@ -37,6 +33,8 @@ import (
 	banktestutil "github.com/cosmos/cosmos-sdk/x/bank/testutil"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
+	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/suite"
 )
 
 const (

@@ -2,7 +2,6 @@ package keeper_test
 
 import (
 	sdkmath "cosmossdk.io/math"
-
 	topupTypes "github.com/0xPolygon/heimdall-v2/x/topup/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"

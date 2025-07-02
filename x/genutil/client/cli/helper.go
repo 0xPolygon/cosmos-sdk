@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	errorsmod "cosmossdk.io/errors"
-
 	milestonestypes "github.com/0xPolygon/heimdall-v2/x/milestone/types"
 	staketypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"

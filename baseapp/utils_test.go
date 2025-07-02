@@ -13,11 +13,6 @@ import (
 	"testing"
 	"unsafe"
 
-	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
-	cmttypes "github.com/cometbft/cometbft/types"
-	dbm "github.com/cosmos/cosmos-db"
-	"github.com/stretchr/testify/require"
-
 	runtimev1alpha1 "cosmossdk.io/api/cosmos/app/runtime/v1alpha1"
 	appv1alpha1 "cosmossdk.io/api/cosmos/app/v1alpha1"
 	"cosmossdk.io/core/address"
@@ -26,7 +21,9 @@ import (
 	errorsmod "cosmossdk.io/errors"
 	"cosmossdk.io/math"
 	storetypes "cosmossdk.io/store/types"
-
+	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
+	cmttypes "github.com/cometbft/cometbft/types"
+	dbm "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	baseapptestutil "github.com/cosmos/cosmos-sdk/baseapp/testutil"
 	"github.com/cosmos/cosmos-sdk/client"
@@ -51,6 +48,7 @@ import (
 	_ "github.com/cosmos/cosmos-sdk/x/mint"
 	_ "github.com/cosmos/cosmos-sdk/x/params"
 	_ "github.com/cosmos/cosmos-sdk/x/staking"
+	"github.com/stretchr/testify/require"
 )
 
 var ParamStoreKey = []byte("paramstore")

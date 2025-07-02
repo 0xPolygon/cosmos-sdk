@@ -7,12 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cometbft/cometbft/crypto"
-	"github.com/golang/mock/gomock"
-	"github.com/stretchr/testify/require"
-
 	storetypes "cosmossdk.io/store/types"
-
+	"github.com/cometbft/cometbft/crypto"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
@@ -26,6 +22,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth/testutil"
 	"github.com/cosmos/cosmos-sdk/x/auth/tx"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
+	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func TestDeductFeesNoDelegation(t *testing.T) {

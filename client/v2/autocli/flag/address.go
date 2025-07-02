@@ -4,17 +4,15 @@ import (
 	"context"
 	"fmt"
 
-	"google.golang.org/protobuf/reflect/protoreflect"
-
 	"cosmossdk.io/client/v2/autocli/keyring"
 	"cosmossdk.io/core/address"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/codec/types"
 	cryptocodec "github.com/cosmos/cosmos-sdk/crypto/codec"
 	sdkkeyring "github.com/cosmos/cosmos-sdk/crypto/keyring"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 type addressStringType struct{}

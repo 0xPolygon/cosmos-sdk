@@ -6,10 +6,9 @@ import (
 	"testing"
 
 	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
-	"github.com/stretchr/testify/require"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
+	"github.com/stretchr/testify/require"
 )
 
 func TestLegacyParamChange(t *testing.T) {

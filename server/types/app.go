@@ -4,19 +4,17 @@ import (
 	"encoding/json"
 	"io"
 
-	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
-	cmttypes "github.com/cometbft/cometbft/types"
-	dbm "github.com/cosmos/cosmos-db"
-	"github.com/cosmos/gogoproto/grpc"
-	"github.com/spf13/cobra"
-
 	"cosmossdk.io/log"
 	"cosmossdk.io/store/snapshots"
 	storetypes "cosmossdk.io/store/types"
-
+	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
+	cmttypes "github.com/cometbft/cometbft/types"
+	dbm "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/server/api"
 	"github.com/cosmos/cosmos-sdk/server/config"
+	"github.com/cosmos/gogoproto/grpc"
+	"github.com/spf13/cobra"
 )
 
 type (

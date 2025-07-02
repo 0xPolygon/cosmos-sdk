@@ -7,17 +7,11 @@ import (
 	"sort"
 	"strings"
 
-	gwruntime "github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"github.com/spf13/cobra"
-	"golang.org/x/exp/maps"
-	"golang.org/x/exp/slices"
-
 	modulev1 "cosmossdk.io/api/cosmos/gov/module/v1"
 	"cosmossdk.io/core/address"
 	"cosmossdk.io/core/appmodule"
 	store "cosmossdk.io/core/store"
 	"cosmossdk.io/depinject"
-
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -34,6 +28,10 @@ import (
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 	"github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
+	gwruntime "github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/spf13/cobra"
+	"golang.org/x/exp/maps"
+	"golang.org/x/exp/slices"
 )
 
 const ConsensusVersion = 5

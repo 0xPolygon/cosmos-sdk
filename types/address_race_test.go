@@ -5,9 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/require"
-
 	"github.com/cosmos/cosmos-sdk/types"
+	"github.com/stretchr/testify/require"
 )
 
 // generates AccAddress with `prefix` and calls String method

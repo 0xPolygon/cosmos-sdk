@@ -5,14 +5,12 @@ import (
 	"reflect"
 	"testing"
 
-	abci "github.com/cometbft/cometbft/abci/types"
-	"github.com/stretchr/testify/suite"
-
 	"cosmossdk.io/math"
-
+	abci "github.com/cometbft/cometbft/abci/types"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	testdata "github.com/cosmos/cosmos-sdk/testutil/testdata"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/stretchr/testify/suite"
 )
 
 type eventsTestSuite struct {

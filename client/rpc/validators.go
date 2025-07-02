@@ -3,12 +3,11 @@ package rpc
 import (
 	"strconv"
 
-	"github.com/spf13/cobra"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/grpc/cmtservice"
 	"github.com/cosmos/cosmos-sdk/types/query"
+	"github.com/spf13/cobra"
 )
 
 // ValidatorCommand returns the validator set for a given height

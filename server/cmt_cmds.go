@@ -7,17 +7,13 @@ import (
 	"strconv"
 	"strings"
 
+	"cosmossdk.io/log"
 	cmtcfg "github.com/cometbft/cometbft/config"
 	cmtjson "github.com/cometbft/cometbft/libs/json"
 	"github.com/cometbft/cometbft/node"
 	"github.com/cometbft/cometbft/p2p"
 	pvm "github.com/cometbft/cometbft/privval"
 	cmtversion "github.com/cometbft/cometbft/version"
-	"github.com/spf13/cobra"
-	"sigs.k8s.io/yaml"
-
-	"cosmossdk.io/log"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/grpc/cmtservice"
@@ -28,6 +24,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"github.com/cosmos/cosmos-sdk/version"
 	auth "github.com/cosmos/cosmos-sdk/x/auth/client/cli"
+	"github.com/spf13/cobra"
+	"sigs.k8s.io/yaml"
 )
 
 // StatusCommand returns the command to return the status of the network.

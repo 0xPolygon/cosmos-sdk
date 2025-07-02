@@ -3,14 +3,12 @@ package client
 import (
 	"encoding/base64"
 
-	rpchttp "github.com/cometbft/cometbft/rpc/client/http"
-	"github.com/spf13/pflag"
-
 	errorsmod "cosmossdk.io/errors"
-
+	rpchttp "github.com/cometbft/cometbft/rpc/client/http"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/types/query"
+	"github.com/spf13/pflag"
 )
 
 // Paginate returns the correct starting and ending index for a paginated query,

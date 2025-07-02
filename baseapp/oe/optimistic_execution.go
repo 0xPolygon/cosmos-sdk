@@ -8,9 +8,8 @@ import (
 	"sync"
 	"time"
 
-	abci "github.com/cometbft/cometbft/abci/types"
-
 	"cosmossdk.io/log"
+	abci "github.com/cometbft/cometbft/abci/types"
 )
 
 // FinalizeBlockFunc is the function that is called by the OE to finalize the

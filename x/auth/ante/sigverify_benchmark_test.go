@@ -4,10 +4,9 @@ import (
 	"testing"
 
 	cmtcrypto "github.com/cometbft/cometbft/crypto"
-	"github.com/stretchr/testify/require"
-
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256r1"
+	"github.com/stretchr/testify/require"
 )
 
 // This benchmark is used to asses the ante.Secp256k1ToR1GasFactor value

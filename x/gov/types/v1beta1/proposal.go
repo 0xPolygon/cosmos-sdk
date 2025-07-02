@@ -5,14 +5,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cosmos/gogoproto/proto"
-
 	errorsmod "cosmossdk.io/errors"
-
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/x/gov/types"
+	"github.com/cosmos/gogoproto/proto"
 )
 
 // DefaultStartingProposalID is 1

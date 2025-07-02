@@ -7,14 +7,10 @@ import (
 	"io"
 	"testing"
 
-	cmtcrypto "github.com/cometbft/cometbft/crypto"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/core/address"
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/log"
-
+	cmtcrypto "github.com/cometbft/cometbft/crypto"
 	"github.com/cosmos/cosmos-sdk/codec"
 	addresscodec "github.com/cosmos/cosmos-sdk/codec/address"
 	"github.com/cosmos/cosmos-sdk/codec/legacy"
@@ -28,6 +24,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/runtime"
 	"github.com/cosmos/cosmos-sdk/testutil/configurator"
 	"github.com/cosmos/cosmos-sdk/types"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestArmorUnarmorPrivKey(t *testing.T) {

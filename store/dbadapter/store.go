@@ -3,11 +3,10 @@ package dbadapter
 import (
 	"io"
 
-	dbm "github.com/cosmos/cosmos-db"
-
 	"cosmossdk.io/store/cachekv"
 	"cosmossdk.io/store/tracekv"
 	"cosmossdk.io/store/types"
+	dbm "github.com/cosmos/cosmos-db"
 )
 
 // Wrapper type for dbm.Db with implementation of KVStore

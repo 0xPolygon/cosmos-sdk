@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/cockroachdb/errors"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 

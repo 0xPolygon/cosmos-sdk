@@ -3,18 +3,16 @@ package v4_test
 import (
 	"testing"
 
-	"github.com/bits-and-blooms/bitset"
-	gogotypes "github.com/cosmos/gogoproto/types"
-	"github.com/stretchr/testify/require"
-
 	storetypes "cosmossdk.io/store/types"
-
+	"github.com/bits-and-blooms/bitset"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	moduletestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
 	"github.com/cosmos/cosmos-sdk/x/slashing"
 	v4 "github.com/cosmos/cosmos-sdk/x/slashing/migrations/v4"
 	slashingtypes "github.com/cosmos/cosmos-sdk/x/slashing/types"
+	gogotypes "github.com/cosmos/gogoproto/types"
+	"github.com/stretchr/testify/require"
 )
 
 var consAddr = sdk.ConsAddress(sdk.AccAddress([]byte("addr1_______________")))

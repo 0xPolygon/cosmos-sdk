@@ -4,15 +4,13 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/spf13/cobra"
-	"google.golang.org/protobuf/reflect/protoreflect"
-	"sigs.k8s.io/yaml"
-
 	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
 	"cosmossdk.io/client/v2/internal/flags"
 	"cosmossdk.io/client/v2/internal/util"
-
 	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/spf13/cobra"
+	"google.golang.org/protobuf/reflect/protoreflect"
+	"sigs.k8s.io/yaml"
 )
 
 type cmdType int

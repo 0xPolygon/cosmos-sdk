@@ -8,11 +8,7 @@ import (
 	"path"
 	"testing"
 
-	"github.com/spf13/viper"
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/log"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	addresscodec "github.com/cosmos/cosmos-sdk/codec/address"
@@ -28,6 +24,8 @@ import (
 	genutilcli "github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
 	genutiltest "github.com/cosmos/cosmos-sdk/x/genutil/client/testutil"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
+	"github.com/spf13/viper"
+	"github.com/stretchr/testify/require"
 )
 
 func TestAddGenesisAccountCmd(t *testing.T) {

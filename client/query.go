@@ -5,16 +5,14 @@ import (
 	"fmt"
 	"strings"
 
+	"cosmossdk.io/store/rootmulti"
 	"github.com/cockroachdb/errors"
 	abci "github.com/cometbft/cometbft/abci/types"
 	rpcclient "github.com/cometbft/cometbft/rpc/client"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
-
-	"cosmossdk.io/store/rootmulti"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 // GetNode returns an RPC client. If the context's client is not defined, an

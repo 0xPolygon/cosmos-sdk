@@ -6,9 +6,8 @@ import (
 	"math"
 	"sync"
 
-	"github.com/huandu/skiplist"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/huandu/skiplist"
 )
 
 var (

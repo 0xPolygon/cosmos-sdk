@@ -8,6 +8,10 @@ import (
 	"testing"
 	"time"
 
+	bankv1beta1 "cosmossdk.io/api/cosmos/bank/v1beta1"
+	basev1beta1 "cosmossdk.io/api/cosmos/base/v1beta1"
+	"cosmossdk.io/x/tx/internal/testpb"
+	"cosmossdk.io/x/tx/signing/textual"
 	"github.com/cosmos/cosmos-proto/anyutil"
 	"github.com/google/go-cmp/cmp"
 	"github.com/stretchr/testify/require"
@@ -19,11 +23,6 @@ import (
 	"google.golang.org/protobuf/types/known/anypb"
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
-
-	bankv1beta1 "cosmossdk.io/api/cosmos/bank/v1beta1"
-	basev1beta1 "cosmossdk.io/api/cosmos/base/v1beta1"
-	"cosmossdk.io/x/tx/internal/testpb"
-	"cosmossdk.io/x/tx/signing/textual"
 )
 
 type anyJSONTest struct {

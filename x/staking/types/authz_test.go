@@ -3,14 +3,12 @@ package types_test
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	coreheader "cosmossdk.io/core/header"
 	storetypes "cosmossdk.io/store/types"
-
 	"github.com/cosmos/cosmos-sdk/testutil"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	"github.com/stretchr/testify/require"
 )
 
 var (

@@ -4,15 +4,13 @@ import (
 	"testing"
 	"time"
 
-	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
-
 	storetypes "cosmossdk.io/store/types"
 	"cosmossdk.io/x/feegrant"
-
+	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestBasicFeeValidAllow(t *testing.T) {

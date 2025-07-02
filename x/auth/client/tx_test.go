@@ -5,8 +5,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/testutil"
@@ -14,6 +12,7 @@ import (
 	moduletestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
 	"github.com/cosmos/cosmos-sdk/x/auth"
 	authclient "github.com/cosmos/cosmos-sdk/x/auth/client"
+	"github.com/stretchr/testify/require"
 )
 
 func TestParseQueryResponse(t *testing.T) {

@@ -5,10 +5,8 @@ import (
 	"math/big"
 	"testing"
 
-	abci "github.com/cometbft/cometbft/abci/types"
-	"github.com/stretchr/testify/require"
-
 	hApp "github.com/0xPolygon/heimdall-v2/app"
+	abci "github.com/cometbft/cometbft/abci/types"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/cosmos/cosmos-sdk/testutil/testdata"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -17,6 +15,7 @@ import (
 	authtx "github.com/cosmos/cosmos-sdk/x/auth/tx"
 	authTypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/cosmos/cosmos-sdk/x/bank/testutil"
+	"github.com/stretchr/testify/require"
 )
 
 func TestRegisterMsgService(t *testing.T) {

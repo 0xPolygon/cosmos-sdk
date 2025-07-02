@@ -4,12 +4,10 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/ethereum/go-ethereum/common"
-
 	"cosmossdk.io/core/address"
 	errorsmod "cosmossdk.io/errors"
-
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/ethereum/go-ethereum/common"
 )
 
 type hexCodec struct{}

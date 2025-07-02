@@ -3,9 +3,8 @@ package appmodule
 import (
 	"context"
 
-	"google.golang.org/grpc"
-
 	"cosmossdk.io/depinject"
+	"google.golang.org/grpc"
 )
 
 // AppModule is a tag interface for app module implementations to use as a basis

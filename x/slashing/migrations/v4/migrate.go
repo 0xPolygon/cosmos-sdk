@@ -1,15 +1,13 @@
 package v4
 
 import (
-	"github.com/bits-and-blooms/bitset"
-	gogotypes "github.com/cosmos/gogoproto/types"
-
 	"cosmossdk.io/errors"
 	storetypes "cosmossdk.io/store/types"
-
+	"github.com/bits-and-blooms/bitset"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/slashing/types"
+	gogotypes "github.com/cosmos/gogoproto/types"
 )
 
 // Migrate migrates state to consensus version 4. Specifically, the migration

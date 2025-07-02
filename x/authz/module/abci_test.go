@@ -4,13 +4,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cometbft/cometbft/proto/tendermint/types"
-	"github.com/golang/mock/gomock"
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/log"
 	storetypes "cosmossdk.io/store/types"
-
+	"github.com/cometbft/cometbft/proto/tendermint/types"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/codec/address"
 	"github.com/cosmos/cosmos-sdk/runtime"
@@ -24,6 +20,8 @@ import (
 	authzmodule "github.com/cosmos/cosmos-sdk/x/authz/module"
 	authztestutil "github.com/cosmos/cosmos-sdk/x/authz/testutil"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func TestExpiredGrantsQueue(t *testing.T) {

@@ -4,9 +4,8 @@ import (
 	"os"
 	"testing"
 
-	"gotest.tools/v3/assert"
-
 	"cosmossdk.io/tools/confix"
+	"gotest.tools/v3/assert"
 )
 
 func mustReadConfig(t *testing.T, path string) []byte {

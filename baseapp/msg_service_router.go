@@ -4,18 +4,16 @@ import (
 	"context"
 	"fmt"
 
-	gogogrpc "github.com/cosmos/gogoproto/grpc"
-	"github.com/cosmos/gogoproto/proto"
-	"google.golang.org/grpc"
-	"google.golang.org/protobuf/runtime/protoiface"
-
 	errorsmod "cosmossdk.io/errors"
-
 	"github.com/cosmos/cosmos-sdk/baseapp/internal/protocompat"
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	gogogrpc "github.com/cosmos/gogoproto/grpc"
+	"github.com/cosmos/gogoproto/proto"
+	"google.golang.org/grpc"
+	"google.golang.org/protobuf/runtime/protoiface"
 )
 
 // MessageRouter ADR 031 request type routing

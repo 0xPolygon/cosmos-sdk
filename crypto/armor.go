@@ -6,18 +6,16 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/cometbft/cometbft/crypto"
-	"golang.org/x/crypto/argon2"
-	"golang.org/x/crypto/chacha20poly1305"
-	"golang.org/x/crypto/openpgp/armor" //nolint:staticcheck //TODO: remove this dependency
-
 	errorsmod "cosmossdk.io/errors"
-
+	"github.com/cometbft/cometbft/crypto"
 	"github.com/cosmos/cosmos-sdk/codec/legacy"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/bcrypt"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	"github.com/cosmos/cosmos-sdk/crypto/xsalsa20symmetric"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"golang.org/x/crypto/argon2"
+	"golang.org/x/crypto/chacha20poly1305"
+	"golang.org/x/crypto/openpgp/armor" //nolint:staticcheck //TODO: remove this dependency
 )
 
 const (

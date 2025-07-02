@@ -5,16 +5,12 @@ import (
 	"encoding/json"
 	"fmt"
 
-	gwruntime "github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"github.com/spf13/cobra"
-
 	modulev1 "cosmossdk.io/api/cosmos/authz/module/v1"
 	"cosmossdk.io/core/address"
 	"cosmossdk.io/core/appmodule"
 	"cosmossdk.io/core/store"
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/errors"
-
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdkclient "github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -26,6 +22,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/authz/client/cli"
 	"github.com/cosmos/cosmos-sdk/x/authz/keeper"
 	"github.com/cosmos/cosmos-sdk/x/authz/simulation"
+	gwruntime "github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/spf13/cobra"
 )
 
 var (

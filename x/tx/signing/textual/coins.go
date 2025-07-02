@@ -7,11 +7,10 @@ import (
 	"sort"
 	"strings"
 
-	"google.golang.org/protobuf/reflect/protoreflect"
-
 	bankv1beta1 "cosmossdk.io/api/cosmos/bank/v1beta1"
 	basev1beta1 "cosmossdk.io/api/cosmos/base/v1beta1"
 	"cosmossdk.io/math"
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 const emptyCoins = "zero"

@@ -9,11 +9,10 @@ import (
 	"strings"
 	"testing"
 
+	"cosmossdk.io/math"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 	"sigs.k8s.io/yaml"
-
-	"cosmossdk.io/math"
 )
 
 type decimalTestSuite struct {

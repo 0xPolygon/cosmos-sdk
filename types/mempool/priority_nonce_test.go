@@ -9,15 +9,13 @@ import (
 	"testing"
 	"time"
 
-	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/log"
-
+	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/mempool"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/auth/signing"
+	"github.com/stretchr/testify/require"
 )
 
 func TestOutOfOrder(t *testing.T) {

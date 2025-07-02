@@ -3,17 +3,15 @@ package cli
 import (
 	"fmt"
 
-	"github.com/spf13/cobra"
-
 	"cosmossdk.io/core/address"
 	sdkmath "cosmossdk.io/math"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/version"
 	"github.com/cosmos/cosmos-sdk/x/bank/types"
+	"github.com/spf13/cobra"
 )
 
 var FlagSplit = "split"

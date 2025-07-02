@@ -6,15 +6,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cosmos/gogoproto/proto"
-	"github.com/stretchr/testify/require"
-	"google.golang.org/protobuf/types/known/anypb"
-
 	txv1beta1 "cosmossdk.io/api/cosmos/tx/v1beta1"
 	sdkmath "cosmossdk.io/math"
 	txsigning "cosmossdk.io/x/tx/signing"
 	"cosmossdk.io/x/tx/signing/aminojson"
-
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -22,6 +17,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/authz"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	"github.com/cosmos/gogoproto/proto"
+	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/types/known/anypb"
 )
 
 func TestMsgGrantGetAuthorization(t *testing.T) {

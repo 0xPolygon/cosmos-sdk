@@ -3,11 +3,8 @@ package tx
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	errorsmod "cosmossdk.io/errors"
 	sdkmath "cosmossdk.io/math"
-
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/codec/legacy"
 	"github.com/cosmos/cosmos-sdk/codec/testutil"
@@ -17,6 +14,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	txtypes "github.com/cosmos/cosmos-sdk/types/tx"
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
+	"github.com/stretchr/testify/require"
 )
 
 func TestTxBuilder(t *testing.T) {

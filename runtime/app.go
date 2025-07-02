@@ -4,15 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 
-	abci "github.com/cometbft/cometbft/abci/types"
-	"golang.org/x/exp/slices"
-
 	runtimev1alpha1 "cosmossdk.io/api/cosmos/app/runtime/v1alpha1"
 	appv1alpha1 "cosmossdk.io/api/cosmos/app/v1alpha1"
 	"cosmossdk.io/core/appmodule"
 	"cosmossdk.io/log"
 	storetypes "cosmossdk.io/store/types"
-
+	abci "github.com/cometbft/cometbft/abci/types"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/grpc/cmtservice"
@@ -26,6 +23,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	authtx "github.com/cosmos/cosmos-sdk/x/auth/tx"
+	"golang.org/x/exp/slices"
 )
 
 // App is a wrapper around BaseApp and ModuleManager that can be used in hybrid

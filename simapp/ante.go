@@ -4,7 +4,6 @@ import (
 	"errors"
 
 	circuitante "cosmossdk.io/x/circuit/ante"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 )

@@ -3,7 +3,6 @@ package v3
 import (
 	"cosmossdk.io/core/store"
 	sdkmath "cosmossdk.io/math"
-
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/distribution/exported"

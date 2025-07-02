@@ -3,13 +3,11 @@ package gov
 import (
 	"fmt"
 
-	"github.com/cosmos/gogoproto/proto"
-
 	"cosmossdk.io/math"
-
 	"github.com/cosmos/cosmos-sdk/testutil"
 	grpctypes "github.com/cosmos/cosmos-sdk/types/grpc"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
+	"github.com/cosmos/gogoproto/proto"
 )
 
 func (s *E2ETestSuite) TestGetProposalGRPC() {

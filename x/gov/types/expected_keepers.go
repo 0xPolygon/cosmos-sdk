@@ -3,10 +3,8 @@ package types
 import (
 	"context"
 
-	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
-
 	addresscodec "cosmossdk.io/core/address"
-
+	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 

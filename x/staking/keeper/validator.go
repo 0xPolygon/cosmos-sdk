@@ -7,16 +7,14 @@ import (
 	"fmt"
 	"time"
 
-	cmtprotocrypto "github.com/cometbft/cometbft/proto/tendermint/crypto"
-	gogotypes "github.com/cosmos/gogoproto/types"
-
 	corestore "cosmossdk.io/core/store"
 	errorsmod "cosmossdk.io/errors"
 	"cosmossdk.io/math"
 	storetypes "cosmossdk.io/store/types"
-
+	cmtprotocrypto "github.com/cometbft/cometbft/proto/tendermint/crypto"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/staking/types"
+	gogotypes "github.com/cosmos/gogoproto/types"
 )
 
 // GetValidator gets a single validator

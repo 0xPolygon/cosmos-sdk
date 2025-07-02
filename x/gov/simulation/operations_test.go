@@ -8,9 +8,6 @@ import (
 
 	hApp "github.com/0xPolygon/heimdall-v2/app"
 	abci "github.com/cometbft/cometbft/abci/types"
-	"github.com/cosmos/gogoproto/proto"
-	"github.com/stretchr/testify/require"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
@@ -32,6 +29,8 @@ import (
 	_ "github.com/cosmos/cosmos-sdk/x/params"
 	_ "github.com/cosmos/cosmos-sdk/x/staking"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
+	"github.com/cosmos/gogoproto/proto"
+	"github.com/stretchr/testify/require"
 )
 
 var (

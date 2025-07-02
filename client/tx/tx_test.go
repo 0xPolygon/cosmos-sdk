@@ -6,9 +6,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-	"google.golang.org/grpc"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -24,6 +21,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth/signing"
 	authtx "github.com/cosmos/cosmos-sdk/x/auth/tx"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+	"github.com/stretchr/testify/require"
+	"google.golang.org/grpc"
 )
 
 func newTestTxConfig() (client.TxConfig, codec.Codec) {

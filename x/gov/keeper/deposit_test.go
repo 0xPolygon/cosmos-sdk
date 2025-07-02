@@ -8,6 +8,7 @@ import (
 
 	"cosmossdk.io/collections"
 	sdkmath "cosmossdk.io/math"
+	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 	"github.com/cosmos/cosmos-sdk/codec/address"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -16,8 +17,6 @@ import (
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 )
 
 const (

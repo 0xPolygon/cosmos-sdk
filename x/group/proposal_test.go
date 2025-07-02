@@ -3,11 +3,10 @@ package group_test
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	moduletestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
 	"github.com/cosmos/cosmos-sdk/x/group"
 	"github.com/cosmos/cosmos-sdk/x/group/module"
+	"github.com/stretchr/testify/require"
 )
 
 // TestGogoUnmarshalProposal tests some weird behavior in gogoproto

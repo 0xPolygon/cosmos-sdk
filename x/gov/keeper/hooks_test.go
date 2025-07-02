@@ -5,10 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/golang/mock/gomock"
-
-	"github.com/stretchr/testify/require"
-
+	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 	"github.com/cosmos/cosmos-sdk/codec/address"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -16,8 +13,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/gov/keeper"
 	"github.com/cosmos/cosmos-sdk/x/gov/types"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
-
-	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
+	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 var _ types.GovHooks = &MockGovHooksReceiver{}

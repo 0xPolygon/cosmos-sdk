@@ -4,16 +4,14 @@ import (
 	"bytes"
 	"fmt"
 
-	protov2 "google.golang.org/protobuf/proto"
-
 	bankv1beta1 "cosmossdk.io/api/cosmos/bank/v1beta1"
 	errorsmod "cosmossdk.io/errors"
-
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	txsigning "github.com/cosmos/cosmos-sdk/types/tx/signing"
 	"github.com/cosmos/cosmos-sdk/x/auth/signing"
+	protov2 "google.golang.org/protobuf/proto"
 )
 
 // An sdk.Tx which is its own sdk.Msg.

@@ -3,19 +3,17 @@ package tx
 import (
 	"context"
 
-	"github.com/cosmos/gogoproto/proto"
-	"google.golang.org/protobuf/types/known/anypb"
-
 	txv1beta1 "cosmossdk.io/api/cosmos/tx/v1beta1"
 	txsigning "cosmossdk.io/x/tx/signing"
 	"cosmossdk.io/x/tx/signing/aminojson"
-
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/types/tx"
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
+	"github.com/cosmos/gogoproto/proto"
+	"google.golang.org/protobuf/types/known/anypb"
 )
 
 // AuxTxBuilder is a client-side builder for creating an AuxSignerData.

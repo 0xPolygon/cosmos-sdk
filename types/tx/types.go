@@ -3,15 +3,13 @@ package tx
 import (
 	"fmt"
 
-	protov2 "google.golang.org/protobuf/proto"
-
 	errorsmod "cosmossdk.io/errors"
-
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	protov2 "google.golang.org/protobuf/proto"
 )
 
 // MaxGasWanted defines the max gas allowed.

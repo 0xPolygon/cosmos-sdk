@@ -1,10 +1,9 @@
 package hd
 
 import (
-	"github.com/cosmos/go-bip39"
-
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	"github.com/cosmos/cosmos-sdk/crypto/types"
+	"github.com/cosmos/go-bip39"
 )
 
 // PubKeyType defines an algorithm to derive key-pairs which can be used for cryptographic signing.

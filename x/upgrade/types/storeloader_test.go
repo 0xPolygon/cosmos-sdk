@@ -6,17 +6,15 @@ import (
 	"path/filepath"
 	"testing"
 
-	abci "github.com/cometbft/cometbft/abci/types"
-	dbm "github.com/cosmos/cosmos-db"
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/log"
 	"cosmossdk.io/store/metrics"
 	pruningtypes "cosmossdk.io/store/pruning/types"
 	"cosmossdk.io/store/rootmulti"
 	storetypes "cosmossdk.io/store/types"
-
+	abci "github.com/cometbft/cometbft/abci/types"
+	dbm "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/baseapp"
+	"github.com/stretchr/testify/require"
 )
 
 func useUpgradeLoader(height int64, upgrades *storetypes.StoreUpgrades) func(*baseapp.BaseApp) {

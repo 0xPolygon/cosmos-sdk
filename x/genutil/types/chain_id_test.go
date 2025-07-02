@@ -5,9 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"github.com/cosmos/cosmos-sdk/x/genutil/types"
+	"github.com/stretchr/testify/require"
 )
 
 //go:embed testdata/parse_chain_id.json

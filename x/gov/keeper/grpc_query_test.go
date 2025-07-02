@@ -5,10 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/golang/mock/gomock"
-
 	"cosmossdk.io/math"
-
 	"github.com/cosmos/cosmos-sdk/codec/address"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -18,6 +15,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/gov/types"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 	"github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
+	"github.com/golang/mock/gomock"
 )
 
 func (suite *KeeperTestSuite) TestGRPCQueryProposal() {

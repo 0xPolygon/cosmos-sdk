@@ -3,17 +3,15 @@ package distribution
 import (
 	"fmt"
 
-	"github.com/cosmos/gogoproto/proto"
-	"github.com/stretchr/testify/suite"
-
 	"cosmossdk.io/simapp"
-
 	sdktestutil "github.com/cosmos/cosmos-sdk/testutil"
 	"github.com/cosmos/cosmos-sdk/testutil/network"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	grpctypes "github.com/cosmos/cosmos-sdk/types/grpc"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"github.com/cosmos/cosmos-sdk/x/distribution/types"
+	"github.com/cosmos/gogoproto/proto"
+	"github.com/stretchr/testify/suite"
 )
 
 type GRPCQueryTestSuite struct {

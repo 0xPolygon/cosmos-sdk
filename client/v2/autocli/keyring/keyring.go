@@ -2,7 +2,6 @@ package keyring
 
 import (
 	signingv1beta1 "cosmossdk.io/api/cosmos/tx/signing/v1beta1"
-
 	"github.com/cosmos/cosmos-sdk/crypto/types"
 )
 

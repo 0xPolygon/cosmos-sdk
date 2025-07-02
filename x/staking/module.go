@@ -6,16 +6,11 @@ import (
 	"fmt"
 	"sort"
 
-	abci "github.com/cometbft/cometbft/abci/types"
-	gwruntime "github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"github.com/spf13/cobra"
-	"golang.org/x/exp/maps"
-
 	modulev1 "cosmossdk.io/api/cosmos/staking/module/v1"
 	"cosmossdk.io/core/appmodule"
 	"cosmossdk.io/core/store"
 	"cosmossdk.io/depinject"
-
+	abci "github.com/cometbft/cometbft/abci/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -30,6 +25,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/staking/keeper"
 	"github.com/cosmos/cosmos-sdk/x/staking/simulation"
 	"github.com/cosmos/cosmos-sdk/x/staking/types"
+	gwruntime "github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/spf13/cobra"
+	"golang.org/x/exp/maps"
 )
 
 const (

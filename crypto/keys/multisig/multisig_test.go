@@ -4,12 +4,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/core/address"
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/log"
-
 	"github.com/cosmos/cosmos-sdk/codec"
 	addresscodec "github.com/cosmos/cosmos-sdk/codec/address"
 	"github.com/cosmos/cosmos-sdk/codec/legacy"
@@ -23,6 +20,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/testutil/configurator"
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
 	"github.com/cosmos/cosmos-sdk/x/auth/migrations/legacytx"
+	"github.com/stretchr/testify/require"
 )
 
 func TestNewMultiSig(t *testing.T) {

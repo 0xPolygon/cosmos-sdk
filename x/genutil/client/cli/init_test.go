@@ -9,12 +9,8 @@ import (
 	"testing"
 	"time"
 
-	abci_server "github.com/cometbft/cometbft/abci/server"
-	"github.com/spf13/viper"
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/log"
-
+	abci_server "github.com/cometbft/cometbft/abci/server"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -32,6 +28,8 @@ import (
 	genutiltest "github.com/cosmos/cosmos-sdk/x/genutil/client/testutil"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
 	"github.com/cosmos/cosmos-sdk/x/staking"
+	"github.com/spf13/viper"
+	"github.com/stretchr/testify/require"
 )
 
 var testMbm = module.NewBasicManager(

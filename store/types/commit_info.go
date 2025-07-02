@@ -3,9 +3,8 @@ package types
 import (
 	"crypto/sha256"
 
-	cmtprotocrypto "github.com/cometbft/cometbft/proto/tendermint/crypto"
-
 	"cosmossdk.io/store/internal/maps"
+	cmtprotocrypto "github.com/cometbft/cometbft/proto/tendermint/crypto"
 )
 
 // GetHash returns the GetHash from the CommitID.

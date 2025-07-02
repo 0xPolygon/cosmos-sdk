@@ -3,10 +3,9 @@ package depinject_test
 import (
 	"testing"
 
+	"cosmossdk.io/depinject"
 	"github.com/regen-network/gocuke"
 	"gotest.tools/v3/assert"
-
-	"cosmossdk.io/depinject"
 )
 
 func TestInvoke(t *testing.T) {

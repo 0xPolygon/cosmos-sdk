@@ -4,11 +4,6 @@ import (
 	"context"
 
 	abci "github.com/cometbft/cometbft/abci/types"
-	gogogrpc "github.com/cosmos/gogoproto/grpc"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
-
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -17,6 +12,10 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	qtypes "github.com/cosmos/cosmos-sdk/types/query"
 	"github.com/cosmos/cosmos-sdk/version"
+	gogogrpc "github.com/cosmos/gogoproto/grpc"
+	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 var (

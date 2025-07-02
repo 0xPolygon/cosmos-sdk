@@ -5,10 +5,7 @@ import (
 	"math/rand"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	sdkmath "cosmossdk.io/math"
-
 	"github.com/cosmos/cosmos-sdk/types/module"
 	moduletestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
@@ -16,6 +13,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/group"
 	groupmodule "github.com/cosmos/cosmos-sdk/x/group/module"
 	"github.com/cosmos/cosmos-sdk/x/group/simulation"
+	"github.com/stretchr/testify/require"
 )
 
 func TestRandomizedGenState(t *testing.T) {

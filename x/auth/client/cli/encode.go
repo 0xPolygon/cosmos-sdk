@@ -3,11 +3,10 @@ package cli
 import (
 	"encoding/base64"
 
-	"github.com/spf13/cobra"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	authclient "github.com/cosmos/cosmos-sdk/x/auth/client"
+	"github.com/spf13/cobra"
 )
 
 // GetEncodeCommand returns the encode command to take a JSONified transaction and turn it into

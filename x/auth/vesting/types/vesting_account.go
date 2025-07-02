@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"cosmossdk.io/math"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	vestexported "github.com/cosmos/cosmos-sdk/x/auth/vesting/exported"

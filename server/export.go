@@ -7,12 +7,11 @@ import (
 	"io"
 	"os"
 
-	"github.com/spf13/cobra"
-
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/server/types"
 	"github.com/cosmos/cosmos-sdk/version"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
+	"github.com/spf13/cobra"
 )
 
 const (
@@ -94,7 +93,8 @@ func ExportCmd(appExporter types.AppExporter, defaultNodeHome string) *cobra.Com
 
 			appGenesis.AppState = exported.AppState
 			appGenesis.InitialHeight = exported.Height
-			appGenesis.Consensus = genutiltypes.NewConsensusGenesis(exported.ConsensusParams, exported.Validators)
+			consensusGenesis := genutiltypes.NewConsensusGenesis(exported.ConsensusParams, exported.Validators)
+			appGenesis.ConsensusParams = consensusGenesis.Params
 
 			out, err := json.Marshal(appGenesis)
 			if err != nil {

@@ -5,14 +5,13 @@ import (
 	"encoding/base64"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	moduletestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
 	"github.com/cosmos/cosmos-sdk/x/auth"
 	"github.com/cosmos/cosmos-sdk/x/auth/client/cli"
+	"github.com/stretchr/testify/require"
 )
 
 func TestGetCommandEncode(t *testing.T) {

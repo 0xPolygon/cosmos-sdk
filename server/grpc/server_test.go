@@ -6,12 +6,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/jhump/protoreflect/grpcreflect"
-	"github.com/stretchr/testify/require"
-	"github.com/stretchr/testify/suite"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/metadata"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	reflectionv1 "github.com/cosmos/cosmos-sdk/client/grpc/reflection"
 	clienttx "github.com/cosmos/cosmos-sdk/client/tx"
@@ -26,6 +20,11 @@ import (
 	authclient "github.com/cosmos/cosmos-sdk/x/auth/client"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	"github.com/jhump/protoreflect/grpcreflect"
+	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/suite"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 )
 
 type IntegrationTestSuite struct {

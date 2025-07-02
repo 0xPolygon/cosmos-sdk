@@ -6,9 +6,8 @@ import (
 	"runtime/debug"
 	"strings"
 
-	"github.com/spf13/cobra"
-
 	"cosmossdk.io/tools/cosmovisor"
+	"github.com/spf13/cobra"
 )
 
 func NewVersionCmd() *cobra.Command {

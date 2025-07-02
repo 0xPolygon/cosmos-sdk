@@ -11,12 +11,11 @@ import (
 	"strconv"
 	"sync"
 
-	db "github.com/cosmos/cosmos-db"
-	"github.com/cosmos/gogoproto/proto"
-
 	"cosmossdk.io/errors"
 	"cosmossdk.io/store/snapshots/types"
 	storetypes "cosmossdk.io/store/types"
+	db "github.com/cosmos/cosmos-db"
+	"github.com/cosmos/gogoproto/proto"
 )
 
 const (

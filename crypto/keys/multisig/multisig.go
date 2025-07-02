@@ -4,7 +4,6 @@ import (
 	fmt "fmt"
 
 	cmtcrypto "github.com/cometbft/cometbft/crypto"
-
 	"github.com/cosmos/cosmos-sdk/codec/types"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	multisigtypes "github.com/cosmos/cosmos-sdk/crypto/types/multisig"

@@ -5,9 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 
-	gwruntime "github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"github.com/spf13/cobra"
-
 	modulev1 "cosmossdk.io/api/cosmos/feegrant/module/v1"
 	"cosmossdk.io/core/address"
 	"cosmossdk.io/core/appmodule"
@@ -18,13 +15,14 @@ import (
 	"cosmossdk.io/x/feegrant/client/cli"
 	"cosmossdk.io/x/feegrant/keeper"
 	"cosmossdk.io/x/feegrant/simulation"
-
 	sdkclient "github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
+	gwruntime "github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/spf13/cobra"
 )
 
 var (

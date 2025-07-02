@@ -4,13 +4,12 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
+	"github.com/stretchr/testify/require"
 )
 
 var (

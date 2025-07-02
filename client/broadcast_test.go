@@ -10,10 +10,9 @@ import (
 	"github.com/cometbft/cometbft/rpc/client/mock"
 	coretypes "github.com/cometbft/cometbft/rpc/core/types"
 	cmttypes "github.com/cometbft/cometbft/types"
-	"github.com/stretchr/testify/require"
-
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/stretchr/testify/require"
 )
 
 type MockClient struct {

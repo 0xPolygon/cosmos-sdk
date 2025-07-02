@@ -5,12 +5,6 @@ import (
 	"fmt"
 	"strings"
 
-	gogogrpc "github.com/cosmos/gogoproto/grpc"
-	"github.com/golang/protobuf/proto" //nolint:staticcheck // keep legacy for now
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/grpc/cmtservice"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -19,6 +13,11 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/query"
 	txtypes "github.com/cosmos/cosmos-sdk/types/tx"
 	"github.com/cosmos/cosmos-sdk/x/auth/migrations/legacytx"
+	gogogrpc "github.com/cosmos/gogoproto/grpc"
+	"github.com/golang/protobuf/proto" //nolint:staticcheck // keep legacy for now
+	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 // baseAppSimulateFn is the signature of the Baseapp#Simulate function.

@@ -5,14 +5,13 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	hApp "github.com/0xPolygon/heimdall-v2/app"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/testutil/testdata"
 	testdata_pulsar "github.com/cosmos/cosmos-sdk/testutil/testdata/testpb"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/stretchr/testify/require"
 )
 
 func TestGRPCQueryRouter(t *testing.T) {

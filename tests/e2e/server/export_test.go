@@ -17,6 +17,7 @@ import (
 	"cosmossdk.io/simapp"
 	hApp "github.com/0xPolygon/heimdall-v2/app"
 	abci "github.com/cometbft/cometbft/abci/types"
+	cmttypes "github.com/cometbft/cometbft/types"
 	dbm "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -42,13 +43,13 @@ func TestExportCmd_ConsensusParams(t *testing.T) {
 	err := json.Unmarshal(output.Bytes(), &exportedAppGenesis)
 	assert.NilError(t, err)
 
-	assert.DeepEqual(t, simtestutil.DefaultConsensusParams.Block.MaxBytes, exportedAppGenesis.Consensus.Params.Block.MaxBytes)
-	assert.DeepEqual(t, simtestutil.DefaultConsensusParams.Block.MaxGas, exportedAppGenesis.Consensus.Params.Block.MaxGas)
+	assert.DeepEqual(t, simtestutil.DefaultConsensusParams.Block.MaxBytes, exportedAppGenesis.ConsensusParams.Block.MaxBytes)
+	assert.DeepEqual(t, simtestutil.DefaultConsensusParams.Block.MaxGas, exportedAppGenesis.ConsensusParams.Block.MaxGas)
 
-	assert.DeepEqual(t, simtestutil.DefaultConsensusParams.Evidence.MaxAgeDuration, exportedAppGenesis.Consensus.Params.Evidence.MaxAgeDuration)
-	assert.DeepEqual(t, simtestutil.DefaultConsensusParams.Evidence.MaxAgeNumBlocks, exportedAppGenesis.Consensus.Params.Evidence.MaxAgeNumBlocks)
+	assert.DeepEqual(t, simtestutil.DefaultConsensusParams.Evidence.MaxAgeDuration, exportedAppGenesis.ConsensusParams.Evidence.MaxAgeDuration)
+	assert.DeepEqual(t, simtestutil.DefaultConsensusParams.Evidence.MaxAgeNumBlocks, exportedAppGenesis.ConsensusParams.Evidence.MaxAgeNumBlocks)
 
-	assert.DeepEqual(t, simtestutil.DefaultConsensusParams.Validator.PubKeyTypes, exportedAppGenesis.Consensus.Params.Validator.PubKeyTypes)
+	assert.DeepEqual(t, simtestutil.DefaultConsensusParams.Validator.PubKeyTypes, exportedAppGenesis.ConsensusParams.Validator.PubKeyTypes)
 }
 
 func TestExportCmd_HomeDir(t *testing.T) {
@@ -173,11 +174,9 @@ func setupApp(t *testing.T, tempDir string) (*hApp.HeimdallApp, context.Context,
 
 	clientCtx := client.Context{}.WithCodec(app.AppCodec())
 	appGenesis := genutiltypes.AppGenesis{
-		ChainID:  "theChainId",
-		AppState: stateBytes,
-		Consensus: &genutiltypes.ConsensusGenesis{
-			Validators: nil,
-		},
+		ChainID:         "theChainId",
+		AppState:        stateBytes,
+		ConsensusParams: &cmttypes.ConsensusParams{},
 	}
 
 	// save genesis file

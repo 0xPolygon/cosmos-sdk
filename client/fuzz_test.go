@@ -4,12 +4,11 @@ import (
 	"context"
 	"testing"
 
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/metadata"
-
 	"github.com/cosmos/cosmos-sdk/testutil/testdata"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/bank/types"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 )
 
 type fuzzSuite struct {

@@ -4,13 +4,11 @@ import (
 	"context"
 	"time"
 
-	"github.com/cosmos/gogoproto/proto"
-
 	errorsmod "cosmossdk.io/errors"
-
 	"github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/cosmos/gogoproto/proto"
 )
 
 // TODO: Revisit this once we have propoer gas fee framework.

@@ -5,16 +5,13 @@ import (
 	"testing"
 	"time"
 
-	abci "github.com/cometbft/cometbft/abci/types"
-	"github.com/stretchr/testify/suite"
-
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/log"
 	"cosmossdk.io/x/nft"
 	nftkeeper "cosmossdk.io/x/nft/keeper"
 	"cosmossdk.io/x/nft/simulation"
 	"cosmossdk.io/x/nft/testutil"
-
+	abci "github.com/cometbft/cometbft/abci/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -26,6 +23,7 @@ import (
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
 	banktestutil "github.com/cosmos/cosmos-sdk/x/bank/testutil"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
+	"github.com/stretchr/testify/suite"
 )
 
 type SimTestSuite struct {

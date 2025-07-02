@@ -3,11 +3,10 @@ package keeper_test
 import (
 	"testing"
 
+	staketypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 	"github.com/cosmos/cosmos-sdk/types"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	staketypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 )
 
 func TestTally(t *testing.T) {

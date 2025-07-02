@@ -5,13 +5,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
-	"google.golang.org/protobuf/types/known/anypb"
-
 	errorsmod "cosmossdk.io/errors"
 	txsigning "cosmossdk.io/x/tx/signing"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
@@ -24,6 +19,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/version"
 	authclient "github.com/cosmos/cosmos-sdk/x/auth/client"
 	"github.com/cosmos/cosmos-sdk/x/auth/signing"
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+	"google.golang.org/protobuf/types/known/anypb"
 )
 
 // GetMultiSignCommand returns the multi-sign command

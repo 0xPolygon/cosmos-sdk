@@ -4,12 +4,11 @@ import (
 	"context"
 
 	cmtcli "github.com/cometbft/cometbft/libs/cli"
-	"github.com/rs/zerolog"
-	"github.com/spf13/cobra"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/server"
+	"github.com/rs/zerolog"
+	"github.com/spf13/cobra"
 )
 
 // Execute executes the root command of an application. It handles creating a

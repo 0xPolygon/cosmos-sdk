@@ -3,13 +3,12 @@ package mock
 import (
 	"io"
 
-	dbm "github.com/cosmos/cosmos-db"
-	protoio "github.com/cosmos/gogoproto/io"
-
 	"cosmossdk.io/store/metrics"
 	pruningtypes "cosmossdk.io/store/pruning/types"
 	snapshottypes "cosmossdk.io/store/snapshots/types"
 	storetypes "cosmossdk.io/store/types"
+	dbm "github.com/cosmos/cosmos-db"
+	protoio "github.com/cosmos/gogoproto/io"
 )
 
 var _ storetypes.MultiStore = multiStore{}

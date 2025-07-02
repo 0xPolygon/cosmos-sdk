@@ -4,10 +4,9 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	pruningtypes "cosmossdk.io/store/pruning/types"
 	"cosmossdk.io/store/transient"
+	"github.com/stretchr/testify/require"
 )
 
 var k, v = []byte("hello"), []byte("world")

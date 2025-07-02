@@ -4,10 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/require"
-
 	storetypes "cosmossdk.io/store/types"
-
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
 	"github.com/cosmos/cosmos-sdk/runtime"
@@ -20,6 +17,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/bank"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
+	"github.com/stretchr/testify/require"
 )
 
 func TestMigration(t *testing.T) {

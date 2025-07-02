@@ -4,10 +4,9 @@ package abci
 import (
 	"context"
 
+	storetypes "cosmossdk.io/store/types"
 	"github.com/hashicorp/go-plugin"
 	"google.golang.org/grpc"
-
-	storetypes "cosmossdk.io/store/types"
 )
 
 // Handshake is a common handshake that is shared by streaming and host.

@@ -3,10 +3,9 @@ package mock
 import (
 	"testing"
 
+	storetypes "cosmossdk.io/store/types"
 	dbm "github.com/cosmos/cosmos-db"
 	"github.com/stretchr/testify/require"
-
-	storetypes "cosmossdk.io/store/types"
 )
 
 func TestStore(t *testing.T) {

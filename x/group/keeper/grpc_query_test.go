@@ -5,12 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/golang/mock/gomock"
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/log"
 	storetypes "cosmossdk.io/store/types"
-
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/codec/address"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -24,6 +20,8 @@ import (
 	groupkeeper "github.com/cosmos/cosmos-sdk/x/group/keeper"
 	"github.com/cosmos/cosmos-sdk/x/group/module"
 	grouptestutil "github.com/cosmos/cosmos-sdk/x/group/testutil"
+	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 type fixture struct {

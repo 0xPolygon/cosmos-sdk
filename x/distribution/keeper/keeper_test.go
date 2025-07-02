@@ -4,13 +4,9 @@ import (
 	"testing"
 	"time"
 
-	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
-	"github.com/golang/mock/gomock"
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/math"
 	storetypes "cosmossdk.io/store/types"
-
+	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
@@ -21,6 +17,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/distribution/keeper"
 	distrtestutil "github.com/cosmos/cosmos-sdk/x/distribution/testutil"
 	"github.com/cosmos/cosmos-sdk/x/distribution/types"
+	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func TestSetWithdrawAddr(t *testing.T) {

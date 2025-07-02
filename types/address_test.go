@@ -4,18 +4,17 @@ import (
 	"bytes"
 	"crypto/rand"
 	"encoding/hex"
-	"github.com/cosmos/cosmos-sdk/codec/address"
 	mathrand "math/rand"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-	"github.com/stretchr/testify/suite"
-	"sigs.k8s.io/yaml"
-
+	"github.com/cosmos/cosmos-sdk/codec/address"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	"github.com/cosmos/cosmos-sdk/types"
+	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/suite"
+	"sigs.k8s.io/yaml"
 )
 
 type addressTestSuite struct {

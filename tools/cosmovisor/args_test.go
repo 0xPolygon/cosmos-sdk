@@ -9,14 +9,13 @@ import (
 	"testing"
 	"time"
 
+	"cosmossdk.io/log"
+	"cosmossdk.io/tools/cosmovisor/errors"
+	"cosmossdk.io/x/upgrade/plan"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
-
-	"cosmossdk.io/log"
-	"cosmossdk.io/tools/cosmovisor/errors"
-	"cosmossdk.io/x/upgrade/plan"
 )
 
 type argsTestSuite struct {

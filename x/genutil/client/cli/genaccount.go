@@ -6,16 +6,14 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/spf13/cobra"
-
 	address "cosmossdk.io/core/address"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	"github.com/cosmos/cosmos-sdk/server"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/genutil"
+	"github.com/spf13/cobra"
 )
 
 const (

@@ -7,9 +7,6 @@ import (
 	"testing"
 	"time"
 
-	dbm "github.com/cosmos/cosmos-db"
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/errors"
 	"cosmossdk.io/log"
 	"cosmossdk.io/store/cachemulti"
@@ -18,6 +15,8 @@ import (
 	"cosmossdk.io/store/metrics"
 	pruningtypes "cosmossdk.io/store/pruning/types"
 	"cosmossdk.io/store/types"
+	dbm "github.com/cosmos/cosmos-db"
+	"github.com/stretchr/testify/require"
 )
 
 func TestStoreType(t *testing.T) {

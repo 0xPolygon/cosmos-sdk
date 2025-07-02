@@ -8,14 +8,13 @@ import (
 	"fmt"
 
 	"github.com/cometbft/cometbft/crypto"
-	"github.com/cosmos/go-bip39"
-	secp "github.com/decred/dcrd/dcrec/secp256k1/v4"
-	"github.com/decred/dcrd/dcrec/secp256k1/v4/ecdsa"
-
 	"github.com/cosmos/cosmos-sdk/crypto/hd"
 	csecp256k1 "github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	"github.com/cosmos/cosmos-sdk/testutil/testdata"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/go-bip39"
+	secp "github.com/decred/dcrd/dcrec/secp256k1/v4"
+	"github.com/decred/dcrd/dcrec/secp256k1/v4/ecdsa"
 )
 
 // If ledger support (build tag) has been enabled, which implies a CGO dependency,

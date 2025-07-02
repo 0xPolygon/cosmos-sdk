@@ -5,12 +5,11 @@ import (
 	"fmt"
 	"sort"
 
-	proto "github.com/cosmos/gogoproto/proto"
-
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
+	proto "github.com/cosmos/gogoproto/proto"
 )
 
 var _ types.UnpackInterfacesMessage = GenesisState{}

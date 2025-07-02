@@ -8,12 +8,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/stretchr/testify/suite"
-
 	errorsmod "cosmossdk.io/errors"
 	"cosmossdk.io/math"
 	"cosmossdk.io/simapp"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	clienttx "github.com/cosmos/cosmos-sdk/client/tx"
@@ -36,6 +33,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth/migrations/legacytx"
 	authtx "github.com/cosmos/cosmos-sdk/x/auth/tx"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+	"github.com/stretchr/testify/suite"
 )
 
 var bankMsgSendEventAction = fmt.Sprintf("message.action='%s'", sdk.MsgTypeURL(&banktypes.MsgSend{}))

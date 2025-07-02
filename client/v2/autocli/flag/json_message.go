@@ -7,11 +7,10 @@ import (
 	"os"
 	"regexp"
 
+	"cosmossdk.io/client/v2/internal/util"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
-
-	"cosmossdk.io/client/v2/internal/util"
 )
 
 var isJSONFileRegex = regexp.MustCompile(`\.json$`)

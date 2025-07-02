@@ -4,16 +4,12 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/golang/mock/gomock"
-	"gotest.tools/v3/assert"
-
 	"cosmossdk.io/math"
 	storetypes "cosmossdk.io/store/types"
 	"cosmossdk.io/x/feegrant"
 	"cosmossdk.io/x/feegrant/keeper"
 	"cosmossdk.io/x/feegrant/module"
 	feegranttestutil "cosmossdk.io/x/feegrant/testutil"
-
 	"github.com/cosmos/cosmos-sdk/codec/address"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
@@ -23,6 +19,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	moduletestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
+	"github.com/golang/mock/gomock"
+	"gotest.tools/v3/assert"
 )
 
 var (

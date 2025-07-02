@@ -6,8 +6,6 @@ import (
 	"strings"
 	"testing"
 
-	"gotest.tools/v3/assert"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/crypto/hd"
@@ -17,6 +15,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/testutil/testdata"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	moduletestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
+	"gotest.tools/v3/assert"
 )
 
 func cleanupKeys(t *testing.T, kb keyring.Keyring, keys ...string) func() {

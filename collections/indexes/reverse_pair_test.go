@@ -3,9 +3,8 @@ package indexes
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/collections"
+	"github.com/stretchr/testify/require"
 )
 
 type (

@@ -6,14 +6,11 @@ import (
 	"testing"
 	"time"
 
-	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/log"
 	sdkmath "cosmossdk.io/math"
 	storetypes "cosmossdk.io/store/types"
-
+	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
@@ -31,6 +28,7 @@ import (
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	"github.com/stretchr/testify/require"
 )
 
 type mockSubspace struct {

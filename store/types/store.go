@@ -4,12 +4,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/cometbft/cometbft/proto/tendermint/crypto"
-	dbm "github.com/cosmos/cosmos-db"
-
 	"cosmossdk.io/store/metrics"
 	pruningtypes "cosmossdk.io/store/pruning/types"
 	snapshottypes "cosmossdk.io/store/snapshots/types"
+	"github.com/cometbft/cometbft/proto/tendermint/crypto"
+	dbm "github.com/cosmos/cosmos-db"
 )
 
 type Store interface {

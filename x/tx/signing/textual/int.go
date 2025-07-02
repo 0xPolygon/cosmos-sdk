@@ -7,9 +7,8 @@ import (
 	"strconv"
 	"strings"
 
-	"google.golang.org/protobuf/reflect/protoreflect"
-
 	"cosmossdk.io/math"
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 // NewIntValueRenderer returns a ValueRenderer for uint32, uint64, int32 and

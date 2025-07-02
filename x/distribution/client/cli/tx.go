@@ -4,17 +4,15 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/spf13/cobra"
-	"github.com/spf13/pflag"
-
 	"cosmossdk.io/core/address"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/version"
 	"github.com/cosmos/cosmos-sdk/x/distribution/types"
+	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
 )
 
 // Transaction flags for the x/distribution module

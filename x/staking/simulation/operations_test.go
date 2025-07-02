@@ -6,16 +6,11 @@ import (
 	"testing"
 	"time"
 
-	abci "github.com/cometbft/cometbft/abci/types"
-	cmttypes "github.com/cometbft/cometbft/types"
-	"github.com/cosmos/gogoproto/proto"
-	"github.com/stretchr/testify/require"
-	"github.com/stretchr/testify/suite"
-
 	"cosmossdk.io/depinject"
 	sdklog "cosmossdk.io/log"
 	"cosmossdk.io/math"
-
+	abci "github.com/cometbft/cometbft/abci/types"
+	cmttypes "github.com/cometbft/cometbft/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec/address"
 	cryptocodec "github.com/cosmos/cosmos-sdk/crypto/codec"
@@ -37,6 +32,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/staking/simulation"
 	"github.com/cosmos/cosmos-sdk/x/staking/testutil"
 	"github.com/cosmos/cosmos-sdk/x/staking/types"
+	"github.com/cosmos/gogoproto/proto"
+	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/suite"
 )
 
 type SimTestSuite struct {

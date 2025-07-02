@@ -3,26 +3,24 @@ package legacytx
 import (
 	"context"
 	"fmt"
-	"github.com/cometbft/cometbft/crypto/secp256k1"
-	kmultisig "github.com/cosmos/cosmos-sdk/crypto/keys/multisig"
-	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	"testing"
-
-	"github.com/cosmos/gogoproto/proto"
-	"github.com/stretchr/testify/require"
-	"google.golang.org/protobuf/types/known/anypb"
 
 	basev1beta1 "cosmossdk.io/api/cosmos/base/v1beta1"
 	txv1beta1 "cosmossdk.io/api/cosmos/tx/v1beta1"
 	txsigning "cosmossdk.io/x/tx/signing"
 	"cosmossdk.io/x/tx/signing/aminojson"
-
+	"github.com/cometbft/cometbft/crypto/secp256k1"
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	cryptocodec "github.com/cosmos/cosmos-sdk/crypto/codec"
+	kmultisig "github.com/cosmos/cosmos-sdk/crypto/keys/multisig"
+	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	"github.com/cosmos/cosmos-sdk/testutil/testdata"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
+	"github.com/cosmos/gogoproto/proto"
+	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/types/known/anypb"
 )
 
 var (

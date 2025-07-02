@@ -7,9 +7,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/spf13/viper"
-	"github.com/stretchr/testify/require"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -18,6 +15,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	"github.com/cosmos/cosmos-sdk/testutil/testdata"
 	"github.com/cosmos/cosmos-sdk/types/module/testutil"
+	"github.com/spf13/viper"
+	"github.com/stretchr/testify/require"
 )
 
 func TestMain(m *testing.M) {

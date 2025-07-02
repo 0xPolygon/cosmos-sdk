@@ -6,13 +6,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/spf13/cobra"
-	flag "github.com/spf13/pflag"
-
 	"cosmossdk.io/core/address"
 	errorsmod "cosmossdk.io/errors"
 	"cosmossdk.io/math"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
@@ -21,6 +17,8 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/version"
 	"github.com/cosmos/cosmos-sdk/x/staking/types"
+	"github.com/spf13/cobra"
+	flag "github.com/spf13/pflag"
 )
 
 // default values

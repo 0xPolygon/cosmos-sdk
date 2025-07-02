@@ -3,13 +3,9 @@ package keeper_test
 import (
 	"testing"
 
-	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
-	"github.com/golang/mock/gomock"
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/math"
 	storetypes "cosmossdk.io/store/types"
-
+	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	"github.com/cosmos/cosmos-sdk/codec/address"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	"github.com/cosmos/cosmos-sdk/testutil"
@@ -21,6 +17,8 @@ import (
 	distrtestutil "github.com/cosmos/cosmos-sdk/x/distribution/testutil"
 	disttypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func TestCalculateRewardsBasic(t *testing.T) {

@@ -6,14 +6,12 @@ import (
 	"testing"
 	"time"
 
-	abci "github.com/cometbft/cometbft/abci/types"
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/log"
-
+	abci "github.com/cometbft/cometbft/abci/types"
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
+	"github.com/stretchr/testify/require"
 )
 
 // SetupApp initializes a new application,

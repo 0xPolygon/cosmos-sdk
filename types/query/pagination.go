@@ -4,11 +4,10 @@ import (
 	"fmt"
 	"math"
 
+	"cosmossdk.io/store/types"
 	db "github.com/cosmos/cosmos-db"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-
-	"cosmossdk.io/store/types"
 )
 
 // DefaultPage is the default `page` number for queries.

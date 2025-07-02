@@ -5,13 +5,11 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/spf13/cast"
-
 	"cosmossdk.io/store/streaming"
 	storetypes "cosmossdk.io/store/types"
-
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
+	"github.com/spf13/cast"
 )
 
 const (

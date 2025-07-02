@@ -4,13 +4,9 @@ import (
 	"testing"
 	"time"
 
-	tmtime "github.com/cometbft/cometbft/types/time"
-	"github.com/stretchr/testify/require"
-	"github.com/stretchr/testify/suite"
-
 	"cosmossdk.io/core/header"
 	storetypes "cosmossdk.io/store/types"
-
+	tmtime "github.com/cometbft/cometbft/types/time"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	"github.com/cosmos/cosmos-sdk/testutil"
@@ -22,6 +18,8 @@ import (
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/vesting"
 	"github.com/cosmos/cosmos-sdk/x/auth/vesting/types"
+	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/suite"
 )
 
 var (

@@ -7,8 +7,6 @@ import (
 	"time"
 
 	abci "github.com/cometbft/cometbft/abci/types"
-	"github.com/stretchr/testify/require"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
@@ -17,6 +15,7 @@ import (
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/cosmos/cosmos-sdk/x/bank/testutil"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	"github.com/stretchr/testify/require"
 )
 
 var moduleAccAddr = authtypes.NewModuleAddress(stakingtypes.BondedPoolName)

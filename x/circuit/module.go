@@ -5,8 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 
-	gwruntime "github.com/grpc-ecosystem/grpc-gateway/runtime"
-
 	modulev1 "cosmossdk.io/api/cosmos/circuit/module/v1"
 	"cosmossdk.io/core/address"
 	"cosmossdk.io/core/appmodule"
@@ -14,7 +12,6 @@ import (
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/x/circuit/keeper"
 	"cosmossdk.io/x/circuit/types"
-
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -23,6 +20,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
+	gwruntime "github.com/grpc-ecosystem/grpc-gateway/runtime"
 )
 
 // ConsensusVersion defines the current circuit module consensus version.

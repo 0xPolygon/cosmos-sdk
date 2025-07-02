@@ -3,9 +3,8 @@ package flags_test
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/stretchr/testify/require"
 )
 
 func TestParseGasSetting(t *testing.T) {

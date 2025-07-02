@@ -3,15 +3,11 @@ package consensus
 import (
 	"context"
 
-	gwruntime "github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"google.golang.org/grpc"
-
 	modulev1 "cosmossdk.io/api/cosmos/consensus/module/v1"
 	"cosmossdk.io/core/appmodule"
 	"cosmossdk.io/core/event"
 	storetypes "cosmossdk.io/core/store"
 	"cosmossdk.io/depinject"
-
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -22,6 +18,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/consensus/keeper"
 	"github.com/cosmos/cosmos-sdk/x/consensus/types"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
+	gwruntime "github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"google.golang.org/grpc"
 )
 
 // ConsensusVersion defines the current x/consensus module consensus version.

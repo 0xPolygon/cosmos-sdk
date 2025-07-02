@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"cosmossdk.io/x/circuit/types"
-
 	"github.com/cosmos/cosmos-sdk/types/query"
 )
 

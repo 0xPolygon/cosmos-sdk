@@ -2,17 +2,16 @@ package types_test
 
 import (
 	"encoding/json"
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	"testing"
 
-	proto "github.com/cosmos/gogoproto/proto"
-	"github.com/stretchr/testify/require"
-
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	moduletestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
 	"github.com/cosmos/cosmos-sdk/x/auth"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
+	proto "github.com/cosmos/gogoproto/proto"
+	"github.com/stretchr/testify/require"
 )
 
 func TestSanitize(t *testing.T) {

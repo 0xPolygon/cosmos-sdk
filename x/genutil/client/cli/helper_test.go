@@ -2,14 +2,13 @@ package cli_test
 
 import (
 	"encoding/json"
-	milestonestypes "github.com/0xPolygon/heimdall-v2/x/milestone/types"
 	"testing"
 
+	milestonestypes "github.com/0xPolygon/heimdall-v2/x/milestone/types"
+	staketypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
 	"github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
 	"github.com/stretchr/testify/require"
-
-	staketypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 )
 
 func TestSetGenesisValidator(t *testing.T) {

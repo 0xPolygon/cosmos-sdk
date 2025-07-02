@@ -3,21 +3,19 @@ package keeper
 import (
 	"context"
 
-	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
-	cmttypes "github.com/cometbft/cometbft/types"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
-
 	"cosmossdk.io/collections"
 	"cosmossdk.io/core/event"
 	storetypes "cosmossdk.io/core/store"
 	"cosmossdk.io/errors"
-
+	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
+	cmttypes "github.com/cometbft/cometbft/types"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/consensus/exported"
 	"github.com/cosmos/cosmos-sdk/x/consensus/types"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 var StoreKey = "Consensus"

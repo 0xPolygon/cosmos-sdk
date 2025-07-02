@@ -4,11 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/golang/mock/gomock"
-	"github.com/stretchr/testify/suite"
-
 	storetypes "cosmossdk.io/store/types"
-
 	"github.com/cosmos/cosmos-sdk/testutil"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	moduletestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
@@ -19,6 +15,8 @@ import (
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	"github.com/cosmos/cosmos-sdk/x/params/types/proposal"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/suite"
 )
 
 // StakingKeeper defines the expected staking keeper

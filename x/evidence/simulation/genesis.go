@@ -7,7 +7,6 @@ import (
 
 	"cosmossdk.io/x/evidence/exported"
 	"cosmossdk.io/x/evidence/types"
-
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 )

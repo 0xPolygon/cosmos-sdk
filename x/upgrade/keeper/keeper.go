@@ -11,8 +11,6 @@ import (
 	"sort"
 	"strconv"
 
-	"github.com/hashicorp/go-metrics"
-
 	corestore "cosmossdk.io/core/store"
 	errorsmod "cosmossdk.io/errors"
 	"cosmossdk.io/log"
@@ -20,7 +18,6 @@ import (
 	storetypes "cosmossdk.io/store/types"
 	xp "cosmossdk.io/x/upgrade/exported"
 	"cosmossdk.io/x/upgrade/types"
-
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	"github.com/cosmos/cosmos-sdk/telemetry"
@@ -28,6 +25,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/types/kv"
 	"github.com/cosmos/cosmos-sdk/types/module"
+	"github.com/hashicorp/go-metrics"
 )
 
 // Deprecated: UpgradeInfoFileName file to store upgrade information

@@ -3,7 +3,6 @@ package ante
 import (
 	errorsmod "cosmossdk.io/errors"
 	storetypes "cosmossdk.io/store/types"
-
 	"github.com/cosmos/cosmos-sdk/codec/legacy"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/multisig"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"

@@ -5,12 +5,8 @@ import (
 	"sort"
 	"testing"
 
-	cmttypes "github.com/cometbft/cometbft/types"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/math"
-
+	cmttypes "github.com/cometbft/cometbft/types"
 	"github.com/cosmos/cosmos-sdk/codec/address"
 	"github.com/cosmos/cosmos-sdk/codec/legacy"
 	cryptocodec "github.com/cosmos/cosmos-sdk/crypto/codec"
@@ -19,6 +15,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/staking/testutil"
 	"github.com/cosmos/cosmos-sdk/x/staking/types"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestValidatorTestEquivalent(t *testing.T) {

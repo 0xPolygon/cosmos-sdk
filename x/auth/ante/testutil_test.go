@@ -3,16 +3,12 @@ package ante_test
 import (
 	"testing"
 
-	abci "github.com/cometbft/cometbft/abci/types"
-	"github.com/golang/mock/gomock"
-	"github.com/stretchr/testify/require"
-
 	// TODO We don't need to import these API types if we use gogo's registry
 	// ref: https://github.com/cosmos/cosmos-sdk/issues/14647
 	_ "cosmossdk.io/api/cosmos/bank/v1beta1"
 	_ "cosmossdk.io/api/cosmos/crypto/secp256k1"
 	storetypes "cosmossdk.io/store/types"
-
+	abci "github.com/cometbft/cometbft/abci/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
@@ -34,6 +30,8 @@ import (
 	txtestutil "github.com/cosmos/cosmos-sdk/x/auth/tx/testutil"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/cosmos/cosmos-sdk/x/bank"
+	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 // TestAccount represents an account used in the tests in x/auth/ante.

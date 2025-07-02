@@ -15,7 +15,6 @@ import (
 	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	cmttypes "github.com/cometbft/cometbft/types"
 	cmttime "github.com/cometbft/cometbft/types/time"
-
 	"github.com/cosmos/cosmos-sdk/version"
 )
 
@@ -26,26 +25,24 @@ const (
 
 // AppGenesis defines the app's genesis.
 type AppGenesis struct {
-	AppName       string            `json:"app_name"`
-	AppVersion    string            `json:"app_version"`
-	GenesisTime   time.Time         `json:"genesis_time"`
-	ChainID       string            `json:"chain_id"`
-	InitialHeight int64             `json:"initial_height"`
-	AppHash       []byte            `json:"app_hash"`
-	AppState      json.RawMessage   `json:"app_state,omitempty"`
-	Consensus     *ConsensusGenesis `json:"consensus,omitempty"`
+	AppName         string                    `json:"app_name"`
+	AppVersion      string                    `json:"app_version"`
+	GenesisTime     time.Time                 `json:"genesis_time"`
+	ChainID         string                    `json:"chain_id"`
+	InitialHeight   int64                     `json:"initial_height"`
+	AppHash         []byte                    `json:"app_hash"`
+	AppState        json.RawMessage           `json:"app_state,omitempty"`
+	ConsensusParams *cmttypes.ConsensusParams `json:"consensus_params,omitempty"`
 }
 
 // NewAppGenesisWithVersion returns a new AppGenesis with the app name and app version already.
 func NewAppGenesisWithVersion(chainID string, appState json.RawMessage) *AppGenesis {
 	return &AppGenesis{
-		AppName:    version.AppName,
-		AppVersion: version.Version,
-		ChainID:    chainID,
-		AppState:   appState,
-		Consensus: &ConsensusGenesis{
-			Validators: nil,
-		},
+		AppName:         version.AppName,
+		AppVersion:      version.Version,
+		ChainID:         chainID,
+		AppState:        appState,
+		ConsensusParams: cmttypes.DefaultConsensusParams(),
 	}
 }
 
@@ -69,10 +66,6 @@ func (ag *AppGenesis) ValidateAndComplete() error {
 
 	if ag.GenesisTime.IsZero() {
 		ag.GenesisTime = cmttime.Now()
-	}
-
-	if err := ag.Consensus.ValidateAndComplete(); err != nil {
-		return err
 	}
 
 	return nil
@@ -106,15 +99,12 @@ func AppGenesisFromReader(reader io.Reader) (*AppGenesis, error) {
 		appGenesis = AppGenesis{
 			AppName: version.AppName,
 			// AppVersion is not filled as we do not know it from a CometBFT genesis
-			GenesisTime:   ctmGenesis.GenesisTime,
-			ChainID:       ctmGenesis.ChainID,
-			InitialHeight: ctmGenesis.InitialHeight,
-			AppHash:       ctmGenesis.AppHash,
-			AppState:      ctmGenesis.AppState,
-			Consensus: &ConsensusGenesis{
-				Validators: ctmGenesis.Validators,
-				Params:     ctmGenesis.ConsensusParams,
-			},
+			GenesisTime:     ctmGenesis.GenesisTime,
+			ChainID:         ctmGenesis.ChainID,
+			InitialHeight:   ctmGenesis.InitialHeight,
+			AppHash:         ctmGenesis.AppHash,
+			AppState:        ctmGenesis.AppState,
+			ConsensusParams: ctmGenesis.ConsensusParams,
 		}
 	}
 
@@ -152,8 +142,7 @@ func (ag *AppGenesis) ToGenesisDoc() (*cmttypes.GenesisDoc, error) {
 		InitialHeight:   ag.InitialHeight,
 		AppHash:         ag.AppHash,
 		AppState:        ag.AppState,
-		Validators:      ag.Consensus.Validators,
-		ConsensusParams: ag.Consensus.Params,
+		ConsensusParams: ag.ConsensusParams,
 	}, nil
 }
 

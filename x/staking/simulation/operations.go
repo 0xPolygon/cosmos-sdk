@@ -6,7 +6,6 @@ import (
 	"math/rand"
 
 	"cosmossdk.io/math"
-
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"

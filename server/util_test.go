@@ -12,10 +12,6 @@ import (
 
 	cmtcfg "github.com/cometbft/cometbft/config"
 	db "github.com/cosmos/cosmos-db"
-	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
-	"github.com/stretchr/testify/require"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/server"
@@ -25,6 +21,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/types/module/testutil"
 	genutilcli "github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+	"github.com/stretchr/testify/require"
 )
 
 var errCanceledInPreRun = errors.New("canceled in prerun")

@@ -6,10 +6,9 @@ import (
 	"io"
 	"testing"
 
+	"cosmossdk.io/store/snapshots"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-
-	"cosmossdk.io/store/snapshots"
 )
 
 func TestChunkWriter(t *testing.T) {

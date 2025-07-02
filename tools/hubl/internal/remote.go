@@ -7,16 +7,14 @@ import (
 	"path"
 	"strings"
 
+	"cosmossdk.io/client/v2/autocli"
+	"cosmossdk.io/client/v2/autocli/flag"
+	addresscodec "github.com/cosmos/cosmos-sdk/codec/address"
 	"github.com/spf13/cobra"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/reflect/protoregistry"
 	"google.golang.org/protobuf/types/dynamicpb"
-
-	"cosmossdk.io/client/v2/autocli"
-	"cosmossdk.io/client/v2/autocli/flag"
-
-	addresscodec "github.com/cosmos/cosmos-sdk/codec/address"
 )
 
 var (

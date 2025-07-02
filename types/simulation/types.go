@@ -6,11 +6,10 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/cosmos/gogoproto/proto"
-
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/kv"
+	"github.com/cosmos/gogoproto/proto"
 )
 
 // Deprecated: Use WeightedProposalMsg instead.

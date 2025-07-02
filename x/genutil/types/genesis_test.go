@@ -6,10 +6,9 @@ import (
 	"testing"
 
 	cmttypes "github.com/cometbft/cometbft/types"
+	"github.com/cosmos/cosmos-sdk/x/genutil/types"
 	"gotest.tools/v3/assert"
 	"gotest.tools/v3/golden"
-
-	"github.com/cosmos/cosmos-sdk/x/genutil/types"
 )
 
 func TestAppGenesis_Marshal(t *testing.T) {
@@ -33,7 +32,7 @@ func TestAppGenesis_Unmarshal(t *testing.T) {
 	assert.NilError(t, err)
 
 	assert.DeepEqual(t, genesis.ChainID, "demo")
-	assert.DeepEqual(t, genesis.Consensus.Params.Block.MaxBytes, int64(22020096))
+	assert.DeepEqual(t, genesis.ConsensusParams.Block.MaxBytes, int64(22020096))
 }
 
 func TestAppGenesis_ValidGenesis(t *testing.T) {
@@ -42,7 +41,6 @@ func TestAppGenesis_ValidGenesis(t *testing.T) {
 	assert.NilError(t, err)
 
 	assert.DeepEqual(t, genesis.ChainID, "demo")
-	assert.DeepEqual(t, genesis.Consensus.Validators[0].Name, "test")
 
 	// validate the app genesis can be translated properly to cometbft genesis
 	cmtGenesis, err := genesis.ToGenesisDoc()
@@ -60,7 +58,7 @@ func TestAppGenesis_ValidGenesis(t *testing.T) {
 	var appGenesis types.AppGenesis
 	err = json.Unmarshal(rawAppGenesis, &appGenesis)
 	assert.NilError(t, err)
-	assert.DeepEqual(t, appGenesis.Consensus.Params, genesis.Consensus.Params)
+	assert.DeepEqual(t, appGenesis.ConsensusParams, genesis.ConsensusParams)
 
 	// validate marshaling of app genesis
 	rawAppGenesis, err = json.Marshal(&appGenesis)

@@ -1,12 +1,10 @@
 package mint
 
 import (
-	"github.com/stretchr/testify/suite"
-
 	"cosmossdk.io/math"
-
 	"github.com/cosmos/cosmos-sdk/testutil/network"
 	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
+	"github.com/stretchr/testify/suite"
 )
 
 type E2ETestSuite struct {

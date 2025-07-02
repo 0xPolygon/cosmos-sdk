@@ -4,14 +4,13 @@ import (
 	"errors"
 	"testing"
 
+	"cosmossdk.io/x/tx/decode"
+	"cosmossdk.io/x/tx/internal/testpb"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/encoding/protowire"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoregistry"
 	"google.golang.org/protobuf/types/known/anypb"
-
-	"cosmossdk.io/x/tx/decode"
-	"cosmossdk.io/x/tx/internal/testpb"
 )
 
 func errUnknownField(typ string, tagNum int, wireType protowire.Type) error {

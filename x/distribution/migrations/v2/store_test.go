@@ -4,10 +4,7 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	storetypes "cosmossdk.io/store/types"
-
 	"github.com/cosmos/cosmos-sdk/runtime"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	"github.com/cosmos/cosmos-sdk/testutil/testdata"
@@ -15,6 +12,7 @@ import (
 	v1 "github.com/cosmos/cosmos-sdk/x/distribution/migrations/v1"
 	v2 "github.com/cosmos/cosmos-sdk/x/distribution/migrations/v2"
 	"github.com/cosmos/cosmos-sdk/x/distribution/types"
+	"github.com/stretchr/testify/require"
 )
 
 func TestStoreMigration(t *testing.T) {

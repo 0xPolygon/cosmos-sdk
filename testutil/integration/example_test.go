@@ -4,13 +4,10 @@ import (
 	"fmt"
 	"io"
 
-	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
-	"github.com/google/go-cmp/cmp"
-
 	"cosmossdk.io/core/appmodule"
 	"cosmossdk.io/log"
 	storetypes "cosmossdk.io/store/types"
-
+	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	addresscodec "github.com/cosmos/cosmos-sdk/codec/address"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	"github.com/cosmos/cosmos-sdk/testutil/integration"
@@ -23,6 +20,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/mint"
 	mintkeeper "github.com/cosmos/cosmos-sdk/x/mint/keeper"
 	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
+	"github.com/google/go-cmp/cmp"
 )
 
 // Example shows how to use the integration test framework to test the integration of SDK modules.

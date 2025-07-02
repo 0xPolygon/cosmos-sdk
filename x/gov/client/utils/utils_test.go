@@ -3,9 +3,8 @@ package utils_test
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"github.com/cosmos/cosmos-sdk/x/gov/client/utils"
+	"github.com/stretchr/testify/require"
 )
 
 func TestNormalizeWeightedVoteOptions(t *testing.T) {

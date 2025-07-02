@@ -1,9 +1,8 @@
 package rootmulti
 
 import (
-	"github.com/cometbft/cometbft/crypto/merkle"
-
 	storetypes "cosmossdk.io/store/types"
+	"github.com/cometbft/cometbft/crypto/merkle"
 )
 
 // RequireProof returns whether proof is required for the subpath.

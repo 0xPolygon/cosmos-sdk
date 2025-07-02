@@ -9,14 +9,13 @@ import (
 	"github.com/cometbft/cometbft/crypto"
 	tmsecp256k1 "github.com/cometbft/cometbft/crypto/secp256k1"
 	"github.com/cosmos/btcutil/base58"
-	secp "github.com/decred/dcrd/dcrec/secp256k1/v4"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
-
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
+	secp "github.com/decred/dcrd/dcrec/secp256k1/v4"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 type keyData struct {

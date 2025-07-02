@@ -34,21 +34,19 @@ import (
 	"fmt"
 	"sort"
 
-	abci "github.com/cometbft/cometbft/abci/types"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"github.com/spf13/cobra"
-	"golang.org/x/exp/maps"
-
 	"cosmossdk.io/core/appmodule"
 	"cosmossdk.io/core/genesis"
 	errorsmod "cosmossdk.io/errors"
 	storetypes "cosmossdk.io/store/types"
-
+	abci "github.com/cometbft/cometbft/abci/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/spf13/cobra"
+	"golang.org/x/exp/maps"
 )
 
 // AppModuleBasic is the standard form for basic non-dependant elements of an application module.

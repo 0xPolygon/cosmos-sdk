@@ -6,7 +6,6 @@ import (
 	"time"
 
 	sdkmath "cosmossdk.io/math"
-
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"

@@ -17,19 +17,14 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cometbft/cometbft/node"
-	cmtclient "github.com/cometbft/cometbft/rpc/client"
-	dbm "github.com/cosmos/cosmos-db"
-	"github.com/spf13/cobra"
-	"golang.org/x/sync/errgroup"
-	"google.golang.org/grpc"
-
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/log"
 	sdkmath "cosmossdk.io/math"
 	"cosmossdk.io/math/unsafe"
 	pruningtypes "cosmossdk.io/store/pruning/types"
-
+	"github.com/cometbft/cometbft/node"
+	cmtclient "github.com/cometbft/cometbft/rpc/client"
+	dbm "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -60,6 +55,9 @@ import (
 	_ "github.com/cosmos/cosmos-sdk/x/params"  // import params as a blank
 	_ "github.com/cosmos/cosmos-sdk/x/staking" // import staking as a blank
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	"github.com/spf13/cobra"
+	"golang.org/x/sync/errgroup"
+	"google.golang.org/grpc"
 )
 
 // package-wide network lock to only allow one test network at a time

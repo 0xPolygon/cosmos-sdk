@@ -3,12 +3,10 @@ package types_test
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/math"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/distribution/types"
+	"github.com/stretchr/testify/require"
 )
 
 func TestValidateGenesis(t *testing.T) {
