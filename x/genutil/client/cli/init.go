@@ -25,6 +25,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/genutil/types"
 	"github.com/cosmos/go-bip39"
 	"github.com/spf13/cobra"
+
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
+	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 )
 
 const (
@@ -143,6 +146,32 @@ func InitCmd(mbm module.BasicManager, defaultNodeHome string) *cobra.Command {
 			if err != nil {
 				return fmt.Errorf("failed to add genesis validators to genesis.json")
 			}
+
+			accAddr := sdk.AccAddress(valPublicKey.Address())
+			initCoins := sdk.NewCoins(sdk.NewInt64Coin(sdk.DefaultBondDenom, 100000000000))
+
+			var authGenState authtypes.GenesisState
+			var bankGenState banktypes.GenesisState
+
+			accs := []authtypes.GenesisAccount{}
+			baseAccount := authtypes.NewBaseAccount(accAddr, valPublicKey, 0, 0)
+			accs = append(accs, baseAccount)
+			accs = authtypes.SanitizeGenesisAccounts(accs)
+			packed, err := authtypes.PackAccounts(accs)
+			if err != nil {
+				return fmt.Errorf("failed to pack accounts: %w", err)
+			}
+
+			authGenState.Accounts = packed
+
+			bankGenState.Balances = append(bankGenState.Balances, banktypes.Balance{
+				Address: accAddr.String(),
+				Coins:   initCoins,
+			})
+
+			// marshal auth and bank genesis states
+			appGenState[authtypes.ModuleName] = cdc.MustMarshalJSON(&authGenState)
+			appGenState[banktypes.ModuleName] = cdc.MustMarshalJSON(&bankGenState)
 
 			// override milestones with an empty list and default params
 			milestoneGenesisJSON, err := BuildEmptyMilestoneGenesis()
