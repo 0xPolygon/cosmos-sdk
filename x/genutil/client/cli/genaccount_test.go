@@ -19,6 +19,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	moduletestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
 	"github.com/cosmos/cosmos-sdk/x/auth"
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	genutilcli "github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
@@ -251,10 +252,20 @@ func TestBulkAddGenesisAccountCmd(t *testing.T) {
 			require.NoError(t, err)
 
 			bankState := banktypes.GetGenesisStateFromAppState(appCodec, appState)
+			authState := authtypes.GetGenesisStateFromAppState(appCodec, appState)
 
-			require.EqualValues(t, len(tc.expected), len(bankState.Balances))
+			genAccs, err := authtypes.UnpackAccounts(authState.Accounts)
+			require.NoError(t, err)
+
+			tempExpected := make(map[string]sdk.Coins)
+			for acc, coins := range tc.expected {
+				tempExpected[acc] = coins
+			}
+
+			tempExpected[genAccs[0].GetAddress().String()] = sdk.NewCoins(sdk.NewInt64Coin("pol", 100000000000)) // ensure the first account is always present
+			require.EqualValues(t, len(tempExpected), len(bankState.Balances))
 			for _, acc := range bankState.Balances {
-				require.True(t, tc.expected[acc.Address].Equal(acc.Coins), "expected: %v, got: %v", tc.expected[acc.Address], acc.Coins)
+				require.True(t, tempExpected[acc.Address].Equal(acc.Coins), "expected: %v, got: %v", tempExpected[acc.Address], acc.Coins)
 			}
 
 			expectedSupply := sdk.NewCoins()
