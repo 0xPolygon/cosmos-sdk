@@ -68,7 +68,12 @@ func TestInitCmd(t *testing.T) {
 			require.NoError(t, err)
 
 			serverCtx := server.NewContext(viper.New(), cfg, logger)
-			marshaler := makeProtoCodec()
+			interfaceRegistry := types.NewInterfaceRegistry()
+			cryptocodec.RegisterInterfaces(interfaceRegistry)
+			authtypes.RegisterInterfaces(interfaceRegistry)
+			banktypes.RegisterInterfaces(interfaceRegistry)
+			stakingtypes.RegisterInterfaces(interfaceRegistry)
+			marshaler := codec.NewProtoCodec(interfaceRegistry)
 			clientCtx := client.Context{}.
 				WithCodec(marshaler).
 				WithLegacyAmino(makeCodec()).
@@ -100,7 +105,8 @@ func TestInitRecover(t *testing.T) {
 	require.NoError(t, err)
 
 	serverCtx := server.NewContext(viper.New(), cfg, logger)
-	marshaler := makeProtoCodec()
+	interfaceRegistry := types.NewInterfaceRegistry()
+	marshaler := codec.NewProtoCodec(interfaceRegistry)
 	clientCtx := client.Context{}.
 		WithCodec(marshaler).
 		WithLegacyAmino(makeCodec()).
@@ -130,7 +136,8 @@ func TestInitDefaultBondDenom(t *testing.T) {
 	require.NoError(t, err)
 
 	serverCtx := server.NewContext(viper.New(), cfg, logger)
-	marshaler := makeProtoCodec()
+	interfaceRegistry := types.NewInterfaceRegistry()
+	marshaler := codec.NewProtoCodec(interfaceRegistry)
 	clientCtx := client.Context{}.
 		WithCodec(marshaler).
 		WithLegacyAmino(makeCodec()).
@@ -157,7 +164,8 @@ func TestEmptyState(t *testing.T) {
 	require.NoError(t, err)
 
 	serverCtx := server.NewContext(viper.New(), cfg, logger)
-	marshaler := makeProtoCodec()
+	interfaceRegistry := types.NewInterfaceRegistry()
+	marshaler := codec.NewProtoCodec(interfaceRegistry)
 	clientCtx := client.Context{}.
 		WithCodec(marshaler).
 		WithLegacyAmino(makeCodec()).
@@ -201,7 +209,8 @@ func TestEmptyState(t *testing.T) {
 func TestStartStandAlone(t *testing.T) {
 	home := t.TempDir()
 	logger := log.NewNopLogger()
-	marshaler := makeProtoCodec()
+	interfaceRegistry := types.NewInterfaceRegistry()
+	marshaler := codec.NewProtoCodec(interfaceRegistry)
 	err := genutiltest.ExecInitCmd(testMbm, home, marshaler)
 	require.NoError(t, err)
 
@@ -247,7 +256,8 @@ func TestInitConfig(t *testing.T) {
 	require.NoError(t, err)
 
 	serverCtx := server.NewContext(viper.New(), cfg, logger)
-	marshaler := makeProtoCodec()
+	interfaceRegistry := types.NewInterfaceRegistry()
+	marshaler := codec.NewProtoCodec(interfaceRegistry)
 	clientCtx := client.Context{}.
 		WithCodec(marshaler).
 		WithLegacyAmino(makeCodec()).
@@ -291,7 +301,8 @@ func TestInitWithHeight(t *testing.T) {
 	require.NoError(t, err)
 
 	serverCtx := server.NewContext(viper.New(), cfg, logger)
-	marshaler := makeProtoCodec()
+	interfaceRegistry := types.NewInterfaceRegistry()
+	marshaler := codec.NewProtoCodec(interfaceRegistry)
 	clientCtx := client.Context{}.
 		WithCodec(marshaler).
 		WithLegacyAmino(makeCodec()).
@@ -322,7 +333,8 @@ func TestInitWithNegativeHeight(t *testing.T) {
 	require.NoError(t, err)
 
 	serverCtx := server.NewContext(viper.New(), cfg, logger)
-	marshaler := makeProtoCodec()
+	interfaceRegistry := types.NewInterfaceRegistry()
+	marshaler := codec.NewProtoCodec(interfaceRegistry)
 	clientCtx := client.Context{}.
 		WithCodec(marshaler).
 		WithLegacyAmino(makeCodec()).
@@ -352,13 +364,4 @@ func makeCodec() *codec.LegacyAmino {
 	sdk.RegisterLegacyAminoCodec(cdc)
 	cryptocodec.RegisterCrypto(cdc)
 	return cdc
-}
-
-func makeProtoCodec() *codec.ProtoCodec {
-	interfaceRegistry := types.NewInterfaceRegistry()
-	cryptocodec.RegisterInterfaces(interfaceRegistry)
-	authtypes.RegisterInterfaces(interfaceRegistry)
-	banktypes.RegisterInterfaces(interfaceRegistry)
-	stakingtypes.RegisterInterfaces(interfaceRegistry)
-	return codec.NewProtoCodec(interfaceRegistry)
 }
