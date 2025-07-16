@@ -23,11 +23,14 @@ import (
 	"github.com/cosmos/cosmos-sdk/testutil/network"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
+	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	genutilcli "github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
 	genutiltest "github.com/cosmos/cosmos-sdk/x/genutil/client/testutil"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
 	"github.com/cosmos/cosmos-sdk/x/staking"
+	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/require"
 )
@@ -65,8 +68,7 @@ func TestInitCmd(t *testing.T) {
 			require.NoError(t, err)
 
 			serverCtx := server.NewContext(viper.New(), cfg, logger)
-			interfaceRegistry := types.NewInterfaceRegistry()
-			marshaler := codec.NewProtoCodec(interfaceRegistry)
+			marshaler := makeProtoCodec()
 			clientCtx := client.Context{}.
 				WithCodec(marshaler).
 				WithLegacyAmino(makeCodec()).
@@ -98,8 +100,7 @@ func TestInitRecover(t *testing.T) {
 	require.NoError(t, err)
 
 	serverCtx := server.NewContext(viper.New(), cfg, logger)
-	interfaceRegistry := types.NewInterfaceRegistry()
-	marshaler := codec.NewProtoCodec(interfaceRegistry)
+	marshaler := makeProtoCodec()
 	clientCtx := client.Context{}.
 		WithCodec(marshaler).
 		WithLegacyAmino(makeCodec()).
@@ -129,8 +130,7 @@ func TestInitDefaultBondDenom(t *testing.T) {
 	require.NoError(t, err)
 
 	serverCtx := server.NewContext(viper.New(), cfg, logger)
-	interfaceRegistry := types.NewInterfaceRegistry()
-	marshaler := codec.NewProtoCodec(interfaceRegistry)
+	marshaler := makeProtoCodec()
 	clientCtx := client.Context{}.
 		WithCodec(marshaler).
 		WithLegacyAmino(makeCodec()).
@@ -157,8 +157,7 @@ func TestEmptyState(t *testing.T) {
 	require.NoError(t, err)
 
 	serverCtx := server.NewContext(viper.New(), cfg, logger)
-	interfaceRegistry := types.NewInterfaceRegistry()
-	marshaler := codec.NewProtoCodec(interfaceRegistry)
+	marshaler := makeProtoCodec()
 	clientCtx := client.Context{}.
 		WithCodec(marshaler).
 		WithLegacyAmino(makeCodec()).
@@ -202,8 +201,7 @@ func TestEmptyState(t *testing.T) {
 func TestStartStandAlone(t *testing.T) {
 	home := t.TempDir()
 	logger := log.NewNopLogger()
-	interfaceRegistry := types.NewInterfaceRegistry()
-	marshaler := codec.NewProtoCodec(interfaceRegistry)
+	marshaler := makeProtoCodec()
 	err := genutiltest.ExecInitCmd(testMbm, home, marshaler)
 	require.NoError(t, err)
 
@@ -249,8 +247,7 @@ func TestInitConfig(t *testing.T) {
 	require.NoError(t, err)
 
 	serverCtx := server.NewContext(viper.New(), cfg, logger)
-	interfaceRegistry := types.NewInterfaceRegistry()
-	marshaler := codec.NewProtoCodec(interfaceRegistry)
+	marshaler := makeProtoCodec()
 	clientCtx := client.Context{}.
 		WithCodec(marshaler).
 		WithLegacyAmino(makeCodec()).
@@ -294,8 +291,7 @@ func TestInitWithHeight(t *testing.T) {
 	require.NoError(t, err)
 
 	serverCtx := server.NewContext(viper.New(), cfg, logger)
-	interfaceRegistry := types.NewInterfaceRegistry()
-	marshaler := codec.NewProtoCodec(interfaceRegistry)
+	marshaler := makeProtoCodec()
 	clientCtx := client.Context{}.
 		WithCodec(marshaler).
 		WithLegacyAmino(makeCodec()).
@@ -326,8 +322,7 @@ func TestInitWithNegativeHeight(t *testing.T) {
 	require.NoError(t, err)
 
 	serverCtx := server.NewContext(viper.New(), cfg, logger)
-	interfaceRegistry := types.NewInterfaceRegistry()
-	marshaler := codec.NewProtoCodec(interfaceRegistry)
+	marshaler := makeProtoCodec()
 	clientCtx := client.Context{}.
 		WithCodec(marshaler).
 		WithLegacyAmino(makeCodec()).
@@ -357,4 +352,13 @@ func makeCodec() *codec.LegacyAmino {
 	sdk.RegisterLegacyAminoCodec(cdc)
 	cryptocodec.RegisterCrypto(cdc)
 	return cdc
+}
+
+func makeProtoCodec() *codec.ProtoCodec {
+	interfaceRegistry := types.NewInterfaceRegistry()
+	cryptocodec.RegisterInterfaces(interfaceRegistry)
+	authtypes.RegisterInterfaces(interfaceRegistry)
+	banktypes.RegisterInterfaces(interfaceRegistry)
+	stakingtypes.RegisterInterfaces(interfaceRegistry)
+	return codec.NewProtoCodec(interfaceRegistry)
 }

@@ -16,12 +16,22 @@ import (
 	cmttypes "github.com/cometbft/cometbft/types"
 	dbm "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/cosmos/cosmos-sdk/codec"
+	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
+	cryptocodec "github.com/cosmos/cosmos-sdk/crypto/codec"
 	"github.com/cosmos/cosmos-sdk/server"
 	"github.com/cosmos/cosmos-sdk/server/types"
 	"github.com/cosmos/cosmos-sdk/testutil/cmdtest"
 	"github.com/cosmos/cosmos-sdk/types/module"
+	auth "github.com/cosmos/cosmos-sdk/x/auth"
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
+	bank "github.com/cosmos/cosmos-sdk/x/bank"
+	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+	genutil "github.com/cosmos/cosmos-sdk/x/genutil"
 	genutilcli "github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
+	staking "github.com/cosmos/cosmos-sdk/x/staking"
+	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"github.com/rs/zerolog"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/require"
@@ -57,7 +67,12 @@ func NewExportSystem(t *testing.T, exporter types.AppExporter) *ExportSystem {
 	sys := cmdtest.NewSystem()
 	sys.AddCommands(
 		server.ExportCmd(exporter, homeDir),
-		genutilcli.InitCmd(module.NewBasicManager(), homeDir),
+		genutilcli.InitCmd(module.NewBasicManager(
+			auth.AppModuleBasic{},
+			bank.AppModuleBasic{},
+			staking.AppModuleBasic{},
+			genutil.AppModuleBasic{},
+		), homeDir),
 	)
 
 	tw := zerolog.NewTestWriter(t)
@@ -70,7 +85,14 @@ func NewExportSystem(t *testing.T, exporter types.AppExporter) *ExportSystem {
 	)
 	sCtx.Config.SetRoot(homeDir)
 
-	cCtx := (client.Context{}).WithHomeDir(homeDir)
+	// Set up codec for client.Context
+	ir := codectypes.NewInterfaceRegistry()
+	cryptocodec.RegisterInterfaces(ir)
+	authtypes.RegisterInterfaces(ir)
+	banktypes.RegisterInterfaces(ir)
+	stakingtypes.RegisterInterfaces(ir)
+	cdc := codec.NewProtoCodec(ir)
+	cCtx := (client.Context{}).WithHomeDir(homeDir).WithCodec(cdc)
 
 	ctx := context.WithValue(context.Background(), server.ServerContextKey, sCtx)
 	ctx = context.WithValue(ctx, client.ClientContextKey, &cCtx)
