@@ -1,15 +1,16 @@
 module cosmossdk.io/store
 
-go 1.24.3
+go 1.24.4
+
 
 require (
 	cosmossdk.io/errors v1.0.1
 	cosmossdk.io/log v1.4.1
 	cosmossdk.io/math v1.4.0
 	github.com/cometbft/cometbft v0.38.17
-	github.com/cosmos/cosmos-db v1.0.2
+	github.com/cosmos/cosmos-db v1.1.1
 	github.com/cosmos/gogoproto v1.7.0
-	github.com/cosmos/iavl v1.2.0
+	github.com/cosmos/iavl v1.2.2
 	github.com/cosmos/ics23/go v0.11.0
 	github.com/golang/mock v1.6.0
 	github.com/golang/protobuf v1.5.4 // indirect
@@ -17,7 +18,7 @@ require (
 	github.com/hashicorp/go-metrics v0.5.3
 	github.com/hashicorp/go-plugin v1.5.2
 	github.com/hashicorp/golang-lru v1.0.2
-	github.com/spf13/cast v1.6.0 // indirect
+	github.com/spf13/cast v1.7.1 // indirect
 	github.com/stretchr/testify v1.10.0
 	github.com/tidwall/btree v1.7.0
 	golang.org/x/exp v0.0.0-20250106191152-7588d65b2ba8
@@ -30,6 +31,7 @@ require (
 	github.com/DataDog/zstd v1.5.5 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/btcsuite/btcd/btcec/v2 v2.3.4 // indirect
+	github.com/bufbuild/protocompile v0.14.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cockroachdb/errors v1.11.3 // indirect
 	github.com/cockroachdb/fifo v0.0.0-20240606204812-0bbfbd93a7ce // indirect
@@ -39,7 +41,7 @@ require (
 	github.com/cockroachdb/tokenbucket v0.0.0-20230807174530-cc333fc44b06 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.3.0 // indirect
-	github.com/emicklei/dot v1.6.1 // indirect
+	github.com/emicklei/dot v1.6.2 // indirect
 	github.com/ethereum/go-ethereum v1.15.0 // indirect
 	github.com/fatih/color v1.17.0 // indirect
 	github.com/getsentry/sentry-go v0.27.0 // indirect
@@ -48,7 +50,7 @@ require (
 	github.com/google/btree v1.1.3 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/hashicorp/go-immutable-radix v1.3.1 // indirect
-	github.com/hashicorp/go-uuid v1.0.1 // indirect
+	github.com/hashicorp/go-uuid v1.0.2 // indirect
 	github.com/hashicorp/yamux v0.1.1 // indirect
 	github.com/holiman/uint256 v1.3.2 // indirect
 	github.com/jhump/protoreflect v1.15.3 // indirect
@@ -62,6 +64,7 @@ require (
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/oasisprotocol/curve25519-voi v0.0.0-20230904125328-1f23a7beb09a // indirect
 	github.com/oklog/run v1.1.0 // indirect
+	github.com/onsi/gomega v1.36.2 // indirect
 	github.com/petermattis/goid v0.0.0-20240813172612-4fcff4a6cae7 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
@@ -87,5 +90,5 @@ replace (
 	cosmossdk.io/log => github.com/0xPolygon/cosmos-sdk/log v1.4.1
 	cosmossdk.io/math => github.com/0xPolygon/cosmos-sdk/math v1.4.0
 	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.2.0-polygon
-	github.com/ethereum/go-ethereum => github.com/maticnetwork/bor v1.14.14-0.20250618164709-3dc7d31cdac3
+	github.com/ethereum/go-ethereum => github.com/0xPolygon/bor v1.14.14-0.20250618164709-3dc7d31cdac3
 )

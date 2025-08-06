@@ -18,7 +18,7 @@ require (
 	cosmossdk.io/x/nft v0.1.1
 	cosmossdk.io/x/tx v0.13.7
 	cosmossdk.io/x/upgrade v0.1.4
-	github.com/0xPolygon/heimdall-v2 v0.1.34-0.20250618182939-4eac5485ad5f
+	github.com/0xPolygon/heimdall-v2 v0.2.16-beta.0.20250804094154-706333be6a8c
 	github.com/cometbft/cometbft v0.38.17
 	github.com/cosmos/cosmos-db v1.0.2
 	// this version is not used as it is always replaced by the latest Cosmos SDK version
@@ -41,6 +41,7 @@ require (
 	cloud.google.com/go/storage v1.38.0 // indirect
 	cosmossdk.io/errors v1.0.1 // indirect
 	filippo.io/edwards25519 v1.0.0 // indirect
+	github.com/0xPolygon/polyproto v0.0.7 // indirect
 	github.com/99designs/go-keychain v0.0.0-20191008050251-8e49817e8af4 // indirect
 	github.com/99designs/keyring v1.2.1 // indirect
 	github.com/DataDog/datadog-go v3.2.0+incompatible // indirect
@@ -149,7 +150,6 @@ require (
 	github.com/linxGnu/grocksdb v1.8.14 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/manifoldco/promptui v0.9.0 // indirect
-	github.com/maticnetwork/polyproto v0.0.6 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/minio/highwayhash v1.0.3 // indirect
@@ -256,5 +256,5 @@ replace (
 	cosmossdk.io/x/tx => github.com/0xPolygon/cosmos-sdk/x/tx v0.13.6-0.20241126102051-89dc71d02611
 	cosmossdk.io/x/upgrade => github.com/0xPolygon/cosmos-sdk/x/upgrade v0.1.5-0.20241126102051-89dc71d02611
 	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.2.0-polygon
-	github.com/ethereum/go-ethereum => github.com/maticnetwork/bor v1.14.14-0.20250618164709-3dc7d31cdac3
+	github.com/ethereum/go-ethereum => github.com/0xPolygon/bor v1.14.14-0.20250618164709-3dc7d31cdac3
 )
