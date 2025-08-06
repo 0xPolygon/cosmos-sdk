@@ -2,7 +2,6 @@ module cosmossdk.io/log
 
 go 1.24.4
 
-toolchain go1.24.5
 
 require (
 	github.com/rs/zerolog v1.33.0
