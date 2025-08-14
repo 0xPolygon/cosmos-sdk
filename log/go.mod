@@ -2,7 +2,6 @@ module cosmossdk.io/log
 
 go 1.24.4
 
-
 require (
 	github.com/rs/zerolog v1.33.0
 	gotest.tools/v3 v3.5.1

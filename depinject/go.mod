@@ -2,7 +2,6 @@ module cosmossdk.io/depinject
 
 go 1.24.4
 
-
 require (
 	github.com/cockroachdb/errors v1.11.3
 	github.com/regen-network/gocuke v0.6.2

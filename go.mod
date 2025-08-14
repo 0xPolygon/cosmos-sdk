@@ -1,4 +1,4 @@
-go 1.24.4
+go 1.24.6
 
 module github.com/cosmos/cosmos-sdk
 
@@ -12,7 +12,7 @@ require (
 	cosmossdk.io/math v1.4.0
 	cosmossdk.io/store v1.1.1
 	cosmossdk.io/x/tx v0.13.7
-	github.com/0xPolygon/heimdall-v2 v0.2.16-beta.0.20250804094154-706333be6a8c
+	github.com/0xPolygon/heimdall-v2 v0.2.16-beta.0.20250811121528-fe9529a9fa7f
 	github.com/99designs/keyring v1.2.1
 	github.com/bgentry/speakeasy v0.1.1-0.20220910012023-760eaf8b6816
 	github.com/bits-and-blooms/bitset v1.22.0

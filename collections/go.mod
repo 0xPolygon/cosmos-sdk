@@ -2,7 +2,6 @@ module cosmossdk.io/collections
 
 go 1.24.4
 
-
 require (
 	cosmossdk.io/core v0.11.1
 	github.com/cosmos/cosmos-db v1.1.1

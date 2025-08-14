@@ -2,7 +2,6 @@ module cosmossdk.io/math
 
 go 1.24.4
 
-
 require (
 	github.com/stretchr/testify v1.10.0
 	golang.org/x/exp v0.0.0-20250106191152-7588d65b2ba8
