@@ -1,6 +1,6 @@
 module cosmossdk.io/x/circuit
 
-go 1.24.4
+go 1.24.6
 
 require (
 	cosmossdk.io/api v0.7.5
@@ -25,7 +25,7 @@ require (
 	cosmossdk.io/math v1.4.0 // indirect
 	cosmossdk.io/x/tx v0.13.7 // indirect
 	filippo.io/edwards25519 v1.0.0 // indirect
-	github.com/0xPolygon/heimdall-v2 v0.2.16-beta.0.20250804094154-706333be6a8c // indirect
+	github.com/0xPolygon/heimdall-v2 v0.2.16-beta.0.20250811121528-fe9529a9fa7f // indirect
 	github.com/0xPolygon/polyproto v0.0.7 // indirect
 	github.com/99designs/go-keychain v0.0.0-20191008050251-8e49817e8af4 // indirect
 	github.com/99designs/keyring v1.2.1 // indirect

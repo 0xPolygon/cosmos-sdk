@@ -1,6 +1,6 @@
 module cosmossdk.io/simapp
 
-go 1.24.4
+go 1.24.6
 
 require (
 	cosmossdk.io/api v0.7.5
@@ -18,7 +18,7 @@ require (
 	cosmossdk.io/x/nft v0.1.1
 	cosmossdk.io/x/tx v0.13.7
 	cosmossdk.io/x/upgrade v0.1.4
-	github.com/0xPolygon/heimdall-v2 v0.2.16-beta.0.20250804094154-706333be6a8c
+	github.com/0xPolygon/heimdall-v2 v0.2.16-beta.0.20250811121528-fe9529a9fa7f
 	github.com/cometbft/cometbft v0.38.17
 	github.com/cosmos/cosmos-db v1.0.2
 	// this version is not used as it is always replaced by the latest Cosmos SDK version
