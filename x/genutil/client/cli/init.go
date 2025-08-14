@@ -10,8 +10,6 @@ import (
 
 	errorsmod "cosmossdk.io/errors"
 	"cosmossdk.io/math/unsafe"
-	milestonestypes "github.com/0xPolygon/heimdall-v2/x/milestone/types"
-	staketypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 	cfg "github.com/cometbft/cometbft/config"
 	cmttypes "github.com/cometbft/cometbft/types"
 	"github.com/cosmos/cosmos-sdk/client"
@@ -21,13 +19,15 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/version"
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
+	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	"github.com/cosmos/cosmos-sdk/x/genutil/types"
 	"github.com/cosmos/go-bip39"
 	"github.com/spf13/cobra"
 
-	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+	milestonestypes "github.com/0xPolygon/heimdall-v2/x/milestone/types"
+	staketypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 )
 
 const (
@@ -153,8 +153,9 @@ func InitCmd(mbm module.BasicManager, defaultNodeHome string) *cobra.Command {
 			var authGenState authtypes.GenesisState
 			var bankGenState banktypes.GenesisState
 
+			authGenState.Params = authtypes.DefaultGenesisState().Params
 			accs := []authtypes.GenesisAccount{}
-			baseAccount := authtypes.NewBaseAccount(accAddr, valPublicKey, 0, 0)
+			baseAccount := authtypes.NewBaseAccount(accAddr, valPublicKey, 1, 0)
 			accs = append(accs, baseAccount)
 			accs = authtypes.SanitizeGenesisAccounts(accs)
 			packed, err := authtypes.PackAccounts(accs)
