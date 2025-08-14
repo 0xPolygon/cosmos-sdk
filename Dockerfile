@@ -12,7 +12,7 @@
 #
 # This image is pushed to the GHCR as https://ghcr.io/cosmos/simapp
 
-FROM golang:1.21-alpine AS build-env
+FROM golang:1.24-alpine AS build-env
 
 # Install minimum necessary dependencies
 ENV PACKAGES curl make git libc-dev bash gcc linux-headers eudev-dev
@@ -39,8 +39,8 @@ ARG TARGETOS TARGETARCH
 # install simapp, remove packages
 RUN GOOS=$TARGETOS GOARCH=$TARGETARCH make build
 
-# Use alpine:3 as a base image
-FROM alpine:3
+# Use alpine:latest as a base image
+FROM alpine:latest
 
 EXPOSE 26656 26657 1317 9090
 # Run simd by default, omit entrypoint to ease using container with simcli
