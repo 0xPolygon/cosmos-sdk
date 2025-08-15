@@ -243,7 +243,7 @@ func TestBulkAddGenesisAccountCmd(t *testing.T) {
 			}
 			require.Equal(t, tc.expectErr, doesErr)
 
-			// an error already occurred, no need to check the state
+			// An error already occurred, no need to check the state.
 			if doesErr {
 				return
 			}
@@ -262,7 +262,17 @@ func TestBulkAddGenesisAccountCmd(t *testing.T) {
 				tempExpected[acc] = coins
 			}
 
-			tempExpected[genAccs[0].GetAddress().String()] = sdk.NewCoins(sdk.NewInt64Coin("pol", 100000000000)) // ensure the first account is always present
+			// Find the bootstrap/validator account deterministically.
+			// This account is injected at init, and it has its own PubKey and address.
+			var bootstrapAddr string
+			for _, a := range genAccs {
+				if a.GetPubKey() != nil {
+					bootstrapAddr = a.GetAddress().String()
+					break
+				}
+			}
+			require.NotEmpty(t, bootstrapAddr, "could not find bootstrap account with pubkey in auth genesis")
+			tempExpected[bootstrapAddr] = sdk.NewCoins(sdk.NewInt64Coin("pol", 100000000000))
 			require.EqualValues(t, len(tempExpected), len(bankState.Balances))
 			for _, acc := range bankState.Balances {
 				require.True(t, tempExpected[acc.Address].Equal(acc.Coins), "expected: %v, got: %v", tempExpected[acc.Address], acc.Coins)
