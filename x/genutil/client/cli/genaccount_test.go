@@ -243,7 +243,7 @@ func TestBulkAddGenesisAccountCmd(t *testing.T) {
 			}
 			require.Equal(t, tc.expectErr, doesErr)
 
-			// an error already occurred, no need to check the state
+			// An error already occurred, no need to check the state.
 			if doesErr {
 				return
 			}
@@ -262,8 +262,8 @@ func TestBulkAddGenesisAccountCmd(t *testing.T) {
 				tempExpected[acc] = coins
 			}
 
-			// Find the bootstrap/validator account deterministically
-			// This account is injected at init, ad it has its own PubKey and address
+			// Find the bootstrap/validator account deterministically.
+			// This account is injected at init, and it has its own PubKey and address.
 			var bootstrapAddr string
 			for _, a := range genAccs {
 				if a.GetPubKey() != nil {
