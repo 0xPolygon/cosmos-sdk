@@ -36,34 +36,45 @@ mkfile_dir := $(shell cd $(shell dirname $(mkfile_path)); pwd)
 ###                                 Tools                                   ###
 ###############################################################################
 
-PREFIX ?= /usr/local
-BIN ?= $(PREFIX)/bin
-UNAME_S ?= $(shell uname -s)
-UNAME_M ?= $(shell uname -m)
+PREFIX       ?= /usr/local
+BIN          ?= $(PREFIX)/bin
+UNAME_S      ?= $(shell uname -s)
+UNAME_M      ?= $(shell uname -m)
 
+# Detect GOPATH/GOBIN safely
+GOBIN  ?= $(shell $(GO) env GOBIN)
 GOPATH ?= $(shell $(GO) env GOPATH)
-GITHUBDIR := $(GOPATH)$(FS)src$(FS)github.com
+# Take only the first entry in GOPATH
+GOPATH1 := $(firstword $(subst :, ,$(GOPATH)))
 
-BUF_VERSION ?= 0.11.0
+# Choose install destination
+ifeq ($(GOBIN),)
+  TOOLS_DESTDIR ?= $(GOPATH1)/bin
+else
+  TOOLS_DESTDIR ?= $(GOBIN)
+endif
 
-TOOLS_DESTDIR  ?= $(GOPATH)/bin
-RUNSIM         = $(TOOLS_DESTDIR)/runsim
+GITHUBDIR := $(GOPATH1)$(FS)src$(FS)github.com
+
+BUF_VERSION   ?= 0.11.0
+RUNSIM        := $(TOOLS_DESTDIR)/runsim
 
 tools: tools-stamp
+
 tools-stamp: runsim
 	# Create dummy file to satisfy dependency and avoid
-	# rebuilding when this Makefile target is hit twice
-	# in a row.
+	# rebuilding when this Makefile target is hit twice in a row.
 	touch $@
 
 # Install the runsim binary
 runsim: $(RUNSIM)
+
 $(RUNSIM):
-	@echo "Installing runsim..."
-	@go install github.com/cosmos/tools/cmd/runsim@v1.0.0
+	@echo "Installing runsim to $(TOOLS_DESTDIR)..."
+	@$(GO) install github.com/cosmos/tools/cmd/runsim@v1.0.0
 
 tools-clean:
 	rm -f $(GOLANGCI_LINT) $(RUNSIM)
 	rm -f tools-stamp
 
-.PHONY: tools-clean runsim
+.PHONY: tools tools-clean runsim
