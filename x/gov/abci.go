@@ -71,7 +71,7 @@ func EndBlocker(ctx sdk.Context, keeper *keeper.Keeper) error {
 		}
 		*/
 
-		// called when proposal become inactive
+		// called when the proposal becomes inactive
 		cacheCtx, writeCache := ctx.CacheContext()
 		err = keeper.Hooks().AfterProposalFailedMinDeposit(cacheCtx, proposal.Id)
 		if err == nil { // purposely ignoring the error here not to halt the chain if the hook fails
@@ -134,28 +134,17 @@ func EndBlocker(ctx sdk.Context, keeper *keeper.Keeper) error {
 			return false, err
 		}
 
-		// HV2: heimdall distributes and deletes deposits in all cases of proposal failures, without caring about burnDeposits
-		if passes {
-			err = keeper.RefundAndDeleteDeposits(ctx, proposal.Id)
-			if err != nil {
-				return false, err
-			}
-		} else {
-			err = keeper.DistributeAndDeleteDeposits(ctx, proposal.Id)
-			if err != nil {
-				return false, err
-			}
-		}
-
-		// If an expedited proposal fails, we do not want to update
-		// the deposit at this point since the proposal is converted to regular.
-		// As a result, the deposits are either deleted or refunded in all cases
-		// EXCEPT when an expedited proposal fails.
-
 		if !(proposal.Expedited && !passes) {
-			err = keeper.RefundAndDeleteDeposits(ctx, proposal.Id)
-			if err != nil {
-				return false, err
+			// HV2: Heimdall distributes and deletes deposits in all cases of
+			// final proposal failures, and refunds otherwise.
+			if passes {
+				if err := keeper.RefundAndDeleteDeposits(ctx, proposal.Id); err != nil {
+					return false, err
+				}
+			} else {
+				if err := keeper.DistributeAndDeleteDeposits(ctx, proposal.Id); err != nil {
+					return false, err
+				}
 			}
 		}
 
@@ -217,10 +206,7 @@ func EndBlocker(ctx sdk.Context, keeper *keeper.Keeper) error {
 				logMsg = fmt.Sprintf("passed, but msg %d (%s) failed on execution: %s", idx, sdk.MsgTypeURL(msg), err)
 			}
 		case proposal.Expedited:
-			// When expedited proposal fails, it is converted
-			// to a regular proposal. As a result, the voting period is extended, and,
-			// once the regular voting period expires again, the tally is repeated
-			// according to the regular proposal rules.
+			// When expedited proposal fails, it is converted to a regular proposal.
 			proposal.Expedited = false
 			params, err := keeper.Params.Get(ctx)
 			if err != nil {
@@ -229,8 +215,7 @@ func EndBlocker(ctx sdk.Context, keeper *keeper.Keeper) error {
 			endTime := proposal.VotingStartTime.Add(*params.VotingPeriod)
 			proposal.VotingEndTime = &endTime
 
-			err = keeper.ActiveProposalsQueue.Set(ctx, collections.Join(*proposal.VotingEndTime, proposal.Id), proposal.Id)
-			if err != nil {
+			if err := keeper.ActiveProposalsQueue.Set(ctx, collections.Join(*proposal.VotingEndTime, proposal.Id), proposal.Id); err != nil {
 				return false, err
 			}
 

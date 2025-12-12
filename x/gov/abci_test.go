@@ -454,7 +454,6 @@ func TestEndBlockerProposalHandlerFailed(t *testing.T) {
 }
 
 func TestExpeditedProposal_PassAndConversionToRegular(t *testing.T) {
-	t.Skip("In HV2, expedited proposals are not supported.")
 	testcases := []struct {
 		name string
 		// indicates whether the expedited proposal passes.
@@ -503,9 +502,10 @@ func TestExpeditedProposal_PassAndConversionToRegular(t *testing.T) {
 			valAddr := sdk.ValAddress(addrs[0])
 			proposer := addrs[0]
 
-			// Create a validator so that able to vote on proposal.
+			// Create a validator to be able to vote on the proposal.
 			createValidators(t, stakeMsgSvr, stakeSideMsgSvr, ctx, []sdk.ValAddress{valAddr}, []math.Int{valTokenAmount})
-			app.StakeKeeper.EndBlocker(ctx)
+			_, err = app.StakeKeeper.EndBlocker(ctx)
+			require.NoError(t, err)
 
 			checkInactiveProposalsQueue(t, ctx, &app.GovKeeper)
 			checkActiveProposalsQueue(t, ctx, &app.GovKeeper)
@@ -517,7 +517,23 @@ func TestExpeditedProposal_PassAndConversionToRegular(t *testing.T) {
 			submitterInitialBalance := app.BankKeeper.GetAllBalances(ctx, addrs[0])
 			depositorInitialBalance := app.BankKeeper.GetAllBalances(ctx, addrs[1])
 
-			proposalCoins := sdk.Coins{sdk.NewCoin(sdk.DefaultBondDenom, sdk.TokensFromConsensusPower(5*depositMultiplier, sdk.DefaultPowerReduction))}
+			// Build proposalCoins from the actual expedited_min_deposit param.
+			proposalCoins := sdk.NewCoins()
+			for _, c := range params.ExpeditedMinDeposit {
+				proposalCoins = proposalCoins.Add(sdk.NewCoin(c.Denom, c.Amount))
+			}
+
+			// Defensive fallback if expedited_min_deposit is empty
+			if proposalCoins.Empty() {
+				depositMultiplier := getDepositMultiplier(true)
+				proposalCoins = sdk.Coins{
+					sdk.NewCoin(
+						sdk.DefaultBondDenom,
+						sdk.TokensFromConsensusPower(5*depositMultiplier, sdk.DefaultPowerReduction),
+					),
+				}
+			}
+
 			newProposalMsg, err := v1.NewMsgSubmitProposal([]sdk.Msg{}, proposalCoins, proposer.String(), "metadata", "title", "summary", true)
 			require.NoError(t, err)
 
@@ -555,7 +571,8 @@ func TestExpeditedProposal_PassAndConversionToRegular(t *testing.T) {
 			}
 
 			// Here the expedited proposal is converted to regular after expiry.
-			gov.EndBlocker(ctx, &app.GovKeeper)
+			err = gov.EndBlocker(ctx, &app.GovKeeper)
+			require.NoError(t, err)
 
 			if tc.expeditedPasses {
 				checkActiveProposalsQueue(t, ctx, &app.GovKeeper)
@@ -610,7 +627,8 @@ func TestExpeditedProposal_PassAndConversionToRegular(t *testing.T) {
 			}
 
 			// Here we validate the converted regular proposal
-			gov.EndBlocker(ctx, &app.GovKeeper)
+			err = gov.EndBlocker(ctx, &app.GovKeeper)
+			require.NoError(t, err)
 
 			macc = app.GovKeeper.GetGovernanceAccount(ctx)
 			require.NotNil(t, macc)
@@ -634,10 +652,12 @@ func TestExpeditedProposal_PassAndConversionToRegular(t *testing.T) {
 				return
 			}
 
-			// Not enough votes - module account has returned the deposit
+			// Not enough votes, so the proposal finally fails, and deposits are distributed to validators.
+			// The gov module account is hence back to its initial balance.
 			require.Equal(t, initialModuleAccCoins, eventualModuleAccCoins)
-			require.Equal(t, submitterInitialBalance, submitterEventualBalance)
-			require.Equal(t, depositorInitialBalance, depositorEventualBalance)
+
+			// The depositor loses their deposit.
+			require.Equal(t, depositorInitialBalance.Sub(proposalCoins...), depositorEventualBalance)
 
 			require.Equal(t, v1.StatusRejected, proposal.Status)
 		})
@@ -674,7 +694,8 @@ func createValidators(t *testing.T, stakeMsgSvr stakeTypes.MsgServer, sideMsgSvr
 		joinValHandler := sideMsgSvr.PostTxHandler(sdk.MsgTypeURL(valCreateMsg))
 		require.NotNil(t, joinValHandler)
 
-		joinValHandler(ctx, valCreateMsg, sideTxs.Vote_VOTE_YES)
+		err = joinValHandler(ctx, valCreateMsg, sideTxs.Vote_VOTE_YES)
+		require.NoError(t, err)
 	}
 }
 
