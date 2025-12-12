@@ -7,6 +7,8 @@ github.com/0xPolygon/bor v1.14.14-0.20250618164709-3dc7d31cdac3 h1:jVOWHi0Hh7axP
 github.com/0xPolygon/bor v1.14.14-0.20250618164709-3dc7d31cdac3/go.mod h1:aplRozrnOVZTkjCaWG4YzaPZN8KB6/j7Jv5CrFGd5JQ=
 github.com/0xPolygon/cometbft v0.3.5-polygon h1:0Lu9Rr8igBw3c6H3pbSzwUItm/+FrlPs4Vt5ReJfI4I=
 github.com/0xPolygon/cometbft v0.3.5-polygon/go.mod h1:ZFIXbBrjS2AlVL5UFIgnShMe3b2dso9M0yHLN+mBg4Y=
+github.com/0xPolygon/cometbft-db v0.14.1-polygon h1:sMlEPISgW0Wm9bC3bnLVPiPnyZ9EOuWJxoAV8ujrN3o=
+github.com/0xPolygon/cometbft-db v0.14.1-polygon/go.mod h1:KHP1YghilyGV/xjD5DP3+2hyigWx0WTp9X+0Gnx0RxQ=
 github.com/0xPolygon/cosmos-sdk/api v0.7.6-0.20250429154832-7177ebac408e h1:RLUwoGYtf4IahtrMHTJdesTXM+ggz+2iikaxmViCNGo=
 github.com/0xPolygon/cosmos-sdk/api v0.7.6-0.20250429154832-7177ebac408e/go.mod h1:IcxpYS5fMemZGqyYtErK7OqvdM0C8kdW3dq8Q/XIG38=
 github.com/0xPolygon/cosmos-sdk/client/v2 v2.0.0-beta.5.0.20241126102051-89dc71d02611 h1:HpCvMOCbj6XiFNtBolht5gNb+aFwsw8nwqV8cgGnZO0=
@@ -142,8 +144,6 @@ github.com/cockroachdb/redact v1.1.5/go.mod h1:BVNblN9mBWFyMyqK1k3AAiSxhvhfK2oOZ
 github.com/cockroachdb/tokenbucket v0.0.0-20230807174530-cc333fc44b06 h1:zuQyyAKVxetITBuuhv3BI9cMrmStnpT18zmgmTxunpo=
 github.com/cockroachdb/tokenbucket v0.0.0-20230807174530-cc333fc44b06/go.mod h1:7nc4anLGjupUW/PeY5qiNYsdNXj7zopG+eqsS7To5IQ=
 github.com/codahale/hdrhistogram v0.0.0-20161010025455-3a0bb77429bd/go.mod h1:sE/e/2PUdi/liOCUjSTXgM1o87ZssimdTWN964YiIeI=
-github.com/cometbft/cometbft-db v0.14.1 h1:SxoamPghqICBAIcGpleHbmoPqy+crij/++eZz3DlerQ=
-github.com/cometbft/cometbft-db v0.14.1/go.mod h1:KHP1YghilyGV/xjD5DP3+2hyigWx0WTp9X+0Gnx0RxQ=
 github.com/consensys/bavard v0.1.27 h1:j6hKUrGAy/H+gpNrpLU3I26n1yc+VMGmd6ID5+gAhOs=
 github.com/consensys/bavard v0.1.27/go.mod h1:k/zVjHHC4B+PQy1Pg7fgvG3ALicQw540Crag8qx+dZs=
 github.com/consensys/gnark-crypto v0.16.0 h1:8Dl4eYmUWK9WmlP1Bj6je688gBRJCJbT8Mw4KoTAawo=
