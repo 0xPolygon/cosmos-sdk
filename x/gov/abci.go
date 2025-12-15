@@ -134,16 +134,46 @@ func EndBlocker(ctx sdk.Context, keeper *keeper.Keeper) error {
 			return false, err
 		}
 
-		if !(proposal.Expedited && !passes) {
-			// HV2: Heimdall distributes and deletes deposits in all cases of
-			// final proposal failures, and refunds otherwise.
+		if ctx.BlockHeight() < ExpeditedProposalHardForkHeight {
+			// HV2: Pre ExpeditedProposalHardForkHeight
+			// Heimdall distributes and deletes deposits in all cases of proposal failures,
+			// without caring about burnDeposits
 			if passes {
-				if err := keeper.RefundAndDeleteDeposits(ctx, proposal.Id); err != nil {
+				err = keeper.RefundAndDeleteDeposits(ctx, proposal.Id)
+				if err != nil {
 					return false, err
 				}
 			} else {
-				if err := keeper.DistributeAndDeleteDeposits(ctx, proposal.Id); err != nil {
+				err = keeper.DistributeAndDeleteDeposits(ctx, proposal.Id)
+				if err != nil {
 					return false, err
+				}
+			}
+
+			// If an expedited proposal fails, we do not want to update
+			// the deposit at this point since the proposal is converted to regular.
+			// As a result, the deposits are either deleted or refunded in all cases
+			// EXCEPT when an expedited proposal fails.
+
+			if !(proposal.Expedited && !passes) {
+				err = keeper.RefundAndDeleteDeposits(ctx, proposal.Id)
+				if err != nil {
+					return false, err
+				}
+			}
+		} else {
+			// HV2: Post ExpeditedProposalHardForkHeight
+			if !(proposal.Expedited && !passes) {
+				// Heimdall distributes and deletes deposits in all cases of
+				// final proposal failures, and refunds otherwise.
+				if passes {
+					if err := keeper.RefundAndDeleteDeposits(ctx, proposal.Id); err != nil {
+						return false, err
+					}
+				} else {
+					if err := keeper.DistributeAndDeleteDeposits(ctx, proposal.Id); err != nil {
+						return false, err
+					}
 				}
 			}
 		}
@@ -161,9 +191,9 @@ func EndBlocker(ctx sdk.Context, keeper *keeper.Keeper) error {
 			)
 
 			// attempt to execute all messages within the passed proposal
-			// Messages may mutate state thus we use a cached context. If one of
-			// the handlers fails, no state mutation is written and the error
-			// message is logged.
+			// Messages may mutate the state, thus we use a cached context.
+			// If one of the handlers fails, no state mutation is written
+			// and the error message is logged.
 			cacheCtx, writeCache := ctx.CacheContext()
 			messages, err := proposal.GetMsgs()
 			if err != nil {

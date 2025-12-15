@@ -10,7 +10,7 @@ import (
 	modulev1 "cosmossdk.io/api/cosmos/gov/module/v1"
 	"cosmossdk.io/core/address"
 	"cosmossdk.io/core/appmodule"
-	store "cosmossdk.io/core/store"
+	"cosmossdk.io/core/store"
 	"cosmossdk.io/depinject"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
@@ -35,6 +35,8 @@ import (
 )
 
 const ConsensusVersion = 5
+
+const ExpeditedProposalHardForkHeight = 100 // TODO: set this to the height when the hard fork occurs
 
 var (
 	_ module.AppModuleBasic      = AppModuleBasic{}
