@@ -39,7 +39,7 @@ require (
 	github.com/cockroachdb/redact v1.1.5 // indirect
 	github.com/cockroachdb/tokenbucket v0.0.0-20230807174530-cc333fc44b06 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
-	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.3.0 // indirect
+	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.4.0 // indirect
 	github.com/emicklei/dot v1.6.2 // indirect
 	github.com/ethereum/go-ethereum v1.15.0 // indirect
 	github.com/fatih/color v1.17.0 // indirect
@@ -67,7 +67,7 @@ require (
 	github.com/petermattis/goid v0.0.0-20240813172612-4fcff4a6cae7 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
-	github.com/prometheus/client_golang v1.20.5 // indirect
+	github.com/prometheus/client_golang v1.21.0 // indirect
 	github.com/prometheus/client_model v0.6.1 // indirect
 	github.com/prometheus/common v0.62.0 // indirect
 	github.com/prometheus/procfs v0.15.1 // indirect
@@ -88,6 +88,6 @@ replace (
 	cosmossdk.io/errors => github.com/0xPolygon/cosmos-sdk/errors v1.0.0-beta.7.0.20241126102051-89dc71d02611
 	cosmossdk.io/log => github.com/0xPolygon/cosmos-sdk/log v1.4.1
 	cosmossdk.io/math => github.com/0xPolygon/cosmos-sdk/math v1.4.0
-	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.3.0-polygon
+	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.3.6-polygon
 	github.com/ethereum/go-ethereum => github.com/0xPolygon/bor v1.14.14-0.20250618164709-3dc7d31cdac3
 )
