@@ -454,6 +454,13 @@ func TestEndBlockerProposalHandlerFailed(t *testing.T) {
 }
 
 func TestExpeditedProposal_DepositBehavior_PreAndPostFork(t *testing.T) {
+	originalForkHeight := gov.ExpeditedProposalHardForkHeight
+	forkHeight := int64(100)
+	gov.SetExpeditedProposalHardForkHeight(forkHeight)
+	t.Cleanup(func() {
+		gov.SetExpeditedProposalHardForkHeight(originalForkHeight)
+	})
+
 	type phase struct {
 		name                   string
 		tallyH1                int64 // height for first tally (expedited voting end)
@@ -464,14 +471,14 @@ func TestExpeditedProposal_DepositBehavior_PreAndPostFork(t *testing.T) {
 	phases := []phase{
 		{
 			name:                   "pre-fork",
-			tallyH1:                gov.ExpeditedProposalHardForkHeight - 1,
-			tallyH2:                gov.ExpeditedProposalHardForkHeight - 1,
+			tallyH1:                forkHeight - 1,
+			tallyH2:                forkHeight - 1,
 			expectPreForkBehaviour: true,
 		},
 		{
 			name:                   "post-fork",
-			tallyH1:                gov.ExpeditedProposalHardForkHeight,
-			tallyH2:                gov.ExpeditedProposalHardForkHeight,
+			tallyH1:                forkHeight,
+			tallyH2:                forkHeight,
 			expectPreForkBehaviour: false,
 		},
 	}

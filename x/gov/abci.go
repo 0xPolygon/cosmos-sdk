@@ -134,7 +134,7 @@ func EndBlocker(ctx sdk.Context, keeper *keeper.Keeper) error {
 			return false, err
 		}
 
-		if ctx.BlockHeight() < ExpeditedProposalHardForkHeight {
+		if !IsExpeditedProposalHardFork(ctx.BlockHeight()) {
 			// HV2: Pre ExpeditedProposalHardForkHeight
 			// Heimdall distributes and deletes deposits in all cases of proposal failures,
 			// without caring about burnDeposits
