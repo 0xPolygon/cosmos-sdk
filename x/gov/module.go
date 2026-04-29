@@ -36,16 +36,6 @@ import (
 
 const ConsensusVersion = 5
 
-var ExpeditedProposalHardForkHeight int64 = 0
-
-func IsExpeditedProposalHardFork(height int64) bool {
-	return ExpeditedProposalHardForkHeight > 0 && height >= ExpeditedProposalHardForkHeight
-}
-
-func SetExpeditedProposalHardForkHeight(height int64) {
-	ExpeditedProposalHardForkHeight = height
-}
-
 var (
 	_ module.AppModuleBasic      = AppModuleBasic{}
 	_ module.AppModuleSimulation = AppModule{}

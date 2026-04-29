@@ -8,6 +8,7 @@ import (
 
 	"cosmossdk.io/collections"
 	"cosmossdk.io/math"
+	"github.com/0xPolygon/heimdall-v2/helper"
 	sideTxs "github.com/0xPolygon/heimdall-v2/sidetxs"
 	stakeKeeper "github.com/0xPolygon/heimdall-v2/x/stake/keeper"
 	stakeTypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
@@ -454,11 +455,11 @@ func TestEndBlockerProposalHandlerFailed(t *testing.T) {
 }
 
 func TestExpeditedProposal_DepositBehavior_PreAndPostFork(t *testing.T) {
-	originalForkHeight := gov.ExpeditedProposalHardForkHeight
+	originalForkHeight := helper.GetPhuketHardforkHeight()
 	forkHeight := int64(100)
-	gov.SetExpeditedProposalHardForkHeight(forkHeight)
+	helper.SetPhuketHardforkHeight(forkHeight)
 	t.Cleanup(func() {
-		gov.SetExpeditedProposalHardForkHeight(originalForkHeight)
+		helper.SetPhuketHardforkHeight(originalForkHeight)
 	})
 
 	type phase struct {

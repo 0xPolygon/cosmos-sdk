@@ -7,6 +7,7 @@ import (
 
 	"cosmossdk.io/collections"
 	"cosmossdk.io/log"
+	"github.com/0xPolygon/heimdall-v2/helper"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/telemetry"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -134,8 +135,8 @@ func EndBlocker(ctx sdk.Context, keeper *keeper.Keeper) error {
 			return false, err
 		}
 
-		if !IsExpeditedProposalHardFork(ctx.BlockHeight()) {
-			// HV2: Pre ExpeditedProposalHardForkHeight
+		if !helper.IsPhuketHardfork(ctx.BlockHeight()) {
+			// HV2: Pre-PhuketHardfork
 			// Heimdall distributes and deletes deposits in all cases of proposal failures,
 			// without caring about burnDeposits
 			if passes {
@@ -162,7 +163,7 @@ func EndBlocker(ctx sdk.Context, keeper *keeper.Keeper) error {
 				}
 			}
 		} else {
-			// HV2: Post ExpeditedProposalHardForkHeight
+			// HV2: Post-PhuketHardfork
 			if !(proposal.Expedited && !passes) {
 				// Heimdall distributes and deletes deposits in all cases of
 				// final proposal failures, and refunds otherwise.
