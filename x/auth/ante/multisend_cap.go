@@ -7,8 +7,12 @@ import (
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 )
 
-// MsgMultiSendCapDecorator rejects MsgMultiSend with more than maxOutputs.
-// activeFn, when non-nil, gates enforcement by block height; nil means always-on.
+// MsgMultiSendCapDecorator caps the aggregate bank-transfer output count per
+// tx (MsgMultiSend contributes len(Outputs), MsgSend contributes 1). activeFn
+// gates enforcement by block height; nil means always-on. Only inspects
+// top-level tx messages — wrapper executors like authz.MsgExec dispatch inner
+// msgs at handler time and bypass this cap; consumers enabling such wrappers
+// must constrain or recursively check.
 type MsgMultiSendCapDecorator struct {
 	maxOutputs int
 	activeFn   func(int64) bool
@@ -22,14 +26,19 @@ func (d MsgMultiSendCapDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulat
 	if d.activeFn != nil && !d.activeFn(ctx.BlockHeight()) {
 		return next(ctx, tx, simulate)
 	}
+	totalOutputs := 0
 	for _, msg := range tx.GetMsgs() {
-		ms, ok := msg.(*banktypes.MsgMultiSend)
-		if !ok {
+		switch m := msg.(type) {
+		case *banktypes.MsgMultiSend:
+			totalOutputs += len(m.Outputs)
+		case *banktypes.MsgSend:
+			totalOutputs++
+		default:
 			continue
 		}
-		if got := len(ms.Outputs); got > d.maxOutputs {
+		if totalOutputs > d.maxOutputs {
 			return ctx, errorsmod.Wrapf(sdkerrors.ErrInvalidRequest,
-				"MsgMultiSend has %d outputs, max allowed is %d", got, d.maxOutputs)
+				"tx has %d aggregate bank-transfer outputs, max allowed is %d", totalOutputs, d.maxOutputs)
 		}
 	}
 	return next(ctx, tx, simulate)

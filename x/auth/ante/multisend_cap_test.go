@@ -86,20 +86,29 @@ func TestMsgMultiSendCapDecorator(t *testing.T) {
 			wantReject: true,
 		},
 		{
-			name:      "non-multisend tx passes through",
+			name:      "single MsgSend (1 output) passes",
 			decorator: ante.NewMsgMultiSendCapDecorator(cap, alwaysActive),
 			msgs:      []sdk.Msg{&banktypes.MsgSend{FromAddress: "cosmos1a", ToAddress: "cosmos1b", Amount: sdk.NewCoins(sdk.NewInt64Coin("stake", 1))}},
 		},
 		{
-			name:      "mixed msgs with multisend under cap accepts",
+			name:      "1 MsgSend + MsgMultiSend at cap-1 (aggregate at cap) accepts",
+			decorator: ante.NewMsgMultiSendCapDecorator(cap, alwaysActive),
+			msgs: []sdk.Msg{
+				&banktypes.MsgSend{FromAddress: "cosmos1a", ToAddress: "cosmos1b", Amount: sdk.NewCoins(sdk.NewInt64Coin("stake", 1))},
+				newMultiSend(cap - 1),
+			},
+		},
+		{
+			name:      "1 MsgSend + MsgMultiSend at cap (aggregate over cap) rejects",
 			decorator: ante.NewMsgMultiSendCapDecorator(cap, alwaysActive),
 			msgs: []sdk.Msg{
 				&banktypes.MsgSend{FromAddress: "cosmos1a", ToAddress: "cosmos1b", Amount: sdk.NewCoins(sdk.NewInt64Coin("stake", 1))},
 				newMultiSend(cap),
 			},
+			wantReject: true,
 		},
 		{
-			name:      "mixed msgs with multisend over cap rejects",
+			name:      "1 MsgSend + MsgMultiSend over cap rejects",
 			decorator: ante.NewMsgMultiSendCapDecorator(cap, alwaysActive),
 			msgs: []sdk.Msg{
 				&banktypes.MsgSend{FromAddress: "cosmos1a", ToAddress: "cosmos1b", Amount: sdk.NewCoins(sdk.NewInt64Coin("stake", 1))},
@@ -126,6 +135,88 @@ func TestMsgMultiSendCapDecorator(t *testing.T) {
 			height:     101,
 			msgs:       []sdk.Msg{newMultiSend(cap + 1)},
 			wantReject: true,
+		},
+		{
+			name:      "multi-message: each under cap, aggregate under cap accepts",
+			decorator: ante.NewMsgMultiSendCapDecorator(cap, alwaysActive),
+			msgs: []sdk.Msg{
+				newMultiSend(cap / 2),
+				newMultiSend(cap / 2),
+			},
+		},
+		{
+			name:      "multi-message: each under cap, aggregate at cap accepts",
+			decorator: ante.NewMsgMultiSendCapDecorator(cap, alwaysActive),
+			msgs: []sdk.Msg{
+				newMultiSend(cap / 2),
+				newMultiSend(cap - cap/2),
+			},
+		},
+		{
+			name:      "multi-message: each under cap but aggregate over cap rejects",
+			decorator: ante.NewMsgMultiSendCapDecorator(cap, alwaysActive),
+			msgs: []sdk.Msg{
+				newMultiSend(cap),
+				newMultiSend(1),
+			},
+			wantReject: true,
+		},
+		{
+			name:      "multi-message bypass attempt: 10 messages of half-cap each rejects",
+			decorator: ante.NewMsgMultiSendCapDecorator(cap, alwaysActive),
+			msgs: []sdk.Msg{
+				newMultiSend(cap / 2),
+				newMultiSend(cap / 2),
+				newMultiSend(cap / 2),
+				newMultiSend(cap / 2),
+				newMultiSend(cap / 2),
+				newMultiSend(cap / 2),
+				newMultiSend(cap / 2),
+				newMultiSend(cap / 2),
+				newMultiSend(cap / 2),
+				newMultiSend(cap / 2),
+			},
+			wantReject: true,
+		},
+		{
+			name:      "MsgSend count under cap accepts",
+			decorator: ante.NewMsgMultiSendCapDecorator(cap, alwaysActive),
+			msgs: func() []sdk.Msg {
+				out := make([]sdk.Msg, 0, cap)
+				for i := 0; i < cap; i++ {
+					out = append(out, &banktypes.MsgSend{FromAddress: "cosmos1a", ToAddress: "cosmos1b", Amount: sdk.NewCoins(sdk.NewInt64Coin("stake", 1))})
+				}
+				return out
+			}(),
+		},
+		{
+			name:      "MsgSend count over cap rejects (bypass attempt: 17 MsgSend in one tx)",
+			decorator: ante.NewMsgMultiSendCapDecorator(cap, alwaysActive),
+			msgs: func() []sdk.Msg {
+				out := make([]sdk.Msg, 0, cap+1)
+				for i := 0; i < cap+1; i++ {
+					out = append(out, &banktypes.MsgSend{FromAddress: "cosmos1a", ToAddress: "cosmos1b", Amount: sdk.NewCoins(sdk.NewInt64Coin("stake", 1))})
+				}
+				return out
+			}(),
+			wantReject: true,
+		},
+		{
+			name:      "mixed MsgSend + MsgMultiSend over aggregate cap rejects",
+			decorator: ante.NewMsgMultiSendCapDecorator(cap, alwaysActive),
+			msgs: []sdk.Msg{
+				&banktypes.MsgSend{FromAddress: "cosmos1a", ToAddress: "cosmos1b", Amount: sdk.NewCoins(sdk.NewInt64Coin("stake", 1))},
+				newMultiSend(cap),
+			},
+			wantReject: true,
+		},
+		{
+			name:      "mixed MsgSend + MsgMultiSend at exact aggregate cap accepts",
+			decorator: ante.NewMsgMultiSendCapDecorator(cap, alwaysActive),
+			msgs: []sdk.Msg{
+				&banktypes.MsgSend{FromAddress: "cosmos1a", ToAddress: "cosmos1b", Amount: sdk.NewCoins(sdk.NewInt64Coin("stake", 1))},
+				newMultiSend(cap - 1),
+			},
 		},
 	}
 
