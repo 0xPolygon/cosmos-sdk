@@ -180,15 +180,24 @@ func (w *wrapper) GetPubKeys() ([]cryptotypes.PubKey, error) {
 }
 
 func (w *wrapper) GetGas() uint64 {
+	if w.tx.AuthInfo.Fee == nil {
+		return 0
+	}
 	return w.tx.AuthInfo.Fee.GasLimit
 }
 
 func (w *wrapper) GetFee() sdk.Coins {
+	if w.tx.AuthInfo.Fee == nil {
+		return nil
+	}
 	return w.tx.AuthInfo.Fee.Amount
 }
 
 func (w *wrapper) FeePayer() []byte {
-	feePayer := w.tx.AuthInfo.Fee.Payer
+	var feePayer string
+	if w.tx.AuthInfo.Fee != nil {
+		feePayer = w.tx.AuthInfo.Fee.Payer
+	}
 	if feePayer != "" {
 		feePayerAddr, err := w.cdc.InterfaceRegistry().SigningContext().AddressCodec().StringToBytes(feePayer)
 		if err != nil {
