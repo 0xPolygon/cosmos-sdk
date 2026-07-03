@@ -194,10 +194,12 @@ func (w *wrapper) GetFee() sdk.Coins {
 }
 
 func (w *wrapper) FeePayer() []byte {
-	var feePayer string
-	if w.tx.AuthInfo.Fee != nil {
-		feePayer = w.tx.AuthInfo.Fee.Payer
+	// A fee-less decoded tx has no payer; short-circuit before the GetSigners
+	// fallback, which dereferences AuthInfo.Fee.Payer without a nil guard.
+	if w.tx.AuthInfo.Fee == nil {
+		return nil
 	}
+	feePayer := w.tx.AuthInfo.Fee.Payer
 	if feePayer != "" {
 		feePayerAddr, err := w.cdc.InterfaceRegistry().SigningContext().AddressCodec().StringToBytes(feePayer)
 		if err != nil {
@@ -216,6 +218,9 @@ func (w *wrapper) FeePayer() []byte {
 }
 
 func (w *wrapper) FeeGranter() []byte {
+	if w.tx.AuthInfo.Fee == nil {
+		return nil
+	}
 	return w.tx.FeeGranter(w.cdc)
 }
 

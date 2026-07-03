@@ -11,8 +11,9 @@ import (
 )
 
 // decodeAuthInfo builds and decodes a tx with the given AuthInfo, leaving the
-// body minimal. It mirrors what a peer-gossiped tx looks like on the wire.
-func decodeAuthInfo(t *testing.T, authInfo *tx.AuthInfo) sdk.Tx {
+// body minimal, and returns it as an sdk.FeeTx. It mirrors what a decoded
+// wire tx looks like when the fee field is present or omitted.
+func decodeAuthInfo(t *testing.T, authInfo *tx.AuthInfo) sdk.FeeTx {
 	t.Helper()
 	cdc := codec.NewProtoCodec(codectypes.NewInterfaceRegistry())
 
@@ -25,31 +26,34 @@ func decodeAuthInfo(t *testing.T, authInfo *tx.AuthInfo) sdk.Tx {
 
 	decoded, err := DefaultTxDecoder(cdc)(txBz)
 	require.NoError(t, err)
-	return decoded
+	feeTx, ok := decoded.(sdk.FeeTx)
+	require.True(t, ok)
+	return feeTx
 }
 
 // A tx whose AuthInfo omits the Fee field (proto field 2) decodes with
-// AuthInfo.Fee == nil. The first ante decorator (SetUpContextDecorator) calls
-// GetGas() — this must not panic.
+// AuthInfo.Fee == nil. The fee accessors — reached first by the ante chain's
+// SetUpContextDecorator — must return zero values instead of dereferencing nil.
 func TestNilFeeAccessorsDoNotPanic(t *testing.T) {
-	feeTx, ok := decodeAuthInfo(t, &tx.AuthInfo{}).(sdk.FeeTx)
-	require.True(t, ok)
+	feeTx := decodeAuthInfo(t, &tx.AuthInfo{})
 
 	require.NotPanics(t, func() {
 		require.Equal(t, uint64(0), feeTx.GetGas())
 		require.Nil(t, feeTx.GetFee())
+		require.Nil(t, feeTx.FeePayer())
+		require.Nil(t, feeTx.FeeGranter())
 	})
 }
 
 // An empty (but present) Fee — what newBuilder always sets — must keep working.
 func TestEmptyFeeStillWorks(t *testing.T) {
-	feeTx := decodeAuthInfo(t, &tx.AuthInfo{Fee: &tx.Fee{}}).(sdk.FeeTx)
+	feeTx := decodeAuthInfo(t, &tx.AuthInfo{Fee: &tx.Fee{}})
 	require.Equal(t, uint64(0), feeTx.GetGas())
 	require.Nil(t, feeTx.GetFee())
 }
 
 // A populated Fee returns its values unchanged.
 func TestPopulatedFeeUnchanged(t *testing.T) {
-	feeTx := decodeAuthInfo(t, &tx.AuthInfo{Fee: &tx.Fee{GasLimit: 21000}}).(sdk.FeeTx)
+	feeTx := decodeAuthInfo(t, &tx.AuthInfo{Fee: &tx.Fee{GasLimit: 21000}})
 	require.Equal(t, uint64(21000), feeTx.GetGas())
 }
