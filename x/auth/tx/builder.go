@@ -180,14 +180,25 @@ func (w *wrapper) GetPubKeys() ([]cryptotypes.PubKey, error) {
 }
 
 func (w *wrapper) GetGas() uint64 {
+	if w.tx.AuthInfo.Fee == nil {
+		return 0
+	}
 	return w.tx.AuthInfo.Fee.GasLimit
 }
 
 func (w *wrapper) GetFee() sdk.Coins {
+	if w.tx.AuthInfo.Fee == nil {
+		return nil
+	}
 	return w.tx.AuthInfo.Fee.Amount
 }
 
 func (w *wrapper) FeePayer() []byte {
+	// A fee-less decoded tx has no payer; short-circuit before the GetSigners
+	// fallback, which dereferences AuthInfo.Fee.Payer without a nil guard.
+	if w.tx.AuthInfo.Fee == nil {
+		return nil
+	}
 	feePayer := w.tx.AuthInfo.Fee.Payer
 	if feePayer != "" {
 		feePayerAddr, err := w.cdc.InterfaceRegistry().SigningContext().AddressCodec().StringToBytes(feePayer)
@@ -207,6 +218,9 @@ func (w *wrapper) FeePayer() []byte {
 }
 
 func (w *wrapper) FeeGranter() []byte {
+	if w.tx.AuthInfo.Fee == nil {
+		return nil
+	}
 	return w.tx.FeeGranter(w.cdc)
 }
 
