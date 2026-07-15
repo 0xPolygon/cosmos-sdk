@@ -162,19 +162,17 @@ func EndBlocker(ctx sdk.Context, keeper *keeper.Keeper) error {
 					return false, err
 				}
 			}
-		} else {
+		} else if !(proposal.Expedited && !passes) {
 			// HV2: Post-PhuketHardfork
-			if !(proposal.Expedited && !passes) {
-				// Heimdall distributes and deletes deposits in all cases of
-				// final proposal failures, and refunds otherwise.
-				if passes {
-					if err := keeper.RefundAndDeleteDeposits(ctx, proposal.Id); err != nil {
-						return false, err
-					}
-				} else {
-					if err := keeper.DistributeAndDeleteDeposits(ctx, proposal.Id); err != nil {
-						return false, err
-					}
+			// Heimdall distributes and deletes deposits in all cases of
+			// final proposal failures, and refunds otherwise.
+			if passes {
+				if err := keeper.RefundAndDeleteDeposits(ctx, proposal.Id); err != nil {
+					return false, err
+				}
+			} else {
+				if err := keeper.DistributeAndDeleteDeposits(ctx, proposal.Id); err != nil {
+					return false, err
 				}
 			}
 		}

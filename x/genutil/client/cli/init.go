@@ -10,6 +10,8 @@ import (
 
 	errorsmod "cosmossdk.io/errors"
 	"cosmossdk.io/math/unsafe"
+	milestonestypes "github.com/0xPolygon/heimdall-v2/x/milestone/types"
+	staketypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 	cfg "github.com/cometbft/cometbft/config"
 	cmttypes "github.com/cometbft/cometbft/types"
 	"github.com/cosmos/cosmos-sdk/client"
@@ -25,9 +27,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/genutil/types"
 	"github.com/cosmos/go-bip39"
 	"github.com/spf13/cobra"
-
-	milestonestypes "github.com/0xPolygon/heimdall-v2/x/milestone/types"
-	staketypes "github.com/0xPolygon/heimdall-v2/x/stake/types"
 )
 
 const (
