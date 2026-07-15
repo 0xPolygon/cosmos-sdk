@@ -14,6 +14,7 @@ require (
 	cosmossdk.io/x/tx v0.13.7
 	github.com/0xPolygon/heimdall-v2 v0.6.1-0.20260429152616-cd2c46317eb7
 	github.com/99designs/keyring v1.2.2
+	github.com/ProtonMail/go-crypto v1.4.1
 	github.com/bgentry/speakeasy v0.2.0
 	github.com/bits-and-blooms/bitset v1.24.4
 	github.com/chzyer/readline v1.5.1
