@@ -2,11 +2,14 @@ package crypto
 
 import (
 	"bytes"
+	"encoding/base64"
 	"encoding/hex"
 	"fmt"
 	"io"
+	"strings"
 
 	errorsmod "cosmossdk.io/errors"
+	"github.com/ProtonMail/go-crypto/openpgp/armor"
 	"github.com/cometbft/cometbft/crypto"
 	"github.com/cosmos/cosmos-sdk/codec/legacy"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/bcrypt"
@@ -15,7 +18,6 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"golang.org/x/crypto/argon2"
 	"golang.org/x/crypto/chacha20poly1305"
-	"golang.org/x/crypto/openpgp/armor" //nolint:staticcheck //TODO: remove this dependency
 )
 
 const (
@@ -282,5 +284,42 @@ func DecodeArmor(armorStr string) (blockType string, headers map[string]string, 
 	if err != nil {
 		return "", nil, nil, err
 	}
+	if err := validateArmorChecksum(armorStr, data); err != nil {
+		return "", nil, nil, err
+	}
 	return block.Type, block.Header, data, nil
+}
+
+// validateArmorChecksum preserves the corruption check omitted by the maintained decoder.
+func validateArmorChecksum(armorStr string, data []byte) error {
+	for _, line := range strings.Split(armorStr, "\n") {
+		line = strings.TrimSpace(line)
+		if !strings.HasPrefix(line, "=") {
+			continue
+		}
+		checksum, err := base64.StdEncoding.DecodeString(strings.TrimPrefix(line, "="))
+		if err != nil || len(checksum) != 3 {
+			return armor.ArmorCorrupt
+		}
+		expected := uint32(checksum[0])<<16 | uint32(checksum[1])<<8 | uint32(checksum[2])
+		if armorCRC24(data) != expected {
+			return armor.ArmorCorrupt
+		}
+		return nil
+	}
+	return nil
+}
+
+func armorCRC24(data []byte) uint32 {
+	crc := uint32(0xb704ce)
+	for _, b := range data {
+		crc ^= uint32(b) << 16
+		for range 8 {
+			crc <<= 1
+			if crc&0x1000000 != 0 {
+				crc ^= 0x1864cfb
+			}
+		}
+	}
+	return crc
 }
