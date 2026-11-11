@@ -1,6 +1,7 @@
 package keeper_test
 
 import (
+	"sync"
 	"testing"
 
 	hApp "github.com/0xPolygon/heimdall-v2/app"
@@ -24,11 +25,16 @@ type fixture struct {
 	govKeeper     *keeper.Keeper
 }
 
-func initFixture(t *testing.T) *fixture {
+// setupMu serializes heimdall app construction: it writes package-level
+// state (e.g. helper.ContractsABIsMap) without locking, and these tests run in parallel.
+var setupMu sync.Mutex
 
+func initFixture(t *testing.T) *fixture {
+	setupMu.Lock()
 	setUpAppResult := hApp.SetupApp(t, 1)
 	app := setUpAppResult.App
 	hApp.RequestFinalizeBlock(t, app, app.LastBlockHeight()+1)
+	setupMu.Unlock()
 
 	ctx := app.NewContext(false)
 
