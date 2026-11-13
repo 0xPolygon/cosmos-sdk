@@ -32,6 +32,7 @@ require (
 	github.com/btcsuite/btcd/btcec/v2 v2.3.4 // indirect
 	github.com/bufbuild/protocompile v0.14.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
+	github.com/cloudflare/circl v1.6.3 // indirect
 	github.com/cockroachdb/errors v1.11.3 // indirect
 	github.com/cockroachdb/fifo v0.0.0-20240606204812-0bbfbd93a7ce // indirect
 	github.com/cockroachdb/logtags v0.0.0-20230118201751-21c54148d20b // indirect
@@ -88,6 +89,6 @@ replace (
 	cosmossdk.io/errors => github.com/0xPolygon/cosmos-sdk/errors v1.0.0-beta.7.0.20241126102051-89dc71d02611
 	cosmossdk.io/log => github.com/0xPolygon/cosmos-sdk/log v1.4.1
 	cosmossdk.io/math => github.com/0xPolygon/cosmos-sdk/math v1.4.0
-	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.3.12-polygon
+	github.com/cometbft/cometbft => github.com/0xPolygon/cometbft v0.3.13-polygon
 	github.com/ethereum/go-ethereum => github.com/0xPolygon/bor v1.14.14-0.20250618164709-3dc7d31cdac3
 )
