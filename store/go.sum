@@ -1,7 +1,7 @@
 github.com/0xPolygon/bor v1.14.14-0.20250618164709-3dc7d31cdac3 h1:jVOWHi0Hh7axPWBvKyyGVdt/ojJ/twS+fFh95CUJy74=
 github.com/0xPolygon/bor v1.14.14-0.20250618164709-3dc7d31cdac3/go.mod h1:aplRozrnOVZTkjCaWG4YzaPZN8KB6/j7Jv5CrFGd5JQ=
-github.com/0xPolygon/cometbft v0.3.13-polygon h1:kvJ7+tc1u/E9WRcjm7WQsU0Ez/3scJLQPEvr8DMaisA=
-github.com/0xPolygon/cometbft v0.3.13-polygon/go.mod h1:Uqby0thKg1zCPQ/cwPhRpNRJdwxvo7ncRDLy0NVllKQ=
+github.com/0xPolygon/cometbft v0.3.15-polygon h1:7b5Z2gRbAh23Y+8GW7fCKNAzR4f+FHtIWxdWJ4/0KpE=
+github.com/0xPolygon/cometbft v0.3.15-polygon/go.mod h1:Uqby0thKg1zCPQ/cwPhRpNRJdwxvo7ncRDLy0NVllKQ=
 github.com/0xPolygon/cosmos-sdk/errors v1.0.0-beta.7.0.20241126102051-89dc71d02611 h1:sCfUifNdHOWVnjWl47EtgtYx1M174xZzkp9BtlnwNfg=
 github.com/0xPolygon/cosmos-sdk/errors v1.0.0-beta.7.0.20241126102051-89dc71d02611/go.mod h1:VnIAMKbUTq5YhHockdy2MSB3lXeEwvDYzQpHXeFTsN8=
 github.com/0xPolygon/cosmos-sdk/log v1.4.1 h1:sJcqdAqfVCEhsToiZFStWG8ENgyBVvMlFrWXw9Vmx6I=
